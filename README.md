@@ -1,9 +1,9 @@
-# 66GoCart UI
+# UlboraCart UI The Speeding Fast Cart
 An open source ecommerce platform server for building online shopping cart systems; written in golang. This is the user's storefront and admin panel.
 
-This project is intended to be the storefront UI that works with 66GoCart REST implementation of a hosted ecommerce solution. 
+This project is intended to be the storefront UI that works with UlboraCart REST implementation of a hosted ecommerce solution. 
 
-1. Users of 66GoCart UI, together with 66GoCart will be able to customize templates just like other hosted solutions.
+1. Users of UlboraCart UI, together with UlboraCart will be able to customize templates just like other hosted solutions.
 2. Templates can either be written in Golang templating or use a JavaScript framework like Angular or React.
 3. REST services will be used to expose all cart functionality.
 
