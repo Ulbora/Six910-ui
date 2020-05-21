@@ -1,4 +1,4 @@
-# UlboraCart UI
+# Ulbora Cart UI
 ### The Speeding Sast Shopping Cart
 An open source ecommerce platform server for building online shopping cart systems; written in golang. This is the user's storefront and admin panel.
 
