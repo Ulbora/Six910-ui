@@ -1,10 +1,11 @@
 package main
 
 /*
- Copyright (C) 2019 Ulbora Labs LLC. (www.ulboralabs.com)
+ Six910-ui is a shopping cart and E-commerce system.
+ Copyright (C) 2020 Ulbora Labs LLC. (www.ulboralabs.com)
  All rights reserved.
 
- Copyright (C) 2019 Ken Williamson
+ Copyright (C) 2020 Ken Williamson
  All rights reserved.
 
  This program is free software: you can redistribute it and/or modify
@@ -22,14 +23,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func main() {
-	// just the start of Ulbora Cart Server
-	// This is the storefront for Ulbora Cart.
-	fmt.Println("Ulbora Cart UI is running on port 3001!")
+	// just the start of Six910-ui Server
+	// This is the storefront for Six910-ui.
+	fmt.Println("Six910 (six nine ten) UI is running on port 3001!")
 	router := mux.NewRouter()
 	http.ListenAndServe(":3001", router)
 }
+
+// go mod init github.com/Ulbora/Six910-ui
