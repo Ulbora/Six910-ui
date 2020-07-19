@@ -138,69 +138,10 @@ func (c *Six910BackupService) DownloadBackups() (bool, *[]byte) {
 	var bkfs BackupFiles
 
 	//contentStore
-	var contStoreFiles []BackupFile
-	cntfiles, err := ioutil.ReadDir(c.ContentStorePath)
-	if err == nil {
-		for _, sfile := range cntfiles {
-			if !sfile.IsDir() {
-				c.Log.Debug("content store file: ", c.ContentStorePath+string(filepath.Separator)+sfile.Name())
-				fileData, rerr := ioutil.ReadFile(c.ContentStorePath + string(filepath.Separator) + sfile.Name())
-				//c.Log.Debug("content store file data: ", fileData)
-				if rerr == nil {
-					var cbk BackupFile
-					cbk.Name = sfile.Name()
-					cbk.FilesLocation = c.ContentStorePath
-					cbk.FileData = fileData
-					contStoreFiles = append(contStoreFiles, cbk)
-				}
-			}
-		}
-		//c.Log.Debug("content store file list: ", contStoreFiles)
-		bkfs.ContentStoreFiles = &contStoreFiles
-	}
 
-	//templateStore
-	var templateStoreFiles []BackupFile
-	tempfiles, err := ioutil.ReadDir(c.TemplateStorePath)
-	if err == nil {
-		for _, sfile := range tempfiles {
-			if !sfile.IsDir() {
-				c.Log.Debug("template store file: ", c.TemplateStorePath+string(filepath.Separator)+sfile.Name())
-				fileData, rerr := ioutil.ReadFile(c.TemplateStorePath + string(filepath.Separator) + sfile.Name())
-				c.Log.Debug("template store  file data: ", fileData)
-				if rerr == nil {
-					var cbk BackupFile
-					cbk.Name = sfile.Name()
-					cbk.FilesLocation = c.TemplateStorePath
-					cbk.FileData = fileData
-					templateStoreFiles = append(templateStoreFiles, cbk)
-				}
-			}
-		}
-		c.Log.Debug("template file list: ", templateStoreFiles)
-		bkfs.TemplateStoreFiles = &templateStoreFiles
-	}
-
-	//images
-	var imageFiles []BackupFile
-	imgfiles, err := ioutil.ReadDir(c.ImagePath)
-	if err == nil {
-		c.Log.Debug("imgfiles: ", imgfiles)
-		for _, sfile := range imgfiles {
-			if !sfile.IsDir() {
-				c.Log.Debug("image file: ", c.ImagePath+string(filepath.Separator)+sfile.Name())
-				fileData, rerr := ioutil.ReadFile(c.ImagePath + string(filepath.Separator) + sfile.Name())
-				if rerr == nil {
-					var cbk BackupFile
-					cbk.Name = sfile.Name()
-					cbk.FilesLocation = c.ImagePath
-					cbk.FileData = fileData
-					imageFiles = append(imageFiles, cbk)
-				}
-			}
-		}
-		bkfs.ImageFiles = &imageFiles
-	}
+	c.processContentFiles(&bkfs)
+	c.processTemplateFiles(&bkfs)
+	c.processImageFiles(&bkfs)
 
 	//zip template files
 	cwpath, _ := os.Getwd()
@@ -269,4 +210,72 @@ func (c *Six910BackupService) compress(dir string, tw *tar.Writer) {
 		}
 		return errr
 	})
+}
+
+func (c *Six910BackupService) processContentFiles(bkfs *BackupFiles) {
+	var contStoreFiles []BackupFile
+	cntfiles, err := ioutil.ReadDir(c.ContentStorePath)
+	if err == nil {
+		for _, sfile := range cntfiles {
+			if !sfile.IsDir() {
+				c.Log.Debug("content store file: ", c.ContentStorePath+string(filepath.Separator)+sfile.Name())
+				fileData, rerr := ioutil.ReadFile(c.ContentStorePath + string(filepath.Separator) + sfile.Name())
+				//c.Log.Debug("content store file data: ", fileData)
+				if rerr == nil {
+					var cbk BackupFile
+					cbk.Name = sfile.Name()
+					cbk.FilesLocation = c.ContentStorePath
+					cbk.FileData = fileData
+					contStoreFiles = append(contStoreFiles, cbk)
+				}
+			}
+		}
+		//c.Log.Debug("content store file list: ", contStoreFiles)
+		bkfs.ContentStoreFiles = &contStoreFiles
+	}
+}
+
+func (c *Six910BackupService) processTemplateFiles(bkfs *BackupFiles) {
+	var templateStoreFiles []BackupFile
+	tempfiles, err := ioutil.ReadDir(c.TemplateStorePath)
+	if err == nil {
+		for _, sfile := range tempfiles {
+			if !sfile.IsDir() {
+				c.Log.Debug("template store file: ", c.TemplateStorePath+string(filepath.Separator)+sfile.Name())
+				fileData, rerr := ioutil.ReadFile(c.TemplateStorePath + string(filepath.Separator) + sfile.Name())
+				c.Log.Debug("template store  file data: ", fileData)
+				if rerr == nil {
+					var cbk BackupFile
+					cbk.Name = sfile.Name()
+					cbk.FilesLocation = c.TemplateStorePath
+					cbk.FileData = fileData
+					templateStoreFiles = append(templateStoreFiles, cbk)
+				}
+			}
+		}
+		c.Log.Debug("template file list: ", templateStoreFiles)
+		bkfs.TemplateStoreFiles = &templateStoreFiles
+	}
+}
+
+func (c *Six910BackupService) processImageFiles(bkfs *BackupFiles) {
+	var imageFiles []BackupFile
+	imgfiles, err := ioutil.ReadDir(c.ImagePath)
+	if err == nil {
+		c.Log.Debug("imgfiles: ", imgfiles)
+		for _, sfile := range imgfiles {
+			if !sfile.IsDir() {
+				c.Log.Debug("image file: ", c.ImagePath+string(filepath.Separator)+sfile.Name())
+				fileData, rerr := ioutil.ReadFile(c.ImagePath + string(filepath.Separator) + sfile.Name())
+				if rerr == nil {
+					var cbk BackupFile
+					cbk.Name = sfile.Name()
+					cbk.FilesLocation = c.ImagePath
+					cbk.FileData = fileData
+					imageFiles = append(imageFiles, cbk)
+				}
+			}
+		}
+		bkfs.ImageFiles = &imageFiles
+	}
 }
