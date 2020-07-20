@@ -48,7 +48,7 @@ github.com/Ulbora/Six910-ui/bkupsrv/backupService.go:270.20,276.6 5 1
 github.com/Ulbora/Six910-ui/bkupsrv/service.go:51.54,53.2 1 1
 github.com/Ulbora/Six910-ui/bkupsrv/service.go:55.98,59.20 4 1
 github.com/Ulbora/Six910-ui/bkupsrv/service.go:84.2,84.12 1 1
-github.com/Ulbora/Six910-ui/bkupsrv/service.go:60.19,64.12 4 1
-github.com/Ulbora/Six910-ui/bkupsrv/service.go:65.19,70.18 5 1
-github.com/Ulbora/Six910-ui/bkupsrv/service.go:70.18,75.19 5 1
+github.com/Ulbora/Six910-ui/bkupsrv/service.go:60.19,64.13 4 1
+github.com/Ulbora/Six910-ui/bkupsrv/service.go:65.19,70.19 5 1
+github.com/Ulbora/Six910-ui/bkupsrv/service.go:70.19,75.19 5 1
 github.com/Ulbora/Six910-ui/bkupsrv/service.go:75.19,81.5 5 1

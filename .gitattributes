@@ -1,0 +1,11 @@
+/bkupsrv/testBackup/* linguist-documentation
+/bkupsrv/testBackupRestore/* linguist-documentation
+/contsrv/testBackup/* linguist-documentation
+/contsrv/testBackupRestore/* linguist-documentation
+/contsrv/testDownloads/* linguist-documentation
+/contsrv/testUploads/* linguist-documentation
+/contsrv/testUploadTemplates/* linguist-documentation
+/tmptsrv/testDownloads/* linguist-documentation
+/tmptsrv/testUploads/* linguist-documentation
+/tmptsrv/testUploadTemplates/* linguist-documentation
+/static/* linguist-documentation

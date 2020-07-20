@@ -1,4 +1,5 @@
 mode: set
+github.com/Ulbora/Six910-ui/contsrv/service.go:59.39,64.2 4 1
 github.com/Ulbora/Six910-ui/contsrv/contentService.go:70.61,77.16 6 1
 github.com/Ulbora/Six910-ui/contsrv/contentService.go:84.2,84.12 1 1
 github.com/Ulbora/Six910-ui/contsrv/contentService.go:77.16,81.3 3 1
@@ -49,4 +50,3 @@ github.com/Ulbora/Six910-ui/contsrv/reCaptcha.go:73.3,73.17 1 1
 github.com/Ulbora/Six910-ui/contsrv/reCaptcha.go:69.17,72.4 2 1
 github.com/Ulbora/Six910-ui/contsrv/reCaptcha.go:73.17,75.4 1 1
 github.com/Ulbora/Six910-ui/contsrv/reCaptcha.go:76.8,78.3 1 1
-github.com/Ulbora/Six910-ui/contsrv/service.go:59.39,64.2 4 1

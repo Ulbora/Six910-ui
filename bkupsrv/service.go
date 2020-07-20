@@ -54,27 +54,27 @@ func (c *Six910BackupService) GetNew() BackupService {
 
 func (c *Six910BackupService) extractTarGzFile(tr *tar.Reader, h *tar.Header, dest string) error {
 	var rtn error
-	fname := h.Name
-	c.Log.Debug("fname in extractTarGzFile: ", fname)
+	flname := h.Name
+	c.Log.Debug("fname in extractTarGzFile: ", flname)
 	switch h.Typeflag {
 	case tar.TypeDir:
-		err := os.MkdirAll(dest+string(filepath.Separator)+fname, 0775)
-		c.Log.Debug("MkdirAll in tar.TypeDir error in extractTarGzFile: ", err)
-		c.Log.Debug("MkdirAll in tar.TypeDir name in extractTarGzFile: ", dest+string(filepath.Separator)+fname)
-		rtn = err
-	case tar.TypeReg:
-		derr := os.MkdirAll(filepath.Dir(dest+string(filepath.Separator)+fname), 0775)
+		derr := os.MkdirAll(dest+string(filepath.Separator)+flname, 0775)
+		c.Log.Debug("MkdirAll in tar.TypeDir error in extractTarGzFile: ", derr)
+		c.Log.Debug("MkdirAll in tar.TypeDir name in extractTarGzFile: ", dest+string(filepath.Separator)+flname)
 		rtn = derr
-		c.Log.Debug("MkdirAll in tar.TypeReg error in extractTarGzFile: ", derr)
-		c.Log.Debug("MkdirAll in tar.TypeReg dir name in extractTarGzFile: ", filepath.Dir(dest+string(filepath.Separator)+fname))
-		if derr == nil {
-			c.Log.Debug("MkdirAll in tar.TypeReg file name in extractTarGzFile: ", dest+string(filepath.Separator)+fname)
-			writer, cerr := os.Create(dest + string(filepath.Separator) + fname)
+	case tar.TypeReg:
+		derr2 := os.MkdirAll(filepath.Dir(dest+string(filepath.Separator)+flname), 0775)
+		rtn = derr2
+		c.Log.Debug("MkdirAll in tar.TypeReg error in extractTarGzFile: ", derr2)
+		c.Log.Debug("MkdirAll in tar.TypeReg dir name in extractTarGzFile: ", filepath.Dir(dest+string(filepath.Separator)+flname))
+		if derr2 == nil {
+			c.Log.Debug("MkdirAll in tar.TypeReg file name in extractTarGzFile: ", dest+string(filepath.Separator)+flname)
+			writer, cerr := os.Create(dest + string(filepath.Separator) + flname)
 			rtn = cerr
 			c.Log.Debug("os.Create error in extractTarGzFile: ", cerr)
 			if cerr == nil {
 				io.Copy(writer, tr)
-				err := os.Chmod(dest+string(filepath.Separator)+fname, 0664)
+				err := os.Chmod(dest+string(filepath.Separator)+flname, 0664)
 				c.Log.Debug("os.Chmod error in extractTarGzFile: ", err)
 				rtn = err
 				writer.Close()
