@@ -1,3 +1,4 @@
+//Package managers ...
 package managers
 
 /*
@@ -19,13 +20,13 @@ package managers
 */
 
 import (
-	api "github.com/Ulbora/Six910API-Go"
 	lg "github.com/Ulbora/Level_Logger"
+	api "github.com/Ulbora/Six910API-Go"
 )
 
 //Six910Manager Six910Manager
 type Six910Manager struct {
-	API     api.API
+	API api.API
 	//StoreID int64
-	Log             *lg.Logger
+	Log *lg.Logger
 }
