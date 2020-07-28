@@ -80,8 +80,8 @@ type Manager interface {
 	// ViewCustomerOrder(orderID int64, cid int64) *CustomerOrder
 	// ViewCustomerOrderList(cid int64) *[]CustomerOrder
 
-	// CustomerLogin(u *api.User) (bool, *api.User)
-	// CustomerChangePassword(u *api.User) (bool, *api.User)
+	CustomerLogin(u *api.User, hd *api.Headers) (bool, *api.User)
+	CustomerChangePassword(u *api.User, hd *api.Headers) (bool, *api.User)
 
 	//--------------------end ---new------------
 
@@ -153,7 +153,7 @@ type Manager interface {
 	//-------Store Admin-----
 
 	StoreAdminLogin(u *api.User, hd *api.Headers) (bool, *api.User)
-	///////////////////////////StoreAdminChangePassword(u *api.User) (bool, *api.User)
+	StoreAdminChangePassword(u *api.User, hd *api.Headers) (bool, *api.User)
 	////////////////////////UploadProductFile(file []byte) bool
 
 	// //category

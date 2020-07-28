@@ -29,22 +29,47 @@ func (m *Six910Manager) StoreAdminLogin(u *api.User, hd *api.Headers) (bool, *ap
 	var suc bool
 	var rtn api.User
 
-	sEnc := b64.StdEncoding.EncodeToString([]byte(u.Username + ":" + u.Password))
-	m.Log.Debug("sEnc: ", sEnc)
+	sEnca := b64.StdEncoding.EncodeToString([]byte(u.Username + ":" + u.Password))
+	m.Log.Debug("sEnc: ", sEnca)
 
-	hd.Set("Authorization", "Basic "+sEnc)
+	hd.Set("Authorization", "Basic "+sEnca)
 
 	//YWRtaW46YWRtaW4=
 
-	usr := m.API.GetUser(u, hd)
-	m.Log.Debug("usr: ", *usr)
-	if usr.Enabled && usr.Username == u.Username && usr.Role == storeAdmin {
+	usra := m.API.GetUser(u, hd)
+	m.Log.Debug("usr: ", *usra)
+	if usra.Enabled && usra.Username == u.Username && usra.Role == storeAdmin {
 		suc = true
-		rtn.Enabled = usr.Enabled
-		rtn.Role = usr.Role
-		rtn.StoreID = usr.StoreID
-		rtn.Username = usr.Username
+		rtn.Enabled = usra.Enabled
+		rtn.Role = usra.Role
+		rtn.StoreID = usra.StoreID
+		rtn.Username = usra.Username
 	}
 	m.Log.Debug("rtn: ", rtn)
 	return suc, &rtn
+}
+
+//StoreAdminChangePassword StoreAdminChangePassword
+func (m *Six910Manager) StoreAdminChangePassword(u *api.User, hd *api.Headers) (bool, *api.User) {
+	var suc bool
+	var rtnac api.User
+	sEncac := b64.StdEncoding.EncodeToString([]byte(u.Username + ":" + u.OldPassword))
+	m.Log.Debug("sEnc: ", sEncac)
+
+	hd.Set("Authorization", "Basic "+sEncac)
+
+	//YWRtaW46YWRtaW4=
+
+	usrac := m.API.GetUser(u, hd)
+	m.Log.Debug("usr: ", *usrac)
+	if usrac.Enabled && usrac.Username == u.Username && usrac.Role == storeAdmin {
+		res := m.API.UpdateUser(u, hd)
+		suc = res.Success
+		rtnac.Enabled = usrac.Enabled
+		rtnac.Role = usrac.Role
+		rtnac.StoreID = usrac.StoreID
+		rtnac.Username = usrac.Username
+	}
+	m.Log.Debug("rtn: ", rtnac)
+	return suc, &rtnac
 }

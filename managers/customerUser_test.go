@@ -13,7 +13,7 @@ import (
 	api "github.com/Ulbora/Six910API-Go"
 )
 
-func TestSix910Manager_StoreAdminLogin(t *testing.T) {
+func TestSix910Manager_CustomerLogin(t *testing.T) {
 	var sm Six910Manager
 	var sapi api.Six910API
 	//sapi.SetAPIKey("123")
@@ -33,7 +33,7 @@ func TestSix910Manager_StoreAdminLogin(t *testing.T) {
 	//---mock out the call
 	var gp px.MockGoProxy
 	var mres http.Response
-	mres.Body = ioutil.NopCloser(bytes.NewBufferString(`{"username": "admin", "enabled": true, "role": "StoreAdmin" }`))
+	mres.Body = ioutil.NopCloser(bytes.NewBufferString(`{"username": "tester123", "enabled": true, "role": "customer" }`))
 	gp.MockResp = &mres
 	gp.MockDoSuccess1 = true
 	gp.MockRespCode = 200
@@ -44,33 +44,32 @@ func TestSix910Manager_StoreAdminLogin(t *testing.T) {
 	sm.Log = &l
 
 	var u api.User
-	//u.CustomerID = 18
+	u.CustomerID = 18
 	//u.Enabled = true
-	u.Password = "admin"
+	u.Password = "tester"
 	//u.Role = "customer"
-	u.Username = "admin"
+	u.Username = "tester123"
 
 	var head api.Headers
 	//head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
 	m := sm.GetNew()
-	suc, us := m.StoreAdminLogin(&u, &head)
-	fmt.Println("suc: ", suc)
-	fmt.Println("us: ", us)
-	if !suc || us.Username != "admin" {
+	suc, us := m.CustomerLogin(&u, &head)
+	fmt.Println("suc customer: ", suc)
+	fmt.Println("us customer: ", us)
+	if !suc || us.Username != "tester123" {
 		t.Fail()
 	}
-
 }
 
-func TestSix910Manager_StoreAdminChangePassword(t *testing.T) {
+func TestSix910Manager_CustomerChangePassword(t *testing.T) {
 	var sm Six910Manager
 	var sapi mapi.MockAPI
 
 	//-----------start mocking------------------
 	var user api.UserResponse
-	user.Username = "admin"
-	user.Role = storeAdmin
+	user.Username = "tester123"
+	user.Role = customerRole
 	user.Enabled = true
 
 	sapi.MockUser = &user
@@ -109,20 +108,20 @@ func TestSix910Manager_StoreAdminChangePassword(t *testing.T) {
 	sm.Log = &l
 
 	var u api.User
-	//u.CustomerID = 18
+	u.CustomerID = 18
 	//u.Enabled = true
-	u.Password = "admin"
+	u.Password = "tester"
 	//u.Role = "customer"
-	u.Username = "admin"
+	u.Username = "tester123"
 
 	var head api.Headers
 	//head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
 	m := sm.GetNew()
-	suc, us := m.StoreAdminChangePassword(&u, &head)
+	suc, us := m.CustomerChangePassword(&u, &head)
 	fmt.Println("suc: ", suc)
 	fmt.Println("us: ", us)
-	if !suc || us.Username != "admin" {
+	if !suc || us.Username != "tester123" {
 		t.Fail()
 	}
 }

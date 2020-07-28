@@ -1,5 +1,14 @@
 mode: set
-github.com/Ulbora/Six910-ui/managers/manager.go:330.42,332.2 1 1
-github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:28.89,41.73 8 1
+github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:28.89,41.76 8 1
 github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:48.2,49.18 2 1
-github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:41.73,47.3 5 1
+github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:41.76,47.3 5 1
+github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:53.98,65.79 8 1
+github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:73.2,74.20 2 1
+github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:65.79,72.3 6 1
+github.com/Ulbora/Six910-ui/managers/customerUser.go:28.87,38.81 8 1
+github.com/Ulbora/Six910-ui/managers/customerUser.go:45.2,46.22 2 1
+github.com/Ulbora/Six910-ui/managers/customerUser.go:38.81,44.3 5 1
+github.com/Ulbora/Six910-ui/managers/customerUser.go:50.96,62.81 8 1
+github.com/Ulbora/Six910-ui/managers/customerUser.go:70.2,71.22 2 1
+github.com/Ulbora/Six910-ui/managers/customerUser.go:62.81,69.3 6 1
+github.com/Ulbora/Six910-ui/managers/manager.go:331.42,333.2 1 1
