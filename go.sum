@@ -4,6 +4,8 @@ github.com/Ulbora/Level_Logger v1.0.2 h1:uhuNi1oSQ1zSDhuYQS7NEHqtR4lAYPGyW2XGwJZ
 github.com/Ulbora/Level_Logger v1.0.2/go.mod h1:epRidhkOBJSzCCon816WfFCO9vtai8VCmdI8S/xcTbA=
 github.com/Ulbora/Six910API-Go v1.0.0 h1:b7YxBoNtaeJxShO0pJmqiLMeuWSapmUvmbnRhv/QhEE=
 github.com/Ulbora/Six910API-Go v1.0.0/go.mod h1:+E6bQIaJVcnhT9W2iNFb1oTHQkBIjweTtrYf7JojI0M=
+github.com/Ulbora/Six910API-Go v1.0.1 h1:++PjELm7FzBovD0XadIsIsks4BGq3SUiPmy0klhyDQ4=
+github.com/Ulbora/Six910API-Go v1.0.1/go.mod h1:+E6bQIaJVcnhT9W2iNFb1oTHQkBIjweTtrYf7JojI0M=
 github.com/Ulbora/go-mail-sender v1.0.0 h1:lfVK66JRIPSZCkeTO3/0fnnygVeVF+5ena47I2pj5Fo=
 github.com/Ulbora/go-mail-sender v1.0.0/go.mod h1:uI61omDxYerT9GWLIOIk7Y2wq9esh09UK2LkdCAuTkU=
 github.com/Ulbora/json-datastore v1.0.5 h1:sWH6mBFXOapi7ZMog1FpPKMHF1p2BNVxk4Ejp9H+cxk=

@@ -1,9 +1,10 @@
 package managers
 
-// import (
-// 	api "github.com/Ulbora/Six910API-Go"
-// 	sdbi "github.com/Ulbora/six910-database-interface"
-// )
+import (
+	b64 "encoding/base64"
+
+	api "github.com/Ulbora/Six910API-Go"
+)
 
 /*
  Six910 is a shopping cart and E-commerce system.
@@ -23,12 +24,27 @@ package managers
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-// //AddAddress AddAddress
-// func (m *Six910Manager) AddAddress(a *sdbi.Address, hd *api.Headers) *api.ResponseID {
-// 	return m.API.AddAddress(a, hd)
-// }
+//StoreAdminLogin StoreAdminLogin
+func (m *Six910Manager) StoreAdminLogin(u *api.User, hd *api.Headers) (bool, *api.User) {
+	var suc bool
+	var rtn api.User
 
-// //UpdateAddress UpdateAddress
-// func (m *Six910Manager) UpdateAddress(a *sdbi.Address, hd *api.Headers) *api.Response {
-// 	return m.API.UpdateAddress(a, hd)
-// }
+	sEnc := b64.StdEncoding.EncodeToString([]byte(u.Username + ":" + u.Password))
+	m.Log.Debug("sEnc: ", sEnc)
+
+	hd.Set("Authorization", "Basic "+sEnc)
+
+	//YWRtaW46YWRtaW4=
+
+	usr := m.API.GetUser(u, hd)
+	m.Log.Debug("usr: ", *usr)
+	if usr.Enabled && usr.Username == u.Username && usr.Role == storeAdmin {
+		suc = true
+		rtn.Enabled = usr.Enabled
+		rtn.Role = usr.Role
+		rtn.StoreID = usr.StoreID
+		rtn.Username = usr.Username
+	}
+	m.Log.Debug("rtn: ", rtn)
+	return suc, &rtn
+}

@@ -23,8 +23,117 @@ import (
 	sdbi "github.com/Ulbora/six910-database-interface"
 )
 
+const (
+	storeAdmin   = "StoreAdmin"
+	customerRole = "customer"
+)
+
+//CustomerAccount CustomerAccount
+type CustomerAccount struct {
+	Customer  *sdbi.Customer
+	Addresses *[]sdbi.Address
+	User      *api.User
+	//Cart      *CustomerCart
+}
+
+//CustomerProduct Product
+type CustomerProduct struct {
+	ProductID int64
+	Quantity  int64
+	//Cart      *CustomerCart
+	CustomerID int64
+	CartID     int64
+	StoreID    int64
+}
+
+//CustomerCart CustomerCart
+type CustomerCart struct {
+	Cart            *sdbi.Cart
+	Items           *[]sdbi.CartItem
+	Comment         string
+	CustomerAccount *CustomerAccount
+}
+
+//CustomerOrder CustomerOrder
+type CustomerOrder struct {
+	Order           *sdbi.Order
+	Items           *[]sdbi.OrderItem
+	Comments        *[]sdbi.OrderComment
+	CustomerAccount *CustomerAccount
+	Cart            *sdbi.Cart
+}
+
 //Manager Manager
 type Manager interface {
+	// ------ Customer methods -----------
+
+	//--------------------start----new------------
+
+	// AddProductToCart(cp *CustomerProduct) *CustomerCart
+	// UpdateCart(cp *CustomerProduct) *CustomerCart
+	// CheckOut(cart *CustomerCart) *CustomerOrder
+
+	// CreateCustomerAccount(cus *CustomerAccount) (cid int64)
+	// UpdateCustomerAccount(cus *CustomerAccount) bool
+
+	// ViewCustomerOrder(orderID int64, cid int64) *CustomerOrder
+	// ViewCustomerOrderList(cid int64) *[]CustomerOrder
+
+	// CustomerLogin(u *api.User) (bool, *api.User)
+	// CustomerChangePassword(u *api.User) (bool, *api.User)
+
+	//--------------------end ---new------------
+
+	// ------some may change
+	///////AddAddress(a *sdbi.Address, hd *api.Headers) *api.ResponseID
+	///////UpdateAddress(a *sdbi.Address, hd *api.Headers) *api.Response
+	// GetAddress(id int64, cid int64, hd *Headers) *sdbi.Address
+	// GetAddressList(cid int64, hd *Headers) *[]sdbi.Address
+	// DeleteAddress(id int64, cid int64, hd *Headers) *Response
+
+	// //cart
+	// AddCart(c *sdbi.Cart, hd *Headers) *ResponseID
+	// UpdateCart(c *sdbi.Cart, hd *Headers) *Response
+	// GetCart(cid int64, hd *Headers) *sdbi.Cart
+	// DeleteCart(id int64, cid int64, hd *Headers) *Response
+
+	// //cartItem
+	// AddCartItem(ci *sdbi.CartItem, cid int64, hd *Headers) *ResponseID
+	// UpdateCartItem(ci *sdbi.CartItem, cid int64, hd *Headers) *Response
+	// GetCartItem(cid int64, prodID int64, hd *Headers) *sdbi.CartItem
+	// GetCartItemList(cartID int64, cid int64, hd *Headers) *[]sdbi.CartItem
+	// DeleteCartItem(id int64, prodID int64, cartID int64, hd *Headers) *Response
+
+	// //customer
+	// AddCustomer(c *sdbi.Customer, hd *Headers) *ResponseID
+	// UpdateCustomer(c *sdbi.Customer, hd *Headers) *Response
+	// GetCustomer(email string, hd *Headers) *sdbi.Customer
+	// GetCustomerID(id int64, hd *Headers) *sdbi.Customer
+	// GetCustomerList(hd *Headers) *[]sdbi.Customer
+	// DeleteCustomer(id int64, hd *Headers) *Response
+
+	// //order
+	// AddOrder(o *sdbi.Order, hd *Headers) *ResponseID
+	// UpdateOrder(o *sdbi.Order, hd *Headers) *Response
+	// GetOrder(id int64, hd *Headers) *sdbi.Order
+	// GetOrderList(cid int64, hd *Headers) *[]sdbi.Order
+	// DeleteOrder(id int64, hd *Headers) *Response
+
+	// //order comments
+	// AddOrderComments(c *sdbi.OrderComment, hd *Headers) *ResponseID
+	// GetOrderCommentList(orderID int64, hd *Headers) *[]sdbi.OrderComment
+
+	// //order items
+	// AddOrderItem(i *sdbi.OrderItem, hd *Headers) *ResponseID
+	// UpdateOrderItem(i *sdbi.OrderItem, hd *Headers) *Response
+	// GetOrderItem(id int64, hd *Headers) *sdbi.OrderItem
+	// GetOrderItemList(orderID int64, hd *Headers) *[]sdbi.OrderItem
+	// DeleteOrderItem(id int64, hd *Headers) *Response
+
+	// //order transaction
+	// AddOrderTransaction(t *sdbi.OrderTransaction, hd *Headers) *ResponseID
+	// GetOrderTransactionList(orderID int64, hd *Headers) *[]sdbi.OrderTransaction
+
 	// ------Super Admin------------
 
 	// //store
@@ -40,7 +149,11 @@ type Manager interface {
 	// GetAdminUsers(hd *Headers) *[]UserResponse
 	// GetCustomerUsers(hd *Headers) *[]UserResponse
 
-	//-------cart store admin methode-----
+	//-------Store Admin-----
+
+	StoreAdminLogin(u *api.User, hd *api.Headers) (bool, *api.User)
+	///////////////////////////StoreAdminChangePassword(u *api.User) (bool, *api.User)
+	////////////////////////UploadProductFile(file []byte) bool
 
 	// //category
 	// AddCategory(c *sdbi.Category, hd *Headers) *ResponseID
@@ -164,6 +277,37 @@ type Manager interface {
 	// GetShipmentItemListByBox(boxNumber int64, shipmentID int64, hd *Headers) *[]sdbi.ShipmentItem
 	// DeleteShipmentItem(id int64, hd *Headers) *Response
 
+	// //cart
+	// GetCart(cid int64, hd *Headers) *sdbi.Cart
+
+	// //cartItem
+	// GetCartItem(cid int64, prodID int64, hd *Headers) *sdbi.CartItem
+	// GetCartItemList(cartID int64, cid int64, hd *Headers) *[]sdbi.CartItem
+
+	// //customer
+	// GetCustomer(email string, hd *Headers) *sdbi.Customer
+	// GetCustomerID(id int64, hd *Headers) *sdbi.Customer
+	// GetCustomerList(hd *Headers) *[]sdbi.Customer
+	// DeleteCustomer(id int64, hd *Headers) *Response
+
+	// //order
+	// UpdateOrder(o *sdbi.Order, hd *Headers) *Response
+	// GetOrder(id int64, hd *Headers) *sdbi.Order
+	// GetOrderList(cid int64, hd *Headers) *[]sdbi.Order
+	// DeleteOrder(id int64, hd *Headers) *Response
+
+	// //order comments
+	// AddOrderComments(c *sdbi.OrderComment, hd *Headers) *ResponseID
+	// GetOrderCommentList(orderID int64, hd *Headers) *[]sdbi.OrderComment
+
+	// //order items
+	// GetOrderItem(id int64, hd *Headers) *sdbi.OrderItem
+	// GetOrderItemList(orderID int64, hd *Headers) *[]sdbi.OrderItem
+	// DeleteOrderItem(id int64, hd *Headers) *Response
+
+	// //order transaction
+	// GetOrderTransactionList(orderID int64, hd *Headers) *[]sdbi.OrderTransaction
+
 	// //dataStore
 	// AddLocalDatastore(d *sdbi.LocalDataStore, hd *Headers) *Response
 	// UpdateLocalDatastore(d *sdbi.LocalDataStore, hd *Headers) *Response
@@ -179,57 +323,6 @@ type Manager interface {
 	// AddDataStoreWriteLock(w *sdbi.DataStoreWriteLock, hd *Headers) *Response
 	// UpdateDataStoreWriteLock(w *sdbi.DataStoreWriteLock, hd *Headers) *Response
 	// GetDataStoreWriteLock(dataStore string, hd *Headers) *sdbi.DataStoreWriteLock
-
-	// ------ Customer methods -----------
-	// ------some may change
-	AddAddress(a *sdbi.Address, hd *api.Headers) *api.ResponseID
-	UpdateAddress(a *sdbi.Address, hd *api.Headers) *api.Response
-	// GetAddress(id int64, cid int64, hd *Headers) *sdbi.Address
-	// GetAddressList(cid int64, hd *Headers) *[]sdbi.Address
-	// DeleteAddress(id int64, cid int64, hd *Headers) *Response
-
-	// //cart
-	// AddCart(c *sdbi.Cart, hd *Headers) *ResponseID
-	// UpdateCart(c *sdbi.Cart, hd *Headers) *Response
-	// GetCart(cid int64, hd *Headers) *sdbi.Cart
-	// DeleteCart(id int64, cid int64, hd *Headers) *Response
-
-	// //cartItem
-	// AddCartItem(ci *sdbi.CartItem, cid int64, hd *Headers) *ResponseID
-	// UpdateCartItem(ci *sdbi.CartItem, cid int64, hd *Headers) *Response
-	// GetCartItem(cid int64, prodID int64, hd *Headers) *sdbi.CartItem
-	// GetCartItemList(cartID int64, cid int64, hd *Headers) *[]sdbi.CartItem
-	// DeleteCartItem(id int64, prodID int64, cartID int64, hd *Headers) *Response
-
-	// //customer
-	// AddCustomer(c *sdbi.Customer, hd *Headers) *ResponseID
-	// UpdateCustomer(c *sdbi.Customer, hd *Headers) *Response
-	// GetCustomer(email string, hd *Headers) *sdbi.Customer
-	// GetCustomerID(id int64, hd *Headers) *sdbi.Customer
-	// GetCustomerList(hd *Headers) *[]sdbi.Customer
-	// DeleteCustomer(id int64, hd *Headers) *Response
-
-	// //order
-	// AddOrder(o *sdbi.Order, hd *Headers) *ResponseID
-	// UpdateOrder(o *sdbi.Order, hd *Headers) *Response
-	// GetOrder(id int64, hd *Headers) *sdbi.Order
-	// GetOrderList(cid int64, hd *Headers) *[]sdbi.Order
-	// DeleteOrder(id int64, hd *Headers) *Response
-
-	// //order comments
-	// AddOrderComments(c *sdbi.OrderComment, hd *Headers) *ResponseID
-	// GetOrderCommentList(orderID int64, hd *Headers) *[]sdbi.OrderComment
-
-	// //order items
-	// AddOrderItem(i *sdbi.OrderItem, hd *Headers) *ResponseID
-	// UpdateOrderItem(i *sdbi.OrderItem, hd *Headers) *Response
-	// GetOrderItem(id int64, hd *Headers) *sdbi.OrderItem
-	// GetOrderItemList(orderID int64, hd *Headers) *[]sdbi.OrderItem
-	// DeleteOrderItem(id int64, hd *Headers) *Response
-
-	// //order transaction
-	// AddOrderTransaction(t *sdbi.OrderTransaction, hd *Headers) *ResponseID
-	// GetOrderTransactionList(orderID int64, hd *Headers) *[]sdbi.OrderTransaction
 
 }
 
