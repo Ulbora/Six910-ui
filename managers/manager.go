@@ -1,5 +1,10 @@
 package managers
 
+import (
+	api "github.com/Ulbora/Six910API-Go"
+	sdbi "github.com/Ulbora/six910-database-interface"
+)
+
 /*
  Six910 is a shopping cart and E-commerce system.
  Copyright (C) 2020 Ulbora Labs LLC. (www.ulboralabs.com)
@@ -17,11 +22,6 @@ package managers
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-import (
-	api "github.com/Ulbora/Six910API-Go"
-	sdbi "github.com/Ulbora/six910-database-interface"
-)
 
 const (
 	storeAdmin   = "StoreAdmin"
