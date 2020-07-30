@@ -42,9 +42,9 @@ type CustomerProduct struct {
 	ProductID int64
 	Quantity  int64
 	//Cart      *CustomerCart
-	CustomerID    int64
+	CustomerID int64
 	//CustomerEmail string
-	StoreID       int64
+	StoreID int64
 }
 
 //CustomerCart CustomerCart
