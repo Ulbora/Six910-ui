@@ -42,9 +42,9 @@ type CustomerProduct struct {
 	ProductID int64
 	Quantity  int64
 	//Cart      *CustomerCart
-	CustomerID int64
-	CartID     int64
-	StoreID    int64
+	CustomerID    int64
+	//CustomerEmail string
+	StoreID       int64
 }
 
 //CustomerCart CustomerCart
@@ -70,15 +70,15 @@ type Manager interface {
 
 	//--------------------start----new------------
 
-	// AddProductToCart(cp *CustomerProduct) *CustomerCart
-	// UpdateCart(cp *CustomerProduct) *CustomerCart
-	// CheckOut(cart *CustomerCart) *CustomerOrder
+	AddProductToCart(cp *CustomerProduct, hd *api.Headers) *CustomerCart
+	// UpdateCart(cp *CustomerProduct, hd *api.Headers) *CustomerCart
+	// CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerOrder
 
-	// CreateCustomerAccount(cus *CustomerAccount) (cid int64)
-	// UpdateCustomerAccount(cus *CustomerAccount) bool
+	// CreateCustomerAccount(cus *CustomerAccount, hd *api.Headers) (cid int64)
+	// UpdateCustomerAccount(cus *CustomerAccount, hd *api.Headers) bool
 
-	// ViewCustomerOrder(orderID int64, cid int64) *CustomerOrder
-	// ViewCustomerOrderList(cid int64) *[]CustomerOrder
+	// ViewCustomerOrder(orderID int64, cid int64, hd *api.Headers) *CustomerOrder
+	// ViewCustomerOrderList(cid int64, hd *api.Headers) *[]CustomerOrder
 
 	CustomerLogin(u *api.User, hd *api.Headers) (bool, *api.User)
 	CustomerChangePassword(u *api.User, hd *api.Headers) (bool, *api.User)

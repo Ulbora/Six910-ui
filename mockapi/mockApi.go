@@ -28,6 +28,12 @@ import (
 type MockAPI struct {
 	MockUser           *api.UserResponse
 	MockUpdateUserResp *api.Response
+
+	MockCart        *sdbi.Cart
+	MockAddCartResp *api.ResponseID
+
+	MockCartItemAddResp *api.ResponseID
+	MockCartItemList    *[]sdbi.CartItem
 }
 
 //GetNew GetNew
@@ -93,7 +99,7 @@ func (a *MockAPI) DeleteAddress(id int64, cid int64, headers *api.Headers) *api.
 
 //AddCart AddCart
 func (a *MockAPI) AddCart(c *sdbi.Cart, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddCartResp
 }
 
 //UpdateCart UpdateCart
@@ -103,7 +109,7 @@ func (a *MockAPI) UpdateCart(c *sdbi.Cart, headers *api.Headers) *api.Response {
 
 //GetCart GetCart
 func (a *MockAPI) GetCart(cid int64, headers *api.Headers) *sdbi.Cart {
-	return nil
+	return a.MockCart
 }
 
 //DeleteCart DeleteCart
@@ -115,7 +121,7 @@ func (a *MockAPI) DeleteCart(id int64, cid int64, headers *api.Headers) *api.Res
 
 //AddCartItem AddCartItem
 func (a *MockAPI) AddCartItem(ci *sdbi.CartItem, cid int64, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockCartItemAddResp
 }
 
 //UpdateCartItem UpdateCartItem
@@ -130,7 +136,7 @@ func (a *MockAPI) GetCartItem(cid int64, prodID int64, headers *api.Headers) *sd
 
 //GetCartItemList GetCartItemList
 func (a *MockAPI) GetCartItemList(cartID int64, cid int64, headers *api.Headers) *[]sdbi.CartItem {
-	return nil
+	return a.MockCartItemList
 }
 
 //DeleteCartItem DeleteCartItem

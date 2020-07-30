@@ -55,8 +55,6 @@ func (m *Six910Manager) CustomerChangePassword(u *api.User, hd *api.Headers) (bo
 
 	hd.Set("Authorization", "Basic "+sEnccc)
 
-	//YWRtaW46YWRtaW4=
-
 	usrcc := m.API.GetUser(u, hd)
 	m.Log.Debug("usr: ", *usrcc)
 	if usrcc.Enabled && usrcc.Username == u.Username && usrcc.Role == customerRole {
