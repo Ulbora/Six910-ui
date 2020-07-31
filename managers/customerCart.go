@@ -27,8 +27,11 @@ import (
 func (m *Six910Manager) AddProductToCart(cp *CustomerProduct, hd *api.Headers) *CustomerCart {
 	var rtn CustomerCart
 	var cart *sdbi.Cart
-	if cp.CustomerID != 0 {
+	m.Log.Debug("cp cart : ", cp.Cart)
+	if cp.CustomerID != 0 && cp.Cart == nil {
 		cart = m.API.GetCart(cp.CustomerID, hd)
+	} else if cp.Cart != nil {
+		cart = cp.Cart
 	}
 	m.Log.Debug("cart in add prod to cart: ", cart)
 
@@ -55,6 +58,19 @@ func (m *Six910Manager) AddProductToCart(cp *CustomerProduct, hd *api.Headers) *
 		if res.Success {
 			rtn.Cart = cart
 			rtn.Items = m.API.GetCartItemList(cart.ID, cp.CustomerID, hd)
+		}
+	}
+	return &rtn
+}
+
+//UpdateProductToCart UpdateCart
+func (m *Six910Manager) UpdateProductToCart(cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart {
+	var rtn CustomerCart
+	if cp.Cart != nil {
+		res := m.API.UpdateCartItem(cp.CartItem, cp.CustomerID, hd)
+		if res.Success {
+			rtn.Cart = cp.Cart
+			rtn.Items = m.API.GetCartItemList(cp.Cart.ID, cp.CustomerID, hd)
 		}
 	}
 	return &rtn

@@ -32,8 +32,9 @@ type MockAPI struct {
 	MockCart        *sdbi.Cart
 	MockAddCartResp *api.ResponseID
 
-	MockCartItemAddResp *api.ResponseID
-	MockCartItemList    *[]sdbi.CartItem
+	MockCartItemAddResp    *api.ResponseID
+	MockCartItemUpdateResp *api.Response
+	MockCartItemList       *[]sdbi.CartItem
 }
 
 //GetNew GetNew
@@ -126,7 +127,7 @@ func (a *MockAPI) AddCartItem(ci *sdbi.CartItem, cid int64, headers *api.Headers
 
 //UpdateCartItem UpdateCartItem
 func (a *MockAPI) UpdateCartItem(ci *sdbi.CartItem, cid int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockCartItemUpdateResp
 }
 
 //GetCartItem GetCartItem

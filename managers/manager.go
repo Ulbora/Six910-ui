@@ -43,8 +43,23 @@ type CustomerProduct struct {
 	Quantity  int64
 	//Cart      *CustomerCart
 	CustomerID int64
+	//CartID     int64
+	Cart *sdbi.Cart
+	//CartItem   *sdbi.CartItem
 	//CustomerEmail string
 	StoreID int64
+}
+
+//CustomerProductUpdate Product
+type CustomerProductUpdate struct {
+	//ProductID int64
+	//Quantity  int64
+	//Cart      *CustomerCart
+	CustomerID int64
+	Cart       *sdbi.Cart
+	CartItem   *sdbi.CartItem
+	//CustomerEmail string
+	//StoreID int64
 }
 
 //CustomerCart CustomerCart
@@ -71,7 +86,7 @@ type Manager interface {
 	//--------------------start----new------------
 
 	AddProductToCart(cp *CustomerProduct, hd *api.Headers) *CustomerCart
-	// UpdateCart(cp *CustomerProduct, hd *api.Headers) *CustomerCart
+	UpdateProductToCart(cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart
 	// CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerOrder
 
 	// CreateCustomerAccount(cus *CustomerAccount, hd *api.Headers) (cid int64)
