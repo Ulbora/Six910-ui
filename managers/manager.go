@@ -90,7 +90,7 @@ type Manager interface {
 	// CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerOrder
 
 	CreateCustomerAccount(cus *CustomerAccount, hd *api.Headers) (bool, *CustomerAccount)
-	// UpdateCustomerAccount(cus *CustomerAccount, hd *api.Headers) bool
+	UpdateCustomerAccount(cus *CustomerAccount, hd *api.Headers) bool
 
 	// ViewCustomerOrder(orderID int64, cid int64, hd *api.Headers) *CustomerOrder
 	// ViewCustomerOrderList(cid int64, hd *api.Headers) *[]CustomerOrder

@@ -37,10 +37,12 @@ type MockAPI struct {
 	MockCartItemUpdateResp *api.Response
 	MockCartItemList       *[]sdbi.CartItem
 
-	MockCustomer        *sdbi.Customer
-	MockAddCustomerResp *api.ResponseID
+	MockCustomer           *sdbi.Customer
+	MockAddCustomerResp    *api.ResponseID
+	MockUpdateCustomerResp *api.Response
 
 	MockAddAddressRes    *api.ResponseID
+	MockUpdateAddressRes *api.Response
 	mockAddressList1Used bool
 	MockAddressList1     *[]sdbi.Address
 	MockAddressList2     *[]sdbi.Address
@@ -87,7 +89,7 @@ func (a *MockAPI) AddAddress(ad *sdbi.Address, headers *api.Headers) *api.Respon
 
 //UpdateAddress UpdateAddress
 func (a *MockAPI) UpdateAddress(ad *sdbi.Address, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateAddressRes
 }
 
 //GetAddress GetAddress
@@ -200,7 +202,7 @@ func (a *MockAPI) AddCustomer(c *sdbi.Customer, headers *api.Headers) *api.Respo
 
 //UpdateCustomer UpdateCustomer
 func (a *MockAPI) UpdateCustomer(c *sdbi.Customer, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateCustomerResp
 }
 
 //GetCustomer GetCustomer

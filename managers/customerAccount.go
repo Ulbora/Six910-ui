@@ -120,3 +120,34 @@ func (m *Six910Manager) processNewCustomer(cus *CustomerAccount, hd *api.Headers
 	}
 	return suc, rtn
 }
+
+//UpdateCustomerAccount UpdateCustomerAccount
+func (m *Six910Manager) UpdateCustomerAccount(cus *CustomerAccount, hd *api.Headers) bool {
+	var rtn bool
+	ecus := m.API.GetCustomer(cus.Customer.Email, hd)
+	m.Log.Debug("existing customer in update: ", *ecus)
+	if ecus.ID == cus.Customer.ID {
+		ures := m.API.UpdateCustomer(cus.Customer, hd)
+		if ures.Success {
+			for _, a := range *cus.Addresses {
+				if a.ID != 0 {
+					ures := m.API.UpdateAddress(&a, hd)
+					m.Log.Debug("updated address in update customer: ", *ures)
+				} else {
+					ares := m.API.AddAddress(&a, hd)
+					m.Log.Debug("add address in update customer: ", *ares)
+				}
+			}
+			eus := m.API.GetUser(cus.User, hd)
+			m.Log.Debug("user in update customer: ", *eus)
+			if eus.Enabled {
+				uusr := m.API.UpdateUser(cus.User, hd)
+				m.Log.Debug("user res in update customer: ", *uusr)
+				if uusr.Success {
+					rtn = true
+				}
+			}
+		}
+	}
+	return rtn
+}
