@@ -26,8 +26,9 @@ import (
 
 //MockAPI MockAPI
 type MockAPI struct {
-	MockUser           *api.UserResponse
-	MockUpdateUserResp *api.Response
+	MockUser               *api.UserResponse
+	MockAddCustomerUserRes *api.Response
+	MockUpdateUserResp     *api.Response
 
 	MockCart        *sdbi.Cart
 	MockAddCartResp *api.ResponseID
@@ -35,6 +36,14 @@ type MockAPI struct {
 	MockCartItemAddResp    *api.ResponseID
 	MockCartItemUpdateResp *api.Response
 	MockCartItemList       *[]sdbi.CartItem
+
+	MockCustomer        *sdbi.Customer
+	MockAddCustomerResp *api.ResponseID
+
+	MockAddAddressRes    *api.ResponseID
+	mockAddressList1Used bool
+	MockAddressList1     *[]sdbi.Address
+	MockAddressList2     *[]sdbi.Address
 }
 
 //GetNew GetNew
@@ -73,7 +82,7 @@ func (a *MockAPI) SetStoreID(sid int64) {
 
 //AddAddress AddAddress
 func (a *MockAPI) AddAddress(ad *sdbi.Address, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddAddressRes
 }
 
 //UpdateAddress UpdateAddress
@@ -88,7 +97,14 @@ func (a *MockAPI) GetAddress(id int64, cid int64, headers *api.Headers) *sdbi.Ad
 
 //GetAddressList GetAddressList
 func (a *MockAPI) GetAddressList(cid int64, headers *api.Headers) *[]sdbi.Address {
-	return nil
+	var rtn *[]sdbi.Address
+	if !a.mockAddressList1Used {
+		rtn = a.MockAddressList1
+		a.mockAddressList1Used = true
+	} else {
+		rtn = a.MockAddressList2
+	}
+	return rtn
 }
 
 //DeleteAddress DeleteAddress
@@ -179,7 +195,7 @@ func (a *MockAPI) DeleteCategory(id int64, headers *api.Headers) *api.Response {
 
 //AddCustomer AddCustomer
 func (a *MockAPI) AddCustomer(c *sdbi.Customer, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddCustomerResp
 }
 
 //UpdateCustomer UpdateCustomer
@@ -189,7 +205,7 @@ func (a *MockAPI) UpdateCustomer(c *sdbi.Customer, headers *api.Headers) *api.Re
 
 //GetCustomer GetCustomer
 func (a *MockAPI) GetCustomer(email string, headers *api.Headers) *sdbi.Customer {
-	return nil
+	return a.MockCustomer
 }
 
 //GetCustomerID GetCustomerID
@@ -779,7 +795,7 @@ func (a *MockAPI) DeleteSubRegion(id int64, headers *api.Headers) *api.Response 
 
 //AddCustomerUser AddCustomerUser
 func (a *MockAPI) AddCustomerUser(u *api.User, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockAddCustomerUserRes
 }
 
 //UpdateUser UpdateUser

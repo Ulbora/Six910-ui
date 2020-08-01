@@ -66,7 +66,7 @@ func (m *Six910Manager) AddProductToCart(cp *CustomerProduct, hd *api.Headers) *
 //UpdateProductToCart UpdateCart
 func (m *Six910Manager) UpdateProductToCart(cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart {
 	var rtn CustomerCart
-	if cp.Cart != nil {
+	if cp.Cart != nil && cp.CartItem != nil {
 		res := m.API.UpdateCartItem(cp.CartItem, cp.CustomerID, hd)
 		if res.Success {
 			rtn.Cart = cp.Cart
