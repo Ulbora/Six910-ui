@@ -1,6 +1,10 @@
 package managers
 
 import (
+	"strconv"
+	"sync"
+	"time"
+
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 )
@@ -74,4 +78,133 @@ func (m *Six910Manager) UpdateProductToCart(cp *CustomerProductUpdate, hd *api.H
 		}
 	}
 	return &rtn
+}
+
+//CheckOut CheckOut
+func (m *Six910Manager) CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerOrder {
+	var rtn *CustomerOrder
+	if cart.CustomerAccount.Customer.ID != 0 && cart.CustomerAccount.User.Enabled {
+		// check out with logged in user
+		rtn = m.completeOrder(cart, hd)
+	} else {
+		//user not logged in
+		suc, cc := m.CreateCustomerAccount(cart.CustomerAccount, hd)
+		if suc && cc != nil && cc.Customer != nil {
+			rtn = m.completeOrder(cart, hd)
+		}
+	}
+
+	return rtn
+}
+
+func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *CustomerOrder {
+	var rtn CustomerOrder
+	var badd sdbi.Address
+	var sadd sdbi.Address
+	for _, a := range *cart.CustomerAccount.Addresses {
+		if a.Type == billingAddressType {
+			badd = a
+		} else if a.Type == shippingAddressType {
+			sadd = a
+		}
+	}
+	var odr sdbi.Order
+	odr.BillingAddress = badd.Address + ", " + badd.City + " " + badd.State + " " + badd.Zip
+	odr.BillingAddressID = badd.ID
+	odr.CustomerID = cart.CustomerAccount.Customer.ID
+	odr.CustomerName = cart.CustomerAccount.Customer.FirstName + " " + cart.CustomerAccount.Customer.LastName
+	odr.Insurance = cart.InsuranceCost
+	odr.OrderDate = time.Now()
+	odr.OrderNumber = m.generateOrderNumber()
+	odr.OrderType = cart.OrderType
+	odr.Pickup = cart.Pickup
+	odr.ShippingAddress = sadd.Address + ", " + sadd.City + " " + sadd.State + " " + sadd.Zip
+	odr.ShippingAddressID = sadd.ID
+	odr.ShippingHandling = cart.ShippingHandling
+	odr.Status = orderStatusProcessing
+	odr.Subtotal = cart.Subtotal
+	odr.Taxes = cart.Taxes
+	odr.Total = cart.Total
+	odr.Username = cart.CustomerAccount.User.Username
+
+	ores := m.API.AddOrder(&odr, hd)
+	if ores.Success && ores.ID != 0 {
+		rtn.Order = &odr
+		rtn.Cart = cart.Cart
+		rtn.CustomerAccount = cart.CustomerAccount
+		oisuc, oires := m.processOrderItems(cart.Items, ores.ID, hd)
+		rtn.Items = oires
+		if oisuc && cart.Comment != "" {
+			var ocmt sdbi.OrderComment
+			ocmt.Comment = cart.Comment
+			ocmt.OrderID = ores.ID
+			ocmt.Username = cart.CustomerAccount.User.Username
+			cres := m.API.AddOrderComments(&ocmt, hd)
+			if cres.Success && cres.ID != 0 {
+				rtn.Comments = m.API.GetOrderCommentList(ores.ID, hd)
+				rtn.Success = true
+			}
+		} else if oisuc {
+			rtn.Success = true
+		}
+	}
+	return &rtn
+}
+
+func (m *Six910Manager) processOrderItems(ois *[]sdbi.CartItem, orderID int64, hd *api.Headers) (bool, *[]sdbi.OrderItem) {
+	m.Log.Debug("in processOrderItems")
+	var rtn = true
+	var rtnoi []sdbi.OrderItem
+	var wg sync.WaitGroup
+	oiresults := make(chan *OrderItemResults, len(*ois))
+	for _, ci := range *ois {
+		wg.Add(1)
+		var oi sdbi.OrderItem
+		oi.OrderID = orderID
+		oi.ProductID = ci.ProductID
+		oi.Quantity = ci.Quantity
+		//make call to product to get rest of details
+		prod := m.API.GetProductByID(ci.ProductID, hd)
+		if prod.Stock == 0 {
+			oi.BackOrdered = true
+		}
+		oi.Dropship = prod.Dropship
+		oi.ProductName = prod.Name
+		oi.ProductShortDesc = prod.ShortDesc
+		go func(ioi *sdbi.OrderItem, ihd *api.Headers, reslt chan *OrderItemResults) {
+			m.Log.Debug("in goroutine :", ioi.ProductID)
+			defer wg.Done()
+			oires := m.API.AddOrderItem(ioi, ihd)
+			var oir OrderItemResults
+			ioi.ID = oires.ID
+			oir.OrderItem = ioi
+			oir.Resp = oires
+			reslt <- &oir
+		}(&oi, hd, oiresults)
+	}
+	m.Log.Debug("before wait")
+	wg.Wait()
+	m.Log.Debug("after wait")
+	close(oiresults)
+	for oir := range oiresults {
+		if !oir.Resp.Success || oir.OrderItem.ID == 0 {
+			rtn = false
+		} else {
+			rtnoi = append(rtnoi, *oir.OrderItem)
+		}
+	}
+	return rtn, &rtnoi
+}
+
+func (m *Six910Manager) generateOrderNumber() string {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	var rtn string
+
+	unixNano := time.Now().UnixNano()
+	umillisec := unixNano / 1000000
+
+	rtn = "OD-" + strconv.FormatInt(umillisec, 10)
+
+	return rtn
 }

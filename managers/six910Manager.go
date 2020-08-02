@@ -20,6 +20,8 @@ package managers
 */
 
 import (
+	"sync"
+
 	lg "github.com/Ulbora/Level_Logger"
 	api "github.com/Ulbora/Six910API-Go"
 )
@@ -29,4 +31,5 @@ type Six910Manager struct {
 	API api.API
 	//StoreID int64
 	Log *lg.Logger
+	mu  sync.Mutex
 }

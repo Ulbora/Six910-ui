@@ -46,6 +46,15 @@ type MockAPI struct {
 	mockAddressList1Used bool
 	MockAddressList1     *[]sdbi.Address
 	MockAddressList2     *[]sdbi.Address
+
+	MockProduct *sdbi.Product
+
+	MockAddOrderResp *api.ResponseID
+
+	MockAddOrderItemResp *api.ResponseID
+
+	MockAddCommentResp *api.ResponseID
+	MockCommentList    *[]sdbi.OrderComment
 }
 
 //GetNew GetNew
@@ -373,7 +382,7 @@ func (a *MockAPI) DeleteInsurance(id int64, headers *api.Headers) *api.Response 
 
 //AddOrder AddOrder
 func (a *MockAPI) AddOrder(o *sdbi.Order, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddOrderResp
 }
 
 //UpdateOrder UpdateOrder
@@ -400,19 +409,19 @@ func (a *MockAPI) DeleteOrder(id int64, headers *api.Headers) *api.Response {
 
 //AddOrderComments AddOrderComments
 func (a *MockAPI) AddOrderComments(c *sdbi.OrderComment, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddCommentResp
 }
 
 //GetOrderCommentList GetOrderCommentList
 func (a *MockAPI) GetOrderCommentList(orderID int64, headers *api.Headers) *[]sdbi.OrderComment {
-	return nil
+	return a.MockCommentList
 }
 
 //order items
 
 //AddOrderItem AddOrderItem
 func (a *MockAPI) AddOrderItem(i *sdbi.OrderItem, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddOrderItemResp
 }
 
 //UpdateOrderItem UpdateOrderItem
@@ -515,7 +524,7 @@ func (a *MockAPI) UpdateProduct(p *sdbi.Product, headers *api.Headers) *api.Resp
 
 //GetProductByID GetProductByID
 func (a *MockAPI) GetProductByID(id int64, headers *api.Headers) *sdbi.Product {
-	return nil
+	return a.MockProduct
 }
 
 //GetProductsByName GetProductsByName

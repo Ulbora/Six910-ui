@@ -27,6 +27,11 @@ import (
 const (
 	storeAdmin   = "StoreAdmin"
 	customerRole = "customer"
+
+	billingAddressType  = "Billing"
+	shippingAddressType = "Shipping"
+
+	orderStatusProcessing = "processing"
 )
 
 //CustomerAccount CustomerAccount
@@ -64,19 +69,33 @@ type CustomerProductUpdate struct {
 
 //CustomerCart CustomerCart
 type CustomerCart struct {
-	Cart            *sdbi.Cart
-	Items           *[]sdbi.CartItem
-	Comment         string
-	CustomerAccount *CustomerAccount
+	Cart             *sdbi.Cart
+	Items            *[]sdbi.CartItem
+	Comment          string
+	CustomerAccount  *CustomerAccount
+	InsuranceCost    float64
+	OrderType        string
+	Pickup           bool
+	ShippingHandling float64
+	Subtotal         float64
+	Taxes            float64
+	Total            float64
 }
 
 //CustomerOrder CustomerOrder
 type CustomerOrder struct {
+	Success         bool
 	Order           *sdbi.Order
 	Items           *[]sdbi.OrderItem
 	Comments        *[]sdbi.OrderComment
 	CustomerAccount *CustomerAccount
 	Cart            *sdbi.Cart
+}
+
+//OrderItemResults OrderItemResults
+type OrderItemResults struct {
+	OrderItem *sdbi.OrderItem
+	Resp      *api.ResponseID
 }
 
 //Manager Manager
@@ -87,7 +106,7 @@ type Manager interface {
 
 	AddProductToCart(cp *CustomerProduct, hd *api.Headers) *CustomerCart
 	UpdateProductToCart(cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart
-	// CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerOrder
+	CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerOrder
 
 	CreateCustomerAccount(cus *CustomerAccount, hd *api.Headers) (bool, *CustomerAccount)
 	UpdateCustomerAccount(cus *CustomerAccount, hd *api.Headers) bool
