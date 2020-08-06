@@ -1,0 +1,5 @@
+distributor,sku,name,short_desc,desc,cost,msrp,map,price,manufacturer_id,manufacturer,stock,weight,width,height,depth,shipping_markup,visible,searchable,promoted,thumbnail,image1,category,parent_product_sku
+bobs warehouse,sk123456,widget one,a small widget,This is a small widget that can be used where any small widget is needed,10.21,25.21,15.21,19.5,w-12346,Widgets INC,5,0.5,2,2,3,,yes,yes,yes,thumbnail/img1.png,images/img1.png,cat1,5566
+bobs warehouse,sk123457,widget one 2,a med widget,This is a med widget that can be used where any small widget is needed,10.21,25.21,15.21,19.5,w-12347,Widgets INC,5,0.5,2,2,3,,yes,yes,yes,thumbnail/img2.png,images/img2.png,cat1,
+bobs warehouse,sk123458,widget one 3,a large widget,This is a large widget that can be used where any small widget is needed,10.21,25.21,15.21,19.5,w-12348,Widgets INC,5,0.5,2,2,3,,yes,yes,yes,thumbnail/img3.png,images/img3.png,cat1/cat2,
+bobs warehouse,sk123459,widget one 4,a XL widget,This is a XL widget that can be used where any small widget is needed,11.21,26.21,16.21,20.5,w-12349,Widgets INC,5,1.5,5,2,3,,yes,yes,yes,thumbnail/img4.png,images/img4.png,cat1,

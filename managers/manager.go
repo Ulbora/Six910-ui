@@ -34,6 +34,51 @@ const (
 	orderStatusProcessing = "processing"
 )
 
+//Product Product
+type Product struct {
+	ID                    int64   `json:"id"`
+	Sku                   string  `json:"sku"`
+	Gtin                  string  `json:"gtin"`
+	Name                  string  `json:"name"`
+	ShortDesc             string  `json:"shortDesc"`
+	Desc                  string  `json:"desc"`
+	Cost                  float64 `json:"cost"`
+	Msrp                  float64 `json:"msrp"`
+	Map                   float64 `json:"map"`
+	Price                 float64 `json:"price"`
+	SalePrice             float64 `json:"salePrice"`
+	Currency              string  `json:"currency"`
+	ManufacturerID        string  `json:"manufacturerId"`
+	Manufacturer          string  `json:"manufacturer"`
+	Stock                 int64   `json:"stock"`
+	StockAlert            int64   `json:"stockAlert"`
+	Weight                float64 `json:"weight"`
+	Width                 float64 `json:"width"`
+	Height                float64 `json:"height"`
+	Depth                 float64 `json:"depth"`
+	ShippingMarkup        float64 `json:"shippingMarkup"`
+	Visible               bool    `json:"visible"`
+	Searchable            bool    `json:"searchable"`
+	MultiBox              bool    `json:"multibox"`
+	ShipSeparately        bool    `json:"shipSeparately"`
+	FreeShipping          bool    `json:"freeShipping"`
+	Promoted              bool    `json:"promoted"`
+	Dropship              bool    `json:"dropship"`
+	SpecialProcessing     bool    `json:"specialProcessing"`
+	SpecialProcessingType string  `json:"specialProcessingType"`
+	Size                  string  `json:"size"`
+	Color                 string  `json:"color"`
+	Thumbnail             string  `json:"thumbnail"`
+	Image1                string  `json:"image1"`
+	Image2                string  `json:"image2"`
+	Image3                string  `json:"image3"`
+	Image4                string  `json:"image4"`
+	DistributorID         int64   `json:"distributorId"`
+	StoreID               int64   `json:"storeId"`
+	ParentProductID       int64   `json:"parentProductId"`
+	CategoryID            int64
+}
+
 //CustomerAccount CustomerAccount
 type CustomerAccount struct {
 	Customer  *sdbi.Customer
@@ -111,8 +156,8 @@ type Manager interface {
 	CreateCustomerAccount(cus *CustomerAccount, hd *api.Headers) (bool, *CustomerAccount)
 	UpdateCustomerAccount(cus *CustomerAccount, hd *api.Headers) bool
 
-	// ViewCustomerOrder(orderID int64, cid int64, hd *api.Headers) *CustomerOrder
-	// ViewCustomerOrderList(cid int64, hd *api.Headers) *[]CustomerOrder
+	ViewCustomerOrder(orderID int64, cid int64, hd *api.Headers) *CustomerOrder
+	ViewCustomerOrderList(cid int64, hd *api.Headers) *[]CustomerOrder
 
 	CustomerLogin(u *api.User, hd *api.Headers) (bool, *api.User)
 	CustomerChangePassword(u *api.User, hd *api.Headers) (bool, *api.User)
@@ -188,7 +233,7 @@ type Manager interface {
 
 	StoreAdminLogin(u *api.User, hd *api.Headers) (bool, *api.User)
 	StoreAdminChangePassword(u *api.User, hd *api.Headers) (bool, *api.User)
-	////////////////////////UploadProductFile(file []byte) bool
+	UploadProductFile(file []byte, hd *api.Headers) (success bool, productNotImported int)
 
 	// //category
 	// AddCategory(c *sdbi.Category, hd *Headers) *ResponseID

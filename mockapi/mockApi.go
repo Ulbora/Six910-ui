@@ -50,11 +50,28 @@ type MockAPI struct {
 	MockProduct *sdbi.Product
 
 	MockAddOrderResp *api.ResponseID
+	MockOrder        *sdbi.Order
+	MockOrderList    *[]sdbi.Order
 
 	MockAddOrderItemResp *api.ResponseID
+	MockOrderItemList    *[]sdbi.OrderItem
 
 	MockAddCommentResp *api.ResponseID
 	MockCommentList    *[]sdbi.OrderComment
+
+	mockAddCategory1User bool
+	mockAddCategory2User bool
+	mockAddCategory3User bool
+	mockAddCategory4User bool
+	MockAddCategoryResp1 *api.ResponseID
+	MockAddCategoryResp2 *api.ResponseID
+	MockAddCategoryResp3 *api.ResponseID
+	MockAddCategoryResp4 *api.ResponseID
+
+	MockCategoryList *[]sdbi.Category
+
+	MockAddDistributorResp *api.ResponseID
+	MockDistributorList    *[]sdbi.Distributor
 }
 
 //GetNew GetNew
@@ -176,7 +193,21 @@ func (a *MockAPI) DeleteCartItem(id int64, prodID int64, cartID int64, headers *
 
 //AddCategory AddCategory
 func (a *MockAPI) AddCategory(c *sdbi.Category, headers *api.Headers) *api.ResponseID {
-	return nil
+	var rtn *api.ResponseID
+	if !a.mockAddCategory1User {
+		rtn = a.MockAddCategoryResp1
+		a.mockAddCategory1User = true
+	} else if !a.mockAddCategory2User {
+		rtn = a.MockAddCategoryResp2
+		a.mockAddCategory2User = true
+	} else if !a.mockAddCategory3User {
+		rtn = a.MockAddCategoryResp3
+		a.mockAddCategory3User = true
+	} else if !a.mockAddCategory4User {
+		rtn = a.MockAddCategoryResp4
+		a.mockAddCategory4User = true
+	}
+	return rtn
 }
 
 //UpdateCategory UpdateCategory
@@ -191,7 +222,7 @@ func (a *MockAPI) GetCategory(id int64, headers *api.Headers) *sdbi.Category {
 
 //GetCategoryList GetCategoryList
 func (a *MockAPI) GetCategoryList(headers *api.Headers) *[]sdbi.Category {
-	return nil
+	return a.MockCategoryList
 }
 
 //GetSubCategoryList GetSubCategoryList
@@ -221,7 +252,7 @@ func (a *MockAPI) GetCustomer(email string, headers *api.Headers) *sdbi.Customer
 
 //GetCustomerID GetCustomerID
 func (a *MockAPI) GetCustomerID(id int64, headers *api.Headers) *sdbi.Customer {
-	return nil
+	return a.MockCustomer
 }
 
 //GetCustomerList GetCustomerList
@@ -272,7 +303,7 @@ func (a *MockAPI) GetLocalDatastore(dataStoreName string, headers *api.Headers) 
 
 //AddDistributor AddDistributor
 func (a *MockAPI) AddDistributor(d *sdbi.Distributor, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddDistributorResp
 }
 
 //UpdateDistributor UpdateDistributor
@@ -287,7 +318,7 @@ func (a *MockAPI) GetDistributor(id int64, headers *api.Headers) *sdbi.Distribut
 
 //GetDistributorList GetDistributorList
 func (a *MockAPI) GetDistributorList(headers *api.Headers) *[]sdbi.Distributor {
-	return nil
+	return a.MockDistributorList
 }
 
 //DeleteDistributor DeleteDistributor
@@ -392,12 +423,12 @@ func (a *MockAPI) UpdateOrder(o *sdbi.Order, headers *api.Headers) *api.Response
 
 //GetOrder GetOrder
 func (a *MockAPI) GetOrder(id int64, headers *api.Headers) *sdbi.Order {
-	return nil
+	return a.MockOrder
 }
 
 //GetOrderList GetOrderList
 func (a *MockAPI) GetOrderList(cid int64, headers *api.Headers) *[]sdbi.Order {
-	return nil
+	return a.MockOrderList
 }
 
 //DeleteOrder DeleteOrder
@@ -436,7 +467,7 @@ func (a *MockAPI) GetOrderItem(id int64, headers *api.Headers) *sdbi.OrderItem {
 
 //GetOrderItemList GetOrderItemList
 func (a *MockAPI) GetOrderItemList(orderID int64, headers *api.Headers) *[]sdbi.OrderItem {
-	return nil
+	return a.MockOrderItemList
 }
 
 //DeleteOrderItem DeleteOrderItem
@@ -524,6 +555,11 @@ func (a *MockAPI) UpdateProduct(p *sdbi.Product, headers *api.Headers) *api.Resp
 
 //GetProductByID GetProductByID
 func (a *MockAPI) GetProductByID(id int64, headers *api.Headers) *sdbi.Product {
+	return a.MockProduct
+}
+
+//GetProductBySku GetProductBySku
+func (a *MockAPI) GetProductBySku(sku string, did int64, headers *api.Headers) *sdbi.Product {
 	return a.MockProduct
 }
 
