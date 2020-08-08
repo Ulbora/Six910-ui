@@ -29,6 +29,7 @@ import (
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// -------File attributes used---------------------------------------
 // Distributor           string //required
 // Sku                   string //required
 // Gtin                  string

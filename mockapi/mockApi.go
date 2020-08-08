@@ -47,7 +47,8 @@ type MockAPI struct {
 	MockAddressList1     *[]sdbi.Address
 	MockAddressList2     *[]sdbi.Address
 
-	MockProduct *sdbi.Product
+	MockProduct        *sdbi.Product
+	MockAddProductResp *api.ResponseID
 
 	MockAddOrderResp *api.ResponseID
 	MockOrder        *sdbi.Order
@@ -72,6 +73,8 @@ type MockAPI struct {
 
 	MockAddDistributorResp *api.ResponseID
 	MockDistributorList    *[]sdbi.Distributor
+
+	MockAddProductCategoryResp *api.Response
 }
 
 //GetNew GetNew
@@ -545,7 +548,7 @@ func (a *MockAPI) DeletePlugin(id int64, headers *api.Headers) *api.Response {
 
 //AddProduct AddProduct
 func (a *MockAPI) AddProduct(p *sdbi.Product, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddProductResp
 }
 
 //UpdateProduct UpdateProduct
@@ -587,7 +590,7 @@ func (a *MockAPI) DeleteProduct(id int64, headers *api.Headers) *api.Response {
 
 //AddProductCategory AddProductCategory
 func (a *MockAPI) AddProductCategory(pc *sdbi.ProductCategory, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockAddProductCategoryResp
 }
 
 //DeleteProductCategory DeleteProductCategory

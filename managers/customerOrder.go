@@ -43,7 +43,8 @@ func (m *Six910Manager) ViewCustomerOrderList(cid int64, hd *api.Headers) *[]Cus
 	cus := m.API.GetCustomerID(cid, hd)
 	cusal := m.API.GetAddressList(cid, hd)
 	ol := m.API.GetOrderList(cid, hd)
-	for _, o := range *ol {
+	for i := range *ol {
+		var o = (*ol)[i]
 		var co CustomerOrder
 		co.Order = &o
 		co.Items = m.API.GetOrderItemList(o.ID, hd)

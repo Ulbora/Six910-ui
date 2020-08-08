@@ -51,6 +51,16 @@ func TestSix910Manager_UploadProductFile(t *testing.T) {
 	cr3.ID = 7
 	sapi.MockAddCategoryResp3 = &cr3
 
+	var pr api.ResponseID
+	pr.Success = true
+	pr.ID = 5
+	sapi.MockAddProductResp = &pr
+
+	var cr api.Response
+	cr.Success = true
+
+	sapi.MockAddProductCategoryResp = &cr
+
 	//-----------end mocking --------
 
 	//sapi.SetAPIKey("123")
@@ -139,6 +149,16 @@ func TestSix910Manager_UploadProductFileExistingDist(t *testing.T) {
 	cr3.Success = true
 	cr3.ID = 7
 	sapi.MockAddCategoryResp3 = &cr3
+
+	var pr api.ResponseID
+	pr.Success = true
+	pr.ID = 5
+	sapi.MockAddProductResp = &pr
+
+	var cr api.Response
+	cr.Success = true
+
+	sapi.MockAddProductCategoryResp = &cr
 
 	//-----------end mocking --------
 

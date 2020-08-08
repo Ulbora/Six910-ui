@@ -98,12 +98,13 @@ func (m *Six910Manager) processNewCustomer(cus *CustomerAccount, hd *api.Headers
 	cres := m.API.AddCustomer(cus.Customer, hd)
 	if cres.Success && cres.ID != 0 {
 		cus.Customer.ID = cres.ID
-		for _, a := range *cus.Addresses {
+		for i := range *cus.Addresses {
+			var a = &(*cus.Addresses)[i]
 			a.CustomerID = cres.ID
-			ares := m.API.AddAddress(&a, hd)
+			ares := m.API.AddAddress(a, hd)
 			if ares.Success && ares.ID != 0 {
 				a.ID = ares.ID
-				addlst = append(addlst, a)
+				addlst = append(addlst, *a)
 			}
 		}
 		cus.User.CustomerID = cres.ID
@@ -129,12 +130,13 @@ func (m *Six910Manager) UpdateCustomerAccount(cus *CustomerAccount, hd *api.Head
 	if ecus.ID == cus.Customer.ID {
 		ures := m.API.UpdateCustomer(cus.Customer, hd)
 		if ures.Success {
-			for _, a := range *cus.Addresses {
-				if a.ID != 0 {
-					ures := m.API.UpdateAddress(&a, hd)
+			for i := range *cus.Addresses {
+				var add = &(*cus.Addresses)[i]
+				if add.ID != 0 {
+					ures := m.API.UpdateAddress(add, hd)
 					m.Log.Debug("updated address in update customer: ", *ures)
 				} else {
-					ares := m.API.AddAddress(&a, hd)
+					ares := m.API.AddAddress(add, hd)
 					m.Log.Debug("add address in update customer: ", *ares)
 				}
 			}

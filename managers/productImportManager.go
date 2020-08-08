@@ -2,7 +2,11 @@ package managers
 
 import ( //api "github.com/Ulbora/Six910API-Go"
 	//api "github.com/Ulbora/Six910API-Go"
+
+	"sync"
+
 	api "github.com/Ulbora/Six910API-Go"
+	sdbi "github.com/Ulbora/six910-database-interface"
 )
 
 /*
@@ -24,8 +28,87 @@ import ( //api "github.com/Ulbora/Six910API-Go"
 */
 
 func (m *Six910Manager) importProducts(prodList *[]Product, hd *api.Headers) bool {
-	var rtn bool
-	rtn = true
+	var rtn = true
+	var wg sync.WaitGroup
+	var pchan = make(chan *api.ResponseID, len(*prodList))
 
+	for i := range *prodList {
+		var cp = (*prodList)[i]
+		m.Log.Debug("before goroutine :", cp.Sku)
+		wg.Add(1)
+		go func(product *Product, header *api.Headers, prodchan chan *api.ResponseID) {
+			m.Log.Debug("in goroutine product address:", product)
+			m.Log.Debug("in goroutine product.Sku:", product.Sku)
+			m.Log.Debug("in goroutine product.Name:", product.Name)
+			defer wg.Done()
+			np := m.parseProduct(product)
+			m.Log.Debug("in goroutine parsed product:", *np)
+			pres := m.API.AddProduct(np, header)
+			m.Log.Debug("in goroutine pres:", pres)
+			if pres.Success && pres.ID != 0 {
+				if product.CategoryID != 0 {
+					var pc sdbi.ProductCategory
+					pc.CategoryID = product.CategoryID
+					pc.ProductID = pres.ID
+					cres := m.API.AddProductCategory(&pc, header)
+					pres.Success = cres.Success
+				}
+			}
+			prodchan <- pres
+		}(&cp, hd, pchan)
+	}
+	m.Log.Debug("before wait")
+	wg.Wait()
+	m.Log.Debug("after wait")
+	close(pchan)
+	m.Log.Debug("chan len :", len(pchan))
+	for res := range pchan {
+		if !res.Success {
+			rtn = false
+		}
+	}
 	return rtn
+}
+
+func (m *Six910Manager) parseProduct(p *Product) *sdbi.Product {
+	var rtn sdbi.Product
+	rtn.Color = p.Color
+	rtn.Cost = p.Cost
+	rtn.Currency = p.Currency
+	rtn.Depth = p.Depth
+	rtn.Desc = p.Desc
+	rtn.DistributorID = p.DistributorID
+	rtn.Dropship = p.Dropship
+	rtn.FreeShipping = p.FreeShipping
+	rtn.Gtin = p.Gtin
+	rtn.Height = p.Height
+	rtn.Image1 = p.Image1
+	rtn.Image2 = p.Image2
+	rtn.Image3 = p.Image3
+	rtn.Image4 = p.Image4
+	rtn.Manufacturer = p.Manufacturer
+	rtn.ManufacturerID = p.ManufacturerID
+	rtn.Map = p.Map
+	rtn.Msrp = p.Msrp
+	rtn.MultiBox = p.MultiBox
+	rtn.Name = p.Name
+	rtn.ParentProductID = p.ParentProductID
+	rtn.Price = p.Price
+	rtn.Promoted = p.Promoted
+	rtn.SalePrice = p.SalePrice
+	rtn.Searchable = p.Searchable
+	rtn.ShipSeparately = p.ShipSeparately
+	rtn.ShippingMarkup = p.ShippingMarkup
+	rtn.ShortDesc = p.ShortDesc
+	rtn.Size = p.Size
+	rtn.Sku = p.Sku
+	rtn.SpecialProcessing = p.SpecialProcessing
+	rtn.SpecialProcessingType = p.SpecialProcessingType
+	rtn.Stock = p.Stock
+	rtn.StockAlert = p.StockAlert
+	rtn.Thumbnail = p.Thumbnail
+	rtn.Visible = p.Visible
+	rtn.Weight = p.Weight
+	rtn.Width = p.Width
+	return &rtn
 }
