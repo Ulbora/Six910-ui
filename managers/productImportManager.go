@@ -33,7 +33,7 @@ func (m *Six910Manager) importProducts(prodList *[]Product, hd *api.Headers) boo
 	var pchan = make(chan *api.ResponseID, len(*prodList))
 
 	for i := range *prodList {
-		var cp = (*prodList)[i]
+		var cp = &(*prodList)[i]
 		m.Log.Debug("before goroutine :", cp.Sku)
 		wg.Add(1)
 		go func(product *Product, header *api.Headers, prodchan chan *api.ResponseID) {
@@ -55,7 +55,7 @@ func (m *Six910Manager) importProducts(prodList *[]Product, hd *api.Headers) boo
 				}
 			}
 			prodchan <- pres
-		}(&cp, hd, pchan)
+		}(cp, hd, pchan)
 	}
 	m.Log.Debug("before wait")
 	wg.Wait()

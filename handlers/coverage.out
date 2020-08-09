@@ -1,0 +1,20 @@
+mode: set
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:33.81,34.22 1 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:34.22,40.3 5 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:40.8,42.3 1 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:46.87,51.42 4 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:51.42,67.44 11 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:67.44,70.11 2 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:70.11,79.5 6 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:84.80,101.2 13 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:103.79,106.18 3 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:111.2,112.19 2 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:106.18,108.3 1 1
+github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:108.8,110.3 1 1
+github.com/Ulbora/Six910-ui/handlers/six910Handler.go:74.42,76.2 1 1
+github.com/Ulbora/Six910-ui/handlers/six910Handler.go:78.79,82.20 3 1
+github.com/Ulbora/Six910-ui/handlers/six910Handler.go:90.2,90.14 1 1
+github.com/Ulbora/Six910-ui/handlers/six910Handler.go:118.2,118.18 1 1
+github.com/Ulbora/Six910-ui/handlers/six910Handler.go:82.20,89.3 4 1
+github.com/Ulbora/Six910-ui/handlers/six910Handler.go:90.14,112.17 5 1
+github.com/Ulbora/Six910-ui/handlers/six910Handler.go:112.17,115.4 2 1

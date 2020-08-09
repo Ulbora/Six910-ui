@@ -93,6 +93,10 @@ func TestSix910Manager_importProducts(t *testing.T) {
 	p2.Manufacturer = "testco"
 	plst = append(plst, p2)
 
+	for i := range plst {
+		fmt.Printf("add of slice elements in test: %p\n", &plst[i])
+	}
+
 	suc := sm.importProducts(&plst, &head)
 	fmt.Println("importProducts: ", suc)
 

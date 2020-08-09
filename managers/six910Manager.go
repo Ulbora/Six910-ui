@@ -33,3 +33,8 @@ type Six910Manager struct {
 	Log *lg.Logger
 	mu  sync.Mutex
 }
+
+//GetNew GetNew
+func (m *Six910Manager) GetNew() Manager {
+	return m
+}

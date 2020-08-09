@@ -406,7 +406,3 @@ type Manager interface {
 
 }
 
-//GetNew GetNew
-func (m *Six910Manager) GetNew() Manager {
-	return m
-}
