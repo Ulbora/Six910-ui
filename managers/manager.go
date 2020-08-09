@@ -405,4 +405,3 @@ type Manager interface {
 	// GetDataStoreWriteLock(dataStore string, hd *Headers) *sdbi.DataStoreWriteLock
 
 }
-
