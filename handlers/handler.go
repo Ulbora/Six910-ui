@@ -26,11 +26,19 @@ import "net/http"
 */
 
 const (
+	//routes
 	authCodeRedirectURI = "/tokenHandler"
-	authCodeState       = "ghh66555h"
+	adminIndex          = "/admin/index"
+	adminLoginFailedURL = "/admin/login?error=Login Failed"
+	adminChangePassword = "/admin/changePassword"
 
 	//pages
-	adminloginPage = "login.html"
+	adminloginPage    = "login.html"
+	adminChangePwPage = "changePassword.html"
+
+	authCodeState = "ghh66555h"
+	storeAdmin    = "StoreAdmin"
+	customerRole  = "customer"
 )
 
 //LoginError LoginError
@@ -51,9 +59,11 @@ type Handler interface {
 	//--- admin methods----------------------------------------------------------
 
 	StoreAdminLogin(w http.ResponseWriter, r *http.Request)
+	StoreAdminLoginNonOAuthUser(w http.ResponseWriter, r *http.Request)
 	StoreAdminHandleToken(w http.ResponseWriter, r *http.Request)
-	// StoreAdminLogout(w http.ResponseWriter, r *http.Request)
-	// StoreAdminChangePassword(w http.ResponseWriter, r *http.Request)
+	StoreAdminLogout(w http.ResponseWriter, r *http.Request)
+	StoreAdminChangePassword(w http.ResponseWriter, r *http.Request)
+	StoreAdminChangeUserPassword(w http.ResponseWriter, r *http.Request)
 
 	// StoreAdminIndex(w http.ResponseWriter, r *http.Request)
 

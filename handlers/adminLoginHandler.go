@@ -2,7 +2,12 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
+	b64 "encoding/base64"
+
+	userv "github.com/Ulbora/Six910-ui/usersrv"
+	api "github.com/Ulbora/Six910API-Go"
 	oauth2 "github.com/Ulbora/go-oauth2-client"
 )
 
@@ -40,6 +45,137 @@ func (h *Six910Handler) StoreAdminLogin(w http.ResponseWriter, r *http.Request) 
 	} else {
 		h.authorize(w, r)
 	}
+}
+
+//StoreAdminLoginNonOAuthUser StoreAdminLoginNonOAuthUser
+func (h *Six910Handler) StoreAdminLoginNonOAuthUser(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	h.Log.Debug("session suc", suc)
+	if suc {
+		username := r.FormValue("username")
+		password := r.FormValue("password")
+		sEnccl := b64.StdEncoding.EncodeToString([]byte(username + ":" + password))
+		h.Log.Debug("sEnc: ", sEnccl)
+
+		var hd api.Headers
+		hd.Set("Authorization", "Basic "+sEnccl)
+		//head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
+
+		h.Log.Debug("username", username)
+		h.Log.Debug("password", password)
+
+		var u api.User
+		u.Username = username
+
+		var loginSuc bool
+
+		usrcl := h.API.GetUser(&u, &hd)
+		h.Log.Debug("usr: ", *usrcl)
+		if usrcl.Enabled && usrcl.Username == u.Username && usrcl.Role == storeAdmin {
+			loginSuc = true
+			h.Log.Debug("loginSuc", loginSuc)
+		}
+		h.Log.Debug("login suc", loginSuc)
+		if loginSuc {
+			//if lari.ResponseType == codeRespType || lari.ResponseType == tokenRespType {
+			s.Values["loggedIn"] = true
+			//s.Values["user"] = username
+			serr := s.Save(r, w)
+			h.Log.Debug("serr", serr)
+			//session, sserr := store.Get(r, "temp-name")
+			//fmt.Println("sserr", sserr)
+			//session.Store()
+			//session.Options.Path = "/oauth/"
+			//session.Values["loggedIn"] = true
+			//fmt.Println("store", session.Store())
+			//session.Save(r, w)
+
+			//clintStr := strconv.FormatInt(lari.ClientID, 10)
+			http.Redirect(w, r, adminIndex, http.StatusFound)
+			//} else {
+			//http.Redirect(w, r, invalidGrantErrorURL, http.StatusFound)
+			//}
+		} else {
+			http.Redirect(w, r, adminLoginFailedURL, http.StatusFound)
+		}
+
+	} else {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+}
+
+//StoreAdminChangePassword StoreAdminChangePassword
+func (h *Six910Handler) StoreAdminChangePassword(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	h.Log.Debug("session suc", suc)
+	if suc {
+		loggedInAuth := s.Values["loggedIn"]
+		h.Log.Debug("loggedIn in backups: ", loggedInAuth)
+		if loggedInAuth == true {
+			h.AdminTemplates.ExecuteTemplate(w, adminChangePwPage, nil)
+		} else {
+			http.Redirect(w, r, adminloginPage, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminChangeUserPassword StoreAdminChangeUserPassword
+func (h *Six910Handler) StoreAdminChangeUserPassword(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	if suc {
+		loggedIn := s.Values["userLoggenIn"]
+		token := h.token
+		h.Log.Debug("user update pw Logged in: ", loggedIn)
+
+		if loggedIn == nil || loggedIn.(bool) == false || token == nil {
+			h.authorize(w, r)
+		} else {
+			var uu userv.UserPW
+			clientID := r.FormValue("clientId")
+			h.Log.Debug("user update pw client: ", clientID)
+			clientIDD, _ := strconv.ParseInt(clientID, 10, 0)
+			uu.ClientID = clientIDD
+
+			username := r.FormValue("username")
+			h.Log.Debug("user update pw username: ", username)
+			uu.Username = username
+
+			password := r.FormValue("password")
+			h.Log.Debug("user update pw password: ", password)
+			uu.Password = password
+
+			h.UserService.SetToken(h.token.AccessToken)
+
+			res := h.UserService.UpdateUser(&uu)
+			h.Log.Debug("user update pw res: ", *res)
+			if res.Success {
+				http.Redirect(w, r, adminIndex, http.StatusFound)
+			} else {
+				http.Redirect(w, r, adminChangePassword, http.StatusFound)
+			}
+		}
+	}
+}
+
+//StoreAdminLogout StoreAdminLogout
+func (h *Six910Handler) StoreAdminLogout(w http.ResponseWriter, r *http.Request) {
+	h.token = nil
+	cookie := &http.Cookie{
+		Name:   "goauth2-ui",
+		Value:  "",
+		Path:   "/",
+		MaxAge: -1,
+	}
+	http.SetCookie(w, cookie)
+
+	cookie2 := &http.Cookie{
+		Name:   "goauth2",
+		Value:  "",
+		Path:   "/",
+		MaxAge: -1,
+	}
+	http.SetCookie(w, cookie2)
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 //StoreAdminHandleToken StoreAdminHandleToken
