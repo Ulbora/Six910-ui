@@ -39,8 +39,8 @@ type MockOauth2UserService struct {
 	Log      *lg.Logger
 
 	MockUpdateUserResponse *UserResponse
-	MockUser         *User
-	MockUserCode     int
+	MockUser               *User
+	MockUserCode           int
 }
 
 //UpdateUser UpdateUser
