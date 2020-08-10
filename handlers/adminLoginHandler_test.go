@@ -312,6 +312,7 @@ func TestSix910Handler_StoreAdminChangePassword(t *testing.T) {
 	s, suc := sh.getSession(r)
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.StoreAdminChangePassword(w, r)
@@ -373,6 +374,7 @@ func TestSix910Handler_StoreAdminChangeUserPassword(t *testing.T) {
 	s, suc := sh.getSession(r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
+	s.Values["storeAdminUser"] = true
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.StoreAdminChangeUserPassword(w, r)
@@ -443,6 +445,7 @@ func TestSix910Handler_StoreAdminChangeUserPasswordUpdateFail(t *testing.T) {
 	s, suc := sh.getSession(r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
+	s.Values["storeAdminUser"] = true
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.StoreAdminChangeUserPassword(w, r)

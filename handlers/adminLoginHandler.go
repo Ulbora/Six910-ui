@@ -11,11 +11,6 @@ import (
 	oauth2 "github.com/Ulbora/go-oauth2-client"
 )
 
-// import (
-// 	api "github.com/Ulbora/Six910API-Go"
-// 	sdbi "github.com/Ulbora/six910-database-interface"
-// )
-
 /*
  Six910 is a shopping cart and E-commerce system.
  Copyright (C) 2020 Ulbora Labs LLC. (www.ulboralabs.com)
@@ -74,11 +69,13 @@ func (h *Six910Handler) StoreAdminLoginNonOAuthUser(w http.ResponseWriter, r *ht
 		if usrcl.Enabled && usrcl.Username == u.Username && usrcl.Role == storeAdmin {
 			loginSuc = true
 			h.Log.Debug("loginSuc", loginSuc)
+			s.Values["storeAdminUser"] = true
 		}
 		h.Log.Debug("login suc", loginSuc)
 		if loginSuc {
 			//if lari.ResponseType == codeRespType || lari.ResponseType == tokenRespType {
 			s.Values["loggedIn"] = true
+
 			//s.Values["user"] = username
 			serr := s.Save(r, w)
 			h.Log.Debug("serr", serr)
@@ -110,8 +107,9 @@ func (h *Six910Handler) StoreAdminChangePassword(w http.ResponseWriter, r *http.
 	h.Log.Debug("session suc", suc)
 	if suc {
 		loggedInAuth := s.Values["loggedIn"]
+		storeAdminUser := s.Values["storeAdminUser"]
 		h.Log.Debug("loggedIn in backups: ", loggedInAuth)
-		if loggedInAuth == true {
+		if loggedInAuth == true && storeAdminUser == true {
 			h.AdminTemplates.ExecuteTemplate(w, adminChangePwPage, nil)
 		} else {
 			http.Redirect(w, r, adminloginPage, http.StatusFound)
@@ -124,10 +122,11 @@ func (h *Six910Handler) StoreAdminChangeUserPassword(w http.ResponseWriter, r *h
 	s, suc := h.getSession(r)
 	if suc {
 		loggedIn := s.Values["userLoggenIn"]
+		storeAdminUser := s.Values["storeAdminUser"]
 		token := h.token
 		h.Log.Debug("user update pw Logged in: ", loggedIn)
 
-		if loggedIn == nil || loggedIn.(bool) == false || token == nil {
+		if loggedIn == nil || loggedIn.(bool) == false || storeAdminUser.(bool) == false || token == nil {
 			h.authorize(w, r)
 		} else {
 			var uu userv.UserPW
@@ -206,6 +205,7 @@ func (h *Six910Handler) StoreAdminHandleToken(w http.ResponseWriter, r *http.Req
 			if suc {
 				h.Log.Debug("userLoggenIn : ", true)
 				s.Values["userLoggenIn"] = true
+				s.Values["storeAdminUser"] = true
 
 				h.token = resp
 

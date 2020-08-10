@@ -33,8 +33,10 @@ const (
 	adminChangePassword = "/admin/changePassword"
 
 	//pages
-	adminloginPage    = "login.html"
-	adminChangePwPage = "changePassword.html"
+	adminloginPage        = "login.html"
+	adminChangePwPage     = "changePassword.html"
+	adminIndexPage        = "index.html"
+	productFileUploadPage = "productUpload.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"
@@ -65,9 +67,10 @@ type Handler interface {
 	StoreAdminChangePassword(w http.ResponseWriter, r *http.Request)
 	StoreAdminChangeUserPassword(w http.ResponseWriter, r *http.Request)
 
-	// StoreAdminIndex(w http.ResponseWriter, r *http.Request)
+	StoreAdminIndex(w http.ResponseWriter, r *http.Request)
 
-	// //products
+	//products
+	StoreAdminUploadProductFilePage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminUploadProductFile(w http.ResponseWriter, r *http.Request)
 
 	// StoreAdminAddProduct(w http.ResponseWriter, r *http.Request)
