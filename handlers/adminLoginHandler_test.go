@@ -45,6 +45,7 @@ func TestSix910Handler_getRedirectURI2(t *testing.T) {
 
 func TestSix910Handler_authorize(t *testing.T) {
 	var h Six910Handler
+	h.OAuth2Enabled = true
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
 	h.Log = &l

@@ -70,6 +70,9 @@ func (h *Six910Handler) StoreAdminLoginNonOAuthUser(w http.ResponseWriter, r *ht
 			loginSuc = true
 			h.Log.Debug("loginSuc", loginSuc)
 			s.Values["storeAdminUser"] = true
+			s.Values["username"] = username
+			s.Values["password"] = password
+
 		}
 		h.Log.Debug("login suc", loginSuc)
 		if loginSuc {
@@ -112,7 +115,7 @@ func (h *Six910Handler) StoreAdminChangePassword(w http.ResponseWriter, r *http.
 		if loggedInAuth == true && storeAdminUser == true {
 			h.AdminTemplates.ExecuteTemplate(w, adminChangePwPage, nil)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			h.authorize(w, r)
 		}
 	}
 }
@@ -219,20 +222,25 @@ func (h *Six910Handler) StoreAdminHandleToken(w http.ResponseWriter, r *http.Req
 
 func (h *Six910Handler) authorize(w http.ResponseWriter, r *http.Request) bool {
 	h.Log.Debug("in authorize")
+	var resp bool
+	if !h.OAuth2Enabled {
+		http.Redirect(w, r, adminloginPage, http.StatusFound)
+	} else {
+		var a oauth2.AuthCodeAuthorize
+		a.ClientID = h.ClientCreds.AuthCodeClient // h.getAuthCodeClient()
+		a.OauthHost = h.OauthHost                 // getOauthRedirectHost()
+		a.RedirectURI = h.getRedirectURI(r, authCodeRedirectURI)
+		a.Scope = "write"
+		a.State = h.ClientCreds.AuthCodeState // authCodeState
+		a.Res = w
+		a.Req = r
 
-	var a oauth2.AuthCodeAuthorize
-	a.ClientID = h.ClientCreds.AuthCodeClient // h.getAuthCodeClient()
-	a.OauthHost = h.OauthHost                 // getOauthRedirectHost()
-	a.RedirectURI = h.getRedirectURI(r, authCodeRedirectURI)
-	a.Scope = "write"
-	a.State = h.ClientCreds.AuthCodeState // authCodeState
-	a.Res = w
-	a.Req = r
+		h.Log.Debug("a: ", a)
+		resp = a.AuthCodeAuthorizeUser()
 
-	h.Log.Debug("a: ", a)
-	resp := a.AuthCodeAuthorizeUser()
+		h.Log.Debug("Resp: ", resp)
+	}
 
-	h.Log.Debug("Resp: ", resp)
 	return resp
 }
 
