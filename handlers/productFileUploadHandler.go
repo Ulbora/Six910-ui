@@ -1,6 +1,9 @@
 package handlers
 
 import (
+	"archive/tar"
+	"bytes"
+	"compress/gzip"
 	b64 "encoding/base64"
 	"io/ioutil"
 	"net/http"
@@ -83,8 +86,11 @@ func (h *Six910Handler) StoreAdminUploadProductFile(w http.ResponseWriter, r *ht
 			} else {
 				hd.Set("Authorization", "Bearer "+h.token.AccessToken)
 			}
+			//h.Log.Debug("updata not zip: ", string(updata))
+			dcupdata := h.extractTarGz(&updata)
+			//h.Log.Debug("updata file in handlers: ", string(dcupdata))
 
-			suc, notImported := h.Manager.UploadProductFile(updata, &hd)
+			suc, notImported := h.Manager.UploadProductFile(dcupdata, &hd)
 			h.Log.Debug("notImported: ", notImported)
 
 			var pg PageValues
@@ -100,4 +106,20 @@ func (h *Six910Handler) StoreAdminUploadProductFile(w http.ResponseWriter, r *ht
 			h.authorize(w, r)
 		}
 	}
+}
+
+func (h *Six910Handler) extractTarGz(cf *[]byte) []byte {
+	var rtn []byte
+	r := bytes.NewReader(*cf)
+	gzf, gzerr := gzip.NewReader(r)
+	h.Log.Debug("gz file reader err : ", gzerr)
+	if gzerr != nil {
+		rtn = *cf
+	} else {
+		tr := tar.NewReader(gzf)
+		tr.Next()
+		rtn, _ = ioutil.ReadAll(tr)
+	}
+	h.Log.Debug("file reader data : ", string(rtn))
+	return rtn
 }
