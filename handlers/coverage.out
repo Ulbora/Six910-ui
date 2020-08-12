@@ -1,8 +1,4 @@
 mode: set
-github.com/Ulbora/Six910-ui/handlers/adminIndexHandler.go:26.81,29.9 3 1
-github.com/Ulbora/Six910-ui/handlers/adminIndexHandler.go:29.9,33.53 4 1
-github.com/Ulbora/Six910-ui/handlers/adminIndexHandler.go:33.53,35.4 1 1
-github.com/Ulbora/Six910-ui/handlers/adminIndexHandler.go:35.9,37.4 1 1
 github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:33.81,34.22 1 1
 github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:34.22,40.3 5 1
 github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:40.8,42.3 1 1
@@ -36,6 +32,10 @@ github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:247.79,250.18 3 1
 github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:255.2,256.19 2 1
 github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:250.18,252.3 1 1
 github.com/Ulbora/Six910-ui/handlers/adminLoginHandler.go:252.8,254.3 1 1
+github.com/Ulbora/Six910-ui/handlers/adminProductHandler.go:26.90,29.9 3 1
+github.com/Ulbora/Six910-ui/handlers/adminProductHandler.go:29.9,33.57 4 1
+github.com/Ulbora/Six910-ui/handlers/adminProductHandler.go:33.57,35.4 1 1
+github.com/Ulbora/Six910-ui/handlers/adminProductHandler.go:35.9,37.4 1 1
 github.com/Ulbora/Six910-ui/handlers/productFileUploadHandler.go:39.97,42.9 3 1
 github.com/Ulbora/Six910-ui/handlers/productFileUploadHandler.go:42.9,46.53 4 1
 github.com/Ulbora/Six910-ui/handlers/productFileUploadHandler.go:46.53,48.4 1 1
@@ -62,3 +62,7 @@ github.com/Ulbora/Six910-ui/handlers/six910Handler.go:120.2,120.18 1 1
 github.com/Ulbora/Six910-ui/handlers/six910Handler.go:84.20,91.3 4 1
 github.com/Ulbora/Six910-ui/handlers/six910Handler.go:92.14,114.17 5 1
 github.com/Ulbora/Six910-ui/handlers/six910Handler.go:114.17,117.4 2 1
+github.com/Ulbora/Six910-ui/handlers/adminIndexHandler.go:26.81,29.9 3 1
+github.com/Ulbora/Six910-ui/handlers/adminIndexHandler.go:29.9,33.53 4 1
+github.com/Ulbora/Six910-ui/handlers/adminIndexHandler.go:33.53,35.4 1 1
+github.com/Ulbora/Six910-ui/handlers/adminIndexHandler.go:35.9,37.4 1 1

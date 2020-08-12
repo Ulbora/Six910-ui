@@ -74,84 +74,94 @@ type Handler interface {
 	StoreAdminUploadProductFilePage(w http.ResponseWriter, r *http.Request)
 	StoreAdminUploadProductFile(w http.ResponseWriter, r *http.Request)
 
+	StoreAdminAddProductPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminAddProduct(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditProductPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditProduct(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewProduct(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewProductList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteProduct(w http.ResponseWriter, r *http.Request)
 
 	// //orders
-	// StoreAdminViewOrder(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewOrderList(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditOrderPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditOrder(w http.ResponseWriter, r *http.Request)
+	// StoreAdminViewOrderList(w http.ResponseWriter, r *http.Request)
 
 	// //shipments
+	// StoreAdminAddShipmentPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminAddShipment(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditShipmentPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditShipment(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewShipment(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewShipmentList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteShipment(w http.ResponseWriter, r *http.Request)
 
 	// //customers
+	// StoreAdminEditCustomerPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditCustomer(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewCustomer(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewCustomerUser(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditCustomerUserPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditCustomerUser(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCustomerList(w http.ResponseWriter, r *http.Request)
 
 	// //categories
+	// StoreAdminAddCategoryPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminAddCategory(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditCategoryPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditCategory(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewCategory(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCategoryList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteCategory(w http.ResponseWriter, r *http.Request)
 
 	// //distributors
+	// StoreAdminAddDistributorPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminAddDistributor(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditDistributorPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditDistributor(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewDistributor(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewDistributorList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteDistributor(w http.ResponseWriter, r *http.Request)
 
 	// //insurance
+	// StoreAdminAddInsurancePage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminAddInsurance(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditInsurancePage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditInsurance(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewInsurance(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewInsuranceList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteInsurance(w http.ResponseWriter, r *http.Request)
 
 	// //payment gateway
+	// StoreAdminAddPaymentGatewayPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminAddPaymentGateway(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditPaymentGatewayPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditPaymentGateway(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewPaymentGateway(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewPaymentGatewayList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeletePaymentGateway(w http.ResponseWriter, r *http.Request)
 
 	// //plugins
+	// StoreAdminAddPluginPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminAddPlugin(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditPluginPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditPlugin(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewPlugin(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewPluginList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeletePlugin(w http.ResponseWriter, r *http.Request)
 
 	// //shipment carriers
+	// StoreAdminAddCarrierPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminAddCarrier(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditCarrierPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditCarrier(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewCarrier(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCarrierList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteCarrier(w http.ResponseWriter, r *http.Request)
 
 	// //shipping methods
+	// StoreAdminAddShippingMethodPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminAddShippingMethod(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditShippingMethodPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditShippingMethod(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewShippingMethod(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewShippingMethodList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteShippingMethod(w http.ResponseWriter, r *http.Request)
 
 	// //regions
+	// StoreAdminAddRegionPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminAddRegion(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditRegionPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditRegion(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewRegion(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewRegionList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteRegion(w http.ResponseWriter, r *http.Request)
 
