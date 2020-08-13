@@ -27,10 +27,13 @@ import "net/http"
 
 const (
 	//routes
-	authCodeRedirectURI = "/tokenHandler"
-	adminIndex          = "/admin/index"
-	adminLoginFailedURL = "/admin/login?error=Login Failed"
-	adminChangePassword = "/admin/changePassword"
+	authCodeRedirectURI  = "/tokenHandler"
+	adminIndex           = "/admin/index"
+	adminLoginFailedURL  = "/admin/login?error=Login Failed"
+	adminChangePassword  = "/admin/changePassword"
+	adminAddProdView     = "/admin/addProdView"
+	adminAddProdViewFail = "/admin/addProdView?error=Add Failed"
+	adminAddProduct      = "/admin/addProduct"
 
 	//pages
 	adminloginPage          = "login.html"
@@ -44,8 +47,8 @@ const (
 	customerRole  = "customer"
 )
 
-//LoginError LoginError
-type LoginError struct {
+//ProcError ProcError
+type ProcError struct {
 	Error string
 }
 
@@ -75,7 +78,7 @@ type Handler interface {
 	StoreAdminUploadProductFile(w http.ResponseWriter, r *http.Request)
 
 	StoreAdminAddProductPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddProduct(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddProduct(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditProductPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditProduct(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewProductList(w http.ResponseWriter, r *http.Request)

@@ -27,10 +27,11 @@ func (h *Six910Handler) StoreAdminIndex(w http.ResponseWriter, r *http.Request) 
 	s, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		loggedInAuth := s.Values["loggedIn"]
-		storeAdminUser := s.Values["storeAdminUser"]
-		h.Log.Debug("loggedIn in backups: ", loggedInAuth)
-		if loggedInAuth == true && storeAdminUser == true {
+		// loggedInAuth := s.Values["loggedIn"]
+		// storeAdminUser := s.Values["storeAdminUser"]
+		// h.Log.Debug("loggedIn in backups: ", loggedInAuth)
+		// if loggedInAuth == true && storeAdminUser == true {
+		if h.isStoreAdminLoggedIn(s) {
 			h.AdminTemplates.ExecuteTemplate(w, adminIndexPage, nil)
 		} else {
 			http.Redirect(w, r, adminloginPage, http.StatusFound)

@@ -33,7 +33,7 @@ import (
 func (h *Six910Handler) StoreAdminLogin(w http.ResponseWriter, r *http.Request) {
 	if !h.OAuth2Enabled {
 		loginErr := r.URL.Query().Get("error")
-		var lge LoginError
+		var lge ProcError
 		lge.Error = loginErr
 		h.Log.Debug("in login----")
 		h.AdminTemplates.ExecuteTemplate(w, adminloginPage, &lge)
@@ -109,10 +109,11 @@ func (h *Six910Handler) StoreAdminChangePassword(w http.ResponseWriter, r *http.
 	s, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		loggedInAuth := s.Values["loggedIn"]
-		storeAdminUser := s.Values["storeAdminUser"]
-		h.Log.Debug("loggedIn in backups: ", loggedInAuth)
-		if loggedInAuth == true && storeAdminUser == true {
+		// loggedInAuth := s.Values["loggedIn"]
+		// storeAdminUser := s.Values["storeAdminUser"]
+		// h.Log.Debug("loggedIn in backups: ", loggedInAuth)
+		// if loggedInAuth == true && storeAdminUser == true {
+		if h.isStoreAdminLoggedIn(s) {
 			h.AdminTemplates.ExecuteTemplate(w, adminChangePwPage, nil)
 		} else {
 			h.authorize(w, r)

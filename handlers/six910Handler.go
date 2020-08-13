@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	b64 "encoding/base64"
 	"html/template"
 	"net/http"
 
@@ -118,4 +119,32 @@ func (h *Six910Handler) getSession(r *http.Request) (*sessions.Session, bool) {
 	}
 	//fmt.Println("exit getSession--------------------------------------------------")
 	return srtn, suc
+}
+
+func (h *Six910Handler) getHeader(s *sessions.Session) *api.Headers {
+	var hd api.Headers
+	if !h.OAuth2Enabled {
+		var sEnccl string
+		username := s.Values["username"]
+		password := s.Values["password"]
+		if username != nil && password != nil {
+			sEnccl = b64.StdEncoding.EncodeToString([]byte(username.(string) + ":" + password.(string)))
+		}
+		h.Log.Debug("sEnc: ", sEnccl)
+		hd.Set("Authorization", "Basic "+sEnccl)
+	} else {
+		hd.Set("Authorization", "Bearer "+h.token.AccessToken)
+	}
+	return &hd
+}
+
+func (h *Six910Handler) isStoreAdminLoggedIn(s *sessions.Session) bool {
+	var rtn bool
+	loggedInAuthpa := s.Values["loggedIn"]
+	storeAdminUserpa := s.Values["storeAdminUser"]
+	h.Log.Debug("loggedIn in backups: ", loggedInAuthpa)
+	if loggedInAuthpa == true && storeAdminUserpa == true {
+		rtn = true
+	}
+	return rtn
 }

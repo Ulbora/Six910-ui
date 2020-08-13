@@ -4,11 +4,8 @@ import (
 	"archive/tar"
 	"bytes"
 	"compress/gzip"
-	b64 "encoding/base64"
 	"io/ioutil"
 	"net/http"
-
-	api "github.com/Ulbora/Six910API-Go"
 )
 
 /*
@@ -40,10 +37,11 @@ func (h *Six910Handler) StoreAdminUploadProductFilePage(w http.ResponseWriter, r
 	s, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		loggedInAuth := s.Values["loggedIn"]
-		storeAdminUser := s.Values["storeAdminUser"]
-		h.Log.Debug("loggedIn in backups: ", loggedInAuth)
-		if loggedInAuth == true && storeAdminUser == true {
+		// loggedInAuth := s.Values["loggedIn"]
+		// storeAdminUser := s.Values["storeAdminUser"]
+		// h.Log.Debug("loggedIn in backups: ", loggedInAuth)
+		// if loggedInAuth == true && storeAdminUser == true {
+		if h.isStoreAdminLoggedIn(s) {
 			h.AdminTemplates.ExecuteTemplate(w, productFileUploadPage, nil)
 		} else {
 			http.Redirect(w, r, adminloginPage, http.StatusFound)
@@ -56,11 +54,12 @@ func (h *Six910Handler) StoreAdminUploadProductFile(w http.ResponseWriter, r *ht
 	s, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		loggedInAuth := s.Values["loggedIn"]
-		storeAdminUser := s.Values["storeAdminUser"]
-		h.Log.Debug("loggedIn in upload : ", loggedInAuth)
-		h.Log.Debug("storeAdminUser in upload : ", storeAdminUser)
-		if loggedInAuth == true && storeAdminUser == true {
+		// loggedInAuth := s.Values["loggedIn"]
+		// storeAdminUser := s.Values["storeAdminUser"]
+		// h.Log.Debug("loggedIn in upload : ", loggedInAuth)
+		// h.Log.Debug("storeAdminUser in upload : ", storeAdminUser)
+		// if loggedInAuth == true && storeAdminUser == true {
+		if h.isStoreAdminLoggedIn(s) {
 
 			uplerr := r.ParseMultipartForm(50000000)
 			h.Log.Debug("ParseMultipartForm err: ", uplerr)
@@ -76,21 +75,13 @@ func (h *Six910Handler) StoreAdminUploadProductFile(w http.ResponseWriter, r *ht
 			//h.Log.Debug("read file  bkdata: ", bkdata)
 
 			h.Log.Debug("handler.Filename: ", handler.Filename)
-			var hd api.Headers
-			if !h.OAuth2Enabled {
-				username := s.Values["username"]
-				password := s.Values["password"]
-				sEnccl := b64.StdEncoding.EncodeToString([]byte(username.(string) + ":" + password.(string)))
-				h.Log.Debug("sEnc: ", sEnccl)
-				hd.Set("Authorization", "Basic "+sEnccl)
-			} else {
-				hd.Set("Authorization", "Bearer "+h.token.AccessToken)
-			}
+
 			//h.Log.Debug("updata not zip: ", string(updata))
 			dcupdata := h.extractTarGz(&updata)
 			//h.Log.Debug("updata file in handlers: ", string(dcupdata))
 
-			suc, notImported := h.Manager.UploadProductFile(dcupdata, &hd)
+			hd := h.getHeader(s)
+			suc, notImported := h.Manager.UploadProductFile(dcupdata, hd)
 			h.Log.Debug("notImported: ", notImported)
 
 			var pg PageValues
