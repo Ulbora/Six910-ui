@@ -64,6 +64,15 @@ const (
 	adminEditOrder         = "/admin/editOrder"
 	adminOrderListView     = "/admin/orderListView"
 
+	//routes customer
+	adminEditCustomerView         = "/admin/editCustomerView"
+	adminEditCustomerViewFail     = "/admin/editCustomerView?error=Update Failed"
+	adminEditCustomer             = "/admin/editCustomer"
+	adminCustomerListView         = "/admin/customerListView"
+	adminEditCustomerUserView     = "/admin/editCustomerUserView"
+	adminEditCustomerUserViewFail = "/admin/editCustomerUserView?error=Update Failed"
+	adminEditCustomerUser         = "/admin/editCustomerUser"
+
 	//pages
 	adminloginPage    = "login.html"
 	adminChangePwPage = "changePassword.html"
@@ -86,6 +95,11 @@ const (
 	//pages order
 	adminEditOrderPage = "editOrder.html"
 	adminOrderListPage = "orderList.html"
+
+	//pages customer
+	adminEditCustomerPage     = "editCustomer.html"
+	adminEditCustomerUserPage = "editCustomerUser.html"
+	adminCustomerListPage     = "customerList.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"
@@ -142,12 +156,12 @@ type Handler interface {
 	StoreAdminViewShipmentList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteShipment(w http.ResponseWriter, r *http.Request)
 
-	// //customers
-	// StoreAdminEditCustomerPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditCustomer(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditCustomerUserPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditCustomerUser(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewCustomerList(w http.ResponseWriter, r *http.Request)
+	//customers
+	StoreAdminEditCustomerPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditCustomer(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditCustomerUserPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditCustomerUser(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewCustomerList(w http.ResponseWriter, r *http.Request)
 
 	// //categories
 	// StoreAdminAddCategoryPage(w http.ResponseWriter, r *http.Request)

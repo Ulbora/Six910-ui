@@ -40,6 +40,7 @@ type MockAPI struct {
 	MockCustomer           *sdbi.Customer
 	MockAddCustomerResp    *api.ResponseID
 	MockUpdateCustomerResp *api.Response
+	MockCustomerList       *[]sdbi.Customer
 
 	MockAddAddressRes    *api.ResponseID
 	MockUpdateAddressRes *api.Response
@@ -275,7 +276,7 @@ func (a *MockAPI) GetCustomerID(id int64, headers *api.Headers) *sdbi.Customer {
 
 //GetCustomerList GetCustomerList
 func (a *MockAPI) GetCustomerList(headers *api.Headers) *[]sdbi.Customer {
-	return nil
+	return a.MockCustomerList
 }
 
 //DeleteCustomer DeleteCustomer
