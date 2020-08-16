@@ -125,46 +125,46 @@ func (m *Six910Manager) parseProduct(p *Product) *sdbi.Product {
 	return &rtn
 }
 
-func (m *Six910Manager) parseExistingProduct(p *sdbi.Product) *sdbi.Product {
+func (m *Six910Manager) parseExistingProduct(ep *sdbi.Product) *sdbi.Product {
 	var rtn sdbi.Product
-	rtn.ID = p.ID
-	rtn.Color = p.Color
-	rtn.Cost = p.Cost
-	rtn.Currency = p.Currency
-	rtn.Depth = p.Depth
-	rtn.Desc = p.Desc
-	rtn.DistributorID = p.DistributorID
-	rtn.Dropship = p.Dropship
-	rtn.FreeShipping = p.FreeShipping
-	rtn.Gtin = p.Gtin
-	rtn.Height = p.Height
-	rtn.Image1 = p.Image1
-	rtn.Image2 = p.Image2
-	rtn.Image3 = p.Image3
-	rtn.Image4 = p.Image4
-	rtn.Manufacturer = p.Manufacturer
-	rtn.ManufacturerID = p.ManufacturerID
-	rtn.Map = p.Map
-	rtn.Msrp = p.Msrp
-	rtn.MultiBox = p.MultiBox
-	rtn.Name = p.Name
-	rtn.ParentProductID = p.ParentProductID
-	rtn.Price = p.Price
-	rtn.Promoted = p.Promoted
-	rtn.SalePrice = p.SalePrice
-	rtn.Searchable = p.Searchable
-	rtn.ShipSeparately = p.ShipSeparately
-	rtn.ShippingMarkup = p.ShippingMarkup
-	rtn.ShortDesc = p.ShortDesc
-	rtn.Size = p.Size
-	rtn.Sku = p.Sku
-	rtn.SpecialProcessing = p.SpecialProcessing
-	rtn.SpecialProcessingType = p.SpecialProcessingType
-	rtn.Stock = p.Stock
-	rtn.StockAlert = p.StockAlert
-	rtn.Thumbnail = p.Thumbnail
-	rtn.Visible = p.Visible
-	rtn.Weight = p.Weight
-	rtn.Width = p.Width
+	rtn.ID = ep.ID
+	rtn.Color = ep.Color
+	rtn.Cost = ep.Cost
+	rtn.Currency = ep.Currency
+	rtn.Depth = ep.Depth
+	rtn.Desc = ep.Desc
+	rtn.DistributorID = ep.DistributorID
+	rtn.Dropship = ep.Dropship
+	rtn.FreeShipping = ep.FreeShipping
+	rtn.Gtin = ep.Gtin
+	rtn.Height = ep.Height
+	rtn.Image1 = ep.Image1
+	rtn.Image2 = ep.Image2
+	rtn.Image3 = ep.Image3
+	rtn.Image4 = ep.Image4
+	rtn.Manufacturer = ep.Manufacturer
+	rtn.ManufacturerID = ep.ManufacturerID
+	rtn.Map = ep.Map
+	rtn.Msrp = ep.Msrp
+	rtn.MultiBox = ep.MultiBox
+	rtn.Name = ep.Name
+	rtn.ParentProductID = ep.ParentProductID
+	rtn.Price = ep.Price
+	rtn.Promoted = ep.Promoted
+	rtn.SalePrice = ep.SalePrice
+	rtn.Searchable = ep.Searchable
+	rtn.ShipSeparately = ep.ShipSeparately
+	rtn.ShippingMarkup = ep.ShippingMarkup
+	rtn.ShortDesc = ep.ShortDesc
+	rtn.Size = ep.Size
+	rtn.Sku = ep.Sku
+	rtn.SpecialProcessing = ep.SpecialProcessing
+	rtn.SpecialProcessingType = ep.SpecialProcessingType
+	rtn.Stock = ep.Stock
+	rtn.StockAlert = ep.StockAlert
+	rtn.Thumbnail = ep.Thumbnail
+	rtn.Visible = ep.Visible
+	rtn.Weight = ep.Weight
+	rtn.Width = ep.Width
 	return &rtn
 }
