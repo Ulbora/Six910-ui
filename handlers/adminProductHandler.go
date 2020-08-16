@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	sdbi "github.com/Ulbora/six910-database-interface"
+	"github.com/gorilla/mux"
 )
 
 /*
@@ -25,6 +26,13 @@ import (
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+//ProdError ProdError
+type ProdError struct {
+	Error    string
+	Product  *sdbi.Product
+	Products *[]sdbi.Product
+}
+
 //StoreAdminAddProductPage StoreAdminAddProductPage
 func (h *Six910Handler) StoreAdminAddProductPage(w http.ResponseWriter, r *http.Request) {
 	s, suc := h.getSession(r)
@@ -34,7 +42,7 @@ func (h *Six910Handler) StoreAdminAddProductPage(w http.ResponseWriter, r *http.
 			loginErr := r.URL.Query().Get("error")
 			var lge ProcError
 			lge.Error = loginErr
-			h.AdminTemplates.ExecuteTemplate(w, productFileUploadPage, &lge)
+			h.AdminTemplates.ExecuteTemplate(w, adminAddProductPage, &lge)
 		} else {
 			http.Redirect(w, r, adminloginPage, http.StatusFound)
 		}
@@ -48,10 +56,11 @@ func (h *Six910Handler) StoreAdminAddProduct(w http.ResponseWriter, r *http.Requ
 	if suc {
 		if h.isStoreAdminLoggedIn(s) {
 			p := h.processProduct(r)
+			h.Log.Debug("prod add", *p)
 			hd := h.getHeader(s)
-			res := h.API.AddProduct(p, hd)
-			h.Log.Debug("prod add resp", *res)
-			if res.Success {
+			prres := h.API.AddProduct(p, hd)
+			h.Log.Debug("prod add resp", *prres)
+			if prres.Success {
 				http.Redirect(w, r, adminAddProdView, http.StatusFound)
 			} else {
 				http.Redirect(w, r, adminAddProdViewFail, http.StatusFound)
@@ -62,8 +71,104 @@ func (h *Six910Handler) StoreAdminAddProduct(w http.ResponseWriter, r *http.Requ
 	}
 }
 
+//StoreAdminEditProductPage StoreAdminEditProductPage
+func (h *Six910Handler) StoreAdminEditProductPage(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	h.Log.Debug("session suc in prod add view", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(s) {
+			hd := h.getHeader(s)
+			epvars := mux.Vars(r)
+			idstr := epvars["id"]
+			prodID, _ := strconv.ParseInt(idstr, 10, 64)
+			h.Log.Debug("prod id in edit", prodID)
+			prod := h.API.GetProductByID(prodID, hd)
+			h.Log.Debug("prod  in edit", prod)
+			edErr := r.URL.Query().Get("error")
+			var epparm ProdError
+			epparm.Error = edErr
+			epparm.Product = prod
+			h.AdminTemplates.ExecuteTemplate(w, adminEditProductPage, &epparm)
+		} else {
+			http.Redirect(w, r, adminloginPage, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminEditProduct StoreAdminEditProduct
+func (h *Six910Handler) StoreAdminEditProduct(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	h.Log.Debug("session suc in prod edit", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(s) {
+			epp := h.processProduct(r)
+			h.Log.Debug("prod update", *epp)
+			hd := h.getHeader(s)
+			res := h.API.UpdateProduct(epp, hd)
+			h.Log.Debug("prod update resp", *res)
+			if res.Success {
+				http.Redirect(w, r, adminProductListView, http.StatusFound)
+			} else {
+				http.Redirect(w, r, adminEditProdViewFail, http.StatusFound)
+			}
+		} else {
+			http.Redirect(w, r, adminloginPage, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminViewProductList StoreAdminViewProductList
+func (h *Six910Handler) StoreAdminViewProductList(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	h.Log.Debug("session suc in prods view", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(s) {
+			hd := h.getHeader(s)
+			vpvars := mux.Vars(r)
+			ststr := vpvars["start"]
+			endstr := vpvars["end"]
+			vpstart, _ := strconv.ParseInt(ststr, 10, 64)
+			vpend, _ := strconv.ParseInt(endstr, 10, 64)
+			prods := h.API.GetProductList(vpstart, vpend, hd)
+			plErr := r.URL.Query().Get("error")
+			var plparm ProdError
+			plparm.Error = plErr
+			plparm.Products = prods
+			h.Log.Debug("prods  in edit", prods)
+			h.AdminTemplates.ExecuteTemplate(w, adminProductListPage, &plparm)
+		} else {
+			http.Redirect(w, r, adminloginPage, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminDeleteProduct StoreAdminDeleteProduct
+func (h *Six910Handler) StoreAdminDeleteProduct(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	h.Log.Debug("session suc in prod list delete", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(s) {
+			hd := h.getHeader(s)
+			dpvars := mux.Vars(r)
+			idstrd := dpvars["id"]
+			idd, _ := strconv.ParseInt(idstrd, 10, 64)
+			res := h.API.DeleteProduct(idd, hd)
+			h.Log.Debug("prod delete resp", *res)
+			if res.Success {
+				http.Redirect(w, r, adminProductListView, http.StatusFound)
+			} else {
+				http.Redirect(w, r, adminProductListViewFail, http.StatusFound)
+			}
+		} else {
+			http.Redirect(w, r, adminloginPage, http.StatusFound)
+		}
+	}
+}
+
 func (h *Six910Handler) processProduct(r *http.Request) *sdbi.Product {
 	var p sdbi.Product
+	id := r.FormValue("id")
+	p.ID, _ = strconv.ParseInt(id, 10, 64)
 	sku := r.FormValue("sku")
 	p.Sku = sku
 	p.Gtin = r.FormValue("gtin")

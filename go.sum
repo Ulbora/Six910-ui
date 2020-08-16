@@ -6,6 +6,8 @@ github.com/Ulbora/Level_Logger v1.0.2 h1:uhuNi1oSQ1zSDhuYQS7NEHqtR4lAYPGyW2XGwJZ
 github.com/Ulbora/Level_Logger v1.0.2/go.mod h1:epRidhkOBJSzCCon816WfFCO9vtai8VCmdI8S/xcTbA=
 github.com/Ulbora/Six910API-Go v1.0.3 h1:DuUOssyq/akq65dlMiI9TmfP4XtahNr8pIWArRA4Xr4=
 github.com/Ulbora/Six910API-Go v1.0.3/go.mod h1:P1rpP4SGl2f0F4LzMe0tkWwjYzcrVf2dA52AfkrLggU=
+github.com/Ulbora/Six910API-Go v1.0.4 h1:ZaR1hNkWOvnbm6Kk+7IQ1vduC9aNaZZ/uheGuFj5XaU=
+github.com/Ulbora/Six910API-Go v1.0.4/go.mod h1:P1rpP4SGl2f0F4LzMe0tkWwjYzcrVf2dA52AfkrLggU=
 github.com/Ulbora/go-mail-sender v1.0.0 h1:lfVK66JRIPSZCkeTO3/0fnnygVeVF+5ena47I2pj5Fo=
 github.com/Ulbora/go-mail-sender v1.0.0/go.mod h1:uI61omDxYerT9GWLIOIk7Y2wq9esh09UK2LkdCAuTkU=
 github.com/Ulbora/go-oauth2-client v1.0.2 h1:+71Vgof2hT6w0kgwMROk6kt6C3ueQBsU9ehRXpqH1Sk=
@@ -16,6 +18,8 @@ github.com/Ulbora/json-datastore v1.0.5 h1:sWH6mBFXOapi7ZMog1FpPKMHF1p2BNVxk4Ejp
 github.com/Ulbora/json-datastore v1.0.5/go.mod h1:yMKdmKwHW5m3Wh9bgGHu9crDMNeNI4D0xihWYBdSL38=
 github.com/Ulbora/six910-database-interface v1.0.20 h1:c4niG5rNG4uXB2dOUsOUYPyLoQfY8dIHpnLhlV4f/nc=
 github.com/Ulbora/six910-database-interface v1.0.20/go.mod h1:OGqZQ5ETgqxsHB636qmivSR36NzQxhV4T+ATsIUJSLM=
+github.com/Ulbora/six910-database-interface v1.0.22 h1:69dlWaB9CZt6zuMhCMOpQuphaEMlngq52dYsg16zJ/8=
+github.com/Ulbora/six910-database-interface v1.0.22/go.mod h1:OGqZQ5ETgqxsHB636qmivSR36NzQxhV4T+ATsIUJSLM=
 github.com/gorilla/mux v1.7.4 h1:VuZ8uybHlWmqV03+zRzdwKL4tUnIp1MAQtp1mIFE1bc=
 github.com/gorilla/mux v1.7.4/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
 github.com/gorilla/securecookie v1.1.1 h1:miw7JPhV+b/lAHSXz4qd/nN9jRiAFV5FwjeKyCS8BvQ=

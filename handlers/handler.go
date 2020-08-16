@@ -27,20 +27,65 @@ import "net/http"
 
 const (
 	//routes
-	authCodeRedirectURI  = "/tokenHandler"
-	adminIndex           = "/admin/index"
-	adminLoginFailedURL  = "/admin/login?error=Login Failed"
-	adminChangePassword  = "/admin/changePassword"
-	adminAddProdView     = "/admin/addProdView"
-	adminAddProdViewFail = "/admin/addProdView?error=Add Failed"
-	adminAddProduct      = "/admin/addProduct"
+	authCodeRedirectURI = "/tokenHandler"
+	adminIndex          = "/admin/index"
+	adminLoginFailedURL = "/admin/login?error=Login Failed"
+	adminChangePassword = "/admin/changePassword"
+
+	//routes product upload
+	adminProdUploadView = "/admin/productUploadView"
+	adminProdUpload     = "/admin/productUpload"
+
+	//routes product
+	adminAddProdView         = "/admin/addProdView"
+	adminAddProdViewFail     = "/admin/addProdView?error=Add Failed"
+	adminAddProduct          = "/admin/addProduct"
+	adminEditProdView        = "/admin/editProductView"
+	adminEditProdViewFail    = "/admin/editProductView?error=Add Failed"
+	adminEditProd            = "/admin/editProduct"
+	adminDeleteProd          = "/admin/deleteProduct"
+	adminProductListView     = "/admin/productListView"
+	adminProductListViewFail = "/admin/productListView?error=Add Failed"
+
+	//routes shipment
+	adminAddShipmentView      = "/admin/addShipmentView"
+	adminAddShipmentViewFail  = "/admin/addShipmentView?error=Add Failed"
+	adminAddShipment          = "/admin/addShipment"
+	adminEditShipmentView     = "/admin/editShipmentView"
+	adminEditShipmentViewFail = "/admin/editShipmentView?error=Add Failed"
+	adminEditShipment         = "/admin/editShipment"
+	adminDeleteShipment       = "/admin/deleteShipment"
+	adminShipmentListView     = "/admin/shipmentListView"
+	adminShipmentListViewFail = "/admin/shipmentListView?error=Add Failed"
+
+	//routes order
+	adminEditOrderView     = "/admin/editOrderView"
+	adminEditOrderViewFail = "/admin/editOrderView?error=Add Failed"
+	adminEditOrder         = "/admin/editOrder"
+	adminOrderListView     = "/admin/orderListView"
 
 	//pages
-	adminloginPage          = "login.html"
-	adminChangePwPage       = "changePassword.html"
-	adminIndexPage          = "index.html"
+	adminloginPage    = "login.html"
+	adminChangePwPage = "changePassword.html"
+	adminIndexPage    = "index.html"
+
+	//pages product upload
 	productFileUploadPage   = "productUpload.html"
 	productUploadResultPage = "productUploadResults.html"
+
+	//pages product
+	adminAddProductPage  = "addProduct.html"
+	adminEditProductPage = "editProduct.html"
+	adminProductListPage = "productList.html"
+
+	//pages product
+	adminAddShipmentPage  = "addShipment.html"
+	adminEditShipmentPage = "editShipment.html"
+	adminShipmentListPage = "shipmentList.html"
+
+	//pages order
+	adminEditOrderPage = "editOrder.html"
+	adminOrderListPage = "orderList.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"
@@ -79,20 +124,20 @@ type Handler interface {
 
 	StoreAdminAddProductPage(w http.ResponseWriter, r *http.Request)
 	StoreAdminAddProduct(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditProductPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditProduct(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewProductList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeleteProduct(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditProductPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditProduct(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewProductList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteProduct(w http.ResponseWriter, r *http.Request)
 
-	// //orders
-	// StoreAdminEditOrderPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditOrder(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewOrderList(w http.ResponseWriter, r *http.Request)
+	//orders
+	StoreAdminEditOrderPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditOrder(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewOrderList(w http.ResponseWriter, r *http.Request)
 
-	// //shipments
-	// StoreAdminAddShipmentPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddShipment(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditShipmentPage(w http.ResponseWriter, r *http.Request)
+	//shipments
+	StoreAdminAddShipmentPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddShipment(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditShipmentPage(w http.ResponseWriter, r *http.Request)
 	// StoreAdminEditShipment(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewShipmentList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteShipment(w http.ResponseWriter, r *http.Request)

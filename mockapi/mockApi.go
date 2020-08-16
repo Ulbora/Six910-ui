@@ -47,12 +47,16 @@ type MockAPI struct {
 	MockAddressList1     *[]sdbi.Address
 	MockAddressList2     *[]sdbi.Address
 
-	MockProduct        *sdbi.Product
-	MockAddProductResp *api.ResponseID
+	MockProduct           *sdbi.Product
+	MockAddProductResp    *api.ResponseID
+	MockUpdateProductResp *api.Response
+	MockProductList       *[]sdbi.Product
+	MockDeleteProductResp *api.Response
 
-	MockAddOrderResp *api.ResponseID
-	MockOrder        *sdbi.Order
-	MockOrderList    *[]sdbi.Order
+	MockAddOrderResp    *api.ResponseID
+	MockUpdateOrderResp *api.Response
+	MockOrder           *sdbi.Order
+	MockOrderList       *[]sdbi.Order
 
 	MockAddOrderItemResp *api.ResponseID
 	MockOrderItemList    *[]sdbi.OrderItem
@@ -75,6 +79,17 @@ type MockAPI struct {
 	MockDistributorList    *[]sdbi.Distributor
 
 	MockAddProductCategoryResp *api.Response
+
+	MockAddShipmentResp    *api.ResponseID
+	MockUpdateShipmentResp *api.Response
+	MockShipment           *sdbi.Shipment
+	MockShipmentList       *[]sdbi.Shipment
+	MockDeleteShipmentResp *api.Response
+
+	MockAddShipmentItemResp *api.ResponseID
+	MockShippingItemList    *[]sdbi.ShipmentItem
+
+	MockShipmentBoxList *[]sdbi.ShipmentBox
 }
 
 //GetNew GetNew
@@ -421,7 +436,7 @@ func (a *MockAPI) AddOrder(o *sdbi.Order, headers *api.Headers) *api.ResponseID 
 
 //UpdateOrder UpdateOrder
 func (a *MockAPI) UpdateOrder(o *sdbi.Order, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateOrderResp
 }
 
 //GetOrder GetOrder
@@ -431,6 +446,16 @@ func (a *MockAPI) GetOrder(id int64, headers *api.Headers) *sdbi.Order {
 
 //GetOrderList GetOrderList
 func (a *MockAPI) GetOrderList(cid int64, headers *api.Headers) *[]sdbi.Order {
+	return a.MockOrderList
+}
+
+//GetStoreOrderList GetStoreOrderList
+func (a *MockAPI) GetStoreOrderList(headers *api.Headers) *[]sdbi.Order {
+	return a.MockOrderList
+}
+
+//GetStoreOrderListByStatus GetStoreOrderListByStatus
+func (a *MockAPI) GetStoreOrderListByStatus(status string, headers *api.Headers) *[]sdbi.Order {
 	return a.MockOrderList
 }
 
@@ -553,7 +578,7 @@ func (a *MockAPI) AddProduct(p *sdbi.Product, headers *api.Headers) *api.Respons
 
 //UpdateProduct UpdateProduct
 func (a *MockAPI) UpdateProduct(p *sdbi.Product, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateProductResp
 }
 
 //GetProductByID GetProductByID
@@ -578,12 +603,12 @@ func (a *MockAPI) GetProductsByCaterory(catID int64, start int64, end int64, hea
 
 //GetProductList GetProductList
 func (a *MockAPI) GetProductList(start int64, end int64, headers *api.Headers) *[]sdbi.Product {
-	return nil
+	return a.MockProductList
 }
 
 //DeleteProduct DeleteProduct
 func (a *MockAPI) DeleteProduct(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteProductResp
 }
 
 //product category
@@ -629,27 +654,27 @@ func (a *MockAPI) DeleteRegion(id int64, headers *api.Headers) *api.Response {
 
 //AddShipment AddShipment
 func (a *MockAPI) AddShipment(s *sdbi.Shipment, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddShipmentResp
 }
 
 //UpdateShipment UpdateShipment
 func (a *MockAPI) UpdateShipment(s *sdbi.Shipment, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateShipmentResp
 }
 
 //GetShipment GetShipment
 func (a *MockAPI) GetShipment(id int64, headers *api.Headers) *sdbi.Shipment {
-	return nil
+	return a.MockShipment
 }
 
 //GetShipmentList GetShipmentList
 func (a *MockAPI) GetShipmentList(orderID int64, headers *api.Headers) *[]sdbi.Shipment {
-	return nil
+	return a.MockShipmentList
 }
 
 //DeleteShipment DeleteShipment
 func (a *MockAPI) DeleteShipment(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteShipmentResp
 }
 
 //shipment box
@@ -671,7 +696,7 @@ func (a *MockAPI) GetShipmentBox(id int64, headers *api.Headers) *sdbi.ShipmentB
 
 //GetShipmentBoxList GetShipmentBoxList
 func (a *MockAPI) GetShipmentBoxList(shipmentID int64, headers *api.Headers) *[]sdbi.ShipmentBox {
-	return nil
+	return a.MockShipmentBoxList
 }
 
 //DeleteShipmentBox DeleteShipmentBox
@@ -683,7 +708,7 @@ func (a *MockAPI) DeleteShipmentBox(id int64, headers *api.Headers) *api.Respons
 
 //AddShipmentItem AddShipmentItem
 func (a *MockAPI) AddShipmentItem(si *sdbi.ShipmentItem, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddShipmentItemResp
 }
 
 //UpdateShipmentItem UpdateShipmentItem
@@ -698,7 +723,7 @@ func (a *MockAPI) GetShipmentItem(id int64, headers *api.Headers) *sdbi.Shipment
 
 //GetShipmentItemList GetShipmentItemList
 func (a *MockAPI) GetShipmentItemList(shipmentID int64, headers *api.Headers) *[]sdbi.ShipmentItem {
-	return nil
+	return a.MockShippingItemList
 }
 
 //GetShipmentItemListByBox GetShipmentItemListByBox
