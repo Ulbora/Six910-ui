@@ -41,7 +41,7 @@ const (
 	adminAddProdViewFail     = "/admin/addProdView?error=Add Failed"
 	adminAddProduct          = "/admin/addProduct"
 	adminEditProdView        = "/admin/editProductView"
-	adminEditProdViewFail    = "/admin/editProductView?error=Add Failed"
+	adminEditProdViewFail    = "/admin/editProductView?error=Update Failed"
 	adminEditProd            = "/admin/editProduct"
 	adminDeleteProd          = "/admin/deleteProduct"
 	adminProductListView     = "/admin/productListView"
@@ -52,7 +52,7 @@ const (
 	adminAddShipmentViewFail  = "/admin/addShipmentView?error=Add Failed"
 	adminAddShipment          = "/admin/addShipment"
 	adminEditShipmentView     = "/admin/editShipmentView"
-	adminEditShipmentViewFail = "/admin/editShipmentView?error=Add Failed"
+	adminEditShipmentViewFail = "/admin/editShipmentView?error=Update Failed"
 	adminEditShipment         = "/admin/editShipment"
 	adminDeleteShipment       = "/admin/deleteShipment"
 	adminShipmentListView     = "/admin/shipmentListView"
@@ -60,7 +60,7 @@ const (
 
 	//routes order
 	adminEditOrderView     = "/admin/editOrderView"
-	adminEditOrderViewFail = "/admin/editOrderView?error=Add Failed"
+	adminEditOrderViewFail = "/admin/editOrderView?error=Update Failed"
 	adminEditOrder         = "/admin/editOrder"
 	adminOrderListView     = "/admin/orderListView"
 
@@ -138,9 +138,9 @@ type Handler interface {
 	StoreAdminAddShipmentPage(w http.ResponseWriter, r *http.Request)
 	StoreAdminAddShipment(w http.ResponseWriter, r *http.Request)
 	StoreAdminEditShipmentPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditShipment(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewShipmentList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeleteShipment(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditShipment(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewShipmentList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteShipment(w http.ResponseWriter, r *http.Request)
 
 	// //customers
 	// StoreAdminEditCustomerPage(w http.ResponseWriter, r *http.Request)

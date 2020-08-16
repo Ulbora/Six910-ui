@@ -178,6 +178,12 @@ func (h *Six910Handler) StoreAdminEditShipmentPage(w http.ResponseWriter, r *htt
 			}(ship.OrderID, hd)
 
 			wg.Add(1)
+			go func(oid int64, header *six910api.Headers) {
+				defer wg.Done()
+				esparm.Shipments = h.API.GetShipmentList(oid, header)
+			}(ship.OrderID, hd)
+
+			wg.Add(1)
 			go func(spid int64, header *six910api.Headers) {
 				defer wg.Done()
 				esparm.ShipmentBoxes = h.API.GetShipmentBoxList(spid, header)
@@ -194,6 +200,101 @@ func (h *Six910Handler) StoreAdminEditShipmentPage(w http.ResponseWriter, r *htt
 			h.Log.Debug("shipment page", esparm)
 
 			h.AdminTemplates.ExecuteTemplate(w, adminEditShipmentPage, &esparm)
+		} else {
+			http.Redirect(w, r, adminloginPage, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminEditShipment StoreAdminEditShipment
+func (h *Six910Handler) StoreAdminEditShipment(w http.ResponseWriter, r *http.Request) {
+	esss, suc := h.getSession(r)
+	h.Log.Debug("session suc in shipment edit", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(esss) {
+			epp := h.processShipment(r)
+			h.Log.Debug("shipment update", *epp)
+			hd := h.getHeader(esss)
+			res := h.API.UpdateShipment(epp, hd)
+			h.Log.Debug("shipment update resp", *res)
+			if res.Success {
+				http.Redirect(w, r, adminOrderListView, http.StatusFound)
+			} else {
+				http.Redirect(w, r, adminEditShipmentViewFail, http.StatusFound)
+			}
+		} else {
+			http.Redirect(w, r, adminloginPage, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminViewShipmentList StoreAdminViewShipmentList
+func (h *Six910Handler) StoreAdminViewShipmentList(w http.ResponseWriter, r *http.Request) {
+	sls, suc := h.getSession(r)
+	h.Log.Debug("session suc in shipment list view", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(sls) {
+			hd := h.getHeader(sls)
+			vpvars := mux.Vars(r)
+			oidstr := vpvars["oid"]
+			foid, _ := strconv.ParseInt(oidstr, 10, 64)
+			//shps := h.API.GetShipmentList(oid, hd)
+			plErr := r.URL.Query().Get("error")
+			var slparm ShipPage
+			slparm.Error = plErr
+			//slparm.Shipments = shps
+
+			var wg sync.WaitGroup
+			wg.Add(1)
+			go func(oid int64, header *six910api.Headers) {
+				defer wg.Done()
+				slparm.Order = h.API.GetOrder(oid, header)
+			}(foid, hd)
+
+			wg.Add(1)
+			go func(oid int64, header *six910api.Headers) {
+				defer wg.Done()
+				slparm.OrderComments = h.API.GetOrderCommentList(oid, header)
+			}(foid, hd)
+
+			wg.Add(1)
+			go func(oid int64, header *six910api.Headers) {
+				defer wg.Done()
+				slparm.OrderItems = h.API.GetOrderItemList(oid, header)
+			}(foid, hd)
+
+			wg.Add(1)
+			go func(oid int64, header *six910api.Headers) {
+				defer wg.Done()
+				slparm.Shipments = h.API.GetShipmentList(oid, header)
+			}(foid, hd)
+
+			wg.Wait()
+			h.Log.Debug("shipments in list", slparm)
+			h.AdminTemplates.ExecuteTemplate(w, adminShipmentListView, &slparm)
+		} else {
+			http.Redirect(w, r, adminloginPage, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminDeleteShipment StoreAdminDeleteShipment
+func (h *Six910Handler) StoreAdminDeleteShipment(w http.ResponseWriter, r *http.Request) {
+	dss, suc := h.getSession(r)
+	h.Log.Debug("session suc in shipment delete", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(dss) {
+			hd := h.getHeader(dss)
+			dsvars := mux.Vars(r)
+			idstrd := dsvars["id"]
+			idd, _ := strconv.ParseInt(idstrd, 10, 64)
+			res := h.API.DeleteShipment(idd, hd)
+			h.Log.Debug("shipment delete resp", *res)
+			if res.Success {
+				http.Redirect(w, r, adminShipmentListView, http.StatusFound)
+			} else {
+				http.Redirect(w, r, adminShipmentListViewFail, http.StatusFound)
+			}
 		} else {
 			http.Redirect(w, r, adminloginPage, http.StatusFound)
 		}

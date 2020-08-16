@@ -13,6 +13,7 @@ import (
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
+	"github.com/gorilla/mux"
 )
 
 func TestSix910Handler_StoreAdminAddShipmentPage(t *testing.T) {
@@ -327,7 +328,7 @@ func TestSix910Handler_StoreAdminAddShipmentLogin(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("sku=tester123&name=tester"))
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=33&status=tester"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
@@ -375,7 +376,7 @@ func TestSix910Handler_StoreAdminAddShipmentFail(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("sku=tester123&name=tester"))
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=33&status=tester"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
@@ -559,6 +560,453 @@ func TestSix910Handler_StoreAdminEditShipmentPageLogin(t *testing.T) {
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.StoreAdminEditShipmentPage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminEditShipment(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var pr api.Response
+	pr.Success = true
+	sapi.MockUpdateShipmentResp = &pr
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=3&status=shipped&orderId=5"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminEditShipment(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminEditShipmentLogin(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var pr api.Response
+	pr.Success = true
+	sapi.MockUpdateShipmentResp = &pr
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=3&status=shipped&orderId=5"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	//s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminEditShipment(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminEditShipmentFail(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var pr api.Response
+	//pr.Success = true
+	sapi.MockUpdateShipmentResp = &pr
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=3&status=shipped&orderId=5"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminEditShipment(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminViewShipmentList(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var odr sdbi.Order
+	odr.ID = 1
+	odr.OrderNumber = "O123"
+
+	sapi.MockOrder = &odr
+
+	var oc sdbi.OrderComment
+	oc.Comment = "test"
+	oc.ID = 11
+	oc.OrderID = 1
+	var oclst []sdbi.OrderComment
+	oclst = append(oclst, oc)
+	sapi.MockCommentList = &oclst
+
+	var oi sdbi.OrderItem
+	oi.ID = 22
+	oi.OrderID = 1
+	oi.ProductName = "stuff"
+	oi.ProductID = 222
+	var oilst []sdbi.OrderItem
+	oilst = append(oilst, oi)
+	sapi.MockOrderItemList = &oilst
+
+	var shp sdbi.Shipment
+	shp.ID = 3
+	shp.OrderID = 1
+
+	var shlst []sdbi.Shipment
+	shlst = append(shlst, shp)
+
+	sapi.MockShipmentList = &shlst
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("GET", "https://test.com", strings.NewReader("sku=tester123&name=tester"))
+	vars := map[string]string{
+		"oid": "4",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminViewShipmentList(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminViewShipmentListLogin(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var odr sdbi.Order
+	odr.ID = 1
+	odr.OrderNumber = "O123"
+
+	sapi.MockOrder = &odr
+
+	var oc sdbi.OrderComment
+	oc.Comment = "test"
+	oc.ID = 11
+	oc.OrderID = 1
+	var oclst []sdbi.OrderComment
+	oclst = append(oclst, oc)
+	sapi.MockCommentList = &oclst
+
+	var oi sdbi.OrderItem
+	oi.ID = 22
+	oi.OrderID = 1
+	oi.ProductName = "stuff"
+	oi.ProductID = 222
+	var oilst []sdbi.OrderItem
+	oilst = append(oilst, oi)
+	sapi.MockOrderItemList = &oilst
+
+	var shp sdbi.Shipment
+	shp.ID = 3
+	shp.OrderID = 1
+
+	var shlst []sdbi.Shipment
+	shlst = append(shlst, shp)
+
+	sapi.MockShipmentList = &shlst
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("GET", "https://test.com", strings.NewReader("sku=tester123&name=tester"))
+	vars := map[string]string{
+		"oid": "4",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	//s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminViewShipmentList(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminDeleteShipment(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var dres api.Response
+	dres.Success = true
+	sapi.MockDeleteShipmentResp = &dres
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("DELETE", "https://test.com", strings.NewReader("sku=tester123&name=tester"))
+	vars := map[string]string{
+		"id": "1",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminDeleteShipment(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminDeleteShipmentLogin(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var dres api.Response
+	dres.Success = true
+	sapi.MockDeleteShipmentResp = &dres
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("DELETE", "https://test.com", strings.NewReader("sku=tester123&name=tester"))
+	vars := map[string]string{
+		"id": "1",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	//s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminDeleteShipment(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminDeleteShipmentFail(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var dres api.Response
+	//dres.Success = true
+	sapi.MockDeleteShipmentResp = &dres
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("DELETE", "https://test.com", strings.NewReader("sku=tester123&name=tester"))
+	vars := map[string]string{
+		"id": "1",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminDeleteShipment(w, r)
 	fmt.Println("code: ", w.Code)
 
 	if w.Code != 302 {

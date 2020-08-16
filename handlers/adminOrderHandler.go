@@ -146,6 +146,9 @@ func (h *Six910Handler) processOrder(r *http.Request) *sdbi.Order {
 	p.ShippingAddress = r.FormValue("shippingAddress")
 	shippingAddressID := r.FormValue("shippingAddressId")
 	p.ShippingAddressID, _ = strconv.ParseInt(shippingAddressID, 10, 64)
+	shippingMethodID := r.FormValue("shippingMethodId")
+	p.ShippingMethodID, _ = strconv.ParseInt(shippingMethodID, 10, 64)
+	p.ShippingMethodName = r.FormValue("billingMethodName")
 	storeID := r.FormValue("storeId")
 	p.StoreID, _ = strconv.ParseInt(storeID, 10, 64)
 
