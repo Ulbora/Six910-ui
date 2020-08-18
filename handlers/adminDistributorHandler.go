@@ -60,7 +60,7 @@ func (h *Six910Handler) StoreAdminAddDistributor(w http.ResponseWriter, r *http.
 			prres := h.API.AddDistributor(d, hd)
 			h.Log.Debug("Dist add resp", *prres)
 			if prres.Success {
-				http.Redirect(w, r, adminAddDistributorView, http.StatusFound)
+				http.Redirect(w, r, adminDistributorListView, http.StatusFound)
 			} else {
 				http.Redirect(w, r, adminAddDistributorViewFail, http.StatusFound)
 			}

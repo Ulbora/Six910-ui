@@ -106,6 +106,17 @@ const (
 	adminInsuranceListView     = "/admin/insuranceListView"
 	adminInsuranceListViewFail = "/admin/insuranceListView?error=Add Failed"
 
+	//routes Payment Gateway
+	adminAddPaymentGatewayView      = "/admin/addPaymentGatewayView"
+	adminAddPaymentGatewayViewFail  = "/admin/addPaymentGatewayView?error=Add Failed"
+	adminAddPaymentGateway          = "/admin/addPaymentGateway"
+	adminEditPaymentGatewayView     = "/admin/editPaymentGatewayView"
+	adminEditPaymentGatewayViewFail = "/admin/editPaymentGatewayView?error=Update Failed"
+	adminEditPaymentGateway         = "/admin/editPaymentGateway"
+	adminDeletePaymentGateway       = "/admin/deletePaymentGateway"
+	adminPaymentGatewayListView     = "/admin/paymentGatewayListView"
+	adminPaymentGatewayListViewFail = "/admin/paymentGatewayListView?error=Add Failed"
+
 	//pages
 	adminloginPage    = "login.html"
 	adminChangePwPage = "changePassword.html"
@@ -148,6 +159,11 @@ const (
 	adminAddInsurancePage  = "addInsurance.html"
 	adminEditInsurancePage = "editInsurance.html"
 	adminInsuranceListPage = "insuranceList.html"
+
+	//pages Payment Gateway
+	adminAddPaymentGatwayPage  = "addPaymentGatway.html"
+	adminEditPaymentGatwayPage = "editPaymentGatway.html"
+	adminPaymentGatwayListPage = "paymentGatwayList.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"
@@ -235,13 +251,13 @@ type Handler interface {
 	StoreAdminViewInsuranceList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteInsurance(w http.ResponseWriter, r *http.Request)
 
-	// //payment gateway
-	// StoreAdminAddPaymentGatewayPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddPaymentGateway(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditPaymentGatewayPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditPaymentGateway(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewPaymentGatewayList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeletePaymentGateway(w http.ResponseWriter, r *http.Request)
+	//payment gateway
+	StoreAdminAddPaymentGatewayPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddPaymentGateway(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditPaymentGatewayPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditPaymentGateway(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewPaymentGatewayList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeletePaymentGateway(w http.ResponseWriter, r *http.Request)
 
 	// //plugins
 	// StoreAdminAddPluginPage(w http.ResponseWriter, r *http.Request)

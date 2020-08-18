@@ -60,7 +60,7 @@ func (h *Six910Handler) StoreAdminAddInsurance(w http.ResponseWriter, r *http.Re
 			prres := h.API.AddInsurance(ai, hd)
 			h.Log.Debug("Ins add resp", *prres)
 			if prres.Success {
-				http.Redirect(w, r, adminAddInsuranceView, http.StatusFound)
+				http.Redirect(w, r, adminInsuranceListView, http.StatusFound)
 			} else {
 				http.Redirect(w, r, adminAddInsuranceViewFail, http.StatusFound)
 			}

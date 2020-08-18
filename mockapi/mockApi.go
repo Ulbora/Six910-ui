@@ -105,6 +105,12 @@ type MockAPI struct {
 	MockInsurance           *sdbi.Insurance
 	MockInsuranceList       *[]sdbi.Insurance
 	MockDeleteInsuranceResp *api.Response
+
+	MockAddPaymentGatewayResp    *api.ResponseID
+	MockUpdatePaymentGatewayResp *api.Response
+	MockPaymentGateway           *sdbi.PaymentGateway
+	MockPaymentGatewayList       *[]sdbi.PaymentGateway
+	MockDeletePaymentGatewayResp *api.Response
 }
 
 //GetNew GetNew
@@ -534,27 +540,27 @@ func (a *MockAPI) GetOrderTransactionList(orderID int64, headers *api.Headers) *
 
 //AddPaymentGateway AddPaymentGateway
 func (a *MockAPI) AddPaymentGateway(pgw *sdbi.PaymentGateway, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddPaymentGatewayResp
 }
 
 //UpdatePaymentGateway UpdatePaymentGateway
 func (a *MockAPI) UpdatePaymentGateway(pgw *sdbi.PaymentGateway, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdatePaymentGatewayResp
 }
 
 //GetPaymentGateway GetPaymentGateway
 func (a *MockAPI) GetPaymentGateway(id int64, headers *api.Headers) *sdbi.PaymentGateway {
-	return nil
+	return a.MockPaymentGateway
 }
 
 //GetPaymentGateways GetPaymentGateways
 func (a *MockAPI) GetPaymentGateways(headers *api.Headers) *[]sdbi.PaymentGateway {
-	return nil
+	return a.MockPaymentGatewayList
 }
 
 //DeletePaymentGateway DeletePaymentGateway
 func (a *MockAPI) DeletePaymentGateway(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeletePaymentGatewayResp
 }
 
 //plugins

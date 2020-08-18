@@ -65,7 +65,7 @@ func (h *Six910Handler) StoreAdminAddCategory(w http.ResponseWriter, r *http.Req
 			prres := h.API.AddCategory(c, hd)
 			h.Log.Debug("Category add resp", *prres)
 			if prres.Success {
-				http.Redirect(w, r, adminAddCategoryView, http.StatusFound)
+				http.Redirect(w, r, adminCategoryListView, http.StatusFound)
 			} else {
 				http.Redirect(w, r, adminAddCategoryViewFail, http.StatusFound)
 			}
@@ -124,7 +124,7 @@ func (h *Six910Handler) StoreAdminEditCategory(w http.ResponseWriter, r *http.Re
 			res := h.API.UpdateCategory(ecc, hd)
 			h.Log.Debug("Cat update resp", *res)
 			if res.Success {
-				http.Redirect(w, r, adminEditCategoryView, http.StatusFound)
+				http.Redirect(w, r, adminCategoryListView, http.StatusFound)
 			} else {
 				http.Redirect(w, r, adminEditCategoryViewFail, http.StatusFound)
 			}
