@@ -74,10 +74,18 @@ type MockAPI struct {
 	MockAddCategoryResp3 *api.ResponseID
 	MockAddCategoryResp4 *api.ResponseID
 
+	MockUpdateCategoryResp *api.Response
+
+	MockCategory           *sdbi.Category
+	MockDeleteCategoryResp *api.Response
+
 	MockCategoryList *[]sdbi.Category
 
-	MockAddDistributorResp *api.ResponseID
-	MockDistributorList    *[]sdbi.Distributor
+	MockAddDistributorResp    *api.ResponseID
+	MockUpdateDistributorResp *api.Response
+	MockDistributor           *sdbi.Distributor
+	MockDistributorList       *[]sdbi.Distributor
+	MockDeleteDistributorResp *api.Response
 
 	MockAddProductCategoryResp *api.Response
 
@@ -91,6 +99,12 @@ type MockAPI struct {
 	MockShippingItemList    *[]sdbi.ShipmentItem
 
 	MockShipmentBoxList *[]sdbi.ShipmentBox
+
+	MockAddInsuranceResp    *api.ResponseID
+	MockUpdateInsuranceResp *api.Response
+	MockInsurance           *sdbi.Insurance
+	MockInsuranceList       *[]sdbi.Insurance
+	MockDeleteInsuranceResp *api.Response
 }
 
 //GetNew GetNew
@@ -231,12 +245,12 @@ func (a *MockAPI) AddCategory(c *sdbi.Category, headers *api.Headers) *api.Respo
 
 //UpdateCategory UpdateCategory
 func (a *MockAPI) UpdateCategory(c *sdbi.Category, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateCategoryResp
 }
 
 //GetCategory GetCategory
 func (a *MockAPI) GetCategory(id int64, headers *api.Headers) *sdbi.Category {
-	return nil
+	return a.MockCategory
 }
 
 //GetCategoryList GetCategoryList
@@ -251,7 +265,7 @@ func (a *MockAPI) GetSubCategoryList(catID int64, headers *api.Headers) *[]sdbi.
 
 //DeleteCategory DeleteCategory
 func (a *MockAPI) DeleteCategory(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteCategoryResp
 }
 
 //AddCustomer AddCustomer
@@ -327,12 +341,12 @@ func (a *MockAPI) AddDistributor(d *sdbi.Distributor, headers *api.Headers) *api
 
 //UpdateDistributor UpdateDistributor
 func (a *MockAPI) UpdateDistributor(d *sdbi.Distributor, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateDistributorResp
 }
 
 //GetDistributor GetDistributor
 func (a *MockAPI) GetDistributor(id int64, headers *api.Headers) *sdbi.Distributor {
-	return nil
+	return a.MockDistributor
 }
 
 //GetDistributorList GetDistributorList
@@ -342,7 +356,7 @@ func (a *MockAPI) GetDistributorList(headers *api.Headers) *[]sdbi.Distributor {
 
 //DeleteDistributor DeleteDistributor
 func (a *MockAPI) DeleteDistributor(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteDistributorResp
 }
 
 //excluded sub region
@@ -405,27 +419,27 @@ func (a *MockAPI) GetInstanceList(dataStoreName string, headers *api.Headers) *[
 
 //AddInsurance AddInsurance
 func (a *MockAPI) AddInsurance(i *sdbi.Insurance, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddInsuranceResp
 }
 
 //UpdateInsurance UpdateInsurance
 func (a *MockAPI) UpdateInsurance(i *sdbi.Insurance, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateInsuranceResp
 }
 
 //GetInsurance GetInsurance
 func (a *MockAPI) GetInsurance(id int64, headers *api.Headers) *sdbi.Insurance {
-	return nil
+	return a.MockInsurance
 }
 
 //GetInsuranceList GetInsuranceList
 func (a *MockAPI) GetInsuranceList(headers *api.Headers) *[]sdbi.Insurance {
-	return nil
+	return a.MockInsuranceList
 }
 
 //DeleteInsurance DeleteInsurance
 func (a *MockAPI) DeleteInsurance(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteInsuranceResp
 }
 
 //order

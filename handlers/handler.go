@@ -73,6 +73,39 @@ const (
 	adminEditCustomerUserViewFail = "/admin/editCustomerUserView?error=Update Failed"
 	adminEditCustomerUser         = "/admin/editCustomerUser"
 
+	//routes category
+	adminAddCategoryView      = "/admin/addCategoryView"
+	adminAddCategoryViewFail  = "/admin/addCategoryView?error=Add Failed"
+	adminAddCategory          = "/admin/addCategory"
+	adminEditCategoryView     = "/admin/editCategoryView"
+	adminEditCategoryViewFail = "/admin/editCategoryView?error=Update Failed"
+	adminEditCategory         = "/admin/editCategory"
+	adminDeleteCategory       = "/admin/deleteCategory"
+	adminCategoryListView     = "/admin/categoryListView"
+	adminCategoryListViewFail = "/admin/categoryListView?error=Add Failed"
+
+	//routes Distributor
+	adminAddDistributorView      = "/admin/addDistributorView"
+	adminAddDistributorViewFail  = "/admin/addDistributorView?error=Add Failed"
+	adminAddDistributor          = "/admin/addDistributor"
+	adminEditDistributorView     = "/admin/editDistributorView"
+	adminEditDistributorViewFail = "/admin/editDistributorView?error=Update Failed"
+	adminEditDistributor         = "/admin/editDistributor"
+	adminDeleteDistributor       = "/admin/deleteDistributor"
+	adminDistributorListView     = "/admin/distributorListView"
+	adminDistributorListViewFail = "/admin/distributorListView?error=Add Failed"
+
+	//routes Insurance
+	adminAddInsuranceView      = "/admin/addInsuranceView"
+	adminAddInsuranceViewFail  = "/admin/addInsuranceView?error=Add Failed"
+	adminAddInsurance          = "/admin/addInsurance"
+	adminEditInsuranceView     = "/admin/editInsuranceView"
+	adminEditInsuranceViewFail = "/admin/editInsuranceView?error=Update Failed"
+	adminEditInsurance         = "/admin/editInsurance"
+	adminDeleteInsurance       = "/admin/deleteInsurance"
+	adminInsuranceListView     = "/admin/insuranceListView"
+	adminInsuranceListViewFail = "/admin/insuranceListView?error=Add Failed"
+
 	//pages
 	adminloginPage    = "login.html"
 	adminChangePwPage = "changePassword.html"
@@ -100,6 +133,21 @@ const (
 	adminEditCustomerPage     = "editCustomer.html"
 	adminEditCustomerUserPage = "editCustomerUser.html"
 	adminCustomerListPage     = "customerList.html"
+
+	//pages Distributor
+	adminAddDistributorPage  = "addDistributor.html"
+	adminEditDistributorPage = "editDistributor.html"
+	adminDistributorListPage = "distributorList.html"
+
+	//pages product
+	adminAddCategoryPage  = "addCategory.html"
+	adminEditCategoryPage = "editCategory.html"
+	adminCategoryListPage = "categoryList.html"
+
+	//pages Insurance
+	adminAddInsurancePage  = "addInsurance.html"
+	adminEditInsurancePage = "editInsurance.html"
+	adminInsuranceListPage = "insuranceList.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"
@@ -163,29 +211,29 @@ type Handler interface {
 	StoreAdminEditCustomerUser(w http.ResponseWriter, r *http.Request)
 	StoreAdminViewCustomerList(w http.ResponseWriter, r *http.Request)
 
-	// //categories
-	// StoreAdminAddCategoryPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddCategory(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditCategoryPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditCategory(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewCategoryList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeleteCategory(w http.ResponseWriter, r *http.Request)
+	//categories
+	StoreAdminAddCategoryPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddCategory(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditCategoryPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditCategory(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewCategoryList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteCategory(w http.ResponseWriter, r *http.Request)
 
-	// //distributors
-	// StoreAdminAddDistributorPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddDistributor(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditDistributorPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditDistributor(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewDistributorList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeleteDistributor(w http.ResponseWriter, r *http.Request)
+	//distributors
+	StoreAdminAddDistributorPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddDistributor(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditDistributorPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditDistributor(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewDistributorList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteDistributor(w http.ResponseWriter, r *http.Request)
 
-	// //insurance
-	// StoreAdminAddInsurancePage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddInsurance(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditInsurancePage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditInsurance(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewInsuranceList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeleteInsurance(w http.ResponseWriter, r *http.Request)
+	//insurance
+	StoreAdminAddInsurancePage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddInsurance(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditInsurancePage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditInsurance(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewInsuranceList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteInsurance(w http.ResponseWriter, r *http.Request)
 
 	// //payment gateway
 	// StoreAdminAddPaymentGatewayPage(w http.ResponseWriter, r *http.Request)
