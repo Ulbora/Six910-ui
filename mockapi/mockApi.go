@@ -111,6 +111,18 @@ type MockAPI struct {
 	MockPaymentGateway           *sdbi.PaymentGateway
 	MockPaymentGatewayList       *[]sdbi.PaymentGateway
 	MockDeletePaymentGatewayResp *api.Response
+
+	MockAddPluginResp    *api.ResponseID
+	MockUpdatePluginResp *api.Response
+	MockPlugin           *sdbi.Plugins
+	MockPluginList       *[]sdbi.Plugins
+	MockDeletePluginResp *api.Response
+
+	MockAddStorePluginResp    *api.ResponseID
+	MockUpdateStorePluginResp *api.Response
+	MockStorePlugin           *sdbi.StorePlugins
+	MockStorePluginList       *[]sdbi.StorePlugins
+	MockDeleteStorePluginResp *api.Response
 }
 
 //GetNew GetNew
@@ -567,27 +579,27 @@ func (a *MockAPI) DeletePaymentGateway(id int64, headers *api.Headers) *api.Resp
 
 //AddPlugin AddPlugin
 func (a *MockAPI) AddPlugin(p *sdbi.Plugins, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddPluginResp
 }
 
 //UpdatePlugin UpdatePlugin
 func (a *MockAPI) UpdatePlugin(p *sdbi.Plugins, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdatePluginResp
 }
 
 //GetPlugin GetPlugin
 func (a *MockAPI) GetPlugin(id int64, headers *api.Headers) *sdbi.Plugins {
-	return nil
+	return a.MockPlugin
 }
 
 //GetPluginList GetPluginList
 func (a *MockAPI) GetPluginList(start int64, end int64, headers *api.Headers) *[]sdbi.Plugins {
-	return nil
+	return a.MockPluginList
 }
 
 //DeletePlugin DeletePlugin
 func (a *MockAPI) DeletePlugin(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeletePluginResp
 }
 
 //products
@@ -837,27 +849,27 @@ func (a *MockAPI) DeleteStore(sname string, localDomain string, headers *api.Hea
 
 //AddStorePlugin AddStorePlugin
 func (a *MockAPI) AddStorePlugin(sp *sdbi.StorePlugins, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddStorePluginResp
 }
 
 //UpdateStorePlugin UpdateStorePlugin
 func (a *MockAPI) UpdateStorePlugin(sp *sdbi.StorePlugins, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateStorePluginResp
 }
 
 //GetStorePlugin GetStorePlugin
 func (a *MockAPI) GetStorePlugin(id int64, headers *api.Headers) *sdbi.StorePlugins {
-	return nil
+	return a.MockStorePlugin
 }
 
 //GetStorePluginList GetStorePluginList
 func (a *MockAPI) GetStorePluginList(headers *api.Headers) *[]sdbi.StorePlugins {
-	return nil
+	return a.MockStorePluginList
 }
 
 //DeleteStorePlugin DeleteStorePlugin
 func (a *MockAPI) DeleteStorePlugin(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteStorePluginResp
 }
 
 //sub region

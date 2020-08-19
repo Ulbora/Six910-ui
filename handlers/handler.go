@@ -25,151 +25,6 @@ import "net/http"
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-const (
-	//routes
-	authCodeRedirectURI = "/tokenHandler"
-	adminIndex          = "/admin/index"
-	adminLoginFailedURL = "/admin/login?error=Login Failed"
-	adminChangePassword = "/admin/changePassword"
-
-	//routes product upload
-	adminProdUploadView = "/admin/productUploadView"
-	adminProdUpload     = "/admin/productUpload"
-
-	//routes product
-	adminAddProdView         = "/admin/addProdView"
-	adminAddProdViewFail     = "/admin/addProdView?error=Add Failed"
-	adminAddProduct          = "/admin/addProduct"
-	adminEditProdView        = "/admin/editProductView"
-	adminEditProdViewFail    = "/admin/editProductView?error=Update Failed"
-	adminEditProd            = "/admin/editProduct"
-	adminDeleteProd          = "/admin/deleteProduct"
-	adminProductListView     = "/admin/productListView"
-	adminProductListViewFail = "/admin/productListView?error=Add Failed"
-
-	//routes shipment
-	adminAddShipmentView      = "/admin/addShipmentView"
-	adminAddShipmentViewFail  = "/admin/addShipmentView?error=Add Failed"
-	adminAddShipment          = "/admin/addShipment"
-	adminEditShipmentView     = "/admin/editShipmentView"
-	adminEditShipmentViewFail = "/admin/editShipmentView?error=Update Failed"
-	adminEditShipment         = "/admin/editShipment"
-	adminDeleteShipment       = "/admin/deleteShipment"
-	adminShipmentListView     = "/admin/shipmentListView"
-	adminShipmentListViewFail = "/admin/shipmentListView?error=Add Failed"
-
-	//routes order
-	adminEditOrderView     = "/admin/editOrderView"
-	adminEditOrderViewFail = "/admin/editOrderView?error=Update Failed"
-	adminEditOrder         = "/admin/editOrder"
-	adminOrderListView     = "/admin/orderListView"
-
-	//routes customer
-	adminEditCustomerView         = "/admin/editCustomerView"
-	adminEditCustomerViewFail     = "/admin/editCustomerView?error=Update Failed"
-	adminEditCustomer             = "/admin/editCustomer"
-	adminCustomerListView         = "/admin/customerListView"
-	adminEditCustomerUserView     = "/admin/editCustomerUserView"
-	adminEditCustomerUserViewFail = "/admin/editCustomerUserView?error=Update Failed"
-	adminEditCustomerUser         = "/admin/editCustomerUser"
-
-	//routes category
-	adminAddCategoryView      = "/admin/addCategoryView"
-	adminAddCategoryViewFail  = "/admin/addCategoryView?error=Add Failed"
-	adminAddCategory          = "/admin/addCategory"
-	adminEditCategoryView     = "/admin/editCategoryView"
-	adminEditCategoryViewFail = "/admin/editCategoryView?error=Update Failed"
-	adminEditCategory         = "/admin/editCategory"
-	adminDeleteCategory       = "/admin/deleteCategory"
-	adminCategoryListView     = "/admin/categoryListView"
-	adminCategoryListViewFail = "/admin/categoryListView?error=Add Failed"
-
-	//routes Distributor
-	adminAddDistributorView      = "/admin/addDistributorView"
-	adminAddDistributorViewFail  = "/admin/addDistributorView?error=Add Failed"
-	adminAddDistributor          = "/admin/addDistributor"
-	adminEditDistributorView     = "/admin/editDistributorView"
-	adminEditDistributorViewFail = "/admin/editDistributorView?error=Update Failed"
-	adminEditDistributor         = "/admin/editDistributor"
-	adminDeleteDistributor       = "/admin/deleteDistributor"
-	adminDistributorListView     = "/admin/distributorListView"
-	adminDistributorListViewFail = "/admin/distributorListView?error=Add Failed"
-
-	//routes Insurance
-	adminAddInsuranceView      = "/admin/addInsuranceView"
-	adminAddInsuranceViewFail  = "/admin/addInsuranceView?error=Add Failed"
-	adminAddInsurance          = "/admin/addInsurance"
-	adminEditInsuranceView     = "/admin/editInsuranceView"
-	adminEditInsuranceViewFail = "/admin/editInsuranceView?error=Update Failed"
-	adminEditInsurance         = "/admin/editInsurance"
-	adminDeleteInsurance       = "/admin/deleteInsurance"
-	adminInsuranceListView     = "/admin/insuranceListView"
-	adminInsuranceListViewFail = "/admin/insuranceListView?error=Add Failed"
-
-	//routes Payment Gateway
-	adminAddPaymentGatewayView      = "/admin/addPaymentGatewayView"
-	adminAddPaymentGatewayViewFail  = "/admin/addPaymentGatewayView?error=Add Failed"
-	adminAddPaymentGateway          = "/admin/addPaymentGateway"
-	adminEditPaymentGatewayView     = "/admin/editPaymentGatewayView"
-	adminEditPaymentGatewayViewFail = "/admin/editPaymentGatewayView?error=Update Failed"
-	adminEditPaymentGateway         = "/admin/editPaymentGateway"
-	adminDeletePaymentGateway       = "/admin/deletePaymentGateway"
-	adminPaymentGatewayListView     = "/admin/paymentGatewayListView"
-	adminPaymentGatewayListViewFail = "/admin/paymentGatewayListView?error=Add Failed"
-
-	//pages
-	adminloginPage    = "login.html"
-	adminChangePwPage = "changePassword.html"
-	adminIndexPage    = "index.html"
-
-	//pages product upload
-	productFileUploadPage   = "productUpload.html"
-	productUploadResultPage = "productUploadResults.html"
-
-	//pages product
-	adminAddProductPage  = "addProduct.html"
-	adminEditProductPage = "editProduct.html"
-	adminProductListPage = "productList.html"
-
-	//pages product
-	adminAddShipmentPage  = "addShipment.html"
-	adminEditShipmentPage = "editShipment.html"
-	adminShipmentListPage = "shipmentList.html"
-
-	//pages order
-	adminEditOrderPage = "editOrder.html"
-	adminOrderListPage = "orderList.html"
-
-	//pages customer
-	adminEditCustomerPage     = "editCustomer.html"
-	adminEditCustomerUserPage = "editCustomerUser.html"
-	adminCustomerListPage     = "customerList.html"
-
-	//pages Distributor
-	adminAddDistributorPage  = "addDistributor.html"
-	adminEditDistributorPage = "editDistributor.html"
-	adminDistributorListPage = "distributorList.html"
-
-	//pages product
-	adminAddCategoryPage  = "addCategory.html"
-	adminEditCategoryPage = "editCategory.html"
-	adminCategoryListPage = "categoryList.html"
-
-	//pages Insurance
-	adminAddInsurancePage  = "addInsurance.html"
-	adminEditInsurancePage = "editInsurance.html"
-	adminInsuranceListPage = "insuranceList.html"
-
-	//pages Payment Gateway
-	adminAddPaymentGatwayPage  = "addPaymentGatway.html"
-	adminEditPaymentGatwayPage = "editPaymentGatway.html"
-	adminPaymentGatwayListPage = "paymentGatwayList.html"
-
-	authCodeState = "ghh66555h"
-	storeAdmin    = "StoreAdmin"
-	customerRole  = "customer"
-)
-
 //ProcError ProcError
 type ProcError struct {
 	Error string
@@ -259,13 +114,21 @@ type Handler interface {
 	StoreAdminViewPaymentGatewayList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeletePaymentGateway(w http.ResponseWriter, r *http.Request)
 
-	// //plugins
-	// StoreAdminAddPluginPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddPlugin(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditPluginPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditPlugin(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewPluginList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeletePlugin(w http.ResponseWriter, r *http.Request)
+	//plugins
+	StoreAdminAddPluginPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddPlugin(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditPluginPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditPlugin(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewPluginList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeletePlugin(w http.ResponseWriter, r *http.Request)
+
+	// Store plugins
+	StoreAdminAddStorePluginPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddStorePlugin(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditStorePluginPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditStorePlugin(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewStorePluginList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteStorePlugin(w http.ResponseWriter, r *http.Request)
 
 	// //shipment carriers
 	// StoreAdminAddCarrierPage(w http.ResponseWriter, r *http.Request)
