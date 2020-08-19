@@ -123,6 +123,12 @@ type MockAPI struct {
 	MockStorePlugin           *sdbi.StorePlugins
 	MockStorePluginList       *[]sdbi.StorePlugins
 	MockDeleteStorePluginResp *api.Response
+
+	MockAddShippingCarrierResp    *api.ResponseID
+	MockUpdateShippingCarrierResp *api.Response
+	MockShippingCarrier           *sdbi.ShippingCarrier
+	MockShippingCarrierList       *[]sdbi.ShippingCarrier
+	MockDeleteShippingCarrierResp *api.Response
 }
 
 //GetNew GetNew
@@ -773,27 +779,27 @@ func (a *MockAPI) DeleteShipmentItem(id int64, headers *api.Headers) *api.Respon
 
 //AddShippingCarrier AddShippingCarrier
 func (a *MockAPI) AddShippingCarrier(c *sdbi.ShippingCarrier, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddShippingCarrierResp
 }
 
 //UpdateShippingCarrier UpdateShippingCarrier
 func (a *MockAPI) UpdateShippingCarrier(c *sdbi.ShippingCarrier, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateShippingCarrierResp
 }
 
 //GetShippingCarrier GetShippingCarrier
 func (a *MockAPI) GetShippingCarrier(id int64, headers *api.Headers) *sdbi.ShippingCarrier {
-	return nil
+	return a.MockShippingCarrier
 }
 
 //GetShippingCarrierList GetShippingCarrierList
 func (a *MockAPI) GetShippingCarrierList(headers *api.Headers) *[]sdbi.ShippingCarrier {
-	return nil
+	return a.MockShippingCarrierList
 }
 
 //DeleteShippingCarrier DeleteShippingCarrier
 func (a *MockAPI) DeleteShippingCarrier(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteShippingCarrierResp
 }
 
 //shipment method

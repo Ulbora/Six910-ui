@@ -130,13 +130,13 @@ type Handler interface {
 	StoreAdminViewStorePluginList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteStorePlugin(w http.ResponseWriter, r *http.Request)
 
-	// //shipment carriers
-	// StoreAdminAddCarrierPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddCarrier(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditCarrierPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditCarrier(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewCarrierList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeleteCarrier(w http.ResponseWriter, r *http.Request)
+	//shipment carriers
+	StoreAdminAddCarrierPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddCarrier(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditCarrierPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditCarrier(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewCarrierList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteCarrier(w http.ResponseWriter, r *http.Request)
 
 	// //shipping methods
 	// StoreAdminAddShippingMethodPage(w http.ResponseWriter, r *http.Request)
