@@ -132,7 +132,7 @@ const (
 	adminStorePluginListView     = "/admin/storePluginListView"
 	adminStorePluginListViewFail = "/admin/storePluginListView?error=Add Failed"
 
-	//routes Payment Gateway
+	//routes shipping carrier
 	adminAddShippingCarrierView      = "/admin/addShippingCarrierView"
 	adminAddShippingCarrierViewFail  = "/admin/addShippingCarrierView?error=Add Failed"
 	adminAddShippingCarrier          = "/admin/addShippingCarrier"
@@ -142,6 +142,17 @@ const (
 	adminDeleteShippingCarrier       = "/admin/deleteShippingCarrier"
 	adminShippingCarrierListView     = "/admin/shippingCarrierListView"
 	adminShippingCarrierListViewFail = "/admin/shippingCarrierListView?error=Add Failed"
+
+	//routes shipping method
+	adminAddShippingMethodView      = "/admin/addShippingMethodView"
+	adminAddShippingMethodViewFail  = "/admin/addShippingMethodView?error=Add Failed"
+	adminAddShippingMethod          = "/admin/addShippingMethod"
+	adminEditShippingMethodView     = "/admin/editShippingMethodView"
+	adminEditShippingMethodViewFail = "/admin/editShippingMethodView?error=Update Failed"
+	adminEditShippingMethod         = "/admin/editShippingMethod"
+	adminDeleteShippingMethod       = "/admin/deleteShippingMethod"
+	adminShippingMethodListView     = "/admin/shippingMethodListView"
+	adminShippingMethodListViewFail = "/admin/shippingMethodListView?error=Add Failed"
 
 	//pages
 	adminloginPage    = "login.html"
@@ -205,6 +216,11 @@ const (
 	adminAddShippingCarrierPage  = "addShippingCarrier.html"
 	adminEditShippingCarrierPage = "editShippingCarrier.html"
 	adminShippingCarrierListPage = "shippingCarrierList.html"
+
+	//pages shipping method
+	adminAddShippingMethodPage  = "addShippingMethod.html"
+	adminEditShippingMethodPage = "editShippingMethod.html"
+	adminShippingMethodListPage = "shippingMethodList.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"

@@ -138,13 +138,13 @@ type Handler interface {
 	StoreAdminViewCarrierList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteCarrier(w http.ResponseWriter, r *http.Request)
 
-	// //shipping methods
-	// StoreAdminAddShippingMethodPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddShippingMethod(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditShippingMethodPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditShippingMethod(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewShippingMethodList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeleteShippingMethod(w http.ResponseWriter, r *http.Request)
+	//shipping methods
+	StoreAdminAddShippingMethodPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddShippingMethod(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditShippingMethodPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditShippingMethod(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewShippingMethodList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteShippingMethod(w http.ResponseWriter, r *http.Request)
 
 	// //regions
 	// StoreAdminAddRegionPage(w http.ResponseWriter, r *http.Request)
