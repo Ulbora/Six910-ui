@@ -153,6 +153,12 @@ type MockAPI struct {
 	MockExcludedSubRegion           *sdbi.ExcludedSubRegion
 	MockExcludedSubRegionList       *[]sdbi.ExcludedSubRegion
 	MockDeleteExcludedSubRegionResp *api.Response
+
+	MockAddIncludedSubRegionResp    *api.ResponseID
+	MockUpdateIncludedSubRegionResp *api.Response
+	MockIncludedSubRegion           *sdbi.IncludedSubRegion
+	MockIncludedSubRegionList       *[]sdbi.IncludedSubRegion
+	MockDeleteIncludedSubRegionResp *api.Response
 }
 
 //GetNew GetNew
@@ -428,17 +434,17 @@ func (a *MockAPI) DeleteExcludedSubRegion(id int64, regionID int64, headers *api
 
 //AddIncludedSubRegion AddIncludedSubRegion
 func (a *MockAPI) AddIncludedSubRegion(e *sdbi.IncludedSubRegion, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddIncludedSubRegionResp
 }
 
 //GetIncludedSubRegionList GetIncludedSubRegionList
 func (a *MockAPI) GetIncludedSubRegionList(regionID int64, headers *api.Headers) *[]sdbi.IncludedSubRegion {
-	return nil
+	return a.MockIncludedSubRegionList
 }
 
 //DeleteIncludedSubRegion DeleteIncludedSubRegion
 func (a *MockAPI) DeleteIncludedSubRegion(id int64, regionID int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteIncludedSubRegionResp
 }
 
 //instances

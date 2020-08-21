@@ -165,18 +165,14 @@ type Handler interface {
 	//Excluded sub Excluded regions
 	StoreAdminAddExcludedSubRegionPage(w http.ResponseWriter, r *http.Request)
 	StoreAdminAddExcludedSubRegion(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditExcludedSubRegionPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditExcludedSubRegion(w http.ResponseWriter, r *http.Request)
 	StoreAdminViewExcludedSubRegionList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteExcludedSubRegion(w http.ResponseWriter, r *http.Request)
 
 	//Included sub Excluded regions
-	// StoreAdminAddIncludedSubRegionPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddIncludedSubRegion(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditIncludedSubRegionPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditIncludedSubRegion(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewIncludedSubRegionList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeleteIncludedSubRegion(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddIncludedSubRegionPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddIncludedSubRegion(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewIncludedSubRegionList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteIncludedSubRegion(w http.ResponseWriter, r *http.Request)
 
 	// -------------------------------------
 	//zip code zone for sub regions

@@ -165,7 +165,7 @@ const (
 	adminRegionListView     = "/admin/regionView"
 	adminRegionListViewFail = "/admin/regionListView?error=Add Failed"
 
-	//routes Region
+	//routes Sub Region
 	adminAddSubRegionView      = "/admin/addSubRegionView"
 	adminAddSubRegionViewFail  = "/admin/addSubRegionView?error=Add Failed"
 	adminAddSubRegion          = "/admin/addSubRegion"
@@ -176,7 +176,7 @@ const (
 	adminSubRegionListView     = "/admin/subRegionView"
 	adminSubRegionListViewFail = "/admin/subRegionListView?error=Add Failed"
 
-	//routes Region
+	//routes Ex Sub Region
 	adminAddExSubRegionView      = "/admin/addExcludedSubRegionView"
 	adminAddExSubRegionViewFail  = "/admin/addExcludedSubRegionView?error=Add Failed"
 	adminAddExSubRegion          = "/admin/addExcludedSubRegion"
@@ -186,6 +186,17 @@ const (
 	adminDeleteExSubRegion       = "/admin/deleteExcludedSubRegion"
 	adminExSubRegionListView     = "/admin/excludedSubRegionView"
 	adminExSubRegionListViewFail = "/admin/excludedSubRegionListView?error=Add Failed"
+
+	//routes Inc Sub Region
+	adminAddIncSubRegionView      = "/admin/addIncludedSubRegionView"
+	adminAddIncSubRegionViewFail  = "/admin/addIncludedSubRegionView?error=Add Failed"
+	adminAddIncSubRegion          = "/admin/addIncludedSubRegion"
+	adminEditIncSubRegionView     = "/admin/editIncludedSubRegionView"
+	adminEditIncSubRegionViewFail = "/admin/editIncludedSubRegionView?error=Update Failed"
+	adminEditIncSubRegion         = "/admin/editIncludedSubRegion"
+	adminDeleteIncSubRegion       = "/admin/deleteIncludedSubRegion"
+	adminIncSubRegionListView     = "/admin/includedSubRegionView"
+	adminIncSubRegionListViewFail = "/admin/includedSubRegionListView?error=Add Failed"
 
 	//pages
 	adminloginPage    = "login.html"
@@ -269,6 +280,11 @@ const (
 	adminAddExSubRegionPage  = "addExcludedSubRegion.html"
 	adminEditExSubRegionPage = "editExcludedSubRegion.html"
 	adminExSubRegionListPage = "excludedSubRegionList.html"
+
+	//pages Inc sub region
+	adminAddIncSubRegionPage  = "addIncludedSubRegion.html"
+	adminEditIncSubRegionPage = "editIncludedSubRegion.html"
+	adminIncSubRegionListPage = "includedSubRegionList.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"
