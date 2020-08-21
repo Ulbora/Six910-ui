@@ -145,15 +145,15 @@ func (h *Six910Handler) StoreAdminDeleteIncludedSubRegion(w http.ResponseWriter,
 }
 
 func (h *Six910Handler) processIncSubRegion(r *http.Request) *sdbi.IncludedSubRegion {
-	var i sdbi.IncludedSubRegion
+	var in sdbi.IncludedSubRegion
 	id := r.FormValue("id")
-	i.ID, _ = strconv.ParseInt(id, 10, 64)
+	in.ID, _ = strconv.ParseInt(id, 10, 64)
 	regionID := r.FormValue("regionId")
-	i.RegionID, _ = strconv.ParseInt(regionID, 10, 64)
+	in.RegionID, _ = strconv.ParseInt(regionID, 10, 64)
 	shippingMethodID := r.FormValue("shippingMethodId")
-	i.ShippingMethodID, _ = strconv.ParseInt(shippingMethodID, 10, 64)
+	in.ShippingMethodID, _ = strconv.ParseInt(shippingMethodID, 10, 64)
 	subRegionID := r.FormValue("subRegionId")
-	i.SubRegionID, _ = strconv.ParseInt(subRegionID, 10, 64)
+	in.SubRegionID, _ = strconv.ParseInt(subRegionID, 10, 64)
 
-	return &i
+	return &in
 }
