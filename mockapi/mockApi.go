@@ -135,6 +135,24 @@ type MockAPI struct {
 	MockShippingMethod           *sdbi.ShippingMethod
 	MockShippingMethodList       *[]sdbi.ShippingMethod
 	MockDeleteShippingMethodResp *api.Response
+
+	MockAddRegionResp    *api.ResponseID
+	MockUpdateRegionResp *api.Response
+	MockRegion           *sdbi.Region
+	MockRegionList       *[]sdbi.Region
+	MockDeleteRegionResp *api.Response
+
+	MockAddSubRegionResp    *api.ResponseID
+	MockUpdateSubRegionResp *api.Response
+	MockSubRegion           *sdbi.SubRegion
+	MockSubRegionList       *[]sdbi.SubRegion
+	MockDeleteSubRegionResp *api.Response
+
+	MockAddExcludedSubRegionResp    *api.ResponseID
+	MockUpdateExcludedSubRegionResp *api.Response
+	MockExcludedSubRegion           *sdbi.ExcludedSubRegion
+	MockExcludedSubRegionList       *[]sdbi.ExcludedSubRegion
+	MockDeleteExcludedSubRegionResp *api.Response
 }
 
 //GetNew GetNew
@@ -393,17 +411,17 @@ func (a *MockAPI) DeleteDistributor(id int64, headers *api.Headers) *api.Respons
 
 //AddExcludedSubRegion AddExcludedSubRegion
 func (a *MockAPI) AddExcludedSubRegion(e *sdbi.ExcludedSubRegion, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddExcludedSubRegionResp
 }
 
 //GetExcludedSubRegionList GetExcludedSubRegionList
 func (a *MockAPI) GetExcludedSubRegionList(regionID int64, headers *api.Headers) *[]sdbi.ExcludedSubRegion {
-	return nil
+	return a.MockExcludedSubRegionList
 }
 
 //DeleteExcludedSubRegion DeleteExcludedSubRegion
 func (a *MockAPI) DeleteExcludedSubRegion(id int64, regionID int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteExcludedSubRegionResp
 }
 
 //included sub region
@@ -672,27 +690,27 @@ func (a *MockAPI) DeleteProductCategory(pc *sdbi.ProductCategory, headers *api.H
 
 //AddRegion AddRegion
 func (a *MockAPI) AddRegion(r *sdbi.Region, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddRegionResp
 }
 
 //UpdateRegion UpdateRegion
 func (a *MockAPI) UpdateRegion(r *sdbi.Region, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateRegionResp
 }
 
 //GetRegion GetRegion
 func (a *MockAPI) GetRegion(id int64, headers *api.Headers) *sdbi.Region {
-	return nil
+	return a.MockRegion
 }
 
 //GetRegionList GetRegionList
 func (a *MockAPI) GetRegionList(headers *api.Headers) *[]sdbi.Region {
-	return nil
+	return a.MockRegionList
 }
 
 //DeleteRegion DeleteRegion
 func (a *MockAPI) DeleteRegion(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteRegionResp
 }
 
 //shipment
@@ -888,27 +906,27 @@ func (a *MockAPI) DeleteStorePlugin(id int64, headers *api.Headers) *api.Respons
 
 //AddSubRegion AddSubRegion
 func (a *MockAPI) AddSubRegion(s *sdbi.SubRegion, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddSubRegionResp
 }
 
 //UpdateSubRegion UpdateSubRegion
 func (a *MockAPI) UpdateSubRegion(s *sdbi.SubRegion, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockUpdateSubRegionResp
 }
 
 //GetSubRegion GetSubRegion
 func (a *MockAPI) GetSubRegion(id int64, headers *api.Headers) *sdbi.SubRegion {
-	return nil
+	return a.MockSubRegion
 }
 
 //GetSubRegionList GetSubRegionList
 func (a *MockAPI) GetSubRegionList(regionID int64, headers *api.Headers) *[]sdbi.SubRegion {
-	return nil
+	return a.MockSubRegionList
 }
 
 //DeleteSubRegion DeleteSubRegion
 func (a *MockAPI) DeleteSubRegion(id int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteSubRegionResp
 }
 
 //user

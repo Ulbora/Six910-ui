@@ -154,6 +154,39 @@ const (
 	adminShippingMethodListView     = "/admin/shippingMethodListView"
 	adminShippingMethodListViewFail = "/admin/shippingMethodListView?error=Add Failed"
 
+	//routes Region
+	adminAddRegionView      = "/admin/addRegionView"
+	adminAddRegionViewFail  = "/admin/addRegionView?error=Add Failed"
+	adminAddRegion          = "/admin/addRegion"
+	adminEditRegionView     = "/admin/editRegionView"
+	adminEditRegionViewFail = "/admin/editRegionView?error=Update Failed"
+	adminEditRegion         = "/admin/editRegion"
+	adminDeleteRegion       = "/admin/deleteRegion"
+	adminRegionListView     = "/admin/regionView"
+	adminRegionListViewFail = "/admin/regionListView?error=Add Failed"
+
+	//routes Region
+	adminAddSubRegionView      = "/admin/addSubRegionView"
+	adminAddSubRegionViewFail  = "/admin/addSubRegionView?error=Add Failed"
+	adminAddSubRegion          = "/admin/addSubRegion"
+	adminEditSubRegionView     = "/admin/editSubRegionView"
+	adminEditSubRegionViewFail = "/admin/editSubRegionView?error=Update Failed"
+	adminEditSubRegion         = "/admin/editSubRegion"
+	adminDeleteSubRegion       = "/admin/deleteSubRegion"
+	adminSubRegionListView     = "/admin/subRegionView"
+	adminSubRegionListViewFail = "/admin/subRegionListView?error=Add Failed"
+
+	//routes Region
+	adminAddExSubRegionView      = "/admin/addExcludedSubRegionView"
+	adminAddExSubRegionViewFail  = "/admin/addExcludedSubRegionView?error=Add Failed"
+	adminAddExSubRegion          = "/admin/addExcludedSubRegion"
+	adminEditExubRegionView      = "/admin/editExcludedSubRegionView"
+	adminEditExSubRegionViewFail = "/admin/editExcludedSubRegionView?error=Update Failed"
+	adminEditExSubRegion         = "/admin/editExcludedSubRegion"
+	adminDeleteExSubRegion       = "/admin/deleteExcludedSubRegion"
+	adminExSubRegionListView     = "/admin/excludedSubRegionView"
+	adminExSubRegionListViewFail = "/admin/excludedSubRegionListView?error=Add Failed"
+
 	//pages
 	adminloginPage    = "login.html"
 	adminChangePwPage = "changePassword.html"
@@ -221,6 +254,21 @@ const (
 	adminAddShippingMethodPage  = "addShippingMethod.html"
 	adminEditShippingMethodPage = "editShippingMethod.html"
 	adminShippingMethodListPage = "shippingMethodList.html"
+
+	//pages region
+	adminAddRegionPage  = "addRegion.html"
+	adminEditRegionPage = "editRegion.html"
+	adminRegionListPage = "regionList.html"
+
+	//pages sub region
+	adminAddSubRegionPage  = "addSubRegion.html"
+	adminEditSubRegionPage = "editSubRegion.html"
+	adminSubRegionListPage = "subRegionList.html"
+
+	//pages ex sub region
+	adminAddExSubRegionPage  = "addExcludedSubRegion.html"
+	adminEditExSubRegionPage = "editExcludedSubRegion.html"
+	adminExSubRegionListPage = "excludedSubRegionList.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"

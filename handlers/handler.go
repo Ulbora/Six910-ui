@@ -146,13 +146,47 @@ type Handler interface {
 	StoreAdminViewShippingMethodList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteShippingMethod(w http.ResponseWriter, r *http.Request)
 
-	// //regions
-	// StoreAdminAddRegionPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddRegion(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditRegionPage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditRegion(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewRegionList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeleteRegion(w http.ResponseWriter, r *http.Request)
+	//regions
+	StoreAdminAddRegionPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddRegion(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditRegionPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditRegion(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewRegionList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteRegion(w http.ResponseWriter, r *http.Request)
+
+	//sub regions
+	StoreAdminAddSubRegionPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddSubRegion(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditSubRegionPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditSubRegion(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewSubRegionList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteSubRegion(w http.ResponseWriter, r *http.Request)
+
+	//Excluded sub Excluded regions
+	StoreAdminAddExcludedSubRegionPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddExcludedSubRegion(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditExcludedSubRegionPage(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditExcludedSubRegion(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewExcludedSubRegionList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteExcludedSubRegion(w http.ResponseWriter, r *http.Request)
+
+	//Included sub Excluded regions
+	// StoreAdminAddIncludedSubRegionPage(w http.ResponseWriter, r *http.Request)
+	// StoreAdminAddIncludedSubRegion(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditIncludedSubRegionPage(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditIncludedSubRegion(w http.ResponseWriter, r *http.Request)
+	// StoreAdminViewIncludedSubRegionList(w http.ResponseWriter, r *http.Request)
+	// StoreAdminDeleteIncludedSubRegion(w http.ResponseWriter, r *http.Request)
+
+	// -------------------------------------
+	//zip code zone for sub regions
+	// StoreAdminAddZipZonePage(w http.ResponseWriter, r *http.Request)
+	// StoreAdminAddZipZone(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditZipZonePage(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditZipZone(w http.ResponseWriter, r *http.Request)
+	// StoreAdminViewZipZoneList(w http.ResponseWriter, r *http.Request)
+	// StoreAdminDeleteZipZone(w http.ResponseWriter, r *http.Request)
+	//-------------------------------------
 
 	// //abandoned carts
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
