@@ -174,17 +174,13 @@ type Handler interface {
 	StoreAdminViewIncludedSubRegionList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteIncludedSubRegion(w http.ResponseWriter, r *http.Request)
 
-	// -------------------------------------
 	//zip code zone for sub regions
-	// StoreAdminAddZipZonePage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminAddZipZone(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditZipZonePage(w http.ResponseWriter, r *http.Request)
-	// StoreAdminEditZipZone(w http.ResponseWriter, r *http.Request)
-	// StoreAdminViewZipZoneList(w http.ResponseWriter, r *http.Request)
-	// StoreAdminDeleteZipZone(w http.ResponseWriter, r *http.Request)
-	//-------------------------------------
+	StoreAdminAddZipZonePage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddZipZone(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewZipZoneList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteZipZone(w http.ResponseWriter, r *http.Request)
 
-	// //abandoned carts
+	//abandoned carts --- for later----
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCartList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteCart(w http.ResponseWriter, r *http.Request)

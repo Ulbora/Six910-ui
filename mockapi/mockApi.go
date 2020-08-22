@@ -159,6 +159,12 @@ type MockAPI struct {
 	MockIncludedSubRegion           *sdbi.IncludedSubRegion
 	MockIncludedSubRegionList       *[]sdbi.IncludedSubRegion
 	MockDeleteIncludedSubRegionResp *api.Response
+
+	MockAddZoneZipResp    *api.ResponseID
+	MockUpdateZoneZipResp *api.Response
+	MockZoneZip           *sdbi.ZoneZip
+	MockZoneZipList       *[]sdbi.ZoneZip
+	MockDeleteZoneZipResp *api.Response
 }
 
 //GetNew GetNew
@@ -966,20 +972,20 @@ func (a *MockAPI) GetCustomerUsers(headers *api.Headers) *[]api.UserResponse {
 
 //AddZoneZip AddZoneZip
 func (a *MockAPI) AddZoneZip(z *sdbi.ZoneZip, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockAddZoneZipResp
 }
 
 //GetZoneZipListByExclusion GetZoneZipListByExclusion
 func (a *MockAPI) GetZoneZipListByExclusion(exID int64, headers *api.Headers) *[]sdbi.ZoneZip {
-	return nil
+	return a.MockZoneZipList
 }
 
 //GetZoneZipListByInclusion GetZoneZipListByInclusion
 func (a *MockAPI) GetZoneZipListByInclusion(incID int64, headers *api.Headers) *[]sdbi.ZoneZip {
-	return nil
+	return a.MockZoneZipList
 }
 
 //DeleteZoneZip DeleteZoneZip
 func (a *MockAPI) DeleteZoneZip(id int64, incID int64, exID int64, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockDeleteZoneZipResp
 }

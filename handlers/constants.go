@@ -198,6 +198,14 @@ const (
 	adminIncSubRegionListView     = "/admin/includedSubRegionView"
 	adminIncSubRegionListViewFail = "/admin/includedSubRegionListView?error=Add Failed"
 
+	//routes Inc Sub Region
+	adminAddZipZoneView         = "/admin/addZipZoneView"
+	adminAddZipZoneViewFail     = "/admin/addZipZoneView?error=Add Failed"
+	adminAddZipZoneRegion       = "/admin/addZipZone"
+	adminDeleteZipZoneRegion    = "/admin/deleteZipZone"
+	adminIncZipZoneListView     = "/admin/includedZipZone"
+	adminIncZipZoneListViewFail = "/admin/zipZoneListView?error=Add Failed"
+
 	//pages
 	adminloginPage    = "login.html"
 	adminChangePwPage = "changePassword.html"
@@ -285,6 +293,10 @@ const (
 	adminAddIncSubRegionPage  = "addIncludedSubRegion.html"
 	adminEditIncSubRegionPage = "editIncludedSubRegion.html"
 	adminIncSubRegionListPage = "includedSubRegionList.html"
+
+	//pages Inc sub region
+	adminAddZipZonePage  = "addZipZone.html"
+	adminZipZoneListPage = "zipZoneList.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"
