@@ -2,6 +2,7 @@ package handlers
 
 import (
 	b64 "encoding/base64"
+	"encoding/gob"
 	"html/template"
 	"net/http"
 
@@ -88,6 +89,7 @@ func (h *Six910Handler) getSession(r *http.Request) (*sessions.Session, bool) {
 		h.Store = h.Session.InitSessionStore()
 		h.Log.Debug("h.Store : ", h.Store)
 		//errors without this
+		gob.Register(&m.CustomerCart{})
 		//-------gob.Register(&AuthorizeRequestInfo{})
 	}
 	if r != nil {
@@ -144,6 +146,38 @@ func (h *Six910Handler) isStoreAdminLoggedIn(s *sessions.Session) bool {
 	storeAdminUserpa := s.Values["storeAdminUser"]
 	h.Log.Debug("loggedIn in backups: ", loggedInAuthpa)
 	if loggedInAuthpa == true && storeAdminUserpa == true {
+		rtn = true
+	}
+	return rtn
+}
+
+func (h *Six910Handler) isStoreCustomerLoggedIn(s *sessions.Session) bool {
+	var rtn bool
+	loggedInAuthpa := s.Values["loggedIn"]
+	storeCustomerUserpa := s.Values["customerUser"]
+	h.Log.Debug("loggedIn : ", loggedInAuthpa)
+	if loggedInAuthpa == true && storeCustomerUserpa == true {
+		rtn = true
+	}
+	return rtn
+}
+
+func (h *Six910Handler) getCustomerID(s *sessions.Session) int64 {
+	var rtn int64
+	cidstr := s.Values["customerId"]
+	if cidstr != nil {
+		cid := cidstr.(int)
+		rtn = int64(cid)
+	}
+	return rtn
+}
+
+func (h *Six910Handler) storeCustomerCart(cc *m.CustomerCart, s *sessions.Session, w http.ResponseWriter, r *http.Request) bool {
+	var rtn bool
+	s.Values["customerCart"] = cc
+	serr := s.Save(r, w)
+	h.Log.Debug("serr", serr)
+	if serr == nil {
 		rtn = true
 	}
 	return rtn

@@ -194,8 +194,15 @@ type Handler interface {
 	SearchProductList(w http.ResponseWriter, r *http.Request)
 	ViewProduct(w http.ResponseWriter, r *http.Request)
 
-	// //cart
-	// AddProductToCart(w http.ResponseWriter, r *http.Request)
+	//customer login
+	//StoreCustomerLoginPage(w http.ResponseWriter, r *http.Request)
+	//StoreCustomerLogin(w http.ResponseWriter, r *http.Request)
+	//StoreCustomerChangePasswordPage(w http.ResponseWriter, r *http.Request)
+	//StoreCustomerChangePassword(w http.ResponseWriter, r *http.Request)
+	//StoreCustomerLogout(w http.ResponseWriter, r *http.Request)
+
+	//cart
+	AddProductToCart(w http.ResponseWriter, r *http.Request)
 	// UpdateProductToCart(w http.ResponseWriter, r *http.Request)
 	// CheckOut(w http.ResponseWriter, r *http.Request)
 
