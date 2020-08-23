@@ -190,9 +190,9 @@ type Handler interface {
 	Index(w http.ResponseWriter, r *http.Request)
 
 	//products
-	// ViewProductList(w http.ResponseWriter, r *http.Request)
-	// SearchProductList(w http.ResponseWriter, r *http.Request)
-	// ViewProduct(w http.ResponseWriter, r *http.Request)
+	ViewProductList(w http.ResponseWriter, r *http.Request)
+	SearchProductList(w http.ResponseWriter, r *http.Request)
+	ViewProduct(w http.ResponseWriter, r *http.Request)
 
 	// //cart
 	// AddProductToCart(w http.ResponseWriter, r *http.Request)

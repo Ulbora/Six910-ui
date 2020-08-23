@@ -30,6 +30,7 @@ import (
 //CustomerPage CustomerPage
 type CustomerPage struct {
 	ProductList *[]sdbi.Product
+	Product     *sdbi.Product
 	Content     *conts.Content
 }
 

@@ -294,11 +294,14 @@ const (
 	adminEditIncSubRegionPage = "editIncludedSubRegion.html"
 	adminIncSubRegionListPage = "includedSubRegionList.html"
 
-	customerIndexPage = "index.html"
-
 	//pages Inc sub region
 	adminAddZipZonePage  = "addZipZone.html"
 	adminZipZoneListPage = "zipZoneList.html"
+
+	//customer pages
+	customerIndexPage       = "index.html"
+	customerProductListPage = "productList.html"
+	customerProductPage     = "product.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"
@@ -307,5 +310,7 @@ const (
 	timeFormat = "2006-01-02 15:04:05"
 
 	//content pages
-	indexContent = "index"
+	indexContent       = "index"
+	productListContent = "productList"
+	productContent     = "product"
 )
