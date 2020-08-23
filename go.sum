@@ -10,6 +10,8 @@ github.com/Ulbora/Six910API-Go v1.0.4 h1:ZaR1hNkWOvnbm6Kk+7IQ1vduC9aNaZZ/uheGuFj
 github.com/Ulbora/Six910API-Go v1.0.4/go.mod h1:P1rpP4SGl2f0F4LzMe0tkWwjYzcrVf2dA52AfkrLggU=
 github.com/Ulbora/Six910API-Go v1.0.5 h1:8vu0zFXiO9EnVSyfOxUvnbfvmQlyugp22wC499uJrB4=
 github.com/Ulbora/Six910API-Go v1.0.5/go.mod h1:JbWz43Pzef9qXqEnO87f600M4JJccB74DO9Qu9SyPn0=
+github.com/Ulbora/Six910API-Go v1.0.6 h1:KSDbPuH5zza4muxN/WXb5ah9n2HmsKVJT1djpVKpWKc=
+github.com/Ulbora/Six910API-Go v1.0.6/go.mod h1:lipSvhtlF2tnZokhlF6S0iEiGjHHz+X+0EBC6nRz9FU=
 github.com/Ulbora/go-mail-sender v1.0.0 h1:lfVK66JRIPSZCkeTO3/0fnnygVeVF+5ena47I2pj5Fo=
 github.com/Ulbora/go-mail-sender v1.0.0/go.mod h1:uI61omDxYerT9GWLIOIk7Y2wq9esh09UK2LkdCAuTkU=
 github.com/Ulbora/go-oauth2-client v1.0.2 h1:+71Vgof2hT6w0kgwMROk6kt6C3ueQBsU9ehRXpqH1Sk=
@@ -24,9 +26,15 @@ github.com/Ulbora/six910-database-interface v1.0.22 h1:69dlWaB9CZt6zuMhCMOpQupha
 github.com/Ulbora/six910-database-interface v1.0.22/go.mod h1:OGqZQ5ETgqxsHB636qmivSR36NzQxhV4T+ATsIUJSLM=
 github.com/Ulbora/six910-database-interface v1.0.23 h1:t4F0oO6ARPRoZXOb442c0Huy2xnLUAgtuCXhLvXLF0o=
 github.com/Ulbora/six910-database-interface v1.0.23/go.mod h1:OGqZQ5ETgqxsHB636qmivSR36NzQxhV4T+ATsIUJSLM=
+github.com/Ulbora/six910-database-interface v1.0.24 h1:0P2SOSmCE3Co0X4uC6ttj4OX99Fu0NBL/FOxvOZ+6wE=
+github.com/Ulbora/six910-database-interface v1.0.24/go.mod h1:OGqZQ5ETgqxsHB636qmivSR36NzQxhV4T+ATsIUJSLM=
 github.com/gorilla/mux v1.7.4 h1:VuZ8uybHlWmqV03+zRzdwKL4tUnIp1MAQtp1mIFE1bc=
 github.com/gorilla/mux v1.7.4/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
+github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
+github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
 github.com/gorilla/securecookie v1.1.1 h1:miw7JPhV+b/lAHSXz4qd/nN9jRiAFV5FwjeKyCS8BvQ=
 github.com/gorilla/securecookie v1.1.1/go.mod h1:ra0sb63/xPlUeL+yeDciTfxMRAA+MP+HVt/4epWDjd4=
 github.com/gorilla/sessions v1.2.0 h1:S7P+1Hm5V/AT9cjEcUD5uDaQSX0OE577aCXgoaKpYbQ=
 github.com/gorilla/sessions v1.2.0/go.mod h1:dk2InVEVJ0sfLlnXv9EAgkf6ecYs/i80K/zI+bUmuGM=
+github.com/gorilla/sessions v1.2.1 h1:DHd3rPN5lE3Ts3D8rKkQ8x/0kqfeNmBAaiSi+o7FsgI=
+github.com/gorilla/sessions v1.2.1/go.mod h1:dk2InVEVJ0sfLlnXv9EAgkf6ecYs/i80K/zI+bUmuGM=

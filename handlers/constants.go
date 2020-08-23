@@ -294,6 +294,8 @@ const (
 	adminEditIncSubRegionPage = "editIncludedSubRegion.html"
 	adminIncSubRegionListPage = "includedSubRegionList.html"
 
+	customerIndexPage = "index.html"
+
 	//pages Inc sub region
 	adminAddZipZonePage  = "addZipZone.html"
 	adminZipZoneListPage = "zipZoneList.html"
@@ -303,4 +305,7 @@ const (
 	customerRole  = "customer"
 
 	timeFormat = "2006-01-02 15:04:05"
+
+	//content pages
+	indexContent = "index"
 )

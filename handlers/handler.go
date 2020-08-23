@@ -180,16 +180,16 @@ type Handler interface {
 	StoreAdminViewZipZoneList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteZipZone(w http.ResponseWriter, r *http.Request)
 
-	//abandoned carts --- for later----
+	//abandoned carts --- for later---- requires new rest services to be added
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCartList(w http.ResponseWriter, r *http.Request)
 	// StoreAdminDeleteCart(w http.ResponseWriter, r *http.Request)
 
 	// //---customer methods-------------------------------------------------------------
 
-	// Index(w http.ResponseWriter, r *http.Request)
+	Index(w http.ResponseWriter, r *http.Request)
 
-	// //products
+	//products
 	// ViewProductList(w http.ResponseWriter, r *http.Request)
 	// SearchProductList(w http.ResponseWriter, r *http.Request)
 	// ViewProduct(w http.ResponseWriter, r *http.Request)

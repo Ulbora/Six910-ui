@@ -666,14 +666,19 @@ func (a *MockAPI) GetProductBySku(sku string, did int64, headers *api.Headers) *
 	return a.MockProduct
 }
 
+//GetProductsByPromoted GetProductsByPromoted
+func (a *MockAPI) GetProductsByPromoted(start int64, end int64, headers *api.Headers) *[]sdbi.Product {
+	return a.MockProductList
+}
+
 //GetProductsByName GetProductsByName
 func (a *MockAPI) GetProductsByName(name string, start int64, end int64, headers *api.Headers) *[]sdbi.Product {
-	return nil
+	return a.MockProductList
 }
 
 //GetProductsByCaterory GetProductsByCaterory
 func (a *MockAPI) GetProductsByCaterory(catID int64, start int64, end int64, headers *api.Headers) *[]sdbi.Product {
-	return nil
+	return a.MockProductList
 }
 
 //GetProductList GetProductList
