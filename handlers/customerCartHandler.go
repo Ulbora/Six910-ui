@@ -46,8 +46,75 @@ func (h *Six910Handler) AddProductToCart(w http.ResponseWriter, r *http.Request)
 
 		hd := h.getHeader(cpls)
 		cres := h.Manager.AddProductToCart(&cpd, hd)
-		h.storeCustomerCart(cres, cpls, w, r)
+		acres := h.storeCustomerCart(cres, cpls, w, r)
 
 		h.Log.Debug("cres: ", cres)
+		h.Log.Debug("acres: ", acres)
+
+		http.Redirect(w, r, customerShoppingCartView, http.StatusFound)
+	}
+}
+
+//ViewCart ViewCart
+func (h *Six910Handler) ViewCart(w http.ResponseWriter, r *http.Request) {
+	ccvs, suc := h.getSession(r)
+	h.Log.Debug("session suc", suc)
+	if suc {
+		var cv *m.CartView
+		cc := h.getCustomerCart(ccvs)
+		h.Log.Debug("cc: ", cc)
+		if cc != nil {
+			hd := h.getHeader(ccvs)
+			cv = h.Manager.ViewCart(cc, hd)
+		} else {
+			var ncv m.CartView
+			var ncil []*m.CartViewItem
+			ncv.Items = &ncil
+			cv = &ncv
+		}
+		h.Log.Debug("CartView: ", *cv)
+		h.Templates.ExecuteTemplate(w, customerShoppingCartView, &cv)
+	}
+}
+
+//UpdateProductToCart UpdateProductToCart
+func (h *Six910Handler) UpdateProductToCart(w http.ResponseWriter, r *http.Request) {
+	ucpls, suc := h.getSession(r)
+	h.Log.Debug("session suc", suc)
+	if suc {
+		uappvars := mux.Vars(r)
+		uappidstr := uappvars["prodId"]
+		uappqtystr := uappvars["quantity"]
+		ucppid, _ := strconv.ParseInt(uappidstr, 10, 64)
+		ucppqty, _ := strconv.ParseInt(uappqtystr, 10, 64)
+		var ucpd m.CustomerProductUpdate
+
+		if h.isStoreCustomerLoggedIn(ucpls) {
+			ucpd.CustomerID = h.getCustomerID(ucpls)
+		}
+		ccart := h.getCustomerCart(ucpls)
+		ucpd.Cart = ccart.Cart
+
+		for i := range *ccart.Items {
+			h.Log.Debug("(*ccart.Items)[i]: ", (*ccart.Items)[i])
+			if (*ccart.Items)[i].ProductID == ucppid {
+				(*ccart.Items)[i].Quantity += ucppqty
+				ucpd.CartItem = &(*ccart.Items)[i]
+				break
+			}
+		}
+
+		h.Log.Debug("cusid: ", ucpd.CustomerID)
+		h.Log.Debug("CustomerProductUpdate: ", ucpd)
+		//h.Log.Debug("CustomerProductUpdate item: ", *ucpd.CartItem)
+
+		hd := h.getHeader(ucpls)
+		ucres := h.Manager.UpdateProductToCart(&ucpd, hd)
+		acres := h.storeCustomerCart(ucres, ucpls, w, r)
+
+		h.Log.Debug("cres: ", ucres)
+		h.Log.Debug("acres: ", acres)
+
+		http.Redirect(w, r, customerShoppingCartView, http.StatusFound)
 	}
 }

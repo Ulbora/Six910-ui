@@ -143,6 +143,22 @@ type OrderItemResults struct {
 	Resp      *api.ResponseID
 }
 
+//CartViewItem CartViewItem
+type CartViewItem struct {
+	ProductID int64
+	Desc      string
+	Image     string
+	Quantity  int64
+	Price     float64
+	Total     float64
+}
+
+//CartView CartView
+type CartView struct {
+	Items *[]*CartViewItem
+	Total float64
+}
+
 //Manager Manager
 type Manager interface {
 	// ------ Customer methods -----------
@@ -150,6 +166,7 @@ type Manager interface {
 	//--------------------start----new------------
 
 	AddProductToCart(cp *CustomerProduct, hd *api.Headers) *CustomerCart
+	ViewCart(cc *CustomerCart, hd *api.Headers) *CartView
 	UpdateProductToCart(cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart
 	CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerOrder
 

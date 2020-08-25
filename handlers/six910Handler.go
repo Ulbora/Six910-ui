@@ -182,3 +182,12 @@ func (h *Six910Handler) storeCustomerCart(cc *m.CustomerCart, s *sessions.Sessio
 	}
 	return rtn
 }
+
+func (h *Six910Handler) getCustomerCart(s *sessions.Session) *m.CustomerCart {
+	var rtn *m.CustomerCart
+	fc := s.Values["customerCart"]
+	if fc != nil {
+		rtn = fc.(*m.CustomerCart)
+	}
+	return rtn
+}

@@ -1,6 +1,7 @@
 package managers
 
 import (
+	"math"
 	"strconv"
 	"sync"
 	"time"
@@ -64,6 +65,48 @@ func (m *Six910Manager) AddProductToCart(cp *CustomerProduct, hd *api.Headers) *
 			rtn.Items = m.API.GetCartItemList(cart.ID, cp.CustomerID, hd)
 		}
 	}
+	return &rtn
+}
+
+//ViewCart ViewCart
+func (m *Six910Manager) ViewCart(cc *CustomerCart, hd *api.Headers) *CartView {
+	var rtn CartView
+	var wg sync.WaitGroup
+	var itemchan = make(chan *CartViewItem, len(*cc.Items))
+	for i := range *cc.Items {
+		wg.Add(1)
+		go func(cItem *sdbi.CartItem, ichan chan *CartViewItem, header *api.Headers) {
+			m.Log.Debug("in goroutine :", cItem.ProductID)
+			defer wg.Done()
+			var cvi CartViewItem
+			prod := m.API.GetProductByID(cItem.ProductID, header)
+			//m.Log.Debug("in goroutine prod:", *prod)
+			cvi.ProductID = prod.ID
+			cvi.Desc = prod.ShortDesc
+			cvi.Image = prod.Thumbnail
+			cvi.Quantity = cItem.Quantity
+			if prod.SalePrice != 0 {
+				cvi.Price = prod.SalePrice
+			} else {
+				cvi.Price = prod.Price
+			}
+			cvi.Total = math.Round((cvi.Price*float64(cvi.Quantity))*100) / 100
+			m.Log.Debug("in goroutine cvi.Total:", cvi.Total)
+			ichan <- &cvi
+		}(&(*cc.Items)[i], itemchan, hd)
+	}
+	wg.Wait()
+	close(itemchan)
+	var cviList []*CartViewItem
+	for ci := range itemchan {
+		cviList = append(cviList, ci)
+		rtn.Total = math.Round((rtn.Total+ci.Total)*100) / 100
+		m.Log.Debug("ci:", *ci)
+	}
+	m.Log.Debug("rtn.Total:", rtn.Total)
+	rtn.Items = &cviList
+	m.Log.Debug("rtn:", rtn)
+
 	return &rtn
 }
 
