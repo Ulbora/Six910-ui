@@ -3,8 +3,11 @@ package handlers
 import (
 	"net/http"
 	"strconv"
+	"sync"
 
 	m "github.com/Ulbora/Six910-ui/managers"
+	six910api "github.com/Ulbora/Six910API-Go"
+	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
 
@@ -25,6 +28,20 @@ import (
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+//PaymentMethod PaymentMethod
+type PaymentMethod struct {
+	Name           string
+	PaymentGateway *sdbi.PaymentGateway
+}
+
+//CheckoutPage CheckoutPage
+type CheckoutPage struct {
+	CustomerCart       *m.CustomerCart
+	PaymentMethodList  *[]PaymentMethod
+	ShippingMethodList *[]sdbi.ShippingMethod
+	InsuranceList      *[]sdbi.Insurance
+}
 
 //AddProductToCart AddProductToCart
 func (h *Six910Handler) AddProductToCart(w http.ResponseWriter, r *http.Request) {
@@ -66,6 +83,8 @@ func (h *Six910Handler) ViewCart(w http.ResponseWriter, r *http.Request) {
 		if cc != nil {
 			hd := h.getHeader(ccvs)
 			cv = h.Manager.ViewCart(cc, hd)
+			cc.CartView = cv
+			h.storeCustomerCart(cc, ccvs, w, r)
 		} else {
 			var ncv m.CartView
 			var ncil []*m.CartViewItem
@@ -116,5 +135,54 @@ func (h *Six910Handler) UpdateProductToCart(w http.ResponseWriter, r *http.Reque
 		h.Log.Debug("acres: ", acres)
 
 		http.Redirect(w, r, customerShoppingCartView, http.StatusFound)
+	}
+}
+
+//CheckOutView CheckOutView
+func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
+	cocvs, suc := h.getSession(r)
+	h.Log.Debug("session suc", suc)
+	if suc {
+		if h.isStoreCustomerLoggedIn(cocvs) {
+			var cop CheckoutPage
+			cocc := h.getCustomerCart(cocvs)
+			cop.CustomerCart = cocc
+			var wg sync.WaitGroup
+			hd := h.getHeader(cocvs)
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				var mplist []PaymentMethod
+				pgs := h.API.GetPaymentGateways(header)
+				for i := range *pgs {
+					var pg = (*pgs)[i]
+					sp := h.API.GetStorePlugin(pg.StorePluginsID, header)
+					var pm PaymentMethod
+					pm.Name = sp.PluginName
+					pm.PaymentGateway = &pg
+					mplist = append(mplist, pm)
+				}
+				cop.PaymentMethodList = &mplist
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				cop.ShippingMethodList = h.API.GetShippingMethodList(header)
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				cop.InsuranceList = h.API.GetInsuranceList(header)
+			}(hd)
+
+			wg.Wait()
+
+			h.Log.Debug("CheckoutPage: ", cop)
+			h.Templates.ExecuteTemplate(w, customerShoppingCartView, &cop)
+		} else {
+			http.Redirect(w, r, customerLoginView, http.StatusFound)
+		}
 	}
 }

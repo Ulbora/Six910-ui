@@ -116,6 +116,7 @@ type CustomerProductUpdate struct {
 type CustomerCart struct {
 	Cart             *sdbi.Cart
 	Items            *[]sdbi.CartItem
+	CartView         *CartView
 	Comment          string
 	CustomerAccount  *CustomerAccount
 	InsuranceCost    float64

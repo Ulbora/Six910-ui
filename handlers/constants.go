@@ -207,6 +207,8 @@ const (
 	adminIncZipZoneListViewFail = "/admin/zipZoneListView?error=Add Failed"
 
 	//routes shopping cart
+	customerLoginView            = "/customerLogin"
+	customerLoginViewFail        = "/customerLogin?error=Add Failed"
 	customerShoppingCartView     = "/shoppingCartView"
 	customerShoppingCartViewFail = "/shoppingCartView?error=Add Failed"
 
@@ -303,6 +305,7 @@ const (
 	adminZipZoneListPage = "zipZoneList.html"
 
 	//customer pages
+	customerLoginPage       = "login.html"
 	customerIndexPage       = "index.html"
 	customerProductListPage = "productList.html"
 	customerProductPage     = "product.html"

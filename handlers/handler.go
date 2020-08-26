@@ -198,6 +198,7 @@ type Handler interface {
 	AddProductToCart(w http.ResponseWriter, r *http.Request)
 	ViewCart(w http.ResponseWriter, r *http.Request)
 	UpdateProductToCart(w http.ResponseWriter, r *http.Request)
+	CheckOutView(w http.ResponseWriter, r *http.Request)
 	// CheckOut(w http.ResponseWriter, r *http.Request)
 
 	// //customer
