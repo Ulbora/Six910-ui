@@ -136,8 +136,14 @@ func (m *Six910Manager) CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerO
 			rtn = m.completeOrder(cart, hd)
 		}
 	}
-
 	return rtn
+}
+
+//CalculateCartTotals CalculateCartTotals
+func (m *Six910Manager) CalculateCartTotals(cart *CustomerCart, hd *api.Headers) *CustomerCart {
+	// do all calculation lookups and calculations here
+
+	return cart
 }
 
 func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *CustomerOrder {

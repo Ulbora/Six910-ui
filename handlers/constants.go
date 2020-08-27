@@ -305,10 +305,12 @@ const (
 	adminZipZoneListPage = "zipZoneList.html"
 
 	//customer pages
-	customerLoginPage       = "login.html"
-	customerIndexPage       = "index.html"
-	customerProductListPage = "productList.html"
-	customerProductPage     = "product.html"
+	customerLoginPage                = "login.html"
+	customerIndexPage                = "index.html"
+	customerProductListPage          = "productList.html"
+	customerProductPage              = "product.html"
+	customerShoppingCartPage         = "shoppingCart.html"
+	customerShoppingCartContinuePage = "shoppingCartContinue.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"

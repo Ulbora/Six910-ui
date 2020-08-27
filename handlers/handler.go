@@ -180,6 +180,11 @@ type Handler interface {
 	StoreAdminViewZipZoneList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteZipZone(w http.ResponseWriter, r *http.Request)
 
+	//tax rate
+	//StoreAdminAddTaxRateView(w http.ResponseWriter, r *http.Request)
+	//StoreAdminAddTaxRate(w http.ResponseWriter, r *http.Request)
+	//StoreAdminDeleteTaxRate(w http.ResponseWriter, r *http.Request)
+
 	//abandoned carts --- for later---- requires new rest services to be added
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCartList(w http.ResponseWriter, r *http.Request)
@@ -199,11 +204,15 @@ type Handler interface {
 	ViewCart(w http.ResponseWriter, r *http.Request)
 	UpdateProductToCart(w http.ResponseWriter, r *http.Request)
 	CheckOutView(w http.ResponseWriter, r *http.Request)
+	CheckOutContinue(w http.ResponseWriter, r *http.Request)
 	// CheckOut(w http.ResponseWriter, r *http.Request)
 
 	// //customer
 	// CreateCustomerAccount(w http.ResponseWriter, r *http.Request)
 	// UpdateCustomerAccount(w http.ResponseWriter, r *http.Request)
+	// CustomerAddressPage(w http.ResponseWriter, r *http.Request)
+	// CustomerAddress(w http.ResponseWriter, r *http.Request)
+	// DeleteCustomerAddress(w http.ResponseWriter, r *http.Request)
 
 	// CustomerLoginPage(w http.ResponseWriter, r *http.Request)
 	// CustomerLogin(w http.ResponseWriter, r *http.Request)

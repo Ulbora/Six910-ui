@@ -92,7 +92,7 @@ func (h *Six910Handler) ViewCart(w http.ResponseWriter, r *http.Request) {
 			cv = &ncv
 		}
 		h.Log.Debug("CartView: ", *cv)
-		h.Templates.ExecuteTemplate(w, customerShoppingCartView, &cv)
+		h.Templates.ExecuteTemplate(w, customerShoppingCartPage, &cv)
 	}
 }
 
@@ -180,7 +180,58 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 			wg.Wait()
 
 			h.Log.Debug("CheckoutPage: ", cop)
-			h.Templates.ExecuteTemplate(w, customerShoppingCartView, &cop)
+			h.Templates.ExecuteTemplate(w, customerShoppingCartPage, &cop)
+		} else {
+			http.Redirect(w, r, customerLoginView, http.StatusFound)
+		}
+	}
+}
+
+//CheckOutContinue CheckOutContinue
+func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request) {
+	// this is where insurance, shipping and taxes are calculated
+	// returns results to user before final checkout
+	//items to get:
+	//1. PaymentGatewayID
+	//2. ShippingMethodID
+	//3. InsuranceID
+	//4. BillingAddressID
+	//5. ShippingAddressID
+
+	//tax calc: country, state, zipstart zipend, %, prod category, inc handling, inc shipping, tax type(sales, vat)
+	cocccs, suc := h.getSession(r)
+	h.Log.Debug("session suc", suc)
+	if suc {
+		if h.isStoreCustomerLoggedIn(cocccs) {
+			uappvars := mux.Vars(r)
+			pidStr := uappvars["PaymentGatewayID"]
+			smidStr := uappvars["ShippingMethodID"]
+			insidStr := uappvars["InsuranceID"]
+			baidStr := uappvars["BillingAddressID"]
+			saidStr := uappvars["ShippingAddressID"]
+
+			pgwid, _ := strconv.ParseInt(pidStr, 10, 64)
+			smid, _ := strconv.ParseInt(smidStr, 10, 64)
+			insid, _ := strconv.ParseInt(insidStr, 10, 64)
+			baid, _ := strconv.ParseInt(baidStr, 10, 64)
+			said, _ := strconv.ParseInt(saidStr, 10, 64)
+
+			ccoart := h.getCustomerCart(cocccs)
+			ccoart.PaymentGatewayID = pgwid
+			ccoart.ShippingMethodID = smid
+			ccoart.InsuranceID = insid
+			ccoart.BillingAddressID = baid
+			ccoart.ShippingAddressID = said
+
+			hd := h.getHeader(cocccs)
+			ccotres := h.Manager.CalculateCartTotals(ccoart, hd)
+
+			acres := h.storeCustomerCart(ccotres, cocccs, w, r)
+
+			h.Log.Debug("ccotres: ", ccotres)
+			h.Log.Debug("acres: ", acres)
+
+			h.Templates.ExecuteTemplate(w, customerShoppingCartContinuePage, &ccotres)
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)
 		}

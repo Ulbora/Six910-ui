@@ -1263,3 +1263,74 @@ func TestSix910Manager_ViewCartSaleprice(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestSix910Manager_CalculateCartTotals(t *testing.T) {
+	var sm Six910Manager
+
+	//var sapi api.Six910API
+
+	//-----------start mocking------------------
+	var sapi mapi.MockAPI
+
+	var pd sdbi.Product
+	pd.ID = 4
+	pd.SalePrice = 28.95
+	pd.ShortDesc = "test one"
+	pd.Thumbnail = "/test/"
+	sapi.MockProduct = &pd
+
+	//-----------end mocking --------
+
+	//sapi.SetAPIKey("123")
+	//sapi.storeID = 59
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	//api := sapi.GetNew()
+
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sm.API = sapi.GetNew()
+
+	// //---mock out the call
+	// var gp px.MockGoProxy
+	// var mres http.Response
+	// mres.Body = ioutil.NopCloser(bytes.NewBufferString(`{"username": "tester123", "enabled": true, "role": "customer" }`))
+	// gp.MockResp = &mres
+	// gp.MockDoSuccess1 = true
+	// gp.MockRespCode = 200
+	// sapi.OverrideProxy(&gp)
+	// //---end mock out the call
+
+	sapi.SetLogLever(lg.AllLevel)
+	sm.Log = &l
+
+	var cilstp []sdbi.CartItem
+
+	var ctit1 sdbi.CartItem
+	ctit1.Quantity = 3
+	ctit1.ProductID = 7
+	cilstp = append(cilstp, ctit1)
+
+	var ctit2 sdbi.CartItem
+	ctit2.Quantity = 4
+	ctit2.ProductID = 9
+	cilstp = append(cilstp, ctit2)
+
+	var cc CustomerCart
+	cc.Items = &cilstp
+
+	var head api.Headers
+	//head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
+
+	m := sm.GetNew()
+	cv := m.CalculateCartTotals(&cc, &head)
+
+	fmt.Println("customer cv: ", cv)
+	if cv.Total != 0 {
+		t.Fail()
+	}
+}

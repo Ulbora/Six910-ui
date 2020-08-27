@@ -114,18 +114,23 @@ type CustomerProductUpdate struct {
 
 //CustomerCart CustomerCart
 type CustomerCart struct {
-	Cart             *sdbi.Cart
-	Items            *[]sdbi.CartItem
-	CartView         *CartView
-	Comment          string
-	CustomerAccount  *CustomerAccount
-	InsuranceCost    float64
-	OrderType        string
-	Pickup           bool
-	ShippingHandling float64
-	Subtotal         float64
-	Taxes            float64
-	Total            float64
+	Cart              *sdbi.Cart
+	Items             *[]sdbi.CartItem
+	CartView          *CartView
+	Comment           string
+	CustomerAccount   *CustomerAccount
+	InsuranceCost     float64
+	OrderType         string
+	Pickup            bool
+	ShippingHandling  float64
+	Subtotal          float64
+	Taxes             float64
+	Total             float64
+	PaymentGatewayID  int64
+	ShippingMethodID  int64
+	InsuranceID       int64
+	BillingAddressID  int64
+	ShippingAddressID int64
 }
 
 //CustomerOrder CustomerOrder
@@ -170,6 +175,7 @@ type Manager interface {
 	ViewCart(cc *CustomerCart, hd *api.Headers) *CartView
 	UpdateProductToCart(cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart
 	CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerOrder
+	CalculateCartTotals(cart *CustomerCart, hd *api.Headers) *CustomerCart
 
 	CreateCustomerAccount(cus *CustomerAccount, hd *api.Headers) (bool, *CustomerAccount)
 	UpdateCustomerAccount(cus *CustomerAccount, hd *api.Headers) bool
