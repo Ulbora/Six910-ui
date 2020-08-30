@@ -106,6 +106,13 @@ type Handler interface {
 	StoreAdminViewInsuranceList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteInsurance(w http.ResponseWriter, r *http.Request)
 
+	StoreAdminAddTaxRatePage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddTaxRate(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditTaxRatePage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditTaxRate(w http.ResponseWriter, r *http.Request)
+	StoreAdminViewTaxRateList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteTaxRate(w http.ResponseWriter, r *http.Request)
+
 	//payment gateway
 	StoreAdminAddPaymentGatewayPage(w http.ResponseWriter, r *http.Request)
 	StoreAdminAddPaymentGateway(w http.ResponseWriter, r *http.Request)
@@ -208,10 +215,12 @@ type Handler interface {
 	// CheckOut(w http.ResponseWriter, r *http.Request)
 
 	// //customer
+	// CreateCustomerAccountPage(w http.ResponseWriter, r *http.Request)
 	// CreateCustomerAccount(w http.ResponseWriter, r *http.Request)
+	// UpdateCustomerAccountPage(w http.ResponseWriter, r *http.Request)
 	// UpdateCustomerAccount(w http.ResponseWriter, r *http.Request)
-	// CustomerAddressPage(w http.ResponseWriter, r *http.Request)
-	// CustomerAddress(w http.ResponseWriter, r *http.Request)
+	// CustomerAddAddressPage(w http.ResponseWriter, r *http.Request)
+	// CustomerAddAddress(w http.ResponseWriter, r *http.Request)
 	// DeleteCustomerAddress(w http.ResponseWriter, r *http.Request)
 
 	// CustomerLoginPage(w http.ResponseWriter, r *http.Request)

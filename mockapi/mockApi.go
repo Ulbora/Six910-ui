@@ -165,6 +165,12 @@ type MockAPI struct {
 	MockZoneZip           *sdbi.ZoneZip
 	MockZoneZipList       *[]sdbi.ZoneZip
 	MockDeleteZoneZipResp *api.Response
+
+	MockAddTaxRateResp    *api.ResponseID
+	MockUpdateTaxRateResp *api.Response
+	MockTaxRate           *sdbi.TaxRate
+	MockTaxRateList       *[]sdbi.TaxRate
+	MockDeleteTaxRateResp *api.Response
 }
 
 //GetNew GetNew
@@ -500,6 +506,33 @@ func (a *MockAPI) GetInsuranceList(headers *api.Headers) *[]sdbi.Insurance {
 //DeleteInsurance DeleteInsurance
 func (a *MockAPI) DeleteInsurance(id int64, headers *api.Headers) *api.Response {
 	return a.MockDeleteInsuranceResp
+}
+
+//tax rate
+
+//AddTaxRate AddTaxRate
+func (a *MockAPI) AddTaxRate(t *sdbi.TaxRate, headers *api.Headers) *api.ResponseID {
+	return a.MockAddTaxRateResp
+}
+
+//UpdateTaxRate UpdateTaxRate
+func (a *MockAPI) UpdateTaxRate(t *sdbi.TaxRate, headers *api.Headers) *api.Response {
+	return a.MockUpdateTaxRateResp
+}
+
+//GetTaxRate GetTaxRate
+func (a *MockAPI) GetTaxRate(country string, state string, headers *api.Headers) *[]sdbi.TaxRate {
+	return a.MockTaxRateList
+}
+
+//GetTaxRateList GetTaxRateList
+func (a *MockAPI) GetTaxRateList(headers *api.Headers) *[]sdbi.TaxRate {
+	return a.MockTaxRateList
+}
+
+//DeleteTaxRate DeleteTaxRate
+func (a *MockAPI) DeleteTaxRate(id int64, headers *api.Headers) *api.Response {
+	return a.MockDeleteTaxRateResp
 }
 
 //order

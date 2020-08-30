@@ -99,6 +99,17 @@ const (
 	adminInsuranceListView     = "/admin/insuranceListView"
 	adminInsuranceListViewFail = "/admin/insuranceListView?error=Add Failed"
 
+	//routes TaxRate
+	adminAddTaxRateView      = "/admin/addTaxRateView"
+	adminAddTaxRateViewFail  = "/admin/addTaxRateView?error=Add Failed"
+	adminAddTaxRate          = "/admin/addTaxRate"
+	adminEditTaxRateView     = "/admin/editTaxRateView"
+	adminEditTaxRateViewFail = "/admin/editTaxRateView?error=Update Failed"
+	adminEditTaxRate         = "/admin/editTaxRate"
+	adminDeleteTaxRate       = "/admin/deleteTaxRate"
+	adminTaxRateListView     = "/admin/taxRateListView"
+	adminTaxRateListViewFail = "/admin/taxRateListView?error=Add Failed"
+
 	//routes Payment Gateway
 	adminAddPaymentGatewayView      = "/admin/addPaymentGatewayView"
 	adminAddPaymentGatewayViewFail  = "/admin/addPaymentGatewayView?error=Add Failed"
@@ -254,6 +265,11 @@ const (
 	adminAddInsurancePage  = "addInsurance.html"
 	adminEditInsurancePage = "editInsurance.html"
 	adminInsuranceListPage = "insuranceList.html"
+
+	//pages TaxRate
+	adminAddTaxRatePage  = "addTaxRate.html"
+	adminEditTaxRatePage = "editTaxRate.html"
+	adminTaxRateListPage = "taxRateList.html"
 
 	//pages Payment Gateway
 	adminAddPaymentGatwayPage  = "addPaymentGatway.html"
