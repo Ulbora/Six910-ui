@@ -106,6 +106,7 @@ type Handler interface {
 	StoreAdminViewInsuranceList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteInsurance(w http.ResponseWriter, r *http.Request)
 
+	//tax rate
 	StoreAdminAddTaxRatePage(w http.ResponseWriter, r *http.Request)
 	StoreAdminAddTaxRate(w http.ResponseWriter, r *http.Request)
 	StoreAdminEditTaxRatePage(w http.ResponseWriter, r *http.Request)
@@ -186,11 +187,6 @@ type Handler interface {
 	StoreAdminAddZipZone(w http.ResponseWriter, r *http.Request)
 	StoreAdminViewZipZoneList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteZipZone(w http.ResponseWriter, r *http.Request)
-
-	//tax rate
-	//StoreAdminAddTaxRateView(w http.ResponseWriter, r *http.Request)
-	//StoreAdminAddTaxRate(w http.ResponseWriter, r *http.Request)
-	//StoreAdminDeleteTaxRate(w http.ResponseWriter, r *http.Request)
 
 	//abandoned carts --- for later---- requires new rest services to be added
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
