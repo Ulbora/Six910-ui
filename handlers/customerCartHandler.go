@@ -203,12 +203,12 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		if h.isStoreCustomerLoggedIn(cocccs) {
-			uappvars := mux.Vars(r)
-			pidStr := uappvars["PaymentGatewayID"]
-			smidStr := uappvars["ShippingMethodID"]
-			insidStr := uappvars["InsuranceID"]
-			baidStr := uappvars["BillingAddressID"]
-			saidStr := uappvars["ShippingAddressID"]
+			//uappvars := mux.Vars(r)
+			pidStr := r.FormValue("paymentGatewayID")
+			smidStr := r.FormValue("shippingMethodID")
+			insidStr := r.FormValue("insuranceID")
+			baidStr := r.FormValue("billingAddressID")
+			saidStr := r.FormValue("shippingAddressID")
 
 			pgwid, _ := strconv.ParseInt(pidStr, 10, 64)
 			smid, _ := strconv.ParseInt(smidStr, 10, 64)
@@ -222,6 +222,7 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			ccoart.InsuranceID = insid
 			ccoart.BillingAddressID = baid
 			ccoart.ShippingAddressID = said
+			h.Log.Debug("ccoart: ", *ccoart)
 
 			hd := h.getHeader(cocccs)
 			ccotres := h.Manager.CalculateCartTotals(ccoart, hd)

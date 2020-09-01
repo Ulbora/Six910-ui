@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
@@ -847,14 +848,16 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 
 	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
 
-	r, _ := http.NewRequest("POST", "https://test.com", nil)
-	vars := map[string]string{
-		"PaymentGatewayID":  "9",
-		"ShippingMethodID":  "2",
-		"InsuranceID":       "2",
-		"BillingAddressID":  "2",
-		"ShippingAddressID": "2",
-	}
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("paymentGatewayID=9&"+
+		"shippingMethodID=22&insuranceID=2&billingAddressID=23&shippingAddressID=2"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	// vars := map[string]string{
+	// 	"PaymentGatewayID":  "9",
+	// 	"ShippingMethodID":  "2",
+	// 	"InsuranceID":       "2",
+	// 	"BillingAddressID":  "2",
+	// 	"ShippingAddressID": "2",
+	// }
 
 	var cilstp []sdbi.CartItem
 
@@ -871,7 +874,7 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 	var cccs m.CustomerCart
 	cccs.Items = &cilstp
 
-	r = mux.SetURLVars(r, vars)
+	//r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
 	fmt.Println("suc: ", suc)
