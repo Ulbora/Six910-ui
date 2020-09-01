@@ -223,6 +223,15 @@ const (
 	customerShoppingCartView     = "/shoppingCartView"
 	customerShoppingCartViewFail = "/shoppingCartView?error=Add Failed"
 
+	//routes customer
+	createCustomerView      = "/createCustomerView"
+	createCustomerViewFail  = "/createCustomerView?error=Customer Email Already Used"
+	createCustomerViewError = "/createCustomerView?error=Customer Create Error"
+	createCustomer          = "/createCustomer"
+	//adminDeleteZipZoneRegion    = "/admin/deleteZipZone"
+	//adminIncZipZoneListView     = "/admin/includedZipZone"
+	//adminIncZipZoneListViewFail = "/admin/zipZoneListView?error=Add Failed"
+
 	//pages
 	adminloginPage    = "login.html"
 	adminChangePwPage = "changePassword.html"
@@ -327,10 +336,14 @@ const (
 	customerProductPage              = "product.html"
 	customerShoppingCartPage         = "shoppingCart.html"
 	customerShoppingCartContinuePage = "shoppingCartContinue.html"
+	customerCreatePage               = "createCustomer.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"
 	customerRole  = "customer"
+
+	billingAddressType  = "Billing"
+	shippingAddressType = "Shipping"
 
 	timeFormat = "2006-01-02 15:04:05"
 

@@ -125,7 +125,8 @@ func (h *Six910Handler) getSession(r *http.Request) (*sessions.Session, bool) {
 
 func (h *Six910Handler) getHeader(s *sessions.Session) *api.Headers {
 	var hd api.Headers
-	if !h.OAuth2Enabled {
+	storeCustomerUserpa := s.Values["customerUser"]
+	if !h.OAuth2Enabled || storeCustomerUserpa == true {
 		var sEnccl string
 		username := s.Values["username"]
 		password := s.Values["password"]

@@ -210,9 +210,9 @@ type Handler interface {
 	CheckOutContinue(w http.ResponseWriter, r *http.Request)
 	// CheckOut(w http.ResponseWriter, r *http.Request)
 
-	// //customer
-	// CreateCustomerAccountPage(w http.ResponseWriter, r *http.Request)
-	// CreateCustomerAccount(w http.ResponseWriter, r *http.Request)
+	//customer
+	CreateCustomerAccountPage(w http.ResponseWriter, r *http.Request)
+	CreateCustomerAccount(w http.ResponseWriter, r *http.Request)
 	// UpdateCustomerAccountPage(w http.ResponseWriter, r *http.Request)
 	// UpdateCustomerAccount(w http.ResponseWriter, r *http.Request)
 	// CustomerAddAddressPage(w http.ResponseWriter, r *http.Request)
