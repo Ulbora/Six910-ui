@@ -550,6 +550,7 @@ func TestSix910Handler_UpdateCustomerAccountPage(t *testing.T) {
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = 55
+	s.Values["username"] = "tester"
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.UpdateCustomerAccountPage(w, r)

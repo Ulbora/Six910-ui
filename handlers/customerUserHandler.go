@@ -124,11 +124,10 @@ func (h *Six910Handler) CustomerChangePassword(w http.ResponseWriter, r *http.Re
 			suc, uu := h.Manager.CustomerChangePassword(&u, hd)
 			h.Log.Debug("uu: ", uu)
 			if suc {
-				http.Redirect(w, r, customerLoginView, http.StatusFound)
+				http.Redirect(w, r, customerInfoView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, customerLoginView, http.StatusFound)
+				http.Redirect(w, r, customerInfoViewFail, http.StatusFound)
 			}
-			h.Templates.ExecuteTemplate(w, customerCreatePage, &uu)
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)
 		}
