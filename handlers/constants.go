@@ -217,6 +217,10 @@ const (
 	adminIncZipZoneListView     = "/admin/includedZipZone"
 	adminIncZipZoneListViewFail = "/admin/zipZoneListView?error=Add Failed"
 
+	//routes customer
+	customerIndexView     = "/customerIndex"
+	customerIndexViewFail = "/customerIndex?error=Add Failed"
+
 	//routes shopping cart
 	customerLoginView            = "/customerLogin"
 	customerLoginViewFail        = "/customerLogin?error=Add Failed"
@@ -337,6 +341,7 @@ const (
 	customerShoppingCartPage         = "shoppingCart.html"
 	customerShoppingCartContinuePage = "shoppingCartContinue.html"
 	customerCreatePage               = "createCustomer.html"
+	customerCreateAddressPage        = "createCustomerAddress.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"

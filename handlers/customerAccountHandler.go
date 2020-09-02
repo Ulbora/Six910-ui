@@ -2,10 +2,12 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	m "github.com/Ulbora/Six910-ui/managers"
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
+	"github.com/gorilla/mux"
 )
 
 /*
@@ -130,6 +132,130 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 			} else {
 				http.Redirect(w, r, createCustomerViewError, http.StatusFound)
 			}
+		}
+	}
+}
+
+//UpdateCustomerAccountPage UpdateCustomerAccountPage
+func (h *Six910Handler) UpdateCustomerAccountPage(w http.ResponseWriter, r *http.Request) {
+	ccuuss, suc := h.getSession(r)
+	h.Log.Debug("session suc", ccuuss)
+	if suc {
+		if h.isStoreCustomerLoggedIn(ccuuss) {
+			cupvars := mux.Vars(r)
+			ccuemail := cupvars["email"]
+			h.Log.Debug("ccuemail: ", ccuemail)
+			hd := h.getHeader(ccuuss)
+			cus := h.API.GetCustomer(ccuemail, hd)
+			h.Log.Debug("cus: ", cus)
+			h.Templates.ExecuteTemplate(w, customerCreatePage, &cus)
+		} else {
+			http.Redirect(w, r, customerLoginView, http.StatusFound)
+		}
+	}
+}
+
+//UpdateCustomerAccount UpdateCustomerAccount
+func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Request) {
+	ccuuuss, suc := h.getSession(r)
+	h.Log.Debug("session suc", ccuuuss)
+	if suc {
+		if h.isStoreCustomerLoggedIn(ccuuuss) {
+			hd := h.getHeader(ccuuuss)
+			uemail := r.FormValue("email")
+			ufcus := h.API.GetCustomer(uemail, hd)
+			h.Log.Debug("uemail: ", uemail)
+
+			ufirstName := r.FormValue("firstName")
+			ulastName := r.FormValue("lastName")
+			ucompany := r.FormValue("company")
+			ucity := r.FormValue("city")
+			ustate := r.FormValue("state")
+			uzip := r.FormValue("zip")
+			uphone := r.FormValue("phone")
+			h.Log.Debug("ufcus: ", ufcus)
+			var success bool
+			if ufcus != nil {
+				ufcus.City = ucity
+				ufcus.Company = ucompany
+				ufcus.FirstName = ufirstName
+				ufcus.LastName = ulastName
+				ufcus.Phone = uphone
+				ufcus.State = ustate
+				ufcus.Zip = uzip
+				res := h.API.UpdateCustomer(ufcus, hd)
+				success = res.Success
+			}
+			if success {
+				http.Redirect(w, r, customerIndexView, http.StatusFound)
+			} else {
+				http.Redirect(w, r, customerIndexViewFail, http.StatusFound)
+			}
+		} else {
+			http.Redirect(w, r, customerLoginView, http.StatusFound)
+		}
+	}
+}
+
+//CustomerAddAddressPage CustomerAddAddressPage
+func (h *Six910Handler) CustomerAddAddressPage(w http.ResponseWriter, r *http.Request) {
+	acauss, suc := h.getSession(r)
+	h.Log.Debug("session suc", acauss)
+	if suc {
+		if h.isStoreCustomerLoggedIn(acauss) {
+			acapvars := mux.Vars(r)
+			acaemail := acapvars["email"]
+			h.Log.Debug("ccuemail: ", acaemail)
+			hd := h.getHeader(acauss)
+			cus := h.API.GetCustomer(acaemail, hd)
+			h.Log.Debug("cus: ", cus)
+			h.Templates.ExecuteTemplate(w, customerCreateAddressPage, &cus)
+		} else {
+			http.Redirect(w, r, customerLoginView, http.StatusFound)
+		}
+	}
+}
+
+//CustomerAddAddress CustomerAddAddress
+func (h *Six910Handler) CustomerAddAddress(w http.ResponseWriter, r *http.Request) {
+	caaass, suc := h.getSession(r)
+	h.Log.Debug("session suc", caaass)
+	if suc {
+		if h.isStoreCustomerLoggedIn(caaass) {
+			hd := h.getHeader(caaass)
+			idstr := r.FormValue("cid")
+			id, _ := strconv.ParseInt(idstr, 10, 64)
+			aadmail := r.FormValue("email")
+			ufaacus := h.API.GetCustomer(aadmail, hd)
+			h.Log.Debug("aadmail: ", aadmail)
+
+			h.Log.Debug("ufaacus: ", ufaacus)
+			var success bool
+			if ufaacus != nil && ufaacus.ID == id {
+				address := r.FormValue("address")
+				city := r.FormValue("city")
+				state := r.FormValue("state")
+				zip := r.FormValue("zip")
+				country := r.FormValue("country")
+				atype := r.FormValue("type")
+				var nad sdbi.Address
+				nad.Address = address
+				nad.City = city
+				nad.State = state
+				nad.Zip = zip
+				nad.Country = country
+				nad.Type = atype
+				nad.CustomerID = ufaacus.ID
+				res := h.API.AddAddress(&nad, hd)
+				success = res.Success
+			}
+			if success {
+				http.Redirect(w, r, customerIndexView, http.StatusFound)
+			} else {
+				http.Redirect(w, r, customerIndexViewFail, http.StatusFound)
+			}
+		} else {
+			http.Redirect(w, r, customerLoginView, http.StatusFound)
 		}
 	}
 }
