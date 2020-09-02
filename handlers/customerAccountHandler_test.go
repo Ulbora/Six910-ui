@@ -1114,6 +1114,7 @@ func TestSix910Handler_CustomerAddAddressPage(t *testing.T) {
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = 55
+	s.Values["username"] = "tester"
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.CustomerAddAddressPage(w, r)
@@ -1333,6 +1334,7 @@ func TestSix910Handler_CustomerAddAddress(t *testing.T) {
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = 55
 	s.Values["customerCart"] = &cccs
+	s.Values["username"] = "tester"
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.CustomerAddAddress(w, r)
@@ -1588,6 +1590,285 @@ func TestSix910Handler_CustomerAddAddressFail(t *testing.T) {
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.CustomerAddAddress(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_DeleteCustomerAddress(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+	sh.API = &sapi
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
+	//-----------start mocking------------------
+
+	var prod sdbi.Customer
+	prod.ID = 2
+	prod.Email = "bob@bob.com"
+	sapi.MockCustomer = &prod
+
+	var crtres api.ResponseID
+	crtres.ID = 3
+	crtres.Success = true
+
+	sapi.MockAddCartResp = &crtres
+
+	var cires api.Response
+	cires.Success = true
+
+	sapi.MockDeleteAddressRes = &cires
+
+	// var plst []sdbi.Product
+	// plst = append(plst, prod)
+	// sapi.MockProductList = &plst
+
+	//-----------end mocking --------
+
+	var c conts.CmsService
+	var ds ds.DataStore
+	ds.Path = "../contsrv/testFiles"
+	//ds.Delete("books1")
+	c.Log = &l
+	c.Store = ds.GetNew()
+
+	var ct conts.Content
+	ct.Name = "product"
+	ct.Author = "ken"
+	ct.MetaAuthorName = "ken"
+	ct.MetaDesc = "shopping cart index"
+	ct.Text = "some book text"
+	ct.Title = "the best book ever"
+	ct.Visible = true
+	res := c.AddContent(&ct)
+	fmt.Println("content save: ", res)
+
+	sh.ContentService = c.GetNew()
+
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+
+	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("POST", "https://test.com", nil)
+	vars := map[string]string{
+		"id":  "3",
+		"cid": "4",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["customerUser"] = true
+	s.Values["customerId"] = 55
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.DeleteCustomerAddress(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_DeleteCustomerAddressLogin(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+	sh.API = &sapi
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
+	//-----------start mocking------------------
+
+	var prod sdbi.Customer
+	prod.ID = 2
+	prod.Email = "bob@bob.com"
+	sapi.MockCustomer = &prod
+
+	var crtres api.ResponseID
+	crtres.ID = 3
+	crtres.Success = true
+
+	sapi.MockAddCartResp = &crtres
+
+	var cires api.Response
+	cires.Success = true
+
+	sapi.MockDeleteAddressRes = &cires
+
+	// var plst []sdbi.Product
+	// plst = append(plst, prod)
+	// sapi.MockProductList = &plst
+
+	//-----------end mocking --------
+
+	var c conts.CmsService
+	var ds ds.DataStore
+	ds.Path = "../contsrv/testFiles"
+	//ds.Delete("books1")
+	c.Log = &l
+	c.Store = ds.GetNew()
+
+	var ct conts.Content
+	ct.Name = "product"
+	ct.Author = "ken"
+	ct.MetaAuthorName = "ken"
+	ct.MetaDesc = "shopping cart index"
+	ct.Text = "some book text"
+	ct.Title = "the best book ever"
+	ct.Visible = true
+	res := c.AddContent(&ct)
+	fmt.Println("content save: ", res)
+
+	sh.ContentService = c.GetNew()
+
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+
+	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("POST", "https://test.com", nil)
+	vars := map[string]string{
+		"id":  "3",
+		"cid": "4",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	//s.Values["loggedIn"] = true
+	s.Values["customerUser"] = true
+	s.Values["customerId"] = 55
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.DeleteCustomerAddress(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_DeleteCustomerAddressFail(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+	sh.API = &sapi
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
+	//-----------start mocking------------------
+
+	var prod sdbi.Customer
+	prod.ID = 2
+	prod.Email = "bob@bob.com"
+	sapi.MockCustomer = &prod
+
+	var crtres api.ResponseID
+	crtres.ID = 3
+	crtres.Success = true
+
+	sapi.MockAddCartResp = &crtres
+
+	var cires api.Response
+	//cires.Success = true
+
+	sapi.MockDeleteAddressRes = &cires
+
+	// var plst []sdbi.Product
+	// plst = append(plst, prod)
+	// sapi.MockProductList = &plst
+
+	//-----------end mocking --------
+
+	var c conts.CmsService
+	var ds ds.DataStore
+	ds.Path = "../contsrv/testFiles"
+	//ds.Delete("books1")
+	c.Log = &l
+	c.Store = ds.GetNew()
+
+	var ct conts.Content
+	ct.Name = "product"
+	ct.Author = "ken"
+	ct.MetaAuthorName = "ken"
+	ct.MetaDesc = "shopping cart index"
+	ct.Text = "some book text"
+	ct.Title = "the best book ever"
+	ct.Visible = true
+	res := c.AddContent(&ct)
+	fmt.Println("content save: ", res)
+
+	sh.ContentService = c.GetNew()
+
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+
+	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("POST", "https://test.com", nil)
+	vars := map[string]string{
+		"id":  "3",
+		"cid": "4",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["customerUser"] = true
+	s.Values["customerId"] = 55
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.DeleteCustomerAddress(w, r)
 	fmt.Println("code: ", w.Code)
 
 	if w.Code != 302 {

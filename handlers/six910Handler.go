@@ -84,7 +84,7 @@ func (h *Six910Handler) getSession(r *http.Request) (*sessions.Session, bool) {
 	var suc bool
 	var srtn *sessions.Session
 	if h.Store == nil {
-		h.Session.Name = "goauth2-ui"
+		h.Session.Name = "Six910-ui"
 		h.Session.MaxAge = 3600
 		h.Store = h.Session.InitSessionStore()
 		h.Log.Debug("h.Store : ", h.Store)

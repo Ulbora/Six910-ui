@@ -232,6 +232,8 @@ const (
 	createCustomerViewFail  = "/createCustomerView?error=Customer Email Already Used"
 	createCustomerViewError = "/createCustomerView?error=Customer Create Error"
 	createCustomer          = "/createCustomer"
+	customerInfoView        = "/customerInfo"
+	customerInfoViewFail    = "/customerInfo?error=Add Failed"
 	//adminDeleteZipZoneRegion    = "/admin/deleteZipZone"
 	//adminIncZipZoneListView     = "/admin/includedZipZone"
 	//adminIncZipZoneListViewFail = "/admin/zipZoneListView?error=Add Failed"
@@ -342,6 +344,7 @@ const (
 	customerShoppingCartContinuePage = "shoppingCartContinue.html"
 	customerCreatePage               = "createCustomer.html"
 	customerCreateAddressPage        = "createCustomerAddress.html"
+	customerInfoPage                 = "createInfo.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"

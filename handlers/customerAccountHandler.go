@@ -7,7 +7,6 @@ import (
 	m "github.com/Ulbora/Six910-ui/managers"
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
-	"github.com/gorilla/mux"
 )
 
 /*
@@ -142,11 +141,16 @@ func (h *Six910Handler) UpdateCustomerAccountPage(w http.ResponseWriter, r *http
 	h.Log.Debug("session suc", ccuuss)
 	if suc {
 		if h.isStoreCustomerLoggedIn(ccuuss) {
-			cupvars := mux.Vars(r)
-			ccuemail := cupvars["email"]
+			//cupvars := mux.Vars(r)
+			//ccuemail := cupvars["email"]
+			var uname string
+			ccuemail := ccuuss.Values["username"]
+			if ccuemail != nil {
+				uname = ccuemail.(string)
+			}
 			h.Log.Debug("ccuemail: ", ccuemail)
 			hd := h.getHeader(ccuuss)
-			cus := h.API.GetCustomer(ccuemail, hd)
+			cus := h.API.GetCustomer(uname, hd)
 			h.Log.Debug("cus: ", cus)
 			h.Templates.ExecuteTemplate(w, customerCreatePage, &cus)
 		} else {
@@ -187,9 +191,9 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 				success = res.Success
 			}
 			if success {
-				http.Redirect(w, r, customerIndexView, http.StatusFound)
+				http.Redirect(w, r, customerInfoView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, customerIndexViewFail, http.StatusFound)
+				http.Redirect(w, r, customerInfoViewFail, http.StatusFound)
 			}
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)
@@ -203,11 +207,14 @@ func (h *Six910Handler) CustomerAddAddressPage(w http.ResponseWriter, r *http.Re
 	h.Log.Debug("session suc", acauss)
 	if suc {
 		if h.isStoreCustomerLoggedIn(acauss) {
-			acapvars := mux.Vars(r)
-			acaemail := acapvars["email"]
-			h.Log.Debug("ccuemail: ", acaemail)
+			var uname string
+			caddemail := acauss.Values["username"]
+			if caddemail != nil {
+				uname = caddemail.(string)
+			}
+			h.Log.Debug("caddemail: ", caddemail)
 			hd := h.getHeader(acauss)
-			cus := h.API.GetCustomer(acaemail, hd)
+			cus := h.API.GetCustomer(uname, hd)
 			h.Log.Debug("cus: ", cus)
 			h.Templates.ExecuteTemplate(w, customerCreateAddressPage, &cus)
 		} else {
@@ -250,9 +257,33 @@ func (h *Six910Handler) CustomerAddAddress(w http.ResponseWriter, r *http.Reques
 				success = res.Success
 			}
 			if success {
-				http.Redirect(w, r, customerIndexView, http.StatusFound)
+				http.Redirect(w, r, customerInfoView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, customerIndexViewFail, http.StatusFound)
+				http.Redirect(w, r, customerInfoViewFail, http.StatusFound)
+			}
+		} else {
+			http.Redirect(w, r, customerLoginView, http.StatusFound)
+		}
+	}
+}
+
+//DeleteCustomerAddress DeleteCustomerAddress
+func (h *Six910Handler) DeleteCustomerAddress(w http.ResponseWriter, r *http.Request) {
+	cdaass, suc := h.getSession(r)
+	h.Log.Debug("session suc", cdaass)
+	if suc {
+		if h.isStoreCustomerLoggedIn(cdaass) {
+			hd := h.getHeader(cdaass)
+			iddastr := r.FormValue("id")
+			id, _ := strconv.ParseInt(iddastr, 10, 64)
+			ciddastr := r.FormValue("cid")
+			cid, _ := strconv.ParseInt(ciddastr, 10, 64)
+			dares := h.API.DeleteAddress(id, cid, hd)
+			h.Log.Debug("dares: ", dares)
+			if dares.Success {
+				http.Redirect(w, r, customerInfoView, http.StatusFound)
+			} else {
+				http.Redirect(w, r, customerInfoViewFail, http.StatusFound)
 			}
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)

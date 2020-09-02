@@ -217,13 +217,13 @@ type Handler interface {
 	UpdateCustomerAccount(w http.ResponseWriter, r *http.Request)
 	CustomerAddAddressPage(w http.ResponseWriter, r *http.Request)
 	CustomerAddAddress(w http.ResponseWriter, r *http.Request)
-	// DeleteCustomerAddress(w http.ResponseWriter, r *http.Request)
+	DeleteCustomerAddress(w http.ResponseWriter, r *http.Request)
 
-	// CustomerLoginPage(w http.ResponseWriter, r *http.Request)
-	// CustomerLogin(w http.ResponseWriter, r *http.Request)
-	// CustomerChangePasswordPage(w http.ResponseWriter, r *http.Request)
-	// CustomerChangePassword(w http.ResponseWriter, r *http.Request)
-	// CustomerLogout(w http.ResponseWriter, r *http.Request)
+	CustomerLoginPage(w http.ResponseWriter, r *http.Request)
+	CustomerLogin(w http.ResponseWriter, r *http.Request)
+	CustomerChangePasswordPage(w http.ResponseWriter, r *http.Request)
+	CustomerChangePassword(w http.ResponseWriter, r *http.Request)
+	CustomerLogout(w http.ResponseWriter, r *http.Request)
 
 	// //orders
 	// ViewCustomerOrder(w http.ResponseWriter, r *http.Request)

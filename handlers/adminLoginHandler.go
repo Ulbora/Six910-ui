@@ -164,7 +164,7 @@ func (h *Six910Handler) StoreAdminChangeUserPassword(w http.ResponseWriter, r *h
 func (h *Six910Handler) StoreAdminLogout(w http.ResponseWriter, r *http.Request) {
 	h.token = nil
 	cookie := &http.Cookie{
-		Name:   "goauth2-ui",
+		Name:   "Six910-ui",
 		Value:  "",
 		Path:   "/",
 		MaxAge: -1,
@@ -172,7 +172,7 @@ func (h *Six910Handler) StoreAdminLogout(w http.ResponseWriter, r *http.Request)
 	http.SetCookie(w, cookie)
 
 	cookie2 := &http.Cookie{
-		Name:   "goauth2",
+		Name:   "Six910",
 		Value:  "",
 		Path:   "/",
 		MaxAge: -1,
