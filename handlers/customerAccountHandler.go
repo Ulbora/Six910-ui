@@ -145,10 +145,10 @@ func (h *Six910Handler) UpdateCustomerAccountPage(w http.ResponseWriter, r *http
 			//ccuemail := cupvars["email"]
 			var uname string
 			ccuemail := ccuuss.Values["username"]
+			h.Log.Debug("ccuemail: ", ccuemail)
 			if ccuemail != nil {
 				uname = ccuemail.(string)
 			}
-			h.Log.Debug("ccuemail: ", ccuemail)
 			hd := h.getHeader(ccuuss)
 			cus := h.API.GetCustomer(uname, hd)
 			h.Log.Debug("cus: ", cus)
