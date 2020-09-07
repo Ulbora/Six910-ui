@@ -234,6 +234,8 @@ const (
 	createCustomer          = "/createCustomer"
 	customerInfoView        = "/customerInfo"
 	customerInfoViewFail    = "/customerInfo?error=Add Failed"
+	customerOrderView       = "/customerOrder"
+	customerOrderListView   = "/customerOrderList"
 	//adminDeleteZipZoneRegion    = "/admin/deleteZipZone"
 	//adminIncZipZoneListView     = "/admin/includedZipZone"
 	//adminIncZipZoneListViewFail = "/admin/zipZoneListView?error=Add Failed"
@@ -345,6 +347,8 @@ const (
 	customerCreatePage               = "createCustomer.html"
 	customerCreateAddressPage        = "createCustomerAddress.html"
 	customerInfoPage                 = "createInfo.html"
+	customerOrderPage                = "customerOrder.html"
+	customerOrderListPage            = "customerOrderList.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"

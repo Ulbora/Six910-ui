@@ -62,6 +62,7 @@ func (h *Six910Handler) CustomerLogin(w http.ResponseWriter, r *http.Request) {
 			slin.Values["customerUser"] = true
 			slin.Values["username"] = cusername
 			slin.Values["password"] = cpassword
+			slin.Values["customerId"] = uu.CustomerID
 
 			serr := slin.Save(r, w)
 			h.Log.Debug("serr", serr)
