@@ -47,6 +47,7 @@ type MockAPI struct {
 	mockAddressList1Used bool
 	MockAddressList1     *[]sdbi.Address
 	MockAddressList2     *[]sdbi.Address
+	MockAddress          *sdbi.Address
 	MockDeleteAddressRes *api.Response
 
 	MockProduct           *sdbi.Product
@@ -220,7 +221,7 @@ func (a *MockAPI) UpdateAddress(ad *sdbi.Address, headers *api.Headers) *api.Res
 
 //GetAddress GetAddress
 func (a *MockAPI) GetAddress(id int64, cid int64, headers *api.Headers) *sdbi.Address {
-	return nil
+	return a.MockAddress
 }
 
 //GetAddressList GetAddressList

@@ -142,7 +142,52 @@ func (m *Six910Manager) CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerO
 //CalculateCartTotals CalculateCartTotals
 func (m *Six910Manager) CalculateCartTotals(cart *CustomerCart, hd *api.Headers) *CustomerCart {
 	// do all calculation lookups and calculations here
+	cv := cart.CartView
+	if cv != nil {
+		cart.Subtotal = cv.Total
+		sm := m.API.GetShippingMethod(cart.ShippingMethodID, hd)
+		cart.ShippingHandling = math.Round((sm.Cost+sm.Handling)*100) / 100 //sm.Cost + sm.Handling
+		if cart.InsuranceID != 0 {
+			ins := m.API.GetInsurance(cart.InsuranceID, hd)
+			cart.InsuranceCost = ins.Cost
+		}
+		sad := m.API.GetAddress(cart.ShippingAddressID, cart.Cart.CustomerID, hd)
+		trs := m.API.GetTaxRate(sad.Country, sad.State, hd)
+		var tr *sdbi.TaxRate
+		if len(*trs) > 1 {
+			for i := range *trs {
+				if sad.Zip >= (*trs)[i].ZipStart && sad.Zip <= (*trs)[i].ZipEnd {
+					tr = &(*trs)[i]
+				}
+			}
+		} else if len(*trs) == 1 {
+			tr = &(*trs)[0]
+		}
 
+		if tr == nil && len(*trs) > 1 {
+			for i := range *trs {
+				if (*trs)[i].ZipStart == "" && (*trs)[i].ZipEnd == "" {
+					tr = &(*trs)[i]
+					break
+				}
+			}
+		}
+		if tr.PercentRate != 0 {
+			var hTax float64
+			var sTax float64
+			if tr.IncludeHandling {
+				htrate := sm.Handling * (float64(tr.PercentRate) / float64(100))
+				hTax = math.Round((htrate)*100) / 100
+			}
+			if tr.IncludeShipping {
+				strate := sm.Cost * (float64(tr.PercentRate) / float64(100))
+				sTax = math.Round((strate)*100) / 100
+			}
+			tax := cart.Subtotal * (float64(tr.PercentRate) / float64(100))
+			cart.Taxes = math.Round((hTax+sTax+tax)*100) / 100
+		}
+		cart.Total = math.Round((cart.InsuranceCost+cart.ShippingHandling+cart.Subtotal+cart.Taxes)*100) / 100
+	}
 	return cart
 }
 

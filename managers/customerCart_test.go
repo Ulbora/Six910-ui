@@ -1279,6 +1279,45 @@ func TestSix910Manager_CalculateCartTotals(t *testing.T) {
 	pd.Thumbnail = "/test/"
 	sapi.MockProduct = &pd
 
+	var smth sdbi.ShippingMethod
+	smth.Cost = 4.55
+	smth.Handling = 2.22
+	sapi.MockShippingMethod = &smth
+
+	var insc sdbi.Insurance
+	insc.Cost = 2.34
+
+	sapi.MockInsurance = &insc
+
+	var uadd sdbi.Address
+	uadd.Country = "USA"
+	uadd.State = "GA"
+	uadd.Zip = "12345"
+
+	sapi.MockAddress = &uadd
+
+	var trate1 sdbi.TaxRate
+	trate1.Country = "USA"
+	trate1.State = "GA"
+	trate1.PercentRate = 5
+	trate1.ZipStart = "12344"
+	trate1.ZipEnd = "12346"
+
+	var trate2 sdbi.TaxRate
+	trate2.Country = "USA"
+	trate2.State = "GA"
+	trate2.PercentRate = 7
+	trate2.ZipStart = ""
+	trate2.ZipEnd = ""
+	trate2.IncludeHandling = true
+	trate2.IncludeShipping = true
+
+	var trlst []sdbi.TaxRate
+	trlst = append(trlst, trate1)
+	trlst = append(trlst, trate2)
+
+	sapi.MockTaxRateList = &trlst
+
 	//-----------end mocking --------
 
 	//sapi.SetAPIKey("123")
@@ -1320,8 +1359,17 @@ func TestSix910Manager_CalculateCartTotals(t *testing.T) {
 	ctit2.ProductID = 9
 	cilstp = append(cilstp, ctit2)
 
+	var cvv CartView
+	cvv.Total = 100.25
+
+	var crt sdbi.Cart
+	crt.CustomerID = 4
+
 	var cc CustomerCart
 	cc.Items = &cilstp
+	cc.CartView = &cvv
+	cc.Cart = &crt
+	cc.InsuranceID = 5
 
 	var head api.Headers
 	//head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
@@ -1330,7 +1378,260 @@ func TestSix910Manager_CalculateCartTotals(t *testing.T) {
 	cv := m.CalculateCartTotals(&cc, &head)
 
 	fmt.Println("customer cv: ", cv)
-	if cv.Total != 0 {
+	fmt.Println("Subtotal: ", cv.Subtotal)
+	fmt.Println("ShippingHandling: ", cv.ShippingHandling)
+	fmt.Println("InsuranceCost: ", cv.InsuranceCost)
+	fmt.Println("Taxes: ", cv.Taxes)
+	fmt.Println("Total: ", cv.Total)
+	if cv.Total != 114.37 {
+		t.Fail()
+	}
+}
+
+func TestSix910Manager_CalculateCartTotals2(t *testing.T) {
+	var sm Six910Manager
+
+	//var sapi api.Six910API
+
+	//-----------start mocking------------------
+	var sapi mapi.MockAPI
+
+	var pd sdbi.Product
+	pd.ID = 4
+	pd.SalePrice = 28.95
+	pd.ShortDesc = "test one"
+	pd.Thumbnail = "/test/"
+	sapi.MockProduct = &pd
+
+	var smth sdbi.ShippingMethod
+	smth.Cost = 4.55
+	smth.Handling = 2.22
+	sapi.MockShippingMethod = &smth
+
+	var insc sdbi.Insurance
+	insc.Cost = 2.34
+
+	sapi.MockInsurance = &insc
+
+	var uadd sdbi.Address
+	uadd.Country = "USA"
+	uadd.State = "GA"
+	uadd.Zip = "12345"
+
+	sapi.MockAddress = &uadd
+
+	var trate1 sdbi.TaxRate
+	trate1.Country = "USA"
+	trate1.State = "GA"
+	trate1.PercentRate = 5
+	trate1.ZipStart = "12355"
+	trate1.ZipEnd = "12356"
+
+	var trate2 sdbi.TaxRate
+	trate2.Country = "USA"
+	trate2.State = "GA"
+	trate2.PercentRate = 7
+	trate2.ZipStart = ""
+	trate2.ZipEnd = ""
+	trate2.IncludeHandling = true
+	trate2.IncludeShipping = true
+
+	var trlst []sdbi.TaxRate
+	trlst = append(trlst, trate1)
+	trlst = append(trlst, trate2)
+
+	sapi.MockTaxRateList = &trlst
+
+	//-----------end mocking --------
+
+	//sapi.SetAPIKey("123")
+	//sapi.storeID = 59
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	//api := sapi.GetNew()
+
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sm.API = sapi.GetNew()
+
+	// //---mock out the call
+	// var gp px.MockGoProxy
+	// var mres http.Response
+	// mres.Body = ioutil.NopCloser(bytes.NewBufferString(`{"username": "tester123", "enabled": true, "role": "customer" }`))
+	// gp.MockResp = &mres
+	// gp.MockDoSuccess1 = true
+	// gp.MockRespCode = 200
+	// sapi.OverrideProxy(&gp)
+	// //---end mock out the call
+
+	sapi.SetLogLever(lg.AllLevel)
+	sm.Log = &l
+
+	var cilstp []sdbi.CartItem
+
+	var ctit1 sdbi.CartItem
+	ctit1.Quantity = 3
+	ctit1.ProductID = 7
+	cilstp = append(cilstp, ctit1)
+
+	var ctit2 sdbi.CartItem
+	ctit2.Quantity = 4
+	ctit2.ProductID = 9
+	cilstp = append(cilstp, ctit2)
+
+	var cvv CartView
+	cvv.Total = 100.25
+
+	var crt sdbi.Cart
+	crt.CustomerID = 4
+
+	var cc CustomerCart
+	cc.Items = &cilstp
+	cc.CartView = &cvv
+	cc.Cart = &crt
+	cc.InsuranceID = 5
+
+	var head api.Headers
+	//head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
+
+	m := sm.GetNew()
+	cv := m.CalculateCartTotals(&cc, &head)
+
+	fmt.Println("customer cv: ", cv)
+	fmt.Println("Subtotal: ", cv.Subtotal)
+	fmt.Println("ShippingHandling: ", cv.ShippingHandling)
+	fmt.Println("InsuranceCost: ", cv.InsuranceCost)
+	fmt.Println("Taxes: ", cv.Taxes)
+	fmt.Println("Total: ", cv.Total)
+	if cv.Total != 116.86 {
+		t.Fail()
+	}
+}
+
+func TestSix910Manager_CalculateCartTotals3(t *testing.T) {
+	var sm Six910Manager
+
+	//var sapi api.Six910API
+
+	//-----------start mocking------------------
+	var sapi mapi.MockAPI
+
+	var pd sdbi.Product
+	pd.ID = 4
+	pd.SalePrice = 28.95
+	pd.ShortDesc = "test one"
+	pd.Thumbnail = "/test/"
+	sapi.MockProduct = &pd
+
+	var smth sdbi.ShippingMethod
+	smth.Cost = 4.55
+	smth.Handling = 2.22
+	sapi.MockShippingMethod = &smth
+
+	var insc sdbi.Insurance
+	insc.Cost = 2.34
+
+	sapi.MockInsurance = &insc
+
+	var uadd sdbi.Address
+	uadd.Country = "USA"
+	uadd.State = "GA"
+	uadd.Zip = "12345"
+
+	sapi.MockAddress = &uadd
+
+	var trate1 sdbi.TaxRate
+	trate1.Country = "USA"
+	trate1.State = "GA"
+	trate1.PercentRate = 5
+	trate1.ZipStart = "12355"
+	trate1.ZipEnd = "12356"
+
+	var trate2 sdbi.TaxRate
+	trate2.Country = "USA"
+	trate2.State = "GA"
+	trate2.PercentRate = 7
+	trate2.ZipStart = ""
+	trate2.ZipEnd = ""
+	trate2.IncludeHandling = true
+	trate2.IncludeShipping = true
+
+	var trlst []sdbi.TaxRate
+	//trlst = append(trlst, trate1)
+	trlst = append(trlst, trate2)
+
+	sapi.MockTaxRateList = &trlst
+
+	//-----------end mocking --------
+
+	//sapi.SetAPIKey("123")
+	//sapi.storeID = 59
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	//api := sapi.GetNew()
+
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sm.API = sapi.GetNew()
+
+	// //---mock out the call
+	// var gp px.MockGoProxy
+	// var mres http.Response
+	// mres.Body = ioutil.NopCloser(bytes.NewBufferString(`{"username": "tester123", "enabled": true, "role": "customer" }`))
+	// gp.MockResp = &mres
+	// gp.MockDoSuccess1 = true
+	// gp.MockRespCode = 200
+	// sapi.OverrideProxy(&gp)
+	// //---end mock out the call
+
+	sapi.SetLogLever(lg.AllLevel)
+	sm.Log = &l
+
+	var cilstp []sdbi.CartItem
+
+	var ctit1 sdbi.CartItem
+	ctit1.Quantity = 3
+	ctit1.ProductID = 7
+	cilstp = append(cilstp, ctit1)
+
+	var ctit2 sdbi.CartItem
+	ctit2.Quantity = 4
+	ctit2.ProductID = 9
+	cilstp = append(cilstp, ctit2)
+
+	var cvv CartView
+	cvv.Total = 100.25
+
+	var crt sdbi.Cart
+	crt.CustomerID = 4
+
+	var cc CustomerCart
+	cc.Items = &cilstp
+	cc.CartView = &cvv
+	cc.Cart = &crt
+	cc.InsuranceID = 5
+
+	var head api.Headers
+	//head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
+
+	m := sm.GetNew()
+	cv := m.CalculateCartTotals(&cc, &head)
+
+	fmt.Println("customer cv: ", cv)
+	fmt.Println("Subtotal: ", cv.Subtotal)
+	fmt.Println("ShippingHandling: ", cv.ShippingHandling)
+	fmt.Println("InsuranceCost: ", cv.InsuranceCost)
+	fmt.Println("Taxes: ", cv.Taxes)
+	fmt.Println("Total: ", cv.Total)
+	if cv.Total != 116.86 {
 		t.Fail()
 	}
 }
