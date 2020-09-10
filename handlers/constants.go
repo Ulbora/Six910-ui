@@ -21,7 +21,8 @@ package handlers
 const (
 	//routes
 	authCodeRedirectURI = "/tokenHandler"
-	adminIndex          = "/admin/index"
+	adminIndex          = "/admin"
+	adminLogin          = "/admin/login"
 	adminLoginFailedURL = "/admin/login?error=Login Failed"
 	adminChangePassword = "/admin/changePassword"
 

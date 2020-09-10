@@ -34,7 +34,7 @@ func (h *Six910Handler) StoreAdminIndex(w http.ResponseWriter, r *http.Request) 
 		if h.isStoreAdminLoggedIn(s) {
 			h.AdminTemplates.ExecuteTemplate(w, adminIndexPage, nil)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

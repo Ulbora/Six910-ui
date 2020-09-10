@@ -23,17 +23,81 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
+	"os"
 
+	lg "github.com/Ulbora/Level_Logger"
+	hand "github.com/Ulbora/Six910-ui/handlers"
+	api "github.com/Ulbora/Six910API-Go"
 	"github.com/gorilla/mux"
 )
 
 func main() {
 	// just the start of Six910-ui Server
 	// This is the storefront for Six910-ui.
-	fmt.Println("Six910 (six nine ten) UI is running on port 3001!")
+	var apiURL string
+	var storeName string
+	var localDomain string
+	var apiKey string
+
+	if os.Getenv("API_URL") != "" {
+		apiURL = os.Getenv("API_URL")
+	} else {
+		apiURL = "http://localhost:3002"
+	}
+
+	if os.Getenv("STORE_NAME") != "" {
+		storeName = os.Getenv("STORE_NAME")
+	} else {
+		storeName = "defaultLocalStore"
+	}
+
+	if os.Getenv("LOCAL_DOMAIN") != "" {
+		localDomain = os.Getenv("LOCAL_DOMAIN")
+	} else {
+		localDomain = "defaultLocalStore.mydomain.com"
+	}
+
+	if os.Getenv("API_KEY") != "" {
+		apiKey = os.Getenv("API_KEY")
+	} else {
+		apiKey = "GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5"
+	}
+
+	var sapi api.Six910API
+	sapi.SetAPIKey(apiKey)
+	sapi.SetRestURL(apiURL)
+	sapi.SetStore(storeName, localDomain)
+
+	var sh hand.Six910Handler
+	sh.API = sapi.GetNew()
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
+		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
+		"./static/admin/subnavs/productNavbar.html",
+	// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
+	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
+	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
+	// "./static/admin/imageUpload.html", "./static/admin/login.html", "./static/admin/backups.html",
+	// "./static/admin/backupUpload.html",
+	))
+
+	h := sh.GetNew()
+
+	fmt.Println("Six910 (six nine ten) UI is running on port 8080!")
 	router := mux.NewRouter()
-	http.ListenAndServe(":3001", router)
+
+	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")
+	router.HandleFunc("/admin/login", h.StoreAdminLogin).Methods("GET")
+	router.HandleFunc("/admin/loginNonOAuth", h.StoreAdminLoginNonOAuthUser).Methods("POST")
+	router.HandleFunc("/admin/productList/{start}/{end}", h.StoreAdminViewProductList).Methods("GET")
+
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
+
+	http.ListenAndServe(":8080", router)
 }
 
 // go mod init github.com/Ulbora/Six910-ui
