@@ -77,7 +77,8 @@ func main() {
 	sh.Log = &l
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
-		"./static/admin/subnavs/productNavbar.html",
+		"./static/admin/subnavs/productNavbar.html", "./static/admin/pagination.html", "./static/admin/productSkuSearch.html",
+		"./static/admin/productNameSearch.html", "./static/admin/editProduct.html",
 	// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -93,7 +94,12 @@ func main() {
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")
 	router.HandleFunc("/admin/login", h.StoreAdminLogin).Methods("GET")
 	router.HandleFunc("/admin/loginNonOAuth", h.StoreAdminLoginNonOAuthUser).Methods("POST")
+	router.HandleFunc("/admin/productListBySku", h.StoreAdminSearchProductBySkuPage).Methods("GET")
+	router.HandleFunc("/admin/productListBySku", h.StoreAdminSearchProductBySkuPage).Methods("POST")
+	router.HandleFunc("/admin/productListByName", h.StoreAdminSearchProductByNamePage).Methods("GET")
+	router.HandleFunc("/admin/productListByName", h.StoreAdminSearchProductByNamePage).Methods("POST")
 	router.HandleFunc("/admin/productList/{start}/{end}", h.StoreAdminViewProductList).Methods("GET")
+	router.HandleFunc("/admin/getProduct/{id}", h.StoreAdminEditProductPage).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

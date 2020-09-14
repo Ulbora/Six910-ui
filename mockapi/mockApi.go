@@ -321,6 +321,11 @@ func (a *MockAPI) GetCategory(id int64, headers *api.Headers) *sdbi.Category {
 	return a.MockCategory
 }
 
+//GetHierarchicalCategoryList GetHierarchicalCategoryList
+func (a *MockAPI) GetHierarchicalCategoryList(headers *api.Headers) *[]sdbi.Category {
+	return a.MockCategoryList
+}
+
 //GetCategoryList GetCategoryList
 func (a *MockAPI) GetCategoryList(headers *api.Headers) *[]sdbi.Category {
 	return a.MockCategoryList

@@ -251,9 +251,11 @@ const (
 	productUploadResultPage = "productUploadResults.html"
 
 	//pages product
-	adminAddProductPage  = "addProduct.html"
-	adminEditProductPage = "editProduct.html"
-	adminProductListPage = "productList.html"
+	adminAddProductPage        = "addProduct.html"
+	adminEditProductPage       = "editProduct.html"
+	adminProductSkuSearchPage  = "productSkuSearch.html"
+	adminProductNameSearchPage = "productNameSearch.html"
+	adminProductListPage       = "productList.html"
 
 	//pages product
 	adminAddShipmentPage  = "addShipment.html"

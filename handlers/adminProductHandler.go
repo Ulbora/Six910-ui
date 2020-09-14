@@ -3,7 +3,9 @@ package handlers
 import (
 	"net/http"
 	"strconv"
+	"sync"
 
+	six910api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
@@ -26,12 +28,36 @@ import (
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//ProdError ProdError
-type ProdError struct {
-	Error    string
-	Product  *sdbi.Product
-	Products *[]sdbi.Product
+//ProdPage ProdPage
+type ProdPage struct {
+	Error           string
+	Product         *sdbi.Product
+	Products        *[]sdbi.Product
+	CategoryList    *[]sdbi.Category
+	DistributorList *[]sdbi.Distributor
+	Pagination      *Pagination
+	HasProducts     bool
+	// Pages    *[]Pageinate
+	// PrevLink string
+	// NextLink string
 }
+
+// //Pageinate Pageinate
+// type Pageinate struct {
+// 	PageCount int
+// 	Active    string
+// 	// Start     int
+// 	// End       int
+// 	// PrevStart int
+// 	// PrevEnd   int
+// 	// NextStart int
+// 	// NextEnd   int
+// 	//PrevLink string
+// 	Link string
+// 	// NextLink string
+// 	First bool
+// 	Last  bool
+// }
 
 //StoreAdminAddProductPage StoreAdminAddProductPage
 func (h *Six910Handler) StoreAdminAddProductPage(w http.ResponseWriter, r *http.Request) {
@@ -44,7 +70,7 @@ func (h *Six910Handler) StoreAdminAddProductPage(w http.ResponseWriter, r *http.
 			lge.Error = loginErr
 			h.AdminTemplates.ExecuteTemplate(w, adminAddProductPage, &lge)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -66,7 +92,7 @@ func (h *Six910Handler) StoreAdminAddProduct(w http.ResponseWriter, r *http.Requ
 				http.Redirect(w, r, adminAddProdViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -82,15 +108,41 @@ func (h *Six910Handler) StoreAdminEditProductPage(w http.ResponseWriter, r *http
 			idstr := epvars["id"]
 			prodID, _ := strconv.ParseInt(idstr, 10, 64)
 			h.Log.Debug("prod id in edit", prodID)
-			prod := h.API.GetProductByID(prodID, hd)
-			h.Log.Debug("prod  in edit", prod)
+
 			edErr := r.URL.Query().Get("error")
-			var epparm ProdError
+			var epparm ProdPage
 			epparm.Error = edErr
-			epparm.Product = prod
+			var wg sync.WaitGroup
+
+			wg.Add(1)
+			go func(id int64, header *six910api.Headers) {
+				defer wg.Done()
+				prod := h.API.GetProductByID(id, header)
+				h.Log.Debug("prod  in edit", prod)
+				epparm.Product = prod
+			}(prodID, hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				cats := h.API.GetHierarchicalCategoryList(header)
+				h.Log.Debug("prod  in edit", cats)
+				epparm.CategoryList = cats
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				dist := h.API.GetDistributorList(header)
+				h.Log.Debug("prod  in edit", dist)
+				epparm.DistributorList = dist
+			}(hd)
+
+			wg.Wait()
+
 			h.AdminTemplates.ExecuteTemplate(w, adminEditProductPage, &epparm)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -112,7 +164,69 @@ func (h *Six910Handler) StoreAdminEditProduct(w http.ResponseWriter, r *http.Req
 				http.Redirect(w, r, adminEditProdViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminSearchProductBySkuPage StoreAdminSearchProductBySkuPage
+func (h *Six910Handler) StoreAdminSearchProductBySkuPage(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	h.Log.Debug("session suc in prod add view", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(s) {
+			edErr := r.URL.Query().Get("error")
+			var epparm ProdPage
+			var plst []sdbi.Product
+			sku := r.FormValue("sku")
+			h.Log.Debug("sku", sku)
+			if sku != "" {
+				hd := h.getHeader(s)
+				dist := h.API.GetDistributorList(hd)
+				h.Log.Debug("dist", dist)
+				for _, d := range *dist {
+					prod := h.API.GetProductBySku(sku, d.ID, hd)
+					if prod != nil && prod.ID != 0 {
+						epparm.HasProducts = true
+						plst = append(plst, *prod)
+					}
+				}
+			}
+			epparm.Products = &plst
+			epparm.Error = edErr
+			h.AdminTemplates.ExecuteTemplate(w, adminProductSkuSearchPage, &epparm)
+		} else {
+			http.Redirect(w, r, adminLogin, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminSearchProductByNamePage StoreAdminSearchProductByNamePage
+func (h *Six910Handler) StoreAdminSearchProductByNamePage(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	h.Log.Debug("session suc in prod add view", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(s) {
+			edErr := r.URL.Query().Get("error")
+			var epparm ProdPage
+			name := r.FormValue("name")
+			h.Log.Debug("name", name)
+			if name != "" {
+				hd := h.getHeader(s)
+				prods := h.API.GetProductsByName(name, 0, 100, hd)
+				h.Log.Debug("prods by name", *prods)
+				epparm.Products = prods
+				if len(*prods) > 0 {
+					epparm.HasProducts = true
+				}
+			} else {
+				var plst []sdbi.Product
+				epparm.Products = &plst
+			}
+			epparm.Error = edErr
+			h.AdminTemplates.ExecuteTemplate(w, adminProductNameSearchPage, &epparm)
+		} else {
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -131,13 +245,16 @@ func (h *Six910Handler) StoreAdminViewProductList(w http.ResponseWriter, r *http
 			vpend, _ := strconv.ParseInt(endstr, 10, 64)
 			prods := h.API.GetProductList(vpstart, vpend, hd)
 			plErr := r.URL.Query().Get("error")
-			var plparm ProdError
+			var plparm ProdPage
+			plparm.Pagination = h.doPagination(vpstart, len(*prods), 100, "/admin/productList")
+			h.Log.Debug("plparm.Pagination:", *plparm.Pagination)
+			h.Log.Debug("plparm.Pagination.Pages:", *plparm.Pagination.Pages)
 			plparm.Error = plErr
 			plparm.Products = prods
 			h.Log.Debug("prods  in edit", prods)
 			h.AdminTemplates.ExecuteTemplate(w, adminProductListPage, &plparm)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -160,7 +277,7 @@ func (h *Six910Handler) StoreAdminDeleteProduct(w http.ResponseWriter, r *http.R
 				http.Redirect(w, r, adminProductListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

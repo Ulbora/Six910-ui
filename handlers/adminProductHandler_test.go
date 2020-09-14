@@ -716,3 +716,232 @@ func TestSix910Handler_StoreAdminDeleteProductFail(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestSix910Handler_StoreAdminSearchProductBySkuPage(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("GET", "https://test.com", nil)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminSearchProductBySkuPage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminSearchProductBySkuPageLogin(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("GET", "https://test.com", nil)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	//s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminSearchProductBySkuPage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminSearchProductBySkuSearch(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var dist sdbi.Distributor
+	dist.ID = 3
+
+	var dlst []sdbi.Distributor
+	dlst = append(dlst, dist)
+	sapi.MockDistributorList = &dlst
+	//dres.Success = true
+
+	var prod sdbi.Product
+	prod.ID = 3
+	prod.Name = "tester"
+
+	sapi.MockProduct = &prod
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "/test", strings.NewReader("sku=tester123"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminSearchProductBySkuPage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminSearchProductByNamePage(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("GET", "https://test.com", nil)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminSearchProductByNamePage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminSearchProductByNamePage2(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var prod sdbi.Product
+	prod.Name = "test"
+
+	var plst []sdbi.Product
+	plst = append(plst, prod)
+	sapi.MockProductList = &plst
+	//dres.Success = true
+
+	//-----------end mocking --------
+
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("POST", "/test", strings.NewReader("name=tester123"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminSearchProductByNamePage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+func TestSix910Handler_StoreAdminSearchProductByNamePageLogin(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("GET", "https://test.com", nil)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	//s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminSearchProductByNamePage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
