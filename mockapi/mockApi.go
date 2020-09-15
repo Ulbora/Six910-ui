@@ -91,6 +91,8 @@ type MockAPI struct {
 
 	MockAddProductCategoryResp *api.Response
 
+	MockProductCategoryIDList []int64
+
 	MockAddShipmentResp    *api.ResponseID
 	MockUpdateShipmentResp *api.Response
 	MockShipment           *sdbi.Shipment
@@ -736,6 +738,11 @@ func (a *MockAPI) DeleteProduct(id int64, headers *api.Headers) *api.Response {
 //AddProductCategory AddProductCategory
 func (a *MockAPI) AddProductCategory(pc *sdbi.ProductCategory, headers *api.Headers) *api.Response {
 	return a.MockAddProductCategoryResp
+}
+
+//GetProductCategoryList GetProductCategoryList
+func (a *MockAPI) GetProductCategoryList(productID int64, headers *api.Headers) []int64 {
+	return a.MockProductCategoryIDList
 }
 
 //DeleteProductCategory DeleteProductCategory

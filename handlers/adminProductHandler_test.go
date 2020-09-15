@@ -342,9 +342,11 @@ func TestSix910Handler_StoreAdminEditProduct(t *testing.T) {
 	pr.Success = true
 	sapi.MockUpdateProductResp = &pr
 
+	sapi.MockProductCategoryIDList = []int64{4, 5, 6}
+
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=3&sku=tester123&name=tester"))
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=3&sku=tester123&name=tester&catIds=4&catIds=5&catIds=7"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)

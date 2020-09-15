@@ -37,6 +37,7 @@ type ProdPage struct {
 	DistributorList *[]sdbi.Distributor
 	Pagination      *Pagination
 	HasProducts     bool
+	ExistingCats    []int64
 	// Pages    *[]Pageinate
 	// PrevLink string
 	// NextLink string
@@ -137,6 +138,16 @@ func (h *Six910Handler) StoreAdminEditProductPage(w http.ResponseWriter, r *http
 				h.Log.Debug("prod  in edit", dist)
 				epparm.DistributorList = dist
 			}(hd)
+			epparm.ExistingCats = []int64{8, 10, 54}
+
+			wg.Add(1)
+			go func(pid int64, header *six910api.Headers) {
+				defer wg.Done()
+				dist := h.API.GetProductCategoryList(pid, header)
+				h.Log.Debug("prod category in edit", dist)
+				epparm.ExistingCats = dist
+			}(prodID, hd)
+			// epparm.ExistingCats = []int64{8, 10, 54}
 
 			wg.Wait()
 
@@ -155,13 +166,68 @@ func (h *Six910Handler) StoreAdminEditProduct(w http.ResponseWriter, r *http.Req
 		if h.isStoreAdminLoggedIn(s) {
 			epp := h.processProduct(r)
 			h.Log.Debug("prod update", *epp)
+			h.Log.Debug("image4: ", epp.Image4)
+			r.ParseForm() // Required if you don't call r.FormValue()
+			cats := r.Form["catIds"]
+			h.Log.Debug("cats in prod cat update", cats)
 			hd := h.getHeader(s)
+
+			var formCats []int64
+			for _, c := range cats {
+				cid, _ := strconv.ParseInt(c, 10, 64)
+				formCats = append(formCats, cid)
+			}
+
+			exstCats := h.API.GetProductCategoryList(epp.ID, hd)
+
+			//remove not used
+			for _, c := range exstCats {
+				var found = false
+				for _, ec := range formCats {
+					if c == ec {
+						found = true
+						break
+					}
+				}
+				if !found {
+					//remove
+					h.Log.Debug("removing cat from prodcat", c)
+					var pc sdbi.ProductCategory
+					pc.CategoryID = c
+					pc.ProductID = epp.ID
+					go func(pc *sdbi.ProductCategory, header *six910api.Headers) {
+						h.API.DeleteProductCategory(pc, header)
+					}(&pc, hd)
+				}
+			}
+
+			//adding new
+			for _, c := range formCats {
+				var found = false
+				for _, ec := range exstCats {
+					if c == ec {
+						found = true
+						break
+					}
+				}
+				if !found {
+					//add
+					h.Log.Debug("adding new cat to prodcat", c)
+					var pc sdbi.ProductCategory
+					pc.CategoryID = c
+					pc.ProductID = epp.ID
+					go func(pc *sdbi.ProductCategory, header *six910api.Headers) {
+						h.API.AddProductCategory(pc, header)
+					}(&pc, hd)
+				}
+			}
+
 			res := h.API.UpdateProduct(epp, hd)
 			h.Log.Debug("prod update resp", *res)
 			if res.Success {
-				http.Redirect(w, r, adminProductListView, http.StatusFound)
+				http.Redirect(w, r, adminProductList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminEditProdViewFail, http.StatusFound)
+				http.Redirect(w, r, adminProductListError, http.StatusFound)
 			}
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)

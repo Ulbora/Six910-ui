@@ -21,7 +21,7 @@
       </li>
 
     </ul>
-    <form method="PUT" action="/admin/productListByName">
+    <form method="POST" action="/admin/updateProduct">
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="prod" role="tabpanel" aria-labelledby="home-tab">
 
@@ -29,6 +29,12 @@
           <!-- <form method="PUT" action="/admin/productListByName"> -->
             <input name="id" type="hidden" id="id" value="{{.Product.ID}}">
             <input name="storeId" type="hidden" id="storeId" value="{{.Product.StoreID}}">
+
+            <div class="form-group">
+              <label for="name">Product ID</label>
+              <input name="prodIdDisp" disabled type="text" class="form-control" id="name" value="{{.Product.ID}}">
+            </div>
+
             <div class="form-group">
               <label for="name">Name</label>
               <input name="name" type="text" class="form-control" id="name" value="{{.Product.Name}}">
@@ -295,9 +301,9 @@
 
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <label class="input-group-text" for="distributorID">Distributor</label>
+                <label class="input-group-text" for="distributorId">Distributor</label>
               </div>
-              <select name="distributorID" class="custom-select" id="distributorID">
+              <select name="distributorId" class="custom-select" id="distributorId">
                 {{ $DistributorID := .Product.DistributorID }} {{range $.DistributorList}} {{if eq $DistributorID .ID }}
                 <option value="{{.ID}}" selected>{{.Company}}</option>
                 {{else}}
@@ -317,16 +323,46 @@
       </div>
       <div class="tab-pane fade" id="cat" role="tabpanel" aria-labelledby="profile-tab">
         <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
-          <!-- <form method="PUT" action="/admin/updateProductCategory"> -->            
+         
+            {{$i1 := 0}}  
+            {{$i2 := 0}} 
+            {{$i3 := 0}} 
+            {{$i4 := 0}} 
+            {{$i5 := 0}} 
+            {{$i6 := 0}}       
 
+            {{range $i, $a := $.ExistingCats}} 
+              {{if eq $i 0 }}
+                 {{$i1 = $a}}  
+              {{end}}
+              {{if eq $i 1 }}
+                 {{$i2 = $a}}              
+              {{end}}   
+              {{if eq $i 2 }}
+                 {{$i3 = $a}}              
+              {{end}}     
+              {{if eq $i 3 }}
+                 {{$i4 = $a}}              
+              {{end}}     
+              {{if eq $i 4 }}
+                 {{$i5 = $a}}              
+              {{end}}   
+              {{if eq $i 5 }}
+                 {{$i6 = $a}}              
+              {{end}} 
+            {{end}}
+            
             <label for="image2">Categories</label>
-            <select name="catIds" id="catIds" class="custom-select custom-select-lg mb-3" multiple data-selected-text-format="count">
+            <select name="catIds" id="catIds" size="8" class="custom-select custom-select-lg mb-3" multiple data-selected-text-format="count">
               {{range $.CategoryList}}
-              <option value="{{.ID}}">{{.Name}}</option>
+                {{if or (eq $i1 .ID) (eq $i2 .ID) (eq $i3 .ID) (eq $i4 .ID) (eq $i5 .ID) (eq $i6 .ID)}} 
+                    <option value="{{.ID}}" selected>{{.Name}}</option>
+                {{else}}
+                    <option value="{{.ID}}">{{.Name}}</option>
+                {{end}}                               
               {{end}}              
-            </select>
+            </select>          
           
-          <!-- </form> -->
         </div>       
       </div>
 

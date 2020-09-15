@@ -39,6 +39,8 @@ const (
 	adminEditProd            = "/admin/editProduct"
 	adminDeleteProd          = "/admin/deleteProduct"
 	adminProductListView     = "/admin/productListView"
+	adminProductList         = "/admin/productList/0/100"
+	adminProductListError    = "/admin/productList/0/100?error=Update Failed"
 	adminProductListViewFail = "/admin/productListView?error=Add Failed"
 
 	//routes shipment
