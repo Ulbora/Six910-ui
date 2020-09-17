@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">
+        <h4 class="text-center mt-4">Shipping Method List</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#shipmethlist" role="tab"
+                    aria-controls="shipmeth" aria-selected="true">Shipping Method</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#addShipmeth" role="tab" aria-controls="add"
+                    aria-selected="false">Add</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="shipmethlist" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .ShippingMethodList}}
+                            <tr class='clickable-row' data-href='/admin/getShippingMethod/{{.ID}}'>
+                                <td>{{.Name}}</td>
+                                <td>{{.Cost}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="addShipmeth" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/addShippingMethod">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input name="name" type="text" class="form-control" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="cost">Cost</label>
+                            <input name="cost" type="text" class="form-control" id="cost">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxWeight">Max Weight</label>
+                            <input name="maxWeight" type="text" class="form-control" id="maxWeight">
+                        </div>
+                        <div class="form-group">
+                            <label for="handling">Handling</label>
+                            <input name="handling" type="text" class="form-control" id="handling">
+                        </div>
+                        <div class="form-group">
+                            <label for="minOrderAmount">Min Order Amount</label>
+                            <input name="minOrderAmount" type="text" class="form-control" id="minOrderAmount">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxOrderAmount">Max Order Amount</label>
+                            <input name="maxOrderAmount" type="text" class="form-control" id="maxOrderAmount">
+                        </div>                        
+                        <div class="form-group">
+                            <label for="catIds">Region</label>
+                            <select name="regionId" id="regionId" class="custom-select custom-select-lg mb-3"
+                                data-selected-text-format="count">
+                                {{range $.RegionList}}
+                                <option value="{{.ID}}">{{.Name}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="catIds">Shipping Carrier</label>
+                            <select name="shippingCarrierId" id="shippingCarrierId" class="custom-select custom-select-lg mb-3"
+                                data-selected-text-format="count">
+                                {{range $.ShippingCarrierList}}
+                                <option value="{{.ID}}">{{.Carrier}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="catIds">Shipping Insurance</label>
+                            <select name="insuranceId" id="insuranceId" class="custom-select custom-select-lg mb-3"
+                                data-selected-text-format="count">
+                                <option>None</option>
+                                {{range $.InsuranceList}}
+                                <option value="{{.ID}}">{{.Cost}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

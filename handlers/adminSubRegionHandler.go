@@ -52,7 +52,7 @@ func (h *Six910Handler) StoreAdminAddSubRegionPage(w http.ResponseWriter, r *htt
 			assrpg.Error = asrErr
 			h.AdminTemplates.ExecuteTemplate(w, adminAddSubRegionPage, &assrpg)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -74,7 +74,7 @@ func (h *Six910Handler) StoreAdminAddSubRegion(w http.ResponseWriter, r *http.Re
 				http.Redirect(w, r, adminSubRegionListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -117,7 +117,7 @@ func (h *Six910Handler) StoreAdminEditSubRegionPage(w http.ResponseWriter, r *ht
 
 			h.AdminTemplates.ExecuteTemplate(w, adminEditSubRegionPage, &srp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -139,7 +139,7 @@ func (h *Six910Handler) StoreAdminEditSubRegion(w http.ResponseWriter, r *http.R
 				http.Redirect(w, r, adminEditSubRegionViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -159,7 +159,7 @@ func (h *Six910Handler) StoreAdminViewSubRegionList(w http.ResponseWriter, r *ht
 			h.Log.Debug("Sub Region  in list", srsl)
 			h.AdminTemplates.ExecuteTemplate(w, adminSubRegionListPage, &srsl)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -182,7 +182,7 @@ func (h *Six910Handler) StoreAdminDeleteSubRegion(w http.ResponseWriter, r *http
 				http.Redirect(w, r, adminSubRegionListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

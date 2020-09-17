@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">        
+        <h4 class="text-center mt-4">Edit Shipping Carrier</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#carredit" role="tab"
+                    aria-controls="distributors" aria-selected="true">Carrier</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#deleteCarr" role="tab" aria-controls="add"
+                    aria-selected="false">Delete</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="carredit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/updateShippingCarrier">
+                        <input name="id" type="hidden" id="id" value="{{.ShippingCarrier.ID}}">
+                        <div class="form-group">
+                            <label for="company">Carrier</label>
+                            <input name="carrier" type="text" class="form-control" id="carrier" value="{{.ShippingCarrier.Carrier}}">
+                          </div>
+                          <div class="form-group">
+                            <label for="contactName">Type</label>
+                            <input name="type" type="text" class="form-control" id="type" value="{{.ShippingCarrier.Type}}">
+                          </div>                          
+                          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="deleteCarr" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <a class="btn btn-primary"  href="/admin/deleteShippingCarrier/{{.ShippingCarrier.ID}}" role="button">Delete Carrier</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">        
+        <h4 class="text-center mt-4">Shipping Carrier List</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#carrlist" role="tab"
+                    aria-controls="distributors" aria-selected="true">Carrier</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#addCarr" role="tab" aria-controls="add"
+                    aria-selected="false">Add</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="carrlist" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Carrier</th>
+                                <th scope="col">Type</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .}}
+                            <tr class='clickable-row' data-href='/admin/getShippingCarrier/{{.ID}}'>
+                                <td>{{.Carrier}}</td>
+                                <td>{{.Type}}</td>                               
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="addCarr" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/addShippingCarrier">
+                        <div class="form-group">
+                            <label for="company">Carrier</label>
+                            <input name="carrier" type="text" class="form-control" id="carrier" >
+                          </div>
+                          <div class="form-group">
+                            <label for="type">Type</label>
+                            <input name="type" type="text" class="form-control" id="type" >
+                          </div>                          
+                          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

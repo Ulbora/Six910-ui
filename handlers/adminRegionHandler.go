@@ -43,7 +43,7 @@ func (h *Six910Handler) StoreAdminAddRegionPage(w http.ResponseWriter, r *http.R
 			asrpg.Error = asrErr
 			h.AdminTemplates.ExecuteTemplate(w, adminAddRegionPage, &asrpg)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -65,7 +65,7 @@ func (h *Six910Handler) StoreAdminAddRegion(w http.ResponseWriter, r *http.Reque
 				http.Redirect(w, r, adminRegionListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -85,9 +85,9 @@ func (h *Six910Handler) StoreAdminEditRegionPage(w http.ResponseWriter, r *http.
 			var srp RegionPage
 			srp.Error = eipErr
 			srp.Region = h.API.GetRegion(iID, hd)
-			h.AdminTemplates.ExecuteTemplate(w, adminEditShippingMethodPage, &srp)
+			h.AdminTemplates.ExecuteTemplate(w, adminEditRegionPage, &srp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -106,10 +106,10 @@ func (h *Six910Handler) StoreAdminEditRegion(w http.ResponseWriter, r *http.Requ
 			if res.Success {
 				http.Redirect(w, r, adminRegionListView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminEditRegionViewFail, http.StatusFound)
+				http.Redirect(w, r, adminRegionListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -125,7 +125,7 @@ func (h *Six910Handler) StoreAdminViewRegionList(w http.ResponseWriter, r *http.
 			h.Log.Debug("Region  in list", srsl)
 			h.AdminTemplates.ExecuteTemplate(w, adminRegionListPage, &srsl)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -148,7 +148,7 @@ func (h *Six910Handler) StoreAdminDeleteRegion(w http.ResponseWriter, r *http.Re
 				http.Redirect(w, r, adminRegionListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

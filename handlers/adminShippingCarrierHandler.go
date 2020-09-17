@@ -43,7 +43,7 @@ func (h *Six910Handler) StoreAdminAddCarrierPage(w http.ResponseWriter, r *http.
 			ascpg.Error = ascErr
 			h.AdminTemplates.ExecuteTemplate(w, adminAddShippingCarrierPage, &ascpg)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -60,12 +60,12 @@ func (h *Six910Handler) StoreAdminAddCarrier(w http.ResponseWriter, r *http.Requ
 			scres := h.API.AddShippingCarrier(asc, hd)
 			h.Log.Debug("shipping carrier add resp", *scres)
 			if scres.Success {
-				http.Redirect(w, r, adminAddShippingCarrierView, http.StatusFound)
+				http.Redirect(w, r, adminShippingCarrierList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminAddShippingCarrierViewFail, http.StatusFound)
+				http.Redirect(w, r, adminShippingCarrierListFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -87,7 +87,7 @@ func (h *Six910Handler) StoreAdminEditCarrierPage(w http.ResponseWriter, r *http
 			scgp.ShippingCarrier = h.API.GetShippingCarrier(iID, hd)
 			h.AdminTemplates.ExecuteTemplate(w, adminEditShippingCarrierPage, &scgp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -104,12 +104,12 @@ func (h *Six910Handler) StoreAdminEditCarrier(w http.ResponseWriter, r *http.Req
 			res := h.API.UpdateShippingCarrier(esc, hd)
 			h.Log.Debug("shipping carrier update resp", *res)
 			if res.Success {
-				http.Redirect(w, r, adminShippingCarrierListView, http.StatusFound)
+				http.Redirect(w, r, adminShippingCarrierList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminShippingCarrierListViewFail, http.StatusFound)
+				http.Redirect(w, r, adminShippingCarrierListFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -123,9 +123,9 @@ func (h *Six910Handler) StoreAdminViewCarrierList(w http.ResponseWriter, r *http
 			hd := h.getHeader(gscls)
 			scsl := h.API.GetShippingCarrierList(hd)
 			h.Log.Debug("shipping carrier  in list", *scsl)
-			h.AdminTemplates.ExecuteTemplate(w, adminShippingCarrierListView, &scsl)
+			h.AdminTemplates.ExecuteTemplate(w, adminShippingCarrierListPage, &scsl)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -143,12 +143,12 @@ func (h *Six910Handler) StoreAdminDeleteCarrier(w http.ResponseWriter, r *http.R
 			res := h.API.DeleteShippingCarrier(idddsc, hd)
 			h.Log.Debug("shipping carrier delete resp", *res)
 			if res.Success {
-				http.Redirect(w, r, adminShippingCarrierListView, http.StatusFound)
+				http.Redirect(w, r, adminShippingCarrierList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminShippingCarrierListViewFail, http.StatusFound)
+				http.Redirect(w, r, adminShippingCarrierListFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

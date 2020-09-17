@@ -80,7 +80,9 @@ func main() {
 		"./static/admin/subnavs/productNavbar.html", "./static/admin/pagination.html", "./static/admin/productSkuSearch.html",
 		"./static/admin/productNameSearch.html", "./static/admin/editProduct.html", "./static/admin/addProduct.html",
 		"./static/admin/distributorList.html", "./static/admin/editDistributor.html", "./static/admin/categoryList.html",
-		"./static/admin/editCategory.html",
+		"./static/admin/editCategory.html", "./static/admin/shippingCarrierList.html", "./static/admin/editShippingCarrier.html",
+		"./static/admin/regionList.html", "./static/admin/editRegion.html",
+		"./static/admin/shippingMethodList.html", "./static/admin/editShippingMethod.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -116,6 +118,24 @@ func main() {
 	router.HandleFunc("/admin/getCategory/{id}", h.StoreAdminEditCategoryPage).Methods("GET")
 	router.HandleFunc("/admin/updateCategory", h.StoreAdminEditCategory).Methods("POST")
 	router.HandleFunc("/admin/deleteCategory/{id}", h.StoreAdminDeleteCategory).Methods("GET")
+
+	router.HandleFunc("/admin/shippingCarrierList", h.StoreAdminViewCarrierList).Methods("GET")
+	router.HandleFunc("/admin/addShippingCarrier", h.StoreAdminAddCarrier).Methods("POST")
+	router.HandleFunc("/admin/getShippingCarrier/{id}", h.StoreAdminEditCarrierPage).Methods("GET")
+	router.HandleFunc("/admin/updateShippingCarrier", h.StoreAdminEditCarrier).Methods("POST")
+	router.HandleFunc("/admin/deleteShippingCarrier/{id}", h.StoreAdminDeleteCarrier).Methods("GET")
+
+	router.HandleFunc("/admin/shippingRegionList", h.StoreAdminViewRegionList).Methods("GET")
+	router.HandleFunc("/admin/addShippingRegion", h.StoreAdminAddRegion).Methods("POST")
+	router.HandleFunc("/admin/getShippingRegion/{id}", h.StoreAdminEditRegionPage).Methods("GET")
+	router.HandleFunc("/admin/updateShippingRegion", h.StoreAdminEditRegion).Methods("POST")
+	router.HandleFunc("/admin/deleteShippingRegion/{id}", h.StoreAdminDeleteRegion).Methods("GET")
+
+	router.HandleFunc("/admin/shippingMethodList", h.StoreAdminViewShippingMethodList).Methods("GET")
+	router.HandleFunc("/admin/addShippingMethod", h.StoreAdminAddShippingMethod).Methods("POST")
+	router.HandleFunc("/admin/getShippingMethod/{id}", h.StoreAdminEditShippingMethodPage).Methods("GET")
+	router.HandleFunc("/admin/updateShippingMethod", h.StoreAdminEditShippingMethod).Methods("POST")
+	router.HandleFunc("/admin/deleteShippingMethod/{id}", h.StoreAdminDeleteShippingMethod).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

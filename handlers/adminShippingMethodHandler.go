@@ -3,7 +3,9 @@ package handlers
 import (
 	"net/http"
 	"strconv"
+	"sync"
 
+	six910api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
@@ -28,8 +30,12 @@ import (
 
 //ShipMethPage ShipMethPage
 type ShipMethPage struct {
-	Error          string
-	ShippingMethod *sdbi.ShippingMethod
+	Error               string
+	ShippingMethod      *sdbi.ShippingMethod
+	ShippingMethodList  *[]sdbi.ShippingMethod
+	RegionList          *[]sdbi.Region
+	ShippingCarrierList *[]sdbi.ShippingCarrier
+	InsuranceList       *[]sdbi.Insurance
 }
 
 //StoreAdminAddShippingMethodPage StoreAdminAddShippingMethodPage
@@ -43,7 +49,7 @@ func (h *Six910Handler) StoreAdminAddShippingMethodPage(w http.ResponseWriter, r
 			asmpg.Error = asmErr
 			h.AdminTemplates.ExecuteTemplate(w, adminAddShippingMethodPage, &asmpg)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -60,12 +66,12 @@ func (h *Six910Handler) StoreAdminAddShippingMethod(w http.ResponseWriter, r *ht
 			aasmres := h.API.AddShippingMethod(aasm, hd)
 			h.Log.Debug("shipping method add resp", *aasmres)
 			if aasmres.Success {
-				http.Redirect(w, r, adminAddShippingMethodView, http.StatusFound)
+				http.Redirect(w, r, adminShippingMethodList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminAddShippingMethodViewFail, http.StatusFound)
+				http.Redirect(w, r, adminShippingMethodListFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -82,12 +88,51 @@ func (h *Six910Handler) StoreAdminEditShippingMethodPage(w http.ResponseWriter, 
 			idesmstr := esmvars["id"]
 			iID, _ := strconv.ParseInt(idesmstr, 10, 64)
 			h.Log.Debug("shipping method id in edit", iID)
-			var esmgp ShipMethPage
-			esmgp.Error = eipErr
-			esmgp.ShippingMethod = h.API.GetShippingMethod(iID, hd)
-			h.AdminTemplates.ExecuteTemplate(w, adminEditShippingMethodPage, &esmgp)
+			//var esmgp ShipMethPage
+			//esmgp.Error = eipErr
+
+			var esmpage ShipMethPage
+			esmpage.Error = eipErr
+
+			var wg sync.WaitGroup
+
+			wg.Add(1)
+			go func(id int64, header *six910api.Headers) {
+				defer wg.Done()
+				esm := h.API.GetShippingMethod(id, header)
+				h.Log.Debug("shipping method  in list", esm)
+				esmpage.ShippingMethod = esm
+			}(iID, hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				esrsl := h.API.GetRegionList(header)
+				h.Log.Debug("shipping region in list", esrsl)
+				esmpage.RegionList = esrsl
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				escsl := h.API.GetShippingCarrierList(header)
+				h.Log.Debug("shipping carrier in list", escsl)
+				esmpage.ShippingCarrierList = escsl
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				esisl := h.API.GetInsuranceList(header)
+				h.Log.Debug("shipping insurance in list", esisl)
+				esmpage.InsuranceList = esisl
+			}(hd)
+
+			wg.Wait()
+
+			h.AdminTemplates.ExecuteTemplate(w, adminEditShippingMethodPage, &esmpage)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -104,12 +149,12 @@ func (h *Six910Handler) StoreAdminEditShippingMethod(w http.ResponseWriter, r *h
 			res := h.API.UpdateShippingMethod(esmm, hd)
 			h.Log.Debug("shipping method update resp", *res)
 			if res.Success {
-				http.Redirect(w, r, adminShippingMethodListView, http.StatusFound)
+				http.Redirect(w, r, adminShippingMethodList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminShippingMethodListViewFail, http.StatusFound)
+				http.Redirect(w, r, adminShippingMethodListFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -121,11 +166,49 @@ func (h *Six910Handler) StoreAdminViewShippingMethodList(w http.ResponseWriter, 
 	if suc {
 		if h.isStoreAdminLoggedIn(gsmls) {
 			hd := h.getHeader(gsmls)
-			smsl := h.API.GetShippingMethodList(hd)
-			h.Log.Debug("shipping method  in list", smsl)
-			h.AdminTemplates.ExecuteTemplate(w, adminShippingMethodListPage, &smsl)
+			var smpage ShipMethPage
+
+			var wg sync.WaitGroup
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				smsl := h.API.GetShippingMethodList(header)
+				h.Log.Debug("shipping method  in list", smsl)
+				smpage.ShippingMethodList = smsl
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				srsl := h.API.GetRegionList(header)
+				h.Log.Debug("shipping region in list", srsl)
+				smpage.RegionList = srsl
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				scsl := h.API.GetShippingCarrierList(header)
+				h.Log.Debug("shipping carrier in list", scsl)
+				smpage.ShippingCarrierList = scsl
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				sisl := h.API.GetInsuranceList(header)
+				h.Log.Debug("shipping insurance in list", sisl)
+				smpage.InsuranceList = sisl
+			}(hd)
+
+			wg.Wait()
+
+			//smpage.ShippingMethod =
+
+			h.AdminTemplates.ExecuteTemplate(w, adminShippingMethodListPage, &smpage)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -143,9 +226,9 @@ func (h *Six910Handler) StoreAdminDeleteShippingMethod(w http.ResponseWriter, r 
 			res := h.API.DeleteShippingMethod(idddsm, hd)
 			h.Log.Debug("shipping method delete resp", *res)
 			if res.Success {
-				http.Redirect(w, r, adminShippingMethodListView, http.StatusFound)
+				http.Redirect(w, r, adminShippingMethodList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminShippingMethodListViewFail, http.StatusFound)
+				http.Redirect(w, r, adminShippingMethodListFail, http.StatusFound)
 			}
 		} else {
 			http.Redirect(w, r, adminloginPage, http.StatusFound)

@@ -154,8 +154,8 @@ const (
 	adminEditShippingCarrierViewFail = "/admin/editShippingCarrierView?error=Update Failed"
 	adminEditShippingCarrier         = "/admin/editShippingCarrier"
 	adminDeleteShippingCarrier       = "/admin/deleteShippingCarrier"
-	adminShippingCarrierListView     = "/admin/shippingCarrierListView"
-	adminShippingCarrierListViewFail = "/admin/shippingCarrierListView?error=Add Failed"
+	adminShippingCarrierList         = "/admin/shippingCarrierList"
+	adminShippingCarrierListFail     = "/admin/shippingCarrierList?error=Add Failed"
 
 	//routes shipping method
 	adminAddShippingMethodView      = "/admin/addShippingMethodView"
@@ -165,8 +165,8 @@ const (
 	adminEditShippingMethodViewFail = "/admin/editShippingMethodView?error=Update Failed"
 	adminEditShippingMethod         = "/admin/editShippingMethod"
 	adminDeleteShippingMethod       = "/admin/deleteShippingMethod"
-	adminShippingMethodListView     = "/admin/shippingMethodListView"
-	adminShippingMethodListViewFail = "/admin/shippingMethodListView?error=Add Failed"
+	adminShippingMethodList         = "/admin/shippingMethodList"
+	adminShippingMethodListFail     = "/admin/shippingMethodList?error=Add Failed"
 
 	//routes Region
 	adminAddRegionView      = "/admin/addRegionView"
@@ -176,8 +176,8 @@ const (
 	adminEditRegionViewFail = "/admin/editRegionView?error=Update Failed"
 	adminEditRegion         = "/admin/editRegion"
 	adminDeleteRegion       = "/admin/deleteRegion"
-	adminRegionListView     = "/admin/regionView"
-	adminRegionListViewFail = "/admin/regionListView?error=Add Failed"
+	adminRegionListView     = "/admin/shippingRegionList"
+	adminRegionListViewFail = "/admin/shippingRegionList?error=Add Failed"
 
 	//routes Sub Region
 	adminAddSubRegionView      = "/admin/addSubRegionView"

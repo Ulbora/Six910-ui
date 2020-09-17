@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">        
+        <h4 class="text-center mt-4">Edit Shipping Method</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#shipmethedit" role="tab"
+                    aria-controls="method" aria-selected="true">Shipping Method</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#deleteShipMeth" role="tab" aria-controls="add"
+                    aria-selected="false">Delete</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="shipmethedit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/updateShippingMethod">
+                        <input name="id" type="hidden" id="id" value="{{.ShippingMethod.ID}}">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input name="name" type="text" class="form-control" id="name" value="{{.ShippingMethod.Name}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="cost">Cost</label>
+                            <input name="cost" type="text" class="form-control" id="cost" value="{{.ShippingMethod.Cost}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxWeight">Max Weight</label>
+                            <input name="maxWeight" type="text" class="form-control" id="maxWeight" value="{{.ShippingMethod.MaxWeight}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="handling">Handling</label>
+                            <input name="handling" type="text" class="form-control" id="handling" value="{{.ShippingMethod.Handling}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="minOrderAmount">Min Order Amount</label>
+                            <input name="minOrderAmount" type="text" class="form-control" id="minOrderAmount" value="{{.ShippingMethod.MinOrderAmount}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxOrderAmount">Max Order Amount</label>
+                            <input name="maxOrderAmount" type="text" class="form-control" id="maxOrderAmount" value="{{.ShippingMethod.MaxOrderAmount}}">
+                        </div>                        
+                        <div class="form-group">
+                            <label for="regionId">Region</label>
+                            <select name="regionId" id="regionId" disabled class="custom-select custom-select-lg mb-3"
+                                data-selected-text-format="count">
+                                {{ $RegID := .ShippingMethod.RegionID }} {{range $.RegionList}}
+                                {{if eq $RegID .ID }}
+                                <option value="{{.ID}}" selected>{{.Name}}</option>
+                                {{else}}                               
+                                <option value="{{.ID}}">{{.Name}}</option>
+                                {{end}}{{end}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="shippingCarrierId">Shipping Carrier</label>
+                            <select name="shippingCarrierId" id="shippingCarrierId" disabled class="custom-select custom-select-lg mb-3"
+                                data-selected-text-format="count">
+                                {{ $ScID := .ShippingMethod.ShippingCarrierID }} {{range $.ShippingCarrierList}}
+                                {{if eq $ScID .ID }}
+                                <option value="{{.ID}}" selected>{{.Carrier}}</option>
+                                {{else}}                               
+                                <option value="{{.ID}}">{{.Carrier}}</option>
+                                {{end}}{{end}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="catIds">Shipping Insurance</label>
+                            <select name="insuranceId" id="insuranceId" disabled class="custom-select custom-select-lg mb-3"
+                                data-selected-text-format="count">
+                                <option>None</option>
+                                {{ $InsID := .ShippingMethod.InsuranceID }} {{range $.InsuranceList}}
+                                {{if eq $InsID .ID }}
+                                <option value="{{.ID}}" selected>{{.Cost}}</option>
+                                {{else}}                               
+                                <option value="{{.ID}}">{{.Cost}}</option>
+                                {{end}}{{end}}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="deleteShipMeth" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <a class="btn btn-primary"  href="/admin/deleteShippingMethod/{{.ShippingMethod.ID}}" role="button">Delete Method</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
