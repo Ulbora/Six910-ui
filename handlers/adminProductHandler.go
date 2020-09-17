@@ -66,9 +66,30 @@ func (h *Six910Handler) StoreAdminAddProductPage(w http.ResponseWriter, r *http.
 	h.Log.Debug("session suc in prod add view", suc)
 	if suc {
 		if h.isStoreAdminLoggedIn(s) {
+			hd := h.getHeader(s)
 			loginErr := r.URL.Query().Get("error")
-			var lge ProcError
+			var lge ProdPage
 			lge.Error = loginErr
+
+			var wg sync.WaitGroup
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				cats := h.API.GetHierarchicalCategoryList(header)
+				h.Log.Debug("prod  in edit", cats)
+				lge.CategoryList = cats
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				dist := h.API.GetDistributorList(header)
+				h.Log.Debug("prod  in edit", dist)
+				lge.DistributorList = dist
+			}(hd)
+
+			wg.Wait()
+
 			h.AdminTemplates.ExecuteTemplate(w, adminAddProductPage, &lge)
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)
@@ -86,11 +107,31 @@ func (h *Six910Handler) StoreAdminAddProduct(w http.ResponseWriter, r *http.Requ
 			h.Log.Debug("prod add", *p)
 			hd := h.getHeader(s)
 			prres := h.API.AddProduct(p, hd)
+			r.ParseForm()
+			acats := r.Form["catIds"]
+
+			var aformCats []int64
+			for _, c := range acats {
+				cid, _ := strconv.ParseInt(c, 10, 64)
+				aformCats = append(aformCats, cid)
+			}
+
+			//adding new
+			for _, c := range aformCats {
+				h.Log.Debug("adding new cat to prodcat", c)
+				var pc sdbi.ProductCategory
+				pc.CategoryID = c
+				pc.ProductID = prres.ID
+				go func(pc *sdbi.ProductCategory, header *six910api.Headers) {
+					h.API.AddProductCategory(pc, header)
+				}(&pc, hd)
+			}
+
 			h.Log.Debug("prod add resp", *prres)
 			if prres.Success {
-				http.Redirect(w, r, adminAddProdView, http.StatusFound)
+				http.Redirect(w, r, adminProductList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminAddProdViewFail, http.StatusFound)
+				http.Redirect(w, r, adminProductListError, http.StatusFound)
 			}
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)
@@ -138,7 +179,6 @@ func (h *Six910Handler) StoreAdminEditProductPage(w http.ResponseWriter, r *http
 				h.Log.Debug("prod  in edit", dist)
 				epparm.DistributorList = dist
 			}(hd)
-			epparm.ExistingCats = []int64{8, 10, 54}
 
 			wg.Add(1)
 			go func(pid int64, header *six910api.Headers) {
@@ -147,7 +187,6 @@ func (h *Six910Handler) StoreAdminEditProductPage(w http.ResponseWriter, r *http
 				h.Log.Debug("prod category in edit", dist)
 				epparm.ExistingCats = dist
 			}(prodID, hd)
-			// epparm.ExistingCats = []int64{8, 10, 54}
 
 			wg.Wait()
 
@@ -167,7 +206,7 @@ func (h *Six910Handler) StoreAdminEditProduct(w http.ResponseWriter, r *http.Req
 			epp := h.processProduct(r)
 			h.Log.Debug("prod update", *epp)
 			h.Log.Debug("image4: ", epp.Image4)
-			r.ParseForm() // Required if you don't call r.FormValue()
+			r.ParseForm()
 			cats := r.Form["catIds"]
 			h.Log.Debug("cats in prod cat update", cats)
 			hd := h.getHeader(s)
@@ -338,9 +377,9 @@ func (h *Six910Handler) StoreAdminDeleteProduct(w http.ResponseWriter, r *http.R
 			res := h.API.DeleteProduct(idd, hd)
 			h.Log.Debug("prod delete resp", *res)
 			if res.Success {
-				http.Redirect(w, r, adminProductListView, http.StatusFound)
+				http.Redirect(w, r, adminProductList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminProductListViewFail, http.StatusFound)
+				http.Redirect(w, r, adminProductListError, http.StatusFound)
 			}
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)

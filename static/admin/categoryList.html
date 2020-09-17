@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">
+        {{template "productNavbar"}}
+        <h4 class="text-center">Category Page</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#catlist" role="tab"
+                    aria-controls="distributors" aria-selected="true">Category</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#addCat" role="tab" aria-controls="add"
+                    aria-selected="false">Add</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="catlist" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Parent Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .CategoryList}}
+                            <tr class='clickable-row' data-href='/admin/getCategory/{{.ID}}'>
+                                <td>{{.Name}}</td>
+                                <td>{{.Description}}</td>
+                                <td>
+                                    {{ $CatID := .ParentCategoryID }} {{range $.ParentCategoryList}} {{if eq $CatID .ID }}                                                                     
+                                    {{.Name}}
+                                    {{end}} {{end}} 
+                                </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="addCat" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/addCategory">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input name="name" type="text" class="form-control" id="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="desc">Description</label>
+                            <input name="desc" type="text" class="form-control" id="desc">
+                        </div>
+
+                        <label for="thumbnail">Thumbnail</label>
+                        <div class="form-row mt-3">
+                            <div class="col-md-1 mb-3 ">
+                                <img id="thumbnailImg" style="width: 40%" class="img-fluid" style="max-width: 20%;">
+                            </div>
+                            <div class="col-md-11 mb-3 ">
+                                <input name="thumbnail" type="text" class="form-control" id="thumbnail">
+                            </div>
+                        </div>
+
+                        <label for="image">Image</label>
+                        <div class="form-row mt-3">
+                            <div class="col-md-1 mb-3 ">
+                                <img id="imageImg" style="width: 40%" class="img-fluid" style="max-width: 20%;">
+                            </div>
+                            <div class="col-md-11 mb-3 ">
+                                <input name="image" type="text" class="form-control" id="image">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="catIds">Parent Category</label>
+                            <select name="parentId" id="parentId"  class="custom-select custom-select-lg mb-3"
+                                data-selected-text-format="count">
+                                {{range $.ParentCategoryList}}
+                                <option value="{{.ID}}">{{.Name}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

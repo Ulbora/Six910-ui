@@ -77,8 +77,8 @@ const (
 	adminEditCategoryViewFail = "/admin/editCategoryView?error=Update Failed"
 	adminEditCategory         = "/admin/editCategory"
 	adminDeleteCategory       = "/admin/deleteCategory"
-	adminCategoryListView     = "/admin/categoryListView"
-	adminCategoryListViewFail = "/admin/categoryListView?error=Add Failed"
+	adminCategoryListView     = "/admin/categoryList"
+	adminCategoryListViewFail = "/admin/categoryList?error=Add Failed"
 
 	//routes Distributor
 	adminAddDistributorView      = "/admin/addDistributorView"
@@ -88,8 +88,8 @@ const (
 	adminEditDistributorViewFail = "/admin/editDistributorView?error=Update Failed"
 	adminEditDistributor         = "/admin/editDistributor"
 	adminDeleteDistributor       = "/admin/deleteDistributor"
-	adminDistributorListView     = "/admin/distributorListView"
-	adminDistributorListViewFail = "/admin/distributorListView?error=Add Failed"
+	adminDistributorListView     = "/admin/distributorList"
+	adminDistributorListViewFail = "/admin/distributorList?error=Add Failed"
 
 	//routes Insurance
 	adminAddInsuranceView      = "/admin/addInsuranceView"

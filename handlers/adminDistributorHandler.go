@@ -43,7 +43,7 @@ func (h *Six910Handler) StoreAdminAddDistributorPage(w http.ResponseWriter, r *h
 			adpg.Error = adErr
 			h.AdminTemplates.ExecuteTemplate(w, adminAddDistributorPage, &adpg)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -65,7 +65,7 @@ func (h *Six910Handler) StoreAdminAddDistributor(w http.ResponseWriter, r *http.
 				http.Redirect(w, r, adminAddDistributorViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -87,7 +87,7 @@ func (h *Six910Handler) StoreAdminEditDistributorPage(w http.ResponseWriter, r *
 			dgp.Distributor = h.API.GetDistributor(dID, hd)
 			h.AdminTemplates.ExecuteTemplate(w, adminEditDistributorPage, &dgp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -109,7 +109,7 @@ func (h *Six910Handler) StoreAdminEditDistributor(w http.ResponseWriter, r *http
 				http.Redirect(w, r, adminEditDistributorViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -125,7 +125,7 @@ func (h *Six910Handler) StoreAdminViewDistributorList(w http.ResponseWriter, r *
 			h.Log.Debug("Dist  in list", dsl)
 			h.AdminTemplates.ExecuteTemplate(w, adminDistributorListPage, &dsl)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -148,7 +148,7 @@ func (h *Six910Handler) StoreAdminDeleteDistributor(w http.ResponseWriter, r *ht
 				http.Redirect(w, r, adminDistributorListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">
+        {{template "productNavbar"}}
+        <h4 class="text-center">Distributors Page</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#distlist" role="tab"
+                    aria-controls="distributors" aria-selected="true">Distributors</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#addDist" role="tab" aria-controls="add"
+                    aria-selected="false">Add</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="distlist" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Company</th>
+                                <th scope="col">Contact Name</th>
+                                <th scope="col">Phone</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .}}
+                            <tr class='clickable-row' data-href='/admin/getDistributor/{{.ID}}'>
+                                <td>{{.Company}}</td>
+                                <td>{{.ContactName}}</td>
+                                <td>{{.Phone}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="addDist" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/addDistributor">
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input name="company" type="text" class="form-control" id="company" >
+                          </div>
+                          <div class="form-group">
+                            <label for="contactName">Contact Name</label>
+                            <input name="contactName" type="text" class="form-control" id="contactName" >
+                          </div>
+                          <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input name="phone" type="text" class="form-control" id="phone" >
+                          </div>
+                          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

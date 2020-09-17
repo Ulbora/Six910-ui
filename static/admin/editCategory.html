@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">
+        {{template "productNavbar"}}
+        <h4 class="text-center">Edit Category Page</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#catedit" role="tab"
+                    aria-controls="category" aria-selected="true">Category</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#deleteCat" role="tab" aria-controls="add"
+                    aria-selected="false">Delete</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="catedit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/updateCategory">
+                        <input name="id" type="hidden" id="id" value="{{.Category.ID}}">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input name="name" type="text" class="form-control" id="name" value="{{.Category.Name}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="desc">Description</label>
+                            <input name="desc" type="text" class="form-control" id="desc"
+                                value="{{.Category.Description}}">
+                        </div>
+
+                        <label for="thumbnail">Thumbnail</label>
+                        <div class="form-row mt-3">
+                            <div class="col-md-1 mb-3 ">
+                                <img id="thumbnailImg" style="width: 40%" class="img-fluid" style="max-width: 20%;"  src="{{.Category.Thumbnail}}">
+                            </div>
+                            <div class="col-md-11 mb-3 ">
+                                <input name="thumbnail" type="text" class="form-control" id="thumbnail"
+                                    value="{{.Category.Thumbnail}}">
+                            </div>
+                        </div>
+
+                        <label for="image">Image</label>
+                        <div class="form-row mt-3">
+                            <div class="col-md-1 mb-3 ">
+                                <img id="imageImg" style="width: 40%" class="img-fluid" style="max-width: 20%;" src="{{.Category.Image}}">
+                            </div>
+                            <div class="col-md-11 mb-3 ">
+                                <input name="image" type="text" class="form-control" id="image"
+                                    value="{{.Category.Image}}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="catIds">Parent Category</label>
+                            <select name="parentId" id="parentId" class="custom-select custom-select-lg mb-3"
+                                data-selected-text-format="count">
+                                {{ $CatID := .Category.ParentCategoryID }} {{range $.ParentCategoryList}}
+                                {{if eq $CatID .ID }}
+                                <option value="{{.ID}}" selected>{{.Name}}</option>
+                                {{else}}                               
+                                <option value="{{.ID}}">{{.Name}}</option>
+                                {{end}}{{end}}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="deleteCat" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <a class="btn btn-primary" href="/admin/deleteCategory/{{.Category.ID}}" role="button">Delete
+                        Category</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

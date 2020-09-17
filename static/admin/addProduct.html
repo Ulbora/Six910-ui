@@ -6,7 +6,7 @@
 <body>
   <div class="container-sm">
     {{template "productNavbar"}}
-    <h6 class="text-center mt-2">Edit Product</h6>
+    <h6 class="text-center mt-2">Add Product</h6>
 
     <ul class="nav nav-tabs" id="myTab" role="tablist">
 
@@ -19,89 +19,77 @@
         <a class="nav-link" id="cat-tab" data-toggle="tab" href="#cat" role="tab" aria-controls="category"
           aria-selected="false">Category</a>
       </li>
-
-      <li class="nav-item" role="presentation">
-        <a class="nav-link" id="delete-tab" data-toggle="tab" href="#delprod" role="tab" aria-controls="delete"
-          aria-selected="false">Delete</a>
-      </li>
-
+    
     </ul>
-    <form method="POST" action="/admin/updateProduct">
+    <form method="POST" action="/admin/addProduct">
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="prod" role="tabpanel" aria-labelledby="home-tab">
 
         <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
           <!-- <form method="PUT" action="/admin/productListByName"> -->
-            <input name="id" type="hidden" id="id" value="{{.Product.ID}}">
-            <input name="storeId" type="hidden" id="storeId" value="{{.Product.StoreID}}">
-
-            <div class="form-group">
-              <label for="name">Product ID</label>
-              <input name="prodIdDisp" disabled type="text" class="form-control" id="name" value="{{.Product.ID}}">
-            </div>
-
+            
             <div class="form-group">
               <label for="name">Name</label>
-              <input name="name" type="text" class="form-control" id="name" value="{{.Product.Name}}">
+              <input name="name" type="text" class="form-control" id="name" >
             </div>
             <div class="form-group">
               <label for="sku">Sku</label>
-              <input name="sku" type="text" class="form-control" id="sku" value="{{.Product.Sku}}">
+              <input name="sku" type="text" class="form-control" id="sku" >
             </div>
             <div class="form-group">
               <label for="gtin">GTIN</label>
-              <input name="gtin" type="text" class="form-control" id="gtin" value="{{.Product.Gtin}}">
+              <input name="gtin" type="text" class="form-control" id="gtin" >
             </div>
             <div class="form-group">
               <label for="shortDest">Short Desc</label>
-              <textarea name="shortDest" class="form-control" id="shortDest" rows="3">{{.Product.ShortDesc}}</textarea>
+              <textarea name="shortDest" class="form-control" id="shortDest" rows="3"></textarea>
             </div>
             <div class="form-group">
               <label for="desc">Desc</label>
-              <textarea name="desc" class="form-control" id="desc" rows="3">{{.Product.Desc}}</textarea>
+              <textarea name="desc" class="form-control" id="desc" rows="3"></textarea>
             </div>
 
             <div class="form-row">
               <div class="col-md-6 mb-3">
                 <label for="price">Price</label>
-                <input name="price" type="text" class="form-control" id="price" value="{{.Product.Price}}">
+                <input name="price" type="text" class="form-control" id="price" >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="msrp">MSRP</label>
-                <input name="msrp" type="text" class="form-control" id="msrp" value="{{.Product.Msrp}}">
+                <input name="msrp" type="text" class="form-control" id="msrp" >
               </div>
             </div>
 
             <div class="form-row">
               <div class="col-md-6 mb-3">
                 <label for="map">MAP</label>
-                <input name="map" type="text" class="form-control" id="map" value="{{.Product.Map}}">
+                <input name="map" type="text" class="form-control" id="map" >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="cost">Cost</label>
-                <input name="cost" type="text" class="form-control" id="cost" value="{{.Product.Cost}}">
+                <input name="cost" type="text" class="form-control" id="cost" >
               </div>
             </div>
 
             <div class="form-row">
               <div class="col-md-6 mb-3">
                 <label for="salePrice">Sale Price</label>
-                <input name="salePrice" type="text" class="form-control" id="salePrice" value="{{.Product.SalePrice}}">
+                <input name="salePrice" type="text" class="form-control" id="salePrice" >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="currency">Currency</label>
-                <input name="currency" type="text" class="form-control" id="currency" value="{{.Product.Currency}}">
+                <input name="currency" type="text" class="form-control" id="currency" >
               </div>
             </div>
 
             <div class="form-row">
               <div class="col-md-6 mb-3">
                 <label for="manf">Manufacturer</label>
-                <input name="manf" type="text" class="form-control" id="manf" value="{{.Product.Manufacturer}}">
+                <input name="manf" type="text" class="form-control" id="manf" >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="manfId">Manufacturer ID</label>
-                <input name="manfId" type="text" class="form-control" id="manfId" value="{{.Product.ManufacturerID}}">
+                <input name="manfId" type="text" class="form-control" id="manfId" >
               </div>
             </div>
 
@@ -109,33 +97,33 @@
             <div class="form-row">
               <div class="col-md-6 mb-3">
                 <label for="stock">Stock</label>
-                <input name="stock" type="text" class="form-control" id="stock" value="{{.Product.Stock}}">
+                <input name="stock" type="text" class="form-control" id="stock" >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="stockAlrt">Stock Alert</label>
-                <input name="stockAlrt" type="text" class="form-control" id="stockAlrt" value="{{.Product.StockAlert}}">
+                <input name="stockAlrt" type="text" class="form-control" id="stockAlrt" >
               </div>
             </div>
 
             <div class="form-row">
               <div class="col-md-6 mb-3">
                 <label for="weight">Weight</label>
-                <input name="weight" type="text" class="form-control" id="weight" value="{{.Product.Weight}}">
+                <input name="weight" type="text" class="form-control" id="weight" >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="width">Width</label>
-                <input name="width" type="text" class="form-control" id="width" value="{{.Product.Width}}">
+                <input name="width" type="text" class="form-control" id="width" >
               </div>
             </div>
 
             <div class="form-row">
               <div class="col-md-6 mb-3">
                 <label for="height">Height</label>
-                <input name="height" type="text" class="form-control" id="height" value="{{.Product.Height}}">
+                <input name="height" type="text" class="form-control" id="height" >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="depth">Depth</label>
-                <input name="depth" type="text" class="form-control" id="depth" value="{{.Product.Depth}}">
+                <input name="depth" type="text" class="form-control" id="depth" >
               </div>
             </div>
 
@@ -143,7 +131,7 @@
               <div class="col-md-6 mb-3">
                 <label for="shipMarkup">Shipping Markup</label>
                 <input name="shipMarkup" type="text" class="form-control" id="shipMarkup"
-                  value="{{.Product.ShippingMarkup}}">
+                  >
               </div>
               <div class="col-md-6 mb-3">
                 <div class="form-check mt-4">
@@ -155,20 +143,17 @@
             <div class="form-group">
 
               <div class="form-check form-check-inline">
-                <input name="visible" class="form-check-input" type="checkbox" id="visible" {{if .Product.Visible}}
-                  checked {{end}}>
+                <input name="visible" class="form-check-input" type="checkbox" id="visible" >
                 <label class="form-check-label" for="visible">Visible</label>
               </div>
 
               <div class="form-check form-check-inline">
-                <input name="searchable" class="form-check-input" type="checkbox" id="searchable"
-                  {{if .Product.Searchable}} checked {{end}}>
+                <input name="searchable" class="form-check-input" type="checkbox" id="searchable">
                 <label class="form-check-label" for="searchable">Searchable</label>
               </div>
 
               <div class="form-check form-check-inline">
-                <input name="multibox" class="form-check-input" type="checkbox" id="multibox" {{if .Product.MultiBox}}
-                  checked {{end}}>
+                <input name="multibox" class="form-check-input" type="checkbox" id="multibox" >
                 <label class="form-check-label" for="multibox">MultiBox</label>
               </div>
 
@@ -179,20 +164,17 @@
             <div class="form-group">
 
               <div class="form-check form-check-inline">
-                <input name="promoted" class="form-check-input" type="checkbox" id="promoted" {{if .Product.Promoted}}
-                  checked {{end}}>
+                <input name="promoted" class="form-check-input" type="checkbox" id="promoted" >
                 <label class="form-check-label" for="promoted">Promoted</label>
               </div>
 
               <div class="form-check form-check-inline">
-                <input name="shipSep" class="form-check-input" type="checkbox" id="shipSep"
-                  {{if .Product.ShipSeparately}} checked {{end}}>
+                <input name="shipSep" class="form-check-input" type="checkbox" id="shipSep" >
                 <label class="form-check-label" for="shipSep">Ship Separately</label>
               </div>
 
               <div class="form-check form-check-inline">
-                <input name="freeShipping" class="form-check-input" type="checkbox" id="freeShipping"
-                  {{if .Product.FreeShipping}} checked {{end}}>
+                <input name="freeShipping" class="form-check-input" type="checkbox" id="freeShipping">
                 <label class="form-check-label" for="freeShipping">Free Shipping</label>
               </div>
 
@@ -203,14 +185,12 @@
             <div class="form-group">
 
               <div class="form-check form-check-inline">
-                <input name="dropship" class="form-check-input" type="checkbox" id="dropship" {{if .Product.Dropship}}
-                  checked {{end}}>
+                <input name="dropship" class="form-check-input" type="checkbox" id="dropship" >
                 <label class="form-check-label" for="dropship">Dropship</label>
               </div>
 
               <div class="form-check form-check-inline">
-                <input name="specialProc" class="form-check-input" type="checkbox" id="specialProc"
-                  {{if .Product.SpecialProcessing}} checked {{end}}>
+                <input name="specialProc" class="form-check-input" type="checkbox" id="specialProc" >
                 <label class="form-check-label" for="specialProc">Special Processing</label>
               </div>
 
@@ -218,19 +198,18 @@
 
             <div class="form-group">
               <label for="specialProcType">Special Processing Type</label>
-              <input name="specialProcType" type="text" class="form-control" id="specialProcType"
-                value="{{.Product.SpecialProcessingType}}">
+              <input name="specialProcType" type="text" class="form-control" id="specialProcType" >
             </div>
 
 
             <div class="form-row">
               <div class="col-md-6 mb-3">
                 <label for="size">Size</label>
-                <input name="size" type="text" class="form-control" id="size" value="{{.Product.Size}}">
+                <input name="size" type="text" class="form-control" id="size" >
               </div>
               <div class="col-md-6 mb-3">
                 <label for="color">Color</label>
-                <input name="color" type="text" class="form-control" id="color" value="{{.Product.Color}}">
+                <input name="color" type="text" class="form-control" id="color" >
               </div>
             </div>
 
@@ -239,11 +218,10 @@
             <label for="thumbnail">Thumbnail</label>
             <div class="form-row mt-3">
               <div class="col-md-1 mb-3 ">
-                <img id="thumbnailImg" style="width: 40%" class="img-fluid" style="max-width: 20%;"
-                  src="{{.Product.Thumbnail}}">
+                <img id="thumbnailImg" style="width: 40%" class="img-fluid" style="max-width: 20%;" >
               </div>
               <div class="col-md-11 mb-3 ">
-                <input name="thumbnail" type="text" class="form-control" id="thumbnail" value="{{.Product.Thumbnail}}">
+                <input name="thumbnail" type="text" class="form-control" id="thumbnail" >
               </div>
             </div>
 
@@ -252,11 +230,10 @@
             <label for="image1">Image 1</label>
             <div class="form-row mt-3">
               <div class="col-md-1 mb-3 ">
-                <img id="image1Img" style="width: 40%" class="img-fluid" style="max-width: 20%;"
-                  src="{{.Product.Image1}}">
+                <img id="image1Img" style="width: 40%" class="img-fluid" style="max-width: 20%;">
               </div>
               <div class="col-md-11 mb-3 ">
-                <input name="image1" type="text" class="form-control" id="image1" value="{{.Product.Image1}}">
+                <input name="image1" type="text" class="form-control" id="image1" >
               </div>
             </div>
 
@@ -266,11 +243,10 @@
             <label for="image2">Image 2</label>
             <div class="form-row mt-3">
               <div class="col-md-1 mb-3 ">
-                <img id="image2Img" style="width: 40%" class="img-fluid" style="max-width: 20%;"
-                  src="{{.Product.Image2}}">
+                <img id="image2Img" style="width: 40%" class="img-fluid" style="max-width: 20%;">
               </div>
               <div class="col-md-11 mb-3 ">
-                <input name="image2" type="text" class="form-control" id="image2" value="{{.Product.Image2}}">
+                <input name="image2" type="text" class="form-control" id="image2" >
               </div>
             </div>
 
@@ -279,11 +255,10 @@
             <label for="image3">Image 3</label>
             <div class="form-row mt-3">
               <div class="col-md-1 mb-3 ">
-                <img id="image3Img" style="width: 40%" class="img-fluid" style="max-width: 20%;"
-                  src="{{.Product.Image3}}">
+                <img id="image3Img" style="width: 40%" class="img-fluid" style="max-width: 20%;" >
               </div>
               <div class="col-md-11 mb-3 ">
-                <input name="image3" type="text" class="form-control" id="image3" value="{{.Product.Image3}}">
+                <input name="image3" type="text" class="form-control" id="image3" >
               </div>
             </div>
 
@@ -292,34 +267,31 @@
             <label for="image4">Image 4</label>
             <div class="form-row mt-3">
               <div class="col-md-1 mb-3 ">
-                <img id="image4Img" style="width: 40%" class="img-fluid" style="max-width: 20%;"
-                  src="{{.Product.Image4}}">
+                <img id="image4Img" style="width: 40%" class="img-fluid" style="max-width: 20%;" >
               </div>
               <div class="col-md-11 mb-3 ">
-                <input name="image4" type="text" class="form-control" id="image4" value="{{.Product.Image4}}">
+                <input name="image4" type="text" class="form-control" id="image4" >
               </div>
             </div>
 
             <hr>
 
-            <input type="hidden" name="originalDistId" value="{{.Product.DistributorID}}">
+            
 
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <label class="input-group-text" for="distributorId">Distributor</label>
               </div>
               <select name="distributorId" class="custom-select" id="distributorId">
-                {{ $DistributorID := .Product.DistributorID }} {{range $.DistributorList}} {{if eq $DistributorID .ID }}
-                <option value="{{.ID}}" selected>{{.Company}}</option>
-                {{else}}
+                {{range $.DistributorList}}  
                 <option value="{{.ID}}">{{.Company}}</option>
-                {{end}} {{end}}               
+                {{end}}              
               </select>
             </div>
 
             <div class="form-group">
               <label for="parentProductId">Parent Product ID</label>
-              <input name="parentProductId" type="text" class="form-control" id="parentProductId" value="{{.Product.ParentProductID}}">
+              <input name="parentProductId" type="text" class="form-control" id="parentProductId" >
             </div>
 
             <button type="submit" class="btn btn-primary mt-3">Submit</button>
@@ -328,53 +300,16 @@
       </div>
       <div class="tab-pane fade" id="cat" role="tabpanel" aria-labelledby="profile-tab">
         <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
-         
-            {{$i1 := 0}}  
-            {{$i2 := 0}} 
-            {{$i3 := 0}} 
-            {{$i4 := 0}} 
-            {{$i5 := 0}} 
-            {{$i6 := 0}}       
-
-            {{range $i, $a := $.ExistingCats}} 
-              {{if eq $i 0 }}
-                 {{$i1 = $a}}  
-              {{end}}
-              {{if eq $i 1 }}
-                 {{$i2 = $a}}              
-              {{end}}   
-              {{if eq $i 2 }}
-                 {{$i3 = $a}}              
-              {{end}}     
-              {{if eq $i 3 }}
-                 {{$i4 = $a}}              
-              {{end}}     
-              {{if eq $i 4 }}
-                 {{$i5 = $a}}              
-              {{end}}   
-              {{if eq $i 5 }}
-                 {{$i6 = $a}}              
-              {{end}} 
-            {{end}}
-            
-            <label for="image2">Categories</label>
+             
+            <label for="catIds">Categories</label>
             <select name="catIds" id="catIds" size="8" class="custom-select custom-select-lg mb-3" multiple data-selected-text-format="count">
-              {{range $.CategoryList}}
-                {{if or (eq $i1 .ID) (eq $i2 .ID) (eq $i3 .ID) (eq $i4 .ID) (eq $i5 .ID) (eq $i6 .ID)}} 
-                    <option value="{{.ID}}" selected>{{.Name}}</option>
-                {{else}}
-                    <option value="{{.ID}}">{{.Name}}</option>
-                {{end}}                               
+              {{range $.CategoryList}}                
+                    <option value="{{.ID}}">{{.Name}}</option>                                             
               {{end}}              
             </select>          
           
         </div>       
-      </div>
-      <div class="tab-pane fade" id="delprod" role="tabpanel" aria-labelledby="profile-tab">
-        <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
-          <a class="btn btn-primary"  href="/admin/deleteProduct/{{.Product.ID}}" role="button">Delete Product</a>
-        </div>        
-      </div>
+      </div>      
 
     </div>
   </form>

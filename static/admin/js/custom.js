@@ -57,12 +57,19 @@ $(document).ready(function () {
 });
 
 
-// $('#myTab a').on('click', function (e) {
-//     e.preventDefault()
-//     $(this).tab('show')
-// })
+$(document).ready(function () {
+    $("#image").keyup(function () {
+        //alert( $(this).val());
+        var imageName = $(this).val();
+        document.getElementById("imageImg").src = imageName;
+    });
+});
 
-// $('#myTab prod[href="#prod"]').tab('show')
-// $('#myTab cat[href="#cat"]').tab('show')
-// // $('#prod-tab').tab('show');
-// $('#cat-tab').tab('show');
+
+$(document).ready(function () {
+    $("#image").load(function () {
+        //alert( $(this).val());
+        var imageName = $(this).val();
+        document.getElementById("imageImg").src = imageName;
+    });
+});

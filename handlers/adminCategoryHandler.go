@@ -30,9 +30,10 @@ import (
 
 //CatPage CatPage
 type CatPage struct {
-	Error        string
-	CategoryList *[]sdbi.Category
-	Category     *sdbi.Category
+	Error              string
+	CategoryList       *[]sdbi.Category
+	Category           *sdbi.Category
+	ParentCategoryList *[]sdbi.Category
 }
 
 //StoreAdminAddCategoryPage StoreAdminAddCategoryPage
@@ -48,7 +49,7 @@ func (h *Six910Handler) StoreAdminAddCategoryPage(w http.ResponseWriter, r *http
 			cgp.CategoryList = h.API.GetCategoryList(hd)
 			h.AdminTemplates.ExecuteTemplate(w, adminAddCategoryPage, &cgp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -70,7 +71,7 @@ func (h *Six910Handler) StoreAdminAddCategory(w http.ResponseWriter, r *http.Req
 				http.Redirect(w, r, adminAddCategoryViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -94,7 +95,9 @@ func (h *Six910Handler) StoreAdminEditCategoryPage(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				cgp.CategoryList = h.API.GetCategoryList(header)
+				cats := h.API.GetHierarchicalCategoryList(header)
+				h.Log.Debug("parent cat list in list", cats)
+				cgp.ParentCategoryList = cats
 			}(hd)
 
 			wg.Add(1)
@@ -107,7 +110,7 @@ func (h *Six910Handler) StoreAdminEditCategoryPage(w http.ResponseWriter, r *htt
 
 			h.AdminTemplates.ExecuteTemplate(w, adminEditCategoryPage, &cgp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -126,10 +129,10 @@ func (h *Six910Handler) StoreAdminEditCategory(w http.ResponseWriter, r *http.Re
 			if res.Success {
 				http.Redirect(w, r, adminCategoryListView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminEditCategoryViewFail, http.StatusFound)
+				http.Redirect(w, r, adminCategoryListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -141,11 +144,30 @@ func (h *Six910Handler) StoreAdminViewCategoryList(w http.ResponseWriter, r *htt
 	if suc {
 		if h.isStoreAdminLoggedIn(gcls) {
 			hd := h.getHeader(gcls)
-			cats := h.API.GetCategoryList(hd)
-			h.Log.Debug("prods  in edit", cats)
-			h.AdminTemplates.ExecuteTemplate(w, adminCategoryListPage, &cats)
+			var cpg CatPage
+			var wg sync.WaitGroup
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				cats := h.API.GetCategoryList(hd)
+				h.Log.Debug("cat list in list", cats)
+				cpg.CategoryList = cats
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				cats := h.API.GetHierarchicalCategoryList(header)
+				h.Log.Debug("parent cat list in list", cats)
+				cpg.ParentCategoryList = cats
+			}(hd)
+
+			wg.Wait()
+
+			h.AdminTemplates.ExecuteTemplate(w, adminCategoryListPage, &cpg)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -168,7 +190,7 @@ func (h *Six910Handler) StoreAdminDeleteCategory(w http.ResponseWriter, r *http.
 				http.Redirect(w, r, adminCategoryListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

@@ -21,6 +21,29 @@ func TestSix910Handler_StoreAdminAddProductPage(t *testing.T) {
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
+	//-----------start mocking------------------
+
+	var pr sdbi.Product
+	pr.Name = "test"
+	pr.ID = 5
+	sapi.MockProduct = &pr
+
+	//-----------end mocking --------
+
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
 	sh.ClientCreds = &cc
@@ -48,6 +71,29 @@ func TestSix910Handler_StoreAdminAddProductPageLoggedIn(t *testing.T) {
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
+	//-----------start mocking------------------
+
+	var pr sdbi.Product
+	pr.Name = "test"
+	pr.ID = 5
+	sapi.MockProduct = &pr
+
+	//-----------end mocking --------
+
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
 	sh.ClientCreds = &cc
@@ -100,7 +146,7 @@ func TestSix910Handler_StoreAdminAddProduct(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("sku=tester123&name=tester"))
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("sku=tester123&name=tester&catIds=4&catIds=5&catIds=7"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)

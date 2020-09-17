@@ -78,8 +78,10 @@ func main() {
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
 		"./static/admin/subnavs/productNavbar.html", "./static/admin/pagination.html", "./static/admin/productSkuSearch.html",
-		"./static/admin/productNameSearch.html", "./static/admin/editProduct.html",
-	// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
+		"./static/admin/productNameSearch.html", "./static/admin/editProduct.html", "./static/admin/addProduct.html",
+		"./static/admin/distributorList.html", "./static/admin/editDistributor.html", "./static/admin/categoryList.html",
+		"./static/admin/editCategory.html",
+		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
 	// "./static/admin/imageUpload.html", "./static/admin/login.html", "./static/admin/backups.html",
@@ -99,8 +101,21 @@ func main() {
 	router.HandleFunc("/admin/productListByName", h.StoreAdminSearchProductByNamePage).Methods("GET")
 	router.HandleFunc("/admin/productListByName", h.StoreAdminSearchProductByNamePage).Methods("POST")
 	router.HandleFunc("/admin/productList/{start}/{end}", h.StoreAdminViewProductList).Methods("GET")
+	router.HandleFunc("/admin/addProductPage", h.StoreAdminAddProductPage).Methods("GET")
+	router.HandleFunc("/admin/addProduct", h.StoreAdminAddProduct).Methods("POST")
 	router.HandleFunc("/admin/getProduct/{id}", h.StoreAdminEditProductPage).Methods("GET")
 	router.HandleFunc("/admin/updateProduct", h.StoreAdminEditProduct).Methods("POST")
+	router.HandleFunc("/admin/deleteProduct/{id}", h.StoreAdminDeleteProduct).Methods("GET")
+	router.HandleFunc("/admin/distributorList", h.StoreAdminViewDistributorList).Methods("GET")
+	router.HandleFunc("/admin/addDistributor", h.StoreAdminAddDistributor).Methods("POST")
+	router.HandleFunc("/admin/getDistributor/{id}", h.StoreAdminEditDistributorPage).Methods("GET")
+	router.HandleFunc("/admin/updateDistributor", h.StoreAdminEditDistributor).Methods("POST")
+	router.HandleFunc("/admin/deleteDistributor/{id}", h.StoreAdminDeleteDistributor).Methods("GET")
+	router.HandleFunc("/admin/categoryList", h.StoreAdminViewCategoryList).Methods("GET")
+	router.HandleFunc("/admin/addCategory", h.StoreAdminAddCategory).Methods("POST")
+	router.HandleFunc("/admin/getCategory/{id}", h.StoreAdminEditCategoryPage).Methods("GET")
+	router.HandleFunc("/admin/updateCategory", h.StoreAdminEditCategory).Methods("POST")
+	router.HandleFunc("/admin/deleteCategory/{id}", h.StoreAdminDeleteCategory).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 
