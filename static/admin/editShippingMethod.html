@@ -80,9 +80,9 @@
                                 <option>None</option>
                                 {{ $InsID := .ShippingMethod.InsuranceID }} {{range $.InsuranceList}}
                                 {{if eq $InsID .ID }}
-                                <option value="{{.ID}}" selected>{{.Cost}}</option>
+                                <option value="{{.ID}}" selected>{{.Cost}} (Max: {{.MaxOrderAmount}})</option>
                                 {{else}}                               
-                                <option value="{{.ID}}">{{.Cost}}</option>
+                                <option value="{{.ID}}">{{.Cost}} (Max: {{.MaxOrderAmount}})</option>
                                 {{end}}{{end}}
                             </select>
                         </div>

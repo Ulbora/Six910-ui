@@ -43,7 +43,7 @@ func (h *Six910Handler) StoreAdminAddInsurancePage(w http.ResponseWriter, r *htt
 			aipg.Error = aiErr
 			h.AdminTemplates.ExecuteTemplate(w, adminAddInsurancePage, &aipg)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -60,12 +60,12 @@ func (h *Six910Handler) StoreAdminAddInsurance(w http.ResponseWriter, r *http.Re
 			prres := h.API.AddInsurance(ai, hd)
 			h.Log.Debug("Ins add resp", *prres)
 			if prres.Success {
-				http.Redirect(w, r, adminInsuranceListView, http.StatusFound)
+				http.Redirect(w, r, adminInsuranceList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminAddInsuranceViewFail, http.StatusFound)
+				http.Redirect(w, r, adminInsuranceListFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -87,7 +87,7 @@ func (h *Six910Handler) StoreAdminEditInsurancePage(w http.ResponseWriter, r *ht
 			dgp.Insurance = h.API.GetInsurance(iID, hd)
 			h.AdminTemplates.ExecuteTemplate(w, adminEditInsurancePage, &dgp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -104,12 +104,12 @@ func (h *Six910Handler) StoreAdminEditInsurance(w http.ResponseWriter, r *http.R
 			res := h.API.UpdateInsurance(eii, hd)
 			h.Log.Debug("Ins update resp", *res)
 			if res.Success {
-				http.Redirect(w, r, adminInsuranceListView, http.StatusFound)
+				http.Redirect(w, r, adminInsuranceList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminEditInsuranceViewFail, http.StatusFound)
+				http.Redirect(w, r, adminInsuranceListFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -125,7 +125,7 @@ func (h *Six910Handler) StoreAdminViewInsuranceList(w http.ResponseWriter, r *ht
 			h.Log.Debug("Ins  in list", isl)
 			h.AdminTemplates.ExecuteTemplate(w, adminInsuranceListPage, &isl)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -143,12 +143,12 @@ func (h *Six910Handler) StoreAdminDeleteInsurance(w http.ResponseWriter, r *http
 			res := h.API.DeleteInsurance(idddi, hd)
 			h.Log.Debug("ins delete resp", *res)
 			if res.Success {
-				http.Redirect(w, r, adminInsuranceListView, http.StatusFound)
+				http.Redirect(w, r, adminInsuranceList, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminInsuranceListViewFail, http.StatusFound)
+				http.Redirect(w, r, adminInsuranceListFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

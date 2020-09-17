@@ -83,6 +83,7 @@ func main() {
 		"./static/admin/editCategory.html", "./static/admin/shippingCarrierList.html", "./static/admin/editShippingCarrier.html",
 		"./static/admin/regionList.html", "./static/admin/editRegion.html",
 		"./static/admin/shippingMethodList.html", "./static/admin/editShippingMethod.html",
+		"./static/admin/insuranceList.html", "./static/admin/editInsurance.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -136,6 +137,12 @@ func main() {
 	router.HandleFunc("/admin/getShippingMethod/{id}", h.StoreAdminEditShippingMethodPage).Methods("GET")
 	router.HandleFunc("/admin/updateShippingMethod", h.StoreAdminEditShippingMethod).Methods("POST")
 	router.HandleFunc("/admin/deleteShippingMethod/{id}", h.StoreAdminDeleteShippingMethod).Methods("GET")
+
+	router.HandleFunc("/admin/insuranceList", h.StoreAdminViewInsuranceList).Methods("GET")
+	router.HandleFunc("/admin/addInsurance", h.StoreAdminAddInsurance).Methods("POST")
+	router.HandleFunc("/admin/getInsurance/{id}", h.StoreAdminEditInsurancePage).Methods("GET")
+	router.HandleFunc("/admin/updateInsurance", h.StoreAdminEditInsurance).Methods("POST")
+	router.HandleFunc("/admin/deleteInsurance/{id}", h.StoreAdminDeleteInsurance).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

@@ -99,8 +99,8 @@ const (
 	adminEditInsuranceViewFail = "/admin/editInsuranceView?error=Update Failed"
 	adminEditInsurance         = "/admin/editInsurance"
 	adminDeleteInsurance       = "/admin/deleteInsurance"
-	adminInsuranceListView     = "/admin/insuranceListView"
-	adminInsuranceListViewFail = "/admin/insuranceListView?error=Add Failed"
+	adminInsuranceList         = "/admin/insuranceList"
+	adminInsuranceListFail     = "/admin/insuranceList?error=Add Failed"
 
 	//routes TaxRate
 	adminAddTaxRateView      = "/admin/addTaxRateView"

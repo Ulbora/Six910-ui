@@ -92,7 +92,7 @@
                                 data-selected-text-format="count">
                                 <option>None</option>
                                 {{range $.InsuranceList}}
-                                <option value="{{.ID}}">{{.Cost}}</option>
+                                <option value="{{.ID}}">{{.Cost}} (Max: {{.MaxOrderAmount}})</option>
                                 {{end}}
                             </select>
                         </div>
