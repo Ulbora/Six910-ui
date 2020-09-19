@@ -424,7 +424,7 @@ func TestSix910Handler_StoreAdminEditTaxRate(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("PUT", "https://test.com", strings.NewReader("id=3&country=USA&state=GA&percentRate=7"))
+	r, _ := http.NewRequest("PUT", "https://test.com", strings.NewReader("id=3&country=USA&state=GA&percentRate=7&includeHandling=on&includeShipping=on"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)

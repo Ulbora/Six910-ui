@@ -392,7 +392,7 @@ func TestSix910Handler_StoreAdminEditProduct(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=3&sku=tester123&name=tester&catIds=4&catIds=5&catIds=7"))
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=3&sku=tester123&name=tester&catIds=4&catIds=5&catIds=7&visible=on&searchable=on&multibox=on&shipSep=on&freeShipping=on&promoted=on&dropship=on&specialProc=on"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
