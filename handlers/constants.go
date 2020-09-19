@@ -103,15 +103,15 @@ const (
 	adminInsuranceListFail     = "/admin/insuranceList?error=Add Failed"
 
 	//routes TaxRate
-	adminAddTaxRateView      = "/admin/addTaxRateView"
-	adminAddTaxRateViewFail  = "/admin/addTaxRateView?error=Add Failed"
+	adminAddTaxRateView      = "/admin/addTaxRate"
+	adminAddTaxRateViewFail  = "/admin/addTaxRate?error=Add Failed"
 	adminAddTaxRate          = "/admin/addTaxRate"
-	adminEditTaxRateView     = "/admin/editTaxRateView"
-	adminEditTaxRateViewFail = "/admin/editTaxRateView?error=Update Failed"
+	adminEditTaxRateView     = "/admin/editTaxRate"
+	adminEditTaxRateViewFail = "/admin/editTaxRate?error=Update Failed"
 	adminEditTaxRate         = "/admin/editTaxRate"
 	adminDeleteTaxRate       = "/admin/deleteTaxRate"
-	adminTaxRateListView     = "/admin/taxRateListView"
-	adminTaxRateListViewFail = "/admin/taxRateListView?error=Add Failed"
+	adminTaxRateListView     = "/admin/taxRateList"
+	adminTaxRateListViewFail = "/admin/taxRateList?error=Add Failed"
 
 	//routes Payment Gateway
 	adminAddPaymentGatewayView      = "/admin/addPaymentGatewayView"

@@ -3,7 +3,9 @@ package handlers
 import (
 	"net/http"
 	"strconv"
+	"sync"
 
+	six910api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
@@ -28,9 +30,10 @@ import (
 
 //TaxRatePage TaxRatePage
 type TaxRatePage struct {
-	Error       string
-	TaxRate     *sdbi.TaxRate
-	TaxRateList *[]sdbi.TaxRate
+	Error        string
+	TaxRate      *sdbi.TaxRate
+	TaxRateList  *[]sdbi.TaxRate
+	CategoryList *[]sdbi.Category
 }
 
 //StoreAdminAddTaxRatePage StoreAdminAddTaxRatePage
@@ -44,7 +47,7 @@ func (h *Six910Handler) StoreAdminAddTaxRatePage(w http.ResponseWriter, r *http.
 			atrpg.Error = atrErr
 			h.AdminTemplates.ExecuteTemplate(w, adminAddTaxRatePage, &atrpg)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -66,7 +69,7 @@ func (h *Six910Handler) StoreAdminAddTaxRate(w http.ResponseWriter, r *http.Requ
 				http.Redirect(w, r, adminAddTaxRateViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -89,17 +92,33 @@ func (h *Six910Handler) StoreAdminEditTaxRatePage(w http.ResponseWriter, r *http
 			h.Log.Debug("tax rate state in edit", state)
 			var trp TaxRatePage
 			trp.Error = etrpErr
-			trlst := h.API.GetTaxRate(country, state, hd)
-			for i := range *trlst {
-				if (*trlst)[i].ID == iIDtr {
-					trp.TaxRate = &(*trlst)[i]
-					break
+
+			var wg sync.WaitGroup
+			wg.Add(1)
+			go func(ct string, st string, id int64, header *six910api.Headers) {
+				defer wg.Done()
+				trlst := h.API.GetTaxRate(ct, st, hd)
+				for i := range *trlst {
+					if (*trlst)[i].ID == id {
+						trp.TaxRate = &(*trlst)[i]
+						break
+					}
 				}
-			}
-			h.Log.Debug("tax rate in edit", trp.TaxRate)
+				h.Log.Debug("tax rate in edit", trp.TaxRate)
+			}(country, state, iIDtr, hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				cats := h.API.GetHierarchicalCategoryList(header)
+				h.Log.Debug("cat in tax rate edit", cats)
+				trp.CategoryList = cats
+			}(hd)
+			wg.Wait()
+
 			h.AdminTemplates.ExecuteTemplate(w, adminEditTaxRatePage, &trp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -118,10 +137,10 @@ func (h *Six910Handler) StoreAdminEditTaxRate(w http.ResponseWriter, r *http.Req
 			if res.Success {
 				http.Redirect(w, r, adminTaxRateListView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminEditTaxRateViewFail, http.StatusFound)
+				http.Redirect(w, r, adminTaxRateListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -133,11 +152,29 @@ func (h *Six910Handler) StoreAdminViewTaxRateList(w http.ResponseWriter, r *http
 	if suc {
 		if h.isStoreAdminLoggedIn(gtrls) {
 			hd := h.getHeader(gtrls)
-			trl := h.API.GetTaxRateList(hd)
-			h.Log.Debug("tax rate  in list", trl)
-			h.AdminTemplates.ExecuteTemplate(w, adminTaxRateListPage, &trl)
+			var trp TaxRatePage
+
+			var wg sync.WaitGroup
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				trl := h.API.GetTaxRateList(header)
+				h.Log.Debug("tax rate  in list", trl)
+				trp.TaxRateList = trl
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				cats := h.API.GetHierarchicalCategoryList(header)
+				h.Log.Debug("cat in tax rate", cats)
+				trp.CategoryList = cats
+			}(hd)
+			wg.Wait()
+
+			h.AdminTemplates.ExecuteTemplate(w, adminTaxRateListPage, &trp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -160,7 +197,7 @@ func (h *Six910Handler) StoreAdminDeleteTaxRate(w http.ResponseWriter, r *http.R
 				http.Redirect(w, r, adminTaxRateListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -174,13 +211,23 @@ func (h *Six910Handler) processTaxRate(r *http.Request) *sdbi.TaxRate {
 	i.ZipStart = r.FormValue("zipStart")
 	i.ZipEnd = r.FormValue("zipEnd")
 	percentRate := r.FormValue("percentRate")
-	i.PercentRate, _ = strconv.ParseInt(percentRate, 10, 64)
+	i.PercentRate, _ = strconv.ParseFloat(percentRate, 64)
 	productCategoryID := r.FormValue("productCategoryId")
 	i.ProductCategoryID, _ = strconv.ParseInt(productCategoryID, 10, 64)
 	includeHandling := r.FormValue("includeHandling")
-	i.IncludeHandling, _ = strconv.ParseBool(includeHandling)
+	h.Log.Debug("tax rate includeHandling", includeHandling)
+	if includeHandling == "on" {
+		i.IncludeHandling = true
+	} else {
+		i.IncludeHandling = false
+	}
+	h.Log.Debug("tax rate i.includeHandling", i.IncludeHandling)
 	includeShipping := r.FormValue("includeShipping")
-	i.IncludeShipping, _ = strconv.ParseBool(includeShipping)
+	if includeShipping == "on" {
+		i.IncludeShipping = true
+	} else {
+		i.IncludeShipping = false
+	}
 	i.TaxType = r.FormValue("taxType")
 	storeID := r.FormValue("storeId")
 	i.StoreID, _ = strconv.ParseInt(storeID, 10, 64)

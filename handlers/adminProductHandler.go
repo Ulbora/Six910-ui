@@ -424,22 +424,63 @@ func (h *Six910Handler) processProduct(r *http.Request) *sdbi.Product {
 	p.Depth, _ = strconv.ParseFloat(depth, 64)
 	shipMarkup := r.FormValue("shipMarkup")
 	p.ShippingMarkup, _ = strconv.ParseFloat(shipMarkup, 64)
+
 	visible := r.FormValue("visible")
-	p.Visible, _ = strconv.ParseBool(visible)
+	if visible == "on" {
+		p.Visible = true
+	} else {
+		p.Visible = false
+	}
+
 	searchable := r.FormValue("searchable")
-	p.Searchable, _ = strconv.ParseBool(searchable)
+	if searchable == "on" {
+		p.Searchable = true
+	} else {
+		p.Searchable = false
+	}
+
 	multibox := r.FormValue("multibox")
-	p.MultiBox, _ = strconv.ParseBool(multibox)
+	if multibox == "on" {
+		p.MultiBox = true
+	} else {
+		p.MultiBox = false
+	}
+
 	shipSep := r.FormValue("shipSep")
-	p.ShipSeparately, _ = strconv.ParseBool(shipSep)
+	if shipSep == "on" {
+		p.ShipSeparately = true
+	} else {
+		p.ShipSeparately = false
+	}
+
 	freeShipping := r.FormValue("freeShipping")
-	p.FreeShipping, _ = strconv.ParseBool(freeShipping)
+	if freeShipping == "on" {
+		p.FreeShipping = true
+	} else {
+		p.FreeShipping = false
+	}
+
 	promoted := r.FormValue("promoted")
-	p.Promoted, _ = strconv.ParseBool(promoted)
+	if promoted == "on" {
+		p.Promoted = true
+	} else {
+		p.Promoted = false
+	}
+
 	dropship := r.FormValue("dropship")
-	p.Dropship, _ = strconv.ParseBool(dropship)
+	if dropship == "on" {
+		p.Dropship = true
+	} else {
+		p.Dropship = false
+	}
+
 	specialProc := r.FormValue("specialProc")
-	p.SpecialProcessing, _ = strconv.ParseBool(specialProc)
+	if specialProc == "on" {
+		p.SpecialProcessing = true
+	} else {
+		p.SpecialProcessing = false
+	}
+
 	specialProcType := r.FormValue("specialProcType")
 	p.SpecialProcessingType = specialProcType
 	p.Size = r.FormValue("size")

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">
+        <h4 class="text-center mt-4">Tax Rate List</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#trlist" role="tab"
+                    aria-controls="trlist" aria-selected="true">Tax Rater</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#addTax" role="tab" aria-controls="add"
+                    aria-selected="false">Add</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="trlist" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Country</th>
+                                <th scope="col">State</th>
+                                <th scope="col">Zip Start</th>
+                                <th scope="col">Zip End</th>
+                                <th scope="col">Percent</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .TaxRateList}}
+                            <tr class='clickable-row' data-href='/admin/getTaxRate/{{.ID}}/{{.Country}}/{{.State}}'>
+                                <td>{{.Country}}</td>
+                                <td>{{.State}}</td>
+                                {{if eq .ZipStart "NULL" }}
+                                    <td></td>
+                                {{else}}
+                                    <td>{{.ZipStart}}</td>
+                                {{end}}
+
+                                {{if eq .ZipEnd "NULL" }}
+                                    <td></td>
+                                {{else}}
+                                    <td>{{.ZipEnd}}</td>
+                                {{end}}
+                                <td>{{printf "%.2f" .PercentRate}}%</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="addTax" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/addTaxRate">
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input name="country" type="text" class="form-control" id="country" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input name="state" type="text" class="form-control" id="state" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="zipStart">Zip Start</label>
+                            <input name="zipStart" type="text" class="form-control" id="zipStart">
+                        </div>
+                        <div class="form-group">
+                            <label for="zipEnd">Zip End</label>
+                            <input name="zipEnd" type="text" class="form-control" id="zipEnd">
+                        </div>
+                        <div class="form-group">
+                            <label for="percentRate">Percent</label>
+                            <input name="percentRate" type="text" class="form-control" id="percentRate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taxType">Tax Type</label>
+                            <input name="taxType" type="text" class="form-control" id="taxType">
+                        </div>
+                        <div class="form-group">
+                            <label for="productCategoryId">Category</label>
+                            <select name="productCategoryId" id="productCategoryId"
+                                class="custom-select custom-select-lg mb-3" data-selected-text-format="count">
+                                <option></option>
+                                {{range $.CategoryList}}
+                                <option value="{{.ID}}">{{.Name}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input name="includeHandling" class="form-check-input" type="checkbox" id="includeHandling">
+                                <label class="form-check-label" for="includeHandling">Include Handling</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input name="includeShipping" class="form-check-input" type="checkbox" id="includeShipping">
+                                <label class="form-check-label" for="includeShipping">Include Shipping</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -34,9 +34,9 @@
                         <tbody>
                             {{range .}}
                             <tr class='clickable-row' data-href='/admin/getInsurance/{{.ID}}'>
-                                <td>{{.Cost}}</td>
-                                <td>{{.MinOrderAmount}}</td>   
-                                <td>{{.MaxOrderAmount}}</td>                              
+                                <td>${{printf "%.2f" .Cost}}</td>
+                                <td>${{printf "%.2f" .MinOrderAmount}}</td>   
+                                <td>${{printf "%.2f" .MaxOrderAmount}}</td>                              
                             </tr>
                             {{end}}
                         </tbody>

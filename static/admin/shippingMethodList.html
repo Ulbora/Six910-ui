@@ -34,7 +34,7 @@
                             {{range .ShippingMethodList}}
                             <tr class='clickable-row' data-href='/admin/getShippingMethod/{{.ID}}'>
                                 <td>{{.Name}}</td>
-                                <td>{{.Cost}}</td>
+                                <td>${{printf "%.2f" .Cost}}</td>
                             </tr>
                             {{end}}
                         </tbody>

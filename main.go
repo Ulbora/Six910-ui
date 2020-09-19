@@ -84,6 +84,7 @@ func main() {
 		"./static/admin/regionList.html", "./static/admin/editRegion.html",
 		"./static/admin/shippingMethodList.html", "./static/admin/editShippingMethod.html",
 		"./static/admin/insuranceList.html", "./static/admin/editInsurance.html",
+		"./static/admin/taxRateList.html", "./static/admin/editTaxRate.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -143,6 +144,12 @@ func main() {
 	router.HandleFunc("/admin/getInsurance/{id}", h.StoreAdminEditInsurancePage).Methods("GET")
 	router.HandleFunc("/admin/updateInsurance", h.StoreAdminEditInsurance).Methods("POST")
 	router.HandleFunc("/admin/deleteInsurance/{id}", h.StoreAdminDeleteInsurance).Methods("GET")
+
+	router.HandleFunc("/admin/taxRateList", h.StoreAdminViewTaxRateList).Methods("GET")
+	router.HandleFunc("/admin/addTaxRate", h.StoreAdminAddTaxRate).Methods("POST")
+	router.HandleFunc("/admin/getTaxRate/{id}/{country}/{state}", h.StoreAdminEditTaxRatePage).Methods("GET")
+	router.HandleFunc("/admin/updateTaxRate", h.StoreAdminEditTaxRate).Methods("POST")
+	router.HandleFunc("/admin/deleteTaxRate/{id}", h.StoreAdminDeleteTaxRate).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 
