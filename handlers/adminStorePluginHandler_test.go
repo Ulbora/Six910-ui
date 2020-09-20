@@ -14,6 +14,7 @@ import (
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
+	//"github.com/gorilla/sessions"
 )
 
 func TestSix910Handler_StoreAdminAddStorePluginPage(t *testing.T) {
@@ -151,10 +152,95 @@ func TestSix910Handler_StoreAdminAddStorePlugin(t *testing.T) {
 	pr.ID = 5
 	sapi.MockAddStorePluginResp = &pr
 
+	var spi sdbi.StorePlugins
+	spi.ID = 4
+	spi.PluginName = "test"
+
+	var spilst []sdbi.StorePlugins
+	spilst = append(spilst, spi)
+	sapi.MockStorePluginList = &spilst
+
+	var pi sdbi.Plugins
+	pi.ID = 4
+	pi.PluginName = "tester PI"
+
+	sapi.MockPlugin = &pi
+
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("pluginName=testplugin&category=inventory"))
-	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	r, _ := http.NewRequest("GET", "https://test.com", strings.NewReader("pluginName=testplugin&category=inventory"))
+	//r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	vars := map[string]string{
+		"id": "2",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminAddStorePlugin(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminAddStorePlugin2(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var pr api.ResponseID
+	pr.Success = true
+	pr.ID = 5
+	sapi.MockAddStorePluginResp = &pr
+
+	var spi sdbi.StorePlugins
+	spi.ID = 4
+	spi.PluginName = "test"
+	spi.PluginID = 4
+
+	var spilst []sdbi.StorePlugins
+	spilst = append(spilst, spi)
+	sapi.MockStorePluginList = &spilst
+
+	var pi sdbi.Plugins
+	pi.ID = 4
+	pi.PluginName = "tester PI"
+
+	sapi.MockPlugin = &pi
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("GET", "https://test.com", strings.NewReader("pluginName=testplugin&category=inventory"))
+	//r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	vars := map[string]string{
+		"id": "4",
+	}
+	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
 	fmt.Println("suc: ", suc)
@@ -247,10 +333,28 @@ func TestSix910Handler_StoreAdminAddStorePluginFail(t *testing.T) {
 	pr.ID = 5
 	sapi.MockAddStorePluginResp = &pr
 
+	var spi sdbi.StorePlugins
+	spi.ID = 4
+	spi.PluginName = "test"
+
+	var spilst []sdbi.StorePlugins
+	spilst = append(spilst, spi)
+	sapi.MockStorePluginList = &spilst
+
+	var pi sdbi.Plugins
+	pi.ID = 4
+	pi.PluginName = "tester PI"
+
+	sapi.MockPlugin = &pi
+
 	//-----------end mocking --------
 
 	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("pluginName=testplugin&category=inventory"))
-	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	//r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	vars := map[string]string{
+		"id": "2",
+	}
+	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
 	fmt.Println("suc: ", suc)
@@ -301,7 +405,7 @@ func TestSix910Handler_StoreAdminEditStorePluginPage(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=4&pluginName=testplugin&category=inventory"))
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=4&pluginName=testplugin&category=inventory&active=on&isPgw=on"))
 
 	vars := map[string]string{
 		"id": "1",
@@ -408,7 +512,7 @@ func TestSix910Handler_StoreAdminEditStorePlugin(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("PUT", "https://test.com", strings.NewReader("id=3&&pluginName=testplugin&category=inventory"))
+	r, _ := http.NewRequest("PUT", "https://test.com", strings.NewReader("id=3&&pluginName=testplugin&category=inventory&active=on&isPgw=on"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
@@ -774,6 +878,272 @@ func TestSix910Handler_StoreAdminDeleteStorePluginFail(t *testing.T) {
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.StoreAdminDeleteStorePlugin(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminAddStorePluginFromListPage(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var pr api.ResponseID
+	pr.Success = true
+	pr.ID = 5
+	sapi.MockAddStorePluginResp = &pr
+
+	var pi sdbi.Plugins
+	pi.ID = 3
+	pi.PluginName = "test"
+
+	var pilst []sdbi.Plugins
+	pilst = append(pilst, pi)
+	sapi.MockPluginList = &pilst
+
+	//-----------end mocking --------
+
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("GET", "https://test.com", nil)
+	vars := map[string]string{
+		"start": "0",
+		"end":   "100",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminAddStorePluginFromListPage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminAddStorePluginFromListPageLogin(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var pr api.ResponseID
+	pr.Success = true
+	pr.ID = 5
+	sapi.MockAddStorePluginResp = &pr
+
+	var pi sdbi.Plugins
+	pi.ID = 3
+	pi.PluginName = "test"
+
+	var pilst []sdbi.Plugins
+	pilst = append(pilst, pi)
+	sapi.MockPluginList = &pilst
+
+	//-----------end mocking --------
+
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("GET", "https://test.com", nil)
+	vars := map[string]string{
+		"start": "0",
+		"end":   "100",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	//s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminAddStorePluginFromListPage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminGetStorePluginToAddPage(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var pr api.ResponseID
+	pr.Success = true
+	pr.ID = 5
+	sapi.MockAddStorePluginResp = &pr
+
+	var spi sdbi.StorePlugins
+	spi.ID = 4
+	spi.PluginName = "test"
+
+	var spilst []sdbi.StorePlugins
+	spilst = append(spilst, spi)
+	sapi.MockStorePluginList = &spilst
+
+	var pi sdbi.Plugins
+	pi.ID = 4
+	pi.PluginName = "tester PI"
+
+	sapi.MockPlugin = &pi
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("GET", "https://test.com", strings.NewReader("pluginName=testplugin&category=inventory"))
+	//r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	vars := map[string]string{
+		"id": "2",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminGetStorePluginToAddPage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminGetStorePluginToAddPageLogin(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var pr api.ResponseID
+	pr.Success = true
+	pr.ID = 5
+	sapi.MockAddStorePluginResp = &pr
+
+	var spi sdbi.StorePlugins
+	spi.ID = 4
+	spi.PluginName = "test"
+
+	var spilst []sdbi.StorePlugins
+	spilst = append(spilst, spi)
+	sapi.MockStorePluginList = &spilst
+
+	var pi sdbi.Plugins
+	pi.ID = 4
+	pi.PluginName = "tester PI"
+
+	sapi.MockPlugin = &pi
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("GET", "https://test.com", strings.NewReader("pluginName=testplugin&category=inventory"))
+	//r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	vars := map[string]string{
+		"id": "2",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	//s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminGetStorePluginToAddPage(w, r)
 	fmt.Println("code: ", w.Code)
 
 	if w.Code != 302 {

@@ -28,8 +28,10 @@ import (
 
 //PluginPage PluginPage
 type PluginPage struct {
-	Error  string
-	Plugin *sdbi.Plugins
+	Error      string
+	Plugin     *sdbi.Plugins
+	PluginList *[]sdbi.Plugins
+	Pagination *Pagination
 }
 
 //StoreAdminAddPluginPage StoreAdminAddPluginPage
@@ -44,7 +46,7 @@ func (h *Six910Handler) StoreAdminAddPluginPage(w http.ResponseWriter, r *http.R
 				aplpg.Error = aplErr
 				h.AdminTemplates.ExecuteTemplate(w, adminAddPluginPage, &aplpg)
 			} else {
-				http.Redirect(w, r, adminloginPage, http.StatusFound)
+				http.Redirect(w, r, adminLogin, http.StatusFound)
 			}
 		}
 	}
@@ -63,12 +65,12 @@ func (h *Six910Handler) StoreAdminAddPlugin(w http.ResponseWriter, r *http.Reque
 				pires := h.API.AddPlugin(apii, hd)
 				h.Log.Debug("Plugin add resp", *pires)
 				if pires.Success {
-					http.Redirect(w, r, adminAddPluginView, http.StatusFound)
+					http.Redirect(w, r, adminPluginListView+"/0/100", http.StatusFound)
 				} else {
-					http.Redirect(w, r, adminAddPluginViewFail, http.StatusFound)
+					http.Redirect(w, r, adminPluginListViewFail+"/0/100", http.StatusFound)
 				}
 			} else {
-				http.Redirect(w, r, adminloginPage, http.StatusFound)
+				http.Redirect(w, r, adminLogin, http.StatusFound)
 			}
 		}
 	}
@@ -92,7 +94,7 @@ func (h *Six910Handler) StoreAdminEditPluginPage(w http.ResponseWriter, r *http.
 				epip.Plugin = h.API.GetPlugin(iID, hd)
 				h.AdminTemplates.ExecuteTemplate(w, adminEditPluginPage, &epip)
 			} else {
-				http.Redirect(w, r, adminloginPage, http.StatusFound)
+				http.Redirect(w, r, adminLogin, http.StatusFound)
 			}
 		}
 	}
@@ -111,12 +113,12 @@ func (h *Six910Handler) StoreAdminEditPlugin(w http.ResponseWriter, r *http.Requ
 				res := h.API.UpdatePlugin(epii, hd)
 				h.Log.Debug("Plugin update resp", *res)
 				if res.Success {
-					http.Redirect(w, r, adminPluginListView, http.StatusFound)
+					http.Redirect(w, r, adminPluginListView+"/0/100", http.StatusFound)
 				} else {
-					http.Redirect(w, r, adminPluginListViewFail, http.StatusFound)
+					http.Redirect(w, r, adminPluginListViewFail+"/0/100", http.StatusFound)
 				}
 			} else {
-				http.Redirect(w, r, adminloginPage, http.StatusFound)
+				http.Redirect(w, r, adminLogin, http.StatusFound)
 			}
 		}
 	}
@@ -129,16 +131,19 @@ func (h *Six910Handler) StoreAdminViewPluginList(w http.ResponseWriter, r *http.
 	if suc {
 		if h.isStoreAdminLoggedIn(gpils) {
 			hd := h.getHeader(gpils)
+			var piPage PluginPage
 			vpivars := mux.Vars(r)
 			ststr := vpivars["start"]
 			endstr := vpivars["end"]
 			vpistart, _ := strconv.ParseInt(ststr, 10, 64)
 			vpiend, _ := strconv.ParseInt(endstr, 10, 64)
 			pisl := h.API.GetPluginList(vpistart, vpiend, hd)
+			piPage.Pagination = h.doPagination(vpistart, len(*pisl), 100, "/admin/pluginList")
+			piPage.PluginList = pisl
 			h.Log.Debug("Plugin  in list", pisl)
-			h.AdminTemplates.ExecuteTemplate(w, adminPluginListPage, &pisl)
+			h.AdminTemplates.ExecuteTemplate(w, adminPluginListPage, &piPage)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -157,12 +162,12 @@ func (h *Six910Handler) StoreAdminDeletePlugin(w http.ResponseWriter, r *http.Re
 				res := h.API.DeletePlugin(idddpi, hd)
 				h.Log.Debug("plugin delete resp", *res)
 				if res.Success {
-					http.Redirect(w, r, adminPluginListView, http.StatusFound)
+					http.Redirect(w, r, adminPluginListView+"/0/100", http.StatusFound)
 				} else {
-					http.Redirect(w, r, adminPluginListViewFail, http.StatusFound)
+					http.Redirect(w, r, adminPluginListViewFail+"/0/100", http.StatusFound)
 				}
 			} else {
-				http.Redirect(w, r, adminloginPage, http.StatusFound)
+				http.Redirect(w, r, adminLogin, http.StatusFound)
 			}
 		}
 	}
@@ -179,12 +184,19 @@ func (h *Six910Handler) processPlugin(r *http.Request) *sdbi.Plugins {
 	fee := r.FormValue("fee")
 	i.Fee, _ = strconv.ParseFloat(fee, 64)
 	enabled := r.FormValue("enabled")
-	i.Enabled, _ = strconv.ParseBool(enabled)
+	if enabled == "on" {
+		i.Enabled = true
+	} else {
+		i.Enabled = false
+	}
 	i.Category = r.FormValue("category")
 	i.ActivateURL = r.FormValue("activateUrl")
 	i.OauthRedirectURL = r.FormValue("oauthRedirectUrl")
 	isPgw := r.FormValue("isPgw")
-	i.IsPGW, _ = strconv.ParseBool(isPgw)
-
+	if isPgw == "on" {
+		i.IsPGW = true
+	} else {
+		i.IsPGW = false
+	}
 	return &i
 }

@@ -85,6 +85,9 @@ func main() {
 		"./static/admin/shippingMethodList.html", "./static/admin/editShippingMethod.html",
 		"./static/admin/insuranceList.html", "./static/admin/editInsurance.html",
 		"./static/admin/taxRateList.html", "./static/admin/editTaxRate.html",
+		"./static/admin/pluginList.html", "./static/admin/editPlugin.html",
+		"./static/admin/storePluginList.html", "./static/admin/addStorePluginFromList.html",
+		"./static/admin/pluginToAdd.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -150,6 +153,20 @@ func main() {
 	router.HandleFunc("/admin/getTaxRate/{id}/{country}/{state}", h.StoreAdminEditTaxRatePage).Methods("GET")
 	router.HandleFunc("/admin/updateTaxRate", h.StoreAdminEditTaxRate).Methods("POST")
 	router.HandleFunc("/admin/deleteTaxRate/{id}", h.StoreAdminDeleteTaxRate).Methods("GET")
+
+	router.HandleFunc("/admin/pluginList/{start}/{end}", h.StoreAdminViewPluginList).Methods("GET")
+	router.HandleFunc("/admin/addPlugin", h.StoreAdminAddPlugin).Methods("POST")
+	router.HandleFunc("/admin/getPlugin/{id}", h.StoreAdminEditPluginPage).Methods("GET")
+	router.HandleFunc("/admin/updatePlugin", h.StoreAdminEditPlugin).Methods("POST")
+	router.HandleFunc("/admin/deletePlugin/{id}", h.StoreAdminDeletePlugin).Methods("GET")
+
+	router.HandleFunc("/admin/storePluginList", h.StoreAdminViewStorePluginList).Methods("GET")
+	router.HandleFunc("/admin/addStorePluginFromList/{start}/{end}", h.StoreAdminAddStorePluginFromListPage).Methods("GET")
+	router.HandleFunc("/admin/getPluginToAdd/{id}", h.StoreAdminGetStorePluginToAddPage).Methods("GET")
+	router.HandleFunc("/admin/addStorePlugin/{id}", h.StoreAdminAddStorePlugin).Methods("GET")
+	router.HandleFunc("/admin/getStorePlugin/{id}", h.StoreAdminEditStorePluginPage).Methods("GET")
+	router.HandleFunc("/admin/updateStorePlugin", h.StoreAdminEditStorePlugin).Methods("POST")
+	router.HandleFunc("/admin/deleteStorePlugin/{id}", h.StoreAdminDeleteStorePlugin).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

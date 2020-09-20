@@ -44,7 +44,53 @@ func (h *Six910Handler) StoreAdminAddStorePluginPage(w http.ResponseWriter, r *h
 			aspipg.Error = aspiErr
 			h.AdminTemplates.ExecuteTemplate(w, adminAddStorePluginPage, &aspipg)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminAddStorePluginFromListPage StoreAdminAddStorePluginFromListPage
+func (h *Six910Handler) StoreAdminAddStorePluginFromListPage(w http.ResponseWriter, r *http.Request) {
+	fgpils, suc := h.getSession(r)
+	h.Log.Debug("session suc in store plugin from list view", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(fgpils) {
+			hd := h.getHeader(fgpils)
+			var fpiPage PluginPage
+			vpivars := mux.Vars(r)
+			fststr := vpivars["start"]
+			fendstr := vpivars["end"]
+			fvpistart, _ := strconv.ParseInt(fststr, 10, 64)
+			fvpiend, _ := strconv.ParseInt(fendstr, 10, 64)
+			pisl := h.API.GetPluginList(fvpistart, fvpiend, hd)
+			fpiPage.Pagination = h.doPagination(fvpistart, len(*pisl), 100, "/admin/addStorePluginFromList")
+			fpiPage.PluginList = pisl
+			h.Log.Debug("Plugin  in list", pisl)
+			h.AdminTemplates.ExecuteTemplate(w, adminAddStorePluginFromListPage, &fpiPage)
+		} else {
+			http.Redirect(w, r, adminLogin, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminGetStorePluginToAddPage StoreAdminGetStorePluginToAddPage
+func (h *Six910Handler) StoreAdminGetStorePluginToAddPage(w http.ResponseWriter, r *http.Request) {
+	taepis, suc := h.getSession(r)
+	h.Log.Debug("session suc in store plugin to add view", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(taepis) {
+			hd := h.getHeader(taepis)
+			taeipErr := r.URL.Query().Get("error")
+			epivars := mux.Vars(r)
+			tapidstr := epivars["id"]
+			iID, _ := strconv.ParseInt(tapidstr, 10, 64)
+			h.Log.Debug("plugin id in to add", iID)
+			var taepip PluginPage
+			taepip.Error = taeipErr
+			taepip.Plugin = h.API.GetPlugin(iID, hd)
+			h.AdminTemplates.ExecuteTemplate(w, adminStorePlugintoAddPage, &taepip)
+		} else {
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -55,18 +101,49 @@ func (h *Six910Handler) StoreAdminAddStorePlugin(w http.ResponseWriter, r *http.
 	h.Log.Debug("session suc in Store Plugin add", suc)
 	if suc {
 		if h.isStoreAdminLoggedIn(addspis) {
-			aspi := h.processStorePlugin(r)
-			h.Log.Debug("Store Plugin add", *aspi)
 			hd := h.getHeader(addspis)
-			spirres := h.API.AddStorePlugin(aspi, hd)
-			h.Log.Debug("Store Plugin add resp", *spirres)
-			if spirres.Success {
+			apivars := mux.Vars(r)
+			atapidstr := apivars["id"]
+			aiID, _ := strconv.ParseInt(atapidstr, 10, 64)
+			h.Log.Debug("plugin id in to add", aiID)
+			exspil := h.API.GetStorePluginList(hd)
+			h.Log.Debug("plugin found in add: ", *exspil)
+			var explFound bool
+			for _, pi := range *exspil {
+				if pi.PluginID == aiID {
+					explFound = true
+					break
+				}
+			}
+			var addSuc bool
+			h.Log.Debug("explFound: ", explFound)
+			if !explFound {
+				pita := h.API.GetPlugin(aiID, hd)
+				var aspi sdbi.StorePlugins
+				aspi.PluginName = pita.PluginName
+				aspi.Category = pita.Category
+				aspi.Active = true
+				aspi.IsPGW = pita.IsPGW
+				aspi.PluginID = pita.ID
+				aspi.ActivateURL = pita.ActivateURL
+				aspi.OauthRedirectURL = pita.OauthRedirectURL
+
+				//aspi := h.processStorePlugin(r)
+				h.Log.Debug("Store Plugin add", aspi)
+
+				spirres := h.API.AddStorePlugin(&aspi, hd)
+				addSuc = spirres.Success
+				h.Log.Debug("Store Plugin add resp", *spirres)
+			} else {
+				addSuc = true
+			}
+			if addSuc {
 				http.Redirect(w, r, adminStorePluginListView, http.StatusFound)
 			} else {
 				http.Redirect(w, r, adminStorePluginListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -88,7 +165,7 @@ func (h *Six910Handler) StoreAdminEditStorePluginPage(w http.ResponseWriter, r *
 			espigp.StorePlugins = h.API.GetStorePlugin(iID, hd)
 			h.AdminTemplates.ExecuteTemplate(w, adminEditStorePluginPage, &espigp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -110,7 +187,7 @@ func (h *Six910Handler) StoreAdminEditStorePlugin(w http.ResponseWriter, r *http
 				http.Redirect(w, r, adminStorePluginListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -126,7 +203,7 @@ func (h *Six910Handler) StoreAdminViewStorePluginList(w http.ResponseWriter, r *
 			h.Log.Debug("store plugin  in list", spisl)
 			h.AdminTemplates.ExecuteTemplate(w, adminStorePluginListPage, &spisl)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -149,7 +226,7 @@ func (h *Six910Handler) StoreAdminDeleteStorePlugin(w http.ResponseWriter, r *ht
 				http.Redirect(w, r, adminStorePluginListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -161,7 +238,12 @@ func (h *Six910Handler) processStorePlugin(r *http.Request) *sdbi.StorePlugins {
 	i.PluginName = r.FormValue("pluginName")
 	i.Category = r.FormValue("category")
 	active := r.FormValue("active")
-	i.Active, _ = strconv.ParseBool(active)
+	if active == "on" {
+		i.Active = true
+	} else {
+		i.Active = false
+	}
+	//i.Active, _ = strconv.ParseBool(active)
 	oauthClientID := r.FormValue("oauthClientId")
 	i.OauthClientID, _ = strconv.ParseInt(oauthClientID, 10, 64)
 	i.OauthSecret = r.FormValue("oauthSecret")
@@ -176,7 +258,12 @@ func (h *Six910Handler) processStorePlugin(r *http.Request) *sdbi.StorePlugins {
 	i.MenuTitle = r.FormValue("menuTitle")
 	i.MenuIconURL = r.FormValue("menuIconUrl")
 	isPgw := r.FormValue("isPgw")
-	i.IsPGW, _ = strconv.ParseBool(isPgw)
+	if isPgw == "on" {
+		i.IsPGW = true
+	} else {
+		i.IsPGW = false
+	}
+	//i.IsPGW, _ = strconv.ParseBool(isPgw)
 	pluginID := r.FormValue("pluginId")
 	i.PluginID, _ = strconv.ParseInt(pluginID, 10, 64)
 	storeID := r.FormValue("storeId")

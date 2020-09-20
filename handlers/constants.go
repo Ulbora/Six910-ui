@@ -132,8 +132,8 @@ const (
 	adminEditPluginViewFail = "/admin/editPluginView?error=Update Failed"
 	adminEditPlugin         = "/admin/editPlugin"
 	adminDeletePlugin       = "/admin/deletePlugin"
-	adminPluginListView     = "/admin/pluginListView"
-	adminPluginListViewFail = "/admin/pluginListView?error=Add Failed"
+	adminPluginListView     = "/admin/pluginList"
+	adminPluginListViewFail = "/admin/pluginList?error=Add Failed"
 
 	//routes Payment Gateway
 	adminAddStorePluginView      = "/admin/addStorePluginView"
@@ -143,8 +143,8 @@ const (
 	adminEditStorePluginViewFail = "/admin/editStorePluginView?error=Update Failed"
 	adminEditStorePlugin         = "/admin/editStorePlugin"
 	adminDeleteStorePlugin       = "/admin/deleteStorePlugin"
-	adminStorePluginListView     = "/admin/storePluginListView"
-	adminStorePluginListViewFail = "/admin/storePluginListView?error=Add Failed"
+	adminStorePluginListView     = "/admin/storePluginList"
+	adminStorePluginListViewFail = "/admin/storePluginList?error=Add Failed"
 
 	//routes shipping carrier
 	adminAddShippingCarrierView      = "/admin/addShippingCarrierView"
@@ -304,9 +304,11 @@ const (
 	adminPluginListPage = "pluginList.html"
 
 	//pages store Plugin
-	adminAddStorePluginPage  = "addStorePlugin.html"
-	adminEditStorePluginPage = "editStorePlugin.html"
-	adminStorePluginListPage = "storePluginList.html"
+	adminAddStorePluginPage         = "addStorePlugin.html"
+	adminAddStorePluginFromListPage = "addStorePluginFromList.html"
+	adminStorePlugintoAddPage       = "pluginToAdd.html"
+	adminEditStorePluginPage        = "editStorePlugin.html"
+	adminStorePluginListPage        = "storePluginList.html"
 
 	//pages shipping carrier
 	adminAddShippingCarrierPage  = "addShippingCarrier.html"

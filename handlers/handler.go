@@ -134,6 +134,8 @@ type Handler interface {
 
 	// Store plugins
 	StoreAdminAddStorePluginPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddStorePluginFromListPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminGetStorePluginToAddPage(w http.ResponseWriter, r *http.Request)
 	StoreAdminAddStorePlugin(w http.ResponseWriter, r *http.Request)
 	StoreAdminEditStorePluginPage(w http.ResponseWriter, r *http.Request)
 	StoreAdminEditStorePlugin(w http.ResponseWriter, r *http.Request)

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">
+        <h4 class="text-center mt-4">Plugin Information</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#pluginedit" role="tab"
+                    aria-controls="method" aria-selected="true">Plugin</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="pluginedit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <div class="p-3 mb-2 bg-warning text-dark">
+                        Contact developer shown below for any needed credentials for this plugin.
+                    </div>
+                    <input name="id" type="hidden" id="id" value="{{.Plugin.ID}}">
+                    <div class="form-group">
+                        <label for="pluginName">Plugin Name</label>
+                        <input name="pluginName" type="text" class="form-control" id="pluginName" disabled
+                            value="{{.Plugin.PluginName}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="developer">Developer</label>
+                        <input name="developer" type="text" class="form-control" id="developer" disabled
+                            value="{{.Plugin.Developer}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactPhone">Contact Phone</label>
+                        <input name="contactPhone" type="text" class="form-control" id="contactPhone" disabled
+                            value="{{.Plugin.ContactPhone}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="developerAddress">Developer Address</label>
+                        <input name="developerAddress" type="text" class="form-control" id="developerAddress" disabled
+                            value="{{.Plugin.DeveloperAddress}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="fee">Cost</label>
+                        <input name="fee" type="text" class="form-control" id="fee" disabled
+                            value='${{printf "%.2f" .Plugin.Fee}}'>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input name="category" type="text" class="form-control" id="category" disabled
+                            value="{{.Plugin.Category}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="activateUrl">Activate URL</label>
+                        <input name="activateUrl" type="text" class="form-control" id="activateUrl" disabled
+                            value="{{.Plugin.ActivateURL}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="oauthRedirectUrl">Oauth Redirect URL</label>
+                        <input name="oauthRedirectUrl" type="text" class="form-control" id="oauthRedirectUrl" disabled
+                            value="{{.Plugin.OauthRedirectURL}}">
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input name="enabled" class="form-check-input" disabled type="checkbox" id="enabled"
+                                {{if .Plugin.Enabled}} checked {{end}}>
+                            <label class="form-check-label" for="enabled">Enabled</label>
+                        </div>
+
+                        <div class="form-check form-check-inline">
+                            <input name="isPgw" class="form-check-input" disabled type="checkbox" id="isPgw"
+                                {{if .Plugin.IsPGW}} checked {{end}}>
+                            <label class="form-check-label" for="isPgw">Is Payment Gateway</label>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary" href="/admin/addStorePlugin/{{.Plugin.ID}}" role="button">Add Plugin</a>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -410,7 +410,7 @@ func TestSix910Handler_StoreAdminEditPlugin(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("PUT", "https://test.com", strings.NewReader("id=3&pluginName=testPlugin&fee=300.50"))
+	r, _ := http.NewRequest("PUT", "https://test.com", strings.NewReader("id=3&pluginName=testPlugin&fee=300.50&enabled=on&isPgw=on"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
