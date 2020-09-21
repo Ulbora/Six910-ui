@@ -87,7 +87,7 @@ func main() {
 		"./static/admin/taxRateList.html", "./static/admin/editTaxRate.html",
 		"./static/admin/pluginList.html", "./static/admin/editPlugin.html",
 		"./static/admin/storePluginList.html", "./static/admin/addStorePluginFromList.html",
-		"./static/admin/pluginToAdd.html",
+		"./static/admin/pluginToAdd.html", "./static/admin/editStorePlugin.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",

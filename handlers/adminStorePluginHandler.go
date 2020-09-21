@@ -258,12 +258,13 @@ func (h *Six910Handler) processStorePlugin(r *http.Request) *sdbi.StorePlugins {
 	i.MenuTitle = r.FormValue("menuTitle")
 	i.MenuIconURL = r.FormValue("menuIconUrl")
 	isPgw := r.FormValue("isPgw")
-	if isPgw == "on" {
-		i.IsPGW = true
-	} else {
-		i.IsPGW = false
-	}
-	//i.IsPGW, _ = strconv.ParseBool(isPgw)
+	i.IsPGW, _ = strconv.ParseBool(isPgw)
+	// if isPgw == "on" {
+	// 	i.IsPGW = true
+	// } else {
+	// 	i.IsPGW = false
+	// }
+
 	pluginID := r.FormValue("pluginId")
 	i.PluginID, _ = strconv.ParseInt(pluginID, 10, 64)
 	storeID := r.FormValue("storeId")

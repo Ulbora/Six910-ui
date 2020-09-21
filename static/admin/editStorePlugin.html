@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">        
+        <h4 class="text-center mt-4">Edit Store Plugin</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#spinedit" role="tab"
+                    aria-controls="method" aria-selected="true">Store Plugin</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#deleteSpin" role="tab" aria-controls="add"
+                    aria-selected="false">Delete</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="spinedit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <div class="p-3 mb-2 bg-warning text-dark">
+                        Contact plugin developer for any needed credentials for this plugin.
+                    </div>
+                    <form method="POST" action="/admin/updateStorePlugin">
+                        <input name="id" type="hidden" id="id" value="{{.StorePlugins.ID}}">
+                        <input name="rekeyTryCount" type="hidden" id="rekeyTryCount" value="{{.StorePlugins.RekeyTryCount}}">
+                        <input name="rekeyDate" type="hidden" id="rekeyDate" value="{{.StorePlugins.RekeyDate}}">
+                        <input name="pluginId" type="hidden" id="pluginId" value="{{.StorePlugins.PluginID}}">
+                        <input name="isPgw" type="hidden" id="isPgw" value="{{.StorePlugins.IsPGW}}">
+                        <div class="form-group">
+                            <label for="pluginName">Plugin Name</label>
+                            <input name="pluginName" type="text" class="form-control" id="pluginName" value="{{.StorePlugins.PluginName}}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <input name="category" type="text" class="form-control" id="category" value="{{.StorePlugins.Category}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="activateUrl">Activate URL</label>
+                            <input name="activateUrl" type="text" class="form-control" id="activateUrl" value="{{.StorePlugins.ActivateURL}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="oauthRedirectUrl">Oauth Redirect URL</label>
+                            <input name="oauthRedirectUrl" type="text" class="form-control" id="oauthRedirectUrl" value="{{.StorePlugins.OauthRedirectURL}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="oauthClientId">Oauth Client ID</label>
+                            <input name="oauthClientId" type="text" class="form-control" id="oauthClientId" value="{{.StorePlugins.OauthClientID}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="oauthSecret">Oauth Secret</label>
+                            <input name="oauthSecret" type="text" class="form-control" id="oauthSecret" value="{{.StorePlugins.OauthSecret}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="apiKey">API Key</label>
+                            <input name="apiKey" type="text" class="form-control" id="apiKey" value="{{.StorePlugins.APIKey}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="iframeUrl">Iframe URL</label>
+                            <input name="iframeUrl" type="text" class="form-control" id="iframeUrl" value="{{.StorePlugins.IframeURL}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="menuTitle">Menu Title</label>
+                            <input name="menuTitle" type="text" class="form-control" id="menuTitle" value="{{.StorePlugins.MenuTitle}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="menuIconUrl">Menu Icon URL</label>
+                            <input name="menuIconUrl" type="text" class="form-control" id="menuIconUrl" value="{{.StorePlugins.MenuIconURL}}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input name="active" class="form-check-input" type="checkbox" id="active" 
+                                {{if .StorePlugins.Active}} checked {{end}}>
+                                <label class="form-check-label" for="active">Active</label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input name="isPgwdis" disabled class="form-check-input" type="checkbox" id="isPgwdis" 
+                                {{if .StorePlugins.IsPGW}} checked {{end}}>
+                                <label class="form-check-label" for="isPgwdis">Is Payment Gateway</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="deleteSpin" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <a class="btn btn-primary"  href="/admin/deleteStorePlugin/{{.StorePlugins.ID}}" role="button">Delete Plugin</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
