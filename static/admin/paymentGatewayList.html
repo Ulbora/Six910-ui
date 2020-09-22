@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">
+        <h4 class="text-center mt-4">Payment Gateway List</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#pgwlist" role="tab"
+                    aria-controls="trlist" aria-selected="true">Payment Gateway</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#addPgw" role="tab" aria-controls="add"
+                    aria-selected="false">Add</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="pgwlist" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Payment Gateway Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .PaymentGatwayList}}
+                            <tr class='clickable-row' data-href='/admin/getPaymentGateway/{{.ID}}'>
+                                <td>
+                                    {{ $SpiID := .StorePluginsID }}{{range $.StorePluginPgwList}}
+                                    {{if eq $SpiID .ID }}
+                                    {{.PluginName}}
+                                    {{end}}
+                                    {{end}}
+                                </td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="addPgw" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/addPaymentGateway">
+                        
+                        <div class="form-group">
+                            <label for="productCategoryId">Store Plugin</label>
+                            <select name="storePluginId" id="storePluginId" class="custom-select custom-select-lg mb-3"
+                                data-selected-text-format="count">
+                                <option></option>
+                                {{range $.StorePluginPgwList}}
+                                <option value="{{.ID}}">{{.PluginName}}</option>
+                                {{end}}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="checkoutUrl">Checkout URL</label>
+                            <input name="checkoutUrl" type="text" class="form-control" id="checkoutUrl">
+                        </div>
+                        <div class="form-group">
+                            <label for="clientId">Client ID</label>
+                            <input name="clientId" type="text" class="form-control" id="clientId">
+                        </div>
+                        <div class="form-group">
+                            <label for="clientKey">ClientKey</label>
+                            <input name="clientKey" type="text" class="form-control" id="clientKey">
+                        </div>
+                        <div class="form-group">
+                            <label for="logoUrl">Logo URL</label>
+                            <input name="logoUrl" type="text" class="form-control" id="logoUrl">
+                        </div>
+                        <div class="form-group">
+                            <label for="postOrderUrl">PostOrderURL</label>
+                            <input name="postOrderUrl" type="text" class="form-control" id="postOrderUrl">
+                        </div>
+                       
+
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -151,9 +151,17 @@ func TestSix910Handler_StoreAdminAddPaymentGateway(t *testing.T) {
 	pr.ID = 5
 	sapi.MockAddPaymentGatewayResp = &pr
 
+	var pw sdbi.PaymentGateway
+	pw.ID = 4
+	pw.StorePluginsID = 7
+
+	var pwlst []sdbi.PaymentGateway
+	pwlst = append(pwlst, pw)
+	sapi.MockPaymentGatewayList = &pwlst
+
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("checkoutUrl=tester&clientId=125"))
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("checkoutUrl=tester&clientId=125&storePluginId=7"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
@@ -198,6 +206,14 @@ func TestSix910Handler_StoreAdminAddPaymentGatewayLogin(t *testing.T) {
 	pr.Success = true
 	pr.ID = 5
 	sapi.MockAddPaymentGatewayResp = &pr
+
+	var pw sdbi.PaymentGateway
+	pw.ID = 4
+	pw.StorePluginsID = 7
+
+	var pwlst []sdbi.PaymentGateway
+	pwlst = append(pwlst, pw)
+	sapi.MockPaymentGatewayList = &pwlst
 
 	//-----------end mocking --------
 
@@ -246,6 +262,14 @@ func TestSix910Handler_StoreAdminAddPaymentGatewayFail(t *testing.T) {
 	//pr.Success = true
 	pr.ID = 5
 	sapi.MockAddPaymentGatewayResp = &pr
+
+	var pw sdbi.PaymentGateway
+	pw.ID = 4
+	pw.StorePluginsID = 7
+
+	var pwlst []sdbi.PaymentGateway
+	pwlst = append(pwlst, pw)
+	sapi.MockPaymentGatewayList = &pwlst
 
 	//-----------end mocking --------
 
@@ -298,6 +322,14 @@ func TestSix910Handler_StoreAdminEditPaymentGatewayPage(t *testing.T) {
 	// var clts []sdbi.Category
 	// clts = append(clts, pr)
 	// sapi.MockCategoryList = &clts
+
+	var spi sdbi.StorePlugins
+	spi.ID = 4
+	spi.IsPGW = true
+
+	var spilst []sdbi.StorePlugins
+	spilst = append(spilst, spi)
+	sapi.MockStorePluginList = &spilst
 
 	//-----------end mocking --------
 
@@ -551,6 +583,14 @@ func TestSix910Handler_StoreAdminViewPaymentGatewayList(t *testing.T) {
 	flst = append(flst, pr)
 	sapi.MockPaymentGatewayList = &flst
 
+	var spi sdbi.StorePlugins
+	spi.ID = 4
+	spi.IsPGW = true
+
+	var spilst []sdbi.StorePlugins
+	spilst = append(spilst, spi)
+	sapi.MockStorePluginList = &spilst
+
 	//-----------end mocking --------
 
 	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("sku=tester123&name=tester"))
@@ -605,6 +645,14 @@ func TestSix910Handler_StoreAdminViewPaymentGatewayListLogin(t *testing.T) {
 	var flst []sdbi.PaymentGateway
 	flst = append(flst, pr)
 	sapi.MockPaymentGatewayList = &flst
+
+	var spi sdbi.StorePlugins
+	spi.ID = 4
+	spi.IsPGW = true
+
+	var spilst []sdbi.StorePlugins
+	spilst = append(spilst, spi)
+	sapi.MockStorePluginList = &spilst
 
 	//-----------end mocking --------
 

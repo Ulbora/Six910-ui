@@ -3,7 +3,9 @@ package handlers
 import (
 	"net/http"
 	"strconv"
+	"sync"
 
+	six910api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
@@ -28,8 +30,11 @@ import (
 
 //PgwPage PgwPage
 type PgwPage struct {
-	Error         string
-	PaymentGatway *sdbi.PaymentGateway
+	Error              string
+	PaymentGatway      *sdbi.PaymentGateway
+	PaymentGatwayList  *[]sdbi.PaymentGateway
+	StorePluginPgwList *[]sdbi.StorePlugins
+	StorePluginPgw     *sdbi.StorePlugins
 }
 
 //StoreAdminAddPaymentGatewayPage StoreAdminAddPaymentGatewayPage
@@ -41,9 +46,9 @@ func (h *Six910Handler) StoreAdminAddPaymentGatewayPage(w http.ResponseWriter, r
 			aiErr := r.URL.Query().Get("error")
 			var apgpg PgwPage
 			apgpg.Error = aiErr
-			h.AdminTemplates.ExecuteTemplate(w, adminAddPaymentGatwayPage, &apgpg)
+			h.AdminTemplates.ExecuteTemplate(w, adminAddPaymentGatewayPage, &apgpg)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -57,15 +62,29 @@ func (h *Six910Handler) StoreAdminAddPaymentGateway(w http.ResponseWriter, r *ht
 			apg := h.processPgw(r)
 			h.Log.Debug("pgw add", *apg)
 			hd := h.getHeader(apgs)
-			prres := h.API.AddPaymentGateway(apg, hd)
-			h.Log.Debug("pgw add resp", *prres)
-			if prres.Success {
+			var found bool
+			pgl := h.API.GetPaymentGateways(hd)
+			for _, pg := range *pgl {
+				if pg.StorePluginsID == apg.StorePluginsID {
+					found = true
+					break
+				}
+			}
+			var suc bool
+			if !found {
+				prres := h.API.AddPaymentGateway(apg, hd)
+				h.Log.Debug("pgw add resp", *prres)
+				suc = prres.Success
+			} else {
+				suc = true
+			}
+			if suc {
 				http.Redirect(w, r, adminPaymentGatewayListView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminAddPaymentGatewayViewFail, http.StatusFound)
+				http.Redirect(w, r, adminPaymentGatewayListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -84,10 +103,34 @@ func (h *Six910Handler) StoreAdminEditPaymentGatewayPage(w http.ResponseWriter, 
 			h.Log.Debug("pgw id in edit", pgID)
 			var dgp PgwPage
 			dgp.Error = epgpErr
-			dgp.PaymentGatway = h.API.GetPaymentGateway(pgID, hd)
-			h.AdminTemplates.ExecuteTemplate(w, adminEditPaymentGatwayPage, &dgp)
+
+			var wg sync.WaitGroup
+			wg.Add(1)
+			go func(id int64, header *six910api.Headers) {
+				defer wg.Done()
+				dgp.PaymentGatway = h.API.GetPaymentGateway(id, header)
+				h.Log.Debug("dgp.PaymentGatway", dgp.PaymentGatway)
+			}(pgID, hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				var espipgwlst []sdbi.StorePlugins
+				espigl := h.API.GetStorePluginList(header)
+				for i := range *espigl {
+					if (*espigl)[i].IsPGW {
+						espipgwlst = append(espipgwlst, (*espigl)[i])
+					}
+				}
+				dgp.StorePluginPgwList = &espipgwlst
+				h.Log.Debug("espipgwlst", espipgwlst)
+			}(hd)
+
+			wg.Wait()
+
+			h.AdminTemplates.ExecuteTemplate(w, adminEditPaymentGatewayPage, &dgp)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -106,10 +149,10 @@ func (h *Six910Handler) StoreAdminEditPaymentGateway(w http.ResponseWriter, r *h
 			if res.Success {
 				http.Redirect(w, r, adminPaymentGatewayListView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminEditPaymentGatewayViewFail, http.StatusFound)
+				http.Redirect(w, r, adminPaymentGatewayListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -120,12 +163,36 @@ func (h *Six910Handler) StoreAdminViewPaymentGatewayList(w http.ResponseWriter, 
 	h.Log.Debug("session suc in pgw view", suc)
 	if suc {
 		if h.isStoreAdminLoggedIn(gpgls) {
+			var pgwPage PgwPage
 			hd := h.getHeader(gpgls)
-			pgl := h.API.GetPaymentGateways(hd)
-			h.Log.Debug("pgw  in list", pgl)
-			h.AdminTemplates.ExecuteTemplate(w, adminPaymentGatwayListPage, &pgl)
+
+			var wg sync.WaitGroup
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				var spipgwlst []sdbi.StorePlugins
+				spigl := h.API.GetStorePluginList(header)
+				for i := range *spigl {
+					if (*spigl)[i].IsPGW {
+						spipgwlst = append(spipgwlst, (*spigl)[i])
+					}
+				}
+				pgwPage.StorePluginPgwList = &spipgwlst
+				h.Log.Debug("spipgwlst", spipgwlst)
+			}(hd)
+
+			wg.Add(1)
+			go func(header *six910api.Headers) {
+				defer wg.Done()
+				pgl := h.API.GetPaymentGateways(header)
+				h.Log.Debug("pgw  in list", pgl)
+				pgwPage.PaymentGatwayList = pgl
+			}(hd)
+			wg.Wait()
+
+			h.AdminTemplates.ExecuteTemplate(w, adminPaymentGatewayListPage, &pgwPage)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -148,7 +215,7 @@ func (h *Six910Handler) StoreAdminDeletePaymentGateway(w http.ResponseWriter, r 
 				http.Redirect(w, r, adminPaymentGatewayListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

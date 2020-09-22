@@ -121,8 +121,8 @@ const (
 	adminEditPaymentGatewayViewFail = "/admin/editPaymentGatewayView?error=Update Failed"
 	adminEditPaymentGateway         = "/admin/editPaymentGateway"
 	adminDeletePaymentGateway       = "/admin/deletePaymentGateway"
-	adminPaymentGatewayListView     = "/admin/paymentGatewayListView"
-	adminPaymentGatewayListViewFail = "/admin/paymentGatewayListView?error=Add Failed"
+	adminPaymentGatewayListView     = "/admin/paymentGatewayList"
+	adminPaymentGatewayListViewFail = "/admin/paymentGatewayList?error=Add Failed"
 
 	//routes Payment Gateway
 	adminAddPluginView      = "/admin/addPluginView"
@@ -294,9 +294,9 @@ const (
 	adminTaxRateListPage = "taxRateList.html"
 
 	//pages Payment Gateway
-	adminAddPaymentGatwayPage  = "addPaymentGatway.html"
-	adminEditPaymentGatwayPage = "editPaymentGatway.html"
-	adminPaymentGatwayListPage = "paymentGatwayList.html"
+	adminAddPaymentGatewayPage  = "addPaymentGateway.html"
+	adminEditPaymentGatewayPage = "editPaymentGateway.html"
+	adminPaymentGatewayListPage = "paymentGatewayList.html"
 
 	//pages Plugin
 	adminAddPluginPage  = "addPlugin.html"
