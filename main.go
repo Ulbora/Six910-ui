@@ -89,6 +89,7 @@ func main() {
 		"./static/admin/storePluginList.html", "./static/admin/addStorePluginFromList.html",
 		"./static/admin/pluginToAdd.html", "./static/admin/editStorePlugin.html",
 		"./static/admin/paymentGatewayList.html", "./static/admin/editPaymentGateway.html",
+		"./static/admin/orderList.html", "./static/admin/editOrder.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -174,6 +175,10 @@ func main() {
 	router.HandleFunc("/admin/getPaymentGateway/{id}", h.StoreAdminEditPaymentGatewayPage).Methods("GET")
 	router.HandleFunc("/admin/updatePaymentGateway", h.StoreAdminEditPaymentGateway).Methods("POST")
 	router.HandleFunc("/admin/deletePaymentGateway/{id}", h.StoreAdminDeletePaymentGateway).Methods("GET")
+
+	router.HandleFunc("/admin/orderList/{status}", h.StoreAdminViewOrderList).Methods("GET")
+	router.HandleFunc("/admin/getOrder/{id}", h.StoreAdminEditOrderPage).Methods("GET")
+	router.HandleFunc("/admin/updateOrder", h.StoreAdminEditOrder).Methods("POST")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

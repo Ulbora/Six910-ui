@@ -28,11 +28,13 @@ import (
 
 //OrderPage OrderPage
 type OrderPage struct {
-	Error         string
-	Order         *sdbi.Order
-	Notes         *[]sdbi.OrderComment
-	OrderItemList *[]sdbi.OrderItem
-	Orders        *[]sdbi.Order
+	Error           string
+	Order           *sdbi.Order
+	Notes           *[]sdbi.OrderComment
+	OrderItemList   *[]sdbi.OrderItem
+	Orders          *[]sdbi.Order
+	Status          string
+	OrderStatusList []string
 }
 
 //StoreAdminEditOrderPage StoreAdminEditOrderPage
@@ -56,9 +58,10 @@ func (h *Six910Handler) StoreAdminEditOrderPage(w http.ResponseWriter, r *http.R
 			eoparm.Order = odr
 			eoparm.OrderItemList = oItemList
 			eoparm.Notes = notes
+			eoparm.OrderStatusList = []string{"New", "Processing", "Not Paid", "Shipped", "Canceled"}
 			h.AdminTemplates.ExecuteTemplate(w, adminEditOrderPage, &eoparm)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -82,10 +85,10 @@ func (h *Six910Handler) StoreAdminEditOrder(w http.ResponseWriter, r *http.Reque
 			if res.Success {
 				http.Redirect(w, r, adminOrderListView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminProductListViewFail, http.StatusFound)
+				http.Redirect(w, r, adminOrderListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -109,10 +112,11 @@ func (h *Six910Handler) StoreAdminViewOrderList(w http.ResponseWriter, r *http.R
 			var plparm OrderPage
 			plparm.Error = plErr
 			plparm.Orders = orders
+			plparm.Status = status
 			h.Log.Debug("orders  in list", orders)
 			h.AdminTemplates.ExecuteTemplate(w, adminOrderListPage, &plparm)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

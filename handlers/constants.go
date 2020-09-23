@@ -58,7 +58,8 @@ const (
 	adminEditOrderView     = "/admin/editOrderView"
 	adminEditOrderViewFail = "/admin/editOrderView?error=Update Failed"
 	adminEditOrder         = "/admin/editOrder"
-	adminOrderListView     = "/admin/orderListView"
+	adminOrderListView     = "/admin/orderList/New"
+	adminOrderListViewFail = "/admin/orderList?error=Update Failed"
 
 	//routes customer
 	adminEditCustomerView         = "/admin/editCustomerView"

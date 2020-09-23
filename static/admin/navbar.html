@@ -29,8 +29,19 @@
       <li class="nav-item">
         <a class="nav-link" href="#">Customers</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Orders</a>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Orders
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/admin/orderList/New">New</a>            
+          <a class="dropdown-item" href="/admin/orderList/Processing">Processing</a>  
+          <a class="dropdown-item" href="/admin/orderList/Not paid">Not Paid</a>      
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/admin/orderList/Shipped">Shipped</a>
+          <a class="dropdown-item" href="/admin/orderList/Canceled">Canceled</a>          
+        </div>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"

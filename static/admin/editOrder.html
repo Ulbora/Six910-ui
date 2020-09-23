@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">
+        <h4 class="text-center mt-4">Edit Order</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#orderedit" role="tab"
+                    aria-controls="item" aria-selected="true">Order {{.Order.OrderNumber}}</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#orderItem" role="tab" aria-controls="item"
+                    aria-selected="false">Order Items</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#orderNotes" role="tab" aria-controls="notes"
+                    aria-selected="false">Order Notes</a>
+            </li>
+
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="orderedit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/updateOrder">
+                        <input name="id" type="hidden" id="id" value="{{.Order.ID}}">
+                        <input name="username" type="hidden" id="username" value="{{.Order.Username}}">
+                        <input name="customerId" type="hidden" id="customerId" value="{{.Order.CustomerID}}">
+                        <input name="billingAddressId" type="hidden" id="billingAddressId"
+                            value="{{.Order.BillingAddressID}}">
+                        <input name="shippingAddressId" type="hidden" id="shippingAddressId"
+                            value="{{.Order.ShippingAddressID}}">
+                        <input name="shippingMethodId" type="hidden" id="shippingMethodId"
+                            value="{{.Order.ShippingMethodID}}">
+
+                        <div class="form-group">
+                            <label for="orderNumber">Order Number</label>
+                            <input name="orderNumber" type="text" class="form-control" id="orderNumber"
+                                value="{{.Order.OrderNumber}}">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="distributorId">Status</label>
+                            </div>
+                            <select name="status" class="custom-select" id="status">
+                                {{ $Stat := .Order.Status }} {{range $.OrderStatusList}} {{if eq $Stat . }}
+                                <option value="{{.}}" selected>{{.}}</option>
+                                {{else}}
+                                <option value="{{.}}">{{.}}</option>
+                                {{end}} {{end}}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subTotal">Subtotal</label>
+                            <input name="subTotal" type="text" class="form-control" id="subTotal"
+                                value="{{.Order.Subtotal}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="shippingHandling">Shipping and Handling</label>
+                            <input name="shippingHandling" type="text" class="form-control" id="shippingHandling"
+                                value="{{.Order.ShippingHandling}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="insurance">Insurance</label>
+                            <input name="insurance" type="text" class="form-control" id="insurance"
+                                value="{{.Order.Insurance}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="taxes">Tax</label>
+                            <input name="taxes" type="text" class="form-control" id="taxes" value="{{.Order.Taxes}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="total">Total</label>
+                            <input name="total" type="text" class="form-control" id="total" value="{{.Order.Total}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="orderType">Order Type</label>
+                            <input name="orderType" type="text" class="form-control" id="orderType"
+                                value="{{.Order.OrderType}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerName">Customer Name</label>
+                            <input name="customerName" type="text" class="form-control" id="customerName"
+                                value="{{.Order.CustomerName}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="billingAddress">Billing Address</label>
+                            <input name="billingAddress" type="text" class="form-control" id="billingAddress"
+                                value="{{.Order.BillingAddress}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shippingAddress">Shipping Address</label>
+                            <input name="shippingAddress" type="text" class="form-control" id="shippingAddress"
+                                value="{{.Order.ShippingAddress}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shippingAddress">Shipping Method</label>
+                            <input name="billingMethodName" type="text" class="form-control" id="billingMethodName"
+                                value="{{.Order.ShippingMethodName}}">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input name="pickup" class="form-check-input" type="checkbox" id="pickup"
+                                    {{if .Order.Pickup}} checked {{end}}>
+                                <label class="form-check-label" for="pickup">Pickup</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade show" id="orderItem" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    Order Items go here
+                </div>
+            </div>
+            <div class="tab-pane fade show" id="orderNotes" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    Order Notes go here
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
