@@ -29,9 +29,11 @@ import (
 
 //CusPage CusPage
 type CusPage struct {
-	Error    string
-	Customer *sdbi.Customer
-	User     *api.UserResponse
+	Error        string
+	Customer     *sdbi.Customer
+	User         *api.UserResponse
+	CustomerList *[]sdbi.Customer
+	Pagination   *Pagination
 }
 
 //StoreAdminEditCustomerPage StoreAdminEditCustomerPage
@@ -53,7 +55,7 @@ func (h *Six910Handler) StoreAdminEditCustomerPage(w http.ResponseWriter, r *htt
 			ceparm.Customer = cust
 			h.AdminTemplates.ExecuteTemplate(w, adminEditCustomerPage, &ceparm)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -72,10 +74,10 @@ func (h *Six910Handler) StoreAdminEditCustomer(w http.ResponseWriter, r *http.Re
 			if ecres.Success {
 				http.Redirect(w, r, adminCustomerListView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminEditCustomerViewFail, http.StatusFound)
+				http.Redirect(w, r, adminCustomerListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -106,7 +108,7 @@ func (h *Six910Handler) StoreAdminEditCustomerUserPage(w http.ResponseWriter, r 
 				http.Redirect(w, r, adminCustomerListView, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -125,10 +127,10 @@ func (h *Six910Handler) StoreAdminEditCustomerUser(w http.ResponseWriter, r *htt
 			if ecures.Success {
 				http.Redirect(w, r, adminCustomerListView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminEditCustomerUserViewFail, http.StatusFound)
+				http.Redirect(w, r, adminCustomerListViewFail, http.StatusFound)
 			}
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -140,11 +142,16 @@ func (h *Six910Handler) StoreAdminViewCustomerList(w http.ResponseWriter, r *htt
 	if suc {
 		if h.isStoreAdminLoggedIn(culs) {
 			hd := h.getHeader(culs)
+			edErr := r.URL.Query().Get("error")
+			var ceparm CusPage
+			ceparm.Error = edErr
 			cul := h.API.GetCustomerList(hd)
 			h.Log.Debug("customer  in list", cul)
+			ceparm.CustomerList = cul
+			//plparm.Pagination = h.doPagination(vpstart, len(*cul), 100, "/admin/customerList")
 			h.AdminTemplates.ExecuteTemplate(w, adminCustomerListPage, &cul)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

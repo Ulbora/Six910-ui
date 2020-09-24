@@ -3,7 +3,9 @@ package handlers
 import (
 	"net/http"
 	"strconv"
+	"sync"
 
+	six910api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
@@ -26,15 +28,33 @@ import (
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+//OrderItem OrderItem
+type OrderItem struct {
+	ID                    int64   `json:"id"`
+	Quantity              int64   `json:"quantity"`
+	BackOrdered           bool    `json:"backOrdered"`
+	Dropship              bool    `json:"dropship"`
+	ProductName           string  `json:"productName"`
+	ProductShortDesc      string  `json:"productShortDesc"`
+	ProductID             int64   `json:"productId"`
+	Sku                   string  `json:"sku"`
+	OrderID               int64   `json:"orderId"`
+	SpecialProcessing     bool    `json:"specialProcessing"`
+	SpecialProcessingType string  `json:"specialProcessingType"`
+	Price                 float64 `json:"price"`
+	SalePrice             float64 `json:"salePrice"`
+}
+
 //OrderPage OrderPage
 type OrderPage struct {
-	Error           string
-	Order           *sdbi.Order
-	Notes           *[]sdbi.OrderComment
-	OrderItemList   *[]sdbi.OrderItem
-	Orders          *[]sdbi.Order
-	Status          string
-	OrderStatusList []string
+	Error            string
+	Order            *sdbi.Order
+	Notes            *[]sdbi.OrderComment
+	OrderItemList    *[]OrderItem
+	Orders           *[]sdbi.Order
+	Status           string
+	OrderStatusList  []string
+	UserNameForNotes string
 }
 
 //StoreAdminEditOrderPage StoreAdminEditOrderPage
@@ -43,22 +63,73 @@ func (h *Six910Handler) StoreAdminEditOrderPage(w http.ResponseWriter, r *http.R
 	h.Log.Debug("session suc in order edit view", suc)
 	if suc {
 		if h.isStoreAdminLoggedIn(s) {
+			var oilist []OrderItem
 			hd := h.getHeader(s)
 			eovars := mux.Vars(r)
 			idstr := eovars["id"]
 			oID, _ := strconv.ParseInt(idstr, 10, 64)
 			h.Log.Debug("order id in edit", oID)
-			odr := h.API.GetOrder(oID, hd)
-			h.Log.Debug("order in edit", odr)
-			oItemList := h.API.GetOrderItemList(oID, hd)
-			notes := h.API.GetOrderCommentList(oID, hd)
+
 			odErr := r.URL.Query().Get("error")
 			var eoparm OrderPage
 			eoparm.Error = odErr
-			eoparm.Order = odr
-			eoparm.OrderItemList = oItemList
-			eoparm.Notes = notes
-			eoparm.OrderStatusList = []string{"New", "Processing", "Not Paid", "Shipped", "Canceled"}
+
+			var wg sync.WaitGroup
+
+			wg.Add(1)
+			go func(oid int64, header *six910api.Headers) {
+				defer wg.Done()
+				odr := h.API.GetOrder(oid, header)
+				h.Log.Debug("order in edit", odr)
+				eoparm.Order = odr
+			}(oID, hd)
+
+			oItemList := h.API.GetOrderItemList(oID, hd)
+			var oichan = make(chan OrderItem, len(*oItemList))
+			for i := range *oItemList {
+				wg.Add(1)
+				go func(oi sdbi.OrderItem, ch chan OrderItem, header *six910api.Headers) {
+					defer wg.Done()
+					prod := h.API.GetProductByID(oi.ProductID, header)
+					h.Log.Debug("prod in edit", prod)
+					var noi OrderItem
+					noi.ID = oi.ID
+					noi.OrderID = oi.OrderID
+					noi.BackOrdered = oi.BackOrdered
+					noi.Dropship = oi.Dropship
+					noi.ProductID = oi.ProductID
+					noi.Sku = prod.Sku
+					noi.ProductName = oi.ProductName
+					noi.ProductShortDesc = oi.ProductShortDesc
+					noi.Quantity = oi.Quantity
+					noi.SpecialProcessing = prod.SpecialProcessing
+					noi.SpecialProcessingType = prod.SpecialProcessingType
+					noi.Price = prod.Price
+					noi.SalePrice = prod.SalePrice
+					ch <- noi
+
+				}((*oItemList)[i], oichan, hd)
+			}
+
+			wg.Add(1)
+			go func(oid int64, header *six910api.Headers) {
+				defer wg.Done()
+				notes := h.API.GetOrderCommentList(oID, hd)
+				h.Log.Debug("notes in edit", notes)
+				eoparm.Notes = notes
+			}(oID, hd)
+
+			wg.Wait()
+
+			close(oichan)
+			for coi := range oichan {
+				oilist = append(oilist, coi)
+			}
+
+			eoparm.OrderItemList = &oilist
+			eoparm.UserNameForNotes = usernameForAddedNotes
+
+			eoparm.OrderStatusList = []string{"New", "Processing", "Not Paid", "Shipped", "Canceled", "Partial Cancel"}
 			h.AdminTemplates.ExecuteTemplate(w, adminEditOrderPage, &eoparm)
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)
@@ -136,6 +207,8 @@ func (h *Six910Handler) processOrder(r *http.Request) *sdbi.Order {
 	p.Taxes, _ = strconv.ParseFloat(taxes, 64)
 	total := r.FormValue("total")
 	p.Total, _ = strconv.ParseFloat(total, 64)
+	refunded := r.FormValue("refunded")
+	p.Refunded, _ = strconv.ParseFloat(refunded, 64)
 	p.OrderNumber = r.FormValue("orderNumber")
 	p.OrderType = r.FormValue("orderType")
 	pickup := r.FormValue("pickup")
@@ -165,7 +238,7 @@ func (h *Six910Handler) processOrderComment(r *http.Request) (bool, *sdbi.OrderC
 	var com = r.FormValue("newComment")
 	if com != "" {
 		c.Comment = com
-		c.Username = r.FormValue("username")
+		c.Username = r.FormValue("usernameForNotes")
 		oid := r.FormValue("id")
 		c.OrderID, _ = strconv.ParseInt(oid, 10, 64)
 		found = true

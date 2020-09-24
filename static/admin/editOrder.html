@@ -41,12 +41,15 @@
                             value="{{.Order.ShippingAddressID}}">
                         <input name="shippingMethodId" type="hidden" id="shippingMethodId"
                             value="{{.Order.ShippingMethodID}}">
+                        <input name="refunded" type="hidden" id="refunded" value="{{.Order.Refunded}}">
 
                         <div class="form-group">
                             <label for="orderNumber">Order Number</label>
                             <input name="orderNumber" type="text" class="form-control" id="orderNumber"
                                 value="{{.Order.OrderNumber}}">
                         </div>
+
+                        <input name="usernameForNotes" type="hidden" id="usernameForNotes" value="{{.UserNameForNotes}}">
 
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -88,6 +91,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="refundeddis">Refunded</label>
+                            <input name="refundeddis" disabled type="text" class="form-control" id="refundeddis" value="{{.Order.Refunded}}">
+                        </div>
+
+                        <div class="form-group">
                             <label for="orderType">Order Type</label>
                             <input name="orderType" type="text" class="form-control" id="orderType"
                                 value="{{.Order.OrderType}}">
@@ -124,18 +132,70 @@
                                 <label class="form-check-label" for="pickup">Pickup</label>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label for="newComment">Add New Note</label>
+                            <textarea name="newComment" class="form-control" id="newComment" rows="3"></textarea>
+                        </div>
+
                         <button type="submit" class="btn btn-primary mt-3">Submit</button>
                     </form>
                 </div>
             </div>
             <div class="tab-pane fade show" id="orderItem" role="tabpanel" aria-labelledby="home-tab">
                 <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
-                    Order Items go here
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">SKU</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">BackOrdered</th>
+                                <th scope="col">Dropship</th>
+                                <th scope="col">Special Processing</th>
+                                <th scope="col">Special Processing Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .OrderItemList}}
+                            <tr>
+                                <td>{{.Sku}}</td>
+                                {{ if ne .SalePrice 0.0}}
+                                    <td>{{.SalePrice}}</td>
+                                {{else}}
+                                    <td>{{.Price}}</td>
+                                {{end}}
+                                <td>{{.ProductName}}</td>
+                                <td>{{.Quantity}}</td>
+                                <td>{{.BackOrdered}}</td>
+                                <td>{{.Dropship}}</td>
+                                <td>{{.SpecialProcessing}}</td>
+                                <td>{{.SpecialProcessingType}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="tab-pane fade show" id="orderNotes" role="tabpanel" aria-labelledby="home-tab">
                 <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
-                    Order Notes go here
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Comment</th>
+                                <th scope="col">Username</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .Notes}}
+                            <tr>
+                                <td>{{.Comment}}</td>
+                                <td>{{.Username}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

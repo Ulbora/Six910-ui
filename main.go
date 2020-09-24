@@ -179,6 +179,11 @@ func main() {
 	router.HandleFunc("/admin/orderList/{status}", h.StoreAdminViewOrderList).Methods("GET")
 	router.HandleFunc("/admin/getOrder/{id}", h.StoreAdminEditOrderPage).Methods("GET")
 	router.HandleFunc("/admin/updateOrder", h.StoreAdminEditOrder).Methods("POST")
+	router.HandleFunc("/admin/addNewOrderComment", h.StoreAdminEditOrder).Methods("POST")
+
+	router.HandleFunc("/admin/customerList/{start}/{end}", h.StoreAdminViewPluginList).Methods("GET")
+	router.HandleFunc("/admin/getCustomer/{id}", h.StoreAdminEditPluginPage).Methods("GET")
+	router.HandleFunc("/admin/updateCustomer", h.StoreAdminEditPlugin).Methods("POST")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

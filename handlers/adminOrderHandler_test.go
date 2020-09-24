@@ -43,6 +43,16 @@ func TestSix910Handler_StoreAdminEditOrderPage(t *testing.T) {
 	pr.ID = 5
 	sapi.MockOrder = &pr
 
+	var prd sdbi.Product
+	prd.Sku = "12345"
+	sapi.MockProduct = &prd
+
+	var oi sdbi.OrderItem
+	oi.ProductID = 2
+	var oilst []sdbi.OrderItem
+	oilst = append(oilst, oi)
+	sapi.MockOrderItemList = &oilst
+
 	//-----------end mocking --------
 
 	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("sku=tester123&name=tester"))

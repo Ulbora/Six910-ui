@@ -65,7 +65,8 @@ const (
 	adminEditCustomerView         = "/admin/editCustomerView"
 	adminEditCustomerViewFail     = "/admin/editCustomerView?error=Update Failed"
 	adminEditCustomer             = "/admin/editCustomer"
-	adminCustomerListView         = "/admin/customerListView"
+	adminCustomerListView         = "/admin/customerList"
+	adminCustomerListViewFail     = "/admin/customerList?error=Update Failed"
 	adminEditCustomerUserView     = "/admin/editCustomerUserView"
 	adminEditCustomerUserViewFail = "/admin/editCustomerUserView?error=Update Failed"
 	adminEditCustomerUser         = "/admin/editCustomerUser"
@@ -371,4 +372,6 @@ const (
 	indexContent       = "index"
 	productListContent = "productList"
 	productContent     = "product"
+
+	usernameForAddedNotes = "System Admin"
 )
