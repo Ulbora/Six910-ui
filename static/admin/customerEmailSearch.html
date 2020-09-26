@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+{{template "navbar"}}
+<body>
+    <div class="container-sm">      
+        <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+            <h6>Search By Email</h6>
+            <form method="POST" action="/admin/customerByEmail">                
+                <div class="form-group">
+                    <label for="name">Email Address</label>
+                    <input name="email" type="text" class="form-control" id="email">
+                </div>                
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    {{if .HasCustomer}}
+    <div class="container">       
+        <h4 class="text-center">Customers</h4>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Email</th>
+              <th scope="col">Name</th>
+              <th scope="col">Company</th>
+              <th scope="col">Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+              {{range .CustomerList}}
+            <tr class='clickable-row' data-href='/admin/getCustomer/{{.ID}}'>
+              <td>{{.Email}}</td>
+              <td>{{.LastName}}, {{.FirstName}}</td>
+              <td>{{.Company}}</td>
+              <td>{{.Phone}}</td>
+            </tr>
+            {{end}}             
+          </tbody>
+        </table>         
+    </div>
+    {{end}}
+</body>
+
+</html>

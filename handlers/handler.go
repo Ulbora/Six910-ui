@@ -83,6 +83,7 @@ type Handler interface {
 	StoreAdminEditCustomerUserPage(w http.ResponseWriter, r *http.Request)
 	StoreAdminEditCustomerUser(w http.ResponseWriter, r *http.Request)
 	StoreAdminViewCustomerList(w http.ResponseWriter, r *http.Request)
+	StoreAdminSearchCustomerByEmailPage(w http.ResponseWriter, r *http.Request)
 
 	//categories
 	StoreAdminAddCategoryPage(w http.ResponseWriter, r *http.Request)

@@ -44,7 +44,7 @@ func (h *Six910Handler) StoreAdminUploadProductFilePage(w http.ResponseWriter, r
 		if h.isStoreAdminLoggedIn(s) {
 			h.AdminTemplates.ExecuteTemplate(w, productFileUploadPage, nil)
 		} else {
-			http.Redirect(w, r, adminloginPage, http.StatusFound)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }
@@ -94,7 +94,7 @@ func (h *Six910Handler) StoreAdminUploadProductFile(w http.ResponseWriter, r *ht
 				h.AdminTemplates.ExecuteTemplate(w, productUploadResultPage, &pg)
 			}
 		} else {
-			h.authorize(w, r)
+			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
 	}
 }

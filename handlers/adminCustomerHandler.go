@@ -7,6 +7,9 @@ import (
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
+	"sync"
+
+	six910api "github.com/Ulbora/Six910API-Go"
 )
 
 /*
@@ -33,7 +36,9 @@ type CusPage struct {
 	Customer     *sdbi.Customer
 	User         *api.UserResponse
 	CustomerList *[]sdbi.Customer
+	AddressList  *[]sdbi.Address
 	Pagination   *Pagination
+	HasCustomer  bool
 }
 
 //StoreAdminEditCustomerPage StoreAdminEditCustomerPage
@@ -47,12 +52,31 @@ func (h *Six910Handler) StoreAdminEditCustomerPage(w http.ResponseWriter, r *htt
 			cidstr := epvars["id"]
 			cID, _ := strconv.ParseInt(cidstr, 10, 64)
 			h.Log.Debug("customer id in edit", cID)
-			cust := h.API.GetCustomerID(cID, hd)
-			h.Log.Debug("customer  in edit", cust)
+
 			edErr := r.URL.Query().Get("error")
 			var ceparm CusPage
 			ceparm.Error = edErr
-			ceparm.Customer = cust
+
+			var wg sync.WaitGroup
+
+			wg.Add(1)
+			go func(id int64, header *six910api.Headers) {
+				defer wg.Done()
+				cust := h.API.GetCustomerID(id, header)
+				h.Log.Debug("customer  in edit", cust)
+				ceparm.Customer = cust
+			}(cID, hd)
+
+			wg.Add(1)
+			go func(id int64, header *six910api.Headers) {
+				defer wg.Done()
+				adds := h.API.GetAddressList(id, header)
+				h.Log.Debug("customer  in edit", adds)
+				ceparm.AddressList = adds
+			}(cID, hd)
+
+			wg.Wait()
+
 			h.AdminTemplates.ExecuteTemplate(w, adminEditCustomerPage, &ceparm)
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)
@@ -142,14 +166,51 @@ func (h *Six910Handler) StoreAdminViewCustomerList(w http.ResponseWriter, r *htt
 	if suc {
 		if h.isStoreAdminLoggedIn(culs) {
 			hd := h.getHeader(culs)
+			vpvars := mux.Vars(r)
+			stcusstr := vpvars["start"]
+			endcusstr := vpvars["end"]
+			vpstart, _ := strconv.ParseInt(stcusstr, 10, 64)
+			vpend, _ := strconv.ParseInt(endcusstr, 10, 64)
 			edErr := r.URL.Query().Get("error")
 			var ceparm CusPage
 			ceparm.Error = edErr
-			cul := h.API.GetCustomerList(hd)
+			cul := h.API.GetCustomerList(vpstart, vpend, hd)
 			h.Log.Debug("customer  in list", cul)
 			ceparm.CustomerList = cul
-			//plparm.Pagination = h.doPagination(vpstart, len(*cul), 100, "/admin/customerList")
-			h.AdminTemplates.ExecuteTemplate(w, adminCustomerListPage, &cul)
+			ceparm.Pagination = h.doPagination(vpstart, len(*cul), 100, "/admin/customerList")
+			h.AdminTemplates.ExecuteTemplate(w, adminCustomerListPage, &ceparm)
+		} else {
+			http.Redirect(w, r, adminLogin, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminSearchCustomerByEmailPage StoreAdminSearchCustomerByEmailPage
+func (h *Six910Handler) StoreAdminSearchCustomerByEmailPage(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	h.Log.Debug("session suc in cus search view", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(s) {
+			edErr := r.URL.Query().Get("error")
+			var scuspg CusPage
+			scuspg.Error = edErr
+			email := r.FormValue("email")
+			h.Log.Debug("email", email)
+			if email != "" {
+				hd := h.getHeader(s)
+				cuss := h.API.GetCustomer(email, hd)
+				h.Log.Debug("Customer by email", *cuss)
+				var cuslst []sdbi.Customer
+				cuslst = append(cuslst, *cuss)
+				scuspg.CustomerList = &cuslst
+				if cuss != nil && cuss.ID != 0 {
+					scuspg.HasCustomer = true
+				}
+			} else {
+				var cuslst []sdbi.Customer
+				scuspg.CustomerList = &cuslst
+			}
+			h.AdminTemplates.ExecuteTemplate(w, adminCustomerEmailSearchPage, &scuspg)
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}

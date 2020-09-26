@@ -90,6 +90,7 @@ func main() {
 		"./static/admin/pluginToAdd.html", "./static/admin/editStorePlugin.html",
 		"./static/admin/paymentGatewayList.html", "./static/admin/editPaymentGateway.html",
 		"./static/admin/orderList.html", "./static/admin/editOrder.html",
+		"./static/admin/customerList.html", "./static/admin/customerEmailSearch.html", "./static/admin/editCustomer.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -181,9 +182,11 @@ func main() {
 	router.HandleFunc("/admin/updateOrder", h.StoreAdminEditOrder).Methods("POST")
 	router.HandleFunc("/admin/addNewOrderComment", h.StoreAdminEditOrder).Methods("POST")
 
-	router.HandleFunc("/admin/customerList/{start}/{end}", h.StoreAdminViewPluginList).Methods("GET")
-	router.HandleFunc("/admin/getCustomer/{id}", h.StoreAdminEditPluginPage).Methods("GET")
-	router.HandleFunc("/admin/updateCustomer", h.StoreAdminEditPlugin).Methods("POST")
+	router.HandleFunc("/admin/customerList/{start}/{end}", h.StoreAdminViewCustomerList).Methods("GET")
+	router.HandleFunc("/admin/getCustomer/{id}", h.StoreAdminEditCustomerPage).Methods("GET")
+	router.HandleFunc("/admin/updateCustomer", h.StoreAdminEditCustomer).Methods("POST")
+	router.HandleFunc("/admin/customerByEmail", h.StoreAdminSearchCustomerByEmailPage).Methods("GET")
+	router.HandleFunc("/admin/customerByEmail", h.StoreAdminSearchCustomerByEmailPage).Methods("POST")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

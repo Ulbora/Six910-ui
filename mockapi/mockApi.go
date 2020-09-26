@@ -364,7 +364,7 @@ func (a *MockAPI) GetCustomerID(id int64, headers *api.Headers) *sdbi.Customer {
 }
 
 //GetCustomerList GetCustomerList
-func (a *MockAPI) GetCustomerList(headers *api.Headers) *[]sdbi.Customer {
+func (a *MockAPI) GetCustomerList(start int64, end int64, headers *api.Headers) *[]sdbi.Customer {
 	return a.MockCustomerList
 }
 

@@ -271,9 +271,10 @@ const (
 	adminOrderListPage = "orderList.html"
 
 	//pages customer
-	adminEditCustomerPage     = "editCustomer.html"
-	adminEditCustomerUserPage = "editCustomerUser.html"
-	adminCustomerListPage     = "customerList.html"
+	adminEditCustomerPage        = "editCustomer.html"
+	adminEditCustomerUserPage    = "editCustomerUser.html"
+	adminCustomerListPage        = "customerList.html"
+	adminCustomerEmailSearchPage = "customerEmailSearch.html"
 
 	//pages Distributor
 	adminAddDistributorPage  = "addDistributor.html"

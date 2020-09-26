@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">
+        <h4 class="text-center mt-4">Edit Customer</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#cusedit" role="tab"
+                    aria-controls="method" aria-selected="true">Customer</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#cusAdds" role="tab" aria-controls="add"
+                    aria-selected="false">Addresses</a>
+            </li>
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="cusedit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+
+                    <form method="POST" action="/admin/updateCustomer">
+                        <input name="id" type="hidden" id="id" value="{{.Customer.ID}}">
+                        <input name="email" type="hidden" id="email" value="{{.Customer.Email}}">
+                        <input name="firstName" type="hidden" id="firstName" value="{{.Customer.FirstName}}">
+                        <input name="lastName" type="hidden" id="lastName" value="{{.Customer.LastName}}">
+                        <input name="company" type="hidden" id="company" value="{{.Customer.Company}}">
+
+                        <input name="city" type="hidden" id="city" value="{{.Customer.City}}">
+                        <input name="state" type="hidden" id="state" value="{{.Customer.State}}">
+                        <input name="zip" type="hidden" id="zip" value="{{.Customer.Zip}}">
+                        <input name="phone" type="hidden" id="phone" value="{{.Customer.Phone}}">
+
+                        <div class="form-group">
+                            <label for="pluginName">Email</label>
+                            <input name="emaildis" disabled type="text" class="form-control" id="emaildis"
+                                value="{{.Customer.Email}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pluginName">FirstName</label>
+                            <input name="firstNamedis" disabled type="text" class="form-control" id="firstNamedis"
+                                value="{{.Customer.FirstName}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pluginName">LastName</label>
+                            <input name="lastNamedis" disabled type="text" class="form-control" id="lastNamedis"
+                                value="{{.Customer.LastName}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="pluginName">Company</label>
+                            <input name="companydis" disabled type="text" class="form-control" id="companydis"
+                                value="{{.Customer.Company}}">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="pluginName">City</label>
+                            <input name="citydis" disabled type="text" class="form-control" id="citydis"
+                                value="{{.Customer.City}}">
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="pluginName">State</label>
+                            <input name="statedis" disabled type="text" class="form-control" id="statedis"
+                                value="{{.Customer.State}}">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="pluginName">Zip</label>
+                            <input name="zipdis" disabled type="text" class="form-control" id="zipdis"
+                                value="{{.Customer.Zip}}">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="pluginName">Phone</label>
+                            <input name="phonedis" disabled type="text" class="form-control" id="phonedis"
+                                value="{{.Customer.Phone}}">
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input name="resetPassword" class="form-check-input" type="checkbox" id="resetPassword"
+                                    {{if .Customer.ResetPassword}} checked {{end}}>
+                                <label class="form-check-label" for="active">Reset Password</label>
+                            </div>
+
+
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="cusAdds" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Type</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">City</th>
+                                <th scope="col">State</th>
+                                <th scope="col">Zip</th>
+                                <th scope="col">Country</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .AddressList}}
+                            <tr>
+                                <td>{{.Type}}</td>
+                                <td>{{.Address}}</td>
+                                <td>{{.City}}</td>
+                                <td>{{.State}}</td>
+                                <td>{{.Zip}}</td>
+                                <td>{{.Country}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
