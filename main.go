@@ -91,6 +91,7 @@ func main() {
 		"./static/admin/paymentGatewayList.html", "./static/admin/editPaymentGateway.html",
 		"./static/admin/orderList.html", "./static/admin/editOrder.html",
 		"./static/admin/customerList.html", "./static/admin/customerEmailSearch.html", "./static/admin/editCustomer.html",
+		"./static/admin/productUpload.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -106,6 +107,7 @@ func main() {
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")
 	router.HandleFunc("/admin/login", h.StoreAdminLogin).Methods("GET")
 	router.HandleFunc("/admin/loginNonOAuth", h.StoreAdminLoginNonOAuthUser).Methods("POST")
+
 	router.HandleFunc("/admin/productListBySku", h.StoreAdminSearchProductBySkuPage).Methods("GET")
 	router.HandleFunc("/admin/productListBySku", h.StoreAdminSearchProductBySkuPage).Methods("POST")
 	router.HandleFunc("/admin/productListByName", h.StoreAdminSearchProductByNamePage).Methods("GET")
@@ -116,6 +118,10 @@ func main() {
 	router.HandleFunc("/admin/getProduct/{id}", h.StoreAdminEditProductPage).Methods("GET")
 	router.HandleFunc("/admin/updateProduct", h.StoreAdminEditProduct).Methods("POST")
 	router.HandleFunc("/admin/deleteProduct/{id}", h.StoreAdminDeleteProduct).Methods("GET")
+
+	router.HandleFunc("/admin/productsUploadPage", h.StoreAdminUploadProductFilePage).Methods("GET")
+	router.HandleFunc("/admin/productsUpload", h.StoreAdminUploadProductFile).Methods("POST")
+
 	router.HandleFunc("/admin/distributorList", h.StoreAdminViewDistributorList).Methods("GET")
 	router.HandleFunc("/admin/addDistributor", h.StoreAdminAddDistributor).Methods("POST")
 	router.HandleFunc("/admin/getDistributor/{id}", h.StoreAdminEditDistributorPage).Methods("GET")
