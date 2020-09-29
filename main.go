@@ -29,6 +29,7 @@ import (
 
 	lg "github.com/Ulbora/Level_Logger"
 	hand "github.com/Ulbora/Six910-ui/handlers"
+	m "github.com/Ulbora/Six910-ui/managers"
 	api "github.com/Ulbora/Six910API-Go"
 	"github.com/gorilla/mux"
 )
@@ -79,6 +80,7 @@ func main() {
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
 		"./static/admin/subnavs/productNavbar.html", "./static/admin/pagination.html", "./static/admin/productSkuSearch.html",
 		"./static/admin/productNameSearch.html", "./static/admin/editProduct.html", "./static/admin/addProduct.html",
+		"./static/admin/productCatSearch.html",
 		"./static/admin/distributorList.html", "./static/admin/editDistributor.html", "./static/admin/categoryList.html",
 		"./static/admin/editCategory.html", "./static/admin/shippingCarrierList.html", "./static/admin/editShippingCarrier.html",
 		"./static/admin/regionList.html", "./static/admin/editRegion.html",
@@ -99,6 +101,11 @@ func main() {
 	// "./static/admin/backupUpload.html",
 	))
 
+	var man m.Six910Manager
+	man.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
 	h := sh.GetNew()
 
 	fmt.Println("Six910 (six nine ten) UI is running on port 8080!")
@@ -110,8 +117,13 @@ func main() {
 
 	router.HandleFunc("/admin/productListBySku", h.StoreAdminSearchProductBySkuPage).Methods("GET")
 	router.HandleFunc("/admin/productListBySku", h.StoreAdminSearchProductBySkuPage).Methods("POST")
+
 	router.HandleFunc("/admin/productListByName", h.StoreAdminSearchProductByNamePage).Methods("GET")
 	router.HandleFunc("/admin/productListByName", h.StoreAdminSearchProductByNamePage).Methods("POST")
+
+	router.HandleFunc("/admin/productListByCat", h.StoreAdminSearchProductByCategoryPage).Methods("GET")
+	router.HandleFunc("/admin/productListByCat", h.StoreAdminSearchProductByCategoryPage).Methods("POST")
+
 	router.HandleFunc("/admin/productList/{start}/{end}", h.StoreAdminViewProductList).Methods("GET")
 	router.HandleFunc("/admin/addProductPage", h.StoreAdminAddProductPage).Methods("GET")
 	router.HandleFunc("/admin/addProduct", h.StoreAdminAddProduct).Methods("POST")

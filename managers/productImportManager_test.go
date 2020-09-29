@@ -98,10 +98,10 @@ func TestSix910Manager_importProducts(t *testing.T) {
 		fmt.Printf("add of slice elements in test: %p\n", &plst[i])
 	}
 
-	suc := sm.importProducts(&plst, &head)
-	fmt.Println("importProducts: ", suc)
+	cnt := sm.importProducts(&plst, &head)
+	fmt.Println("importProducts: ", cnt)
 
-	if !suc {
+	if cnt == 0 {
 		t.Fail()
 	}
 }
@@ -190,10 +190,10 @@ func TestSix910Manager_importProductsFail(t *testing.T) {
 	p2.Manufacturer = "testco"
 	plst = append(plst, p2)
 
-	suc := sm.importProducts(&plst, &head)
-	fmt.Println("importProducts: ", suc)
+	cnt := sm.importProducts(&plst, &head)
+	fmt.Println("importProducts: ", cnt)
 
-	if suc {
+	if cnt != 0 {
 		t.Fail()
 	}
 }
@@ -275,6 +275,28 @@ func TestSix910Manager_importExistingProducts(t *testing.T) {
 	p1.Desc = "test1"
 	p1.Price = 10.00
 	p1.Manufacturer = "testco"
+	p1.Image1 = "/images/img1.png"
+	p1.Image2 = "/images/img1.png"
+	p1.Image3 = "/images/img1.png"
+	p1.Image4 = "/images/img1.png"
+	p1.Color = "red"
+	p1.Cost = 12
+	p1.Currency = "USD"
+	p1.Depth = 3
+	p1.Desc = "test"
+	p1.Gtin = "123"
+	p1.Manufacturer = "rrr"
+	p1.ManufacturerID = "123"
+	p1.Map = 3
+	p1.Msrp = 5
+	p1.Price = 5
+	p1.ShortDesc = "test short"
+	p1.Thumbnail = "test"
+	p1.Weight = 2
+	p1.Width = 4
+	p1.Height = 2
+	p1.SalePrice = 2
+	p1.Size = "2"
 	plst = append(plst, p1)
 
 	var p2 Product
@@ -290,10 +312,10 @@ func TestSix910Manager_importExistingProducts(t *testing.T) {
 		fmt.Printf("add of slice elements in test: %p\n", &plst[i])
 	}
 
-	suc := sm.importProducts(&plst, &head)
-	fmt.Println("importProducts: ", suc)
+	cnt := sm.importProducts(&plst, &head)
+	fmt.Println("importProducts: ", cnt)
 
-	if !suc {
+	if cnt == 0 {
 		t.Fail()
 	}
 }

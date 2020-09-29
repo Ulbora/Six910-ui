@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+{{template "navbar"}}
+
+<body>
+  <div class="container-sm">
+    {{template "productNavbar"}}
+    <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+      <h6>Search By Category</h6>
+      <form method="POST" action="/admin/productListByCat">
+        <div class="form-group">
+          <label for="cid">Category</label>
+          <select name="cid" id="cid" class="custom-select custom-select-lg mb-3" data-selected-text-format="count">
+            {{range $.CategoryList}}
+            {{if or (eq $.LastCatSearch .ID)}}
+            <option value="{{.ID}}" selected>{{.Name}}</option>
+            {{else}}
+            <option value="{{.ID}}">{{.Name}}</option>
+            {{end}}
+            {{end}}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+  {{if .HasProducts}}
+  <div class="container">
+    <h4 class="text-center">Products</h4>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">SKU</th>
+          <th scope="col">Name</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{range .Products}}
+        <tr class='clickable-row' data-href='/admin/getProduct/{{.ID}}'>
+          <td style="width: 10%"><img class="img-fluid" style="max-width: 50%;" src="{{.Thumbnail}}"></td>
+          <td>{{.Sku}}</td>
+          <td>{{.Name}}</td>
+          <td>{{.Stock}}</td>
+          <td>{{.Price}}</td>
+        </tr>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+  {{end}}
+</body>
+
+</html>

@@ -38,6 +38,7 @@ type ProdPage struct {
 	Pagination      *Pagination
 	HasProducts     bool
 	ExistingCats    []int64
+	LastCatSearch   int64
 	// Pages    *[]Pageinate
 	// PrevLink string
 	// NextLink string
@@ -330,6 +331,41 @@ func (h *Six910Handler) StoreAdminSearchProductByNamePage(w http.ResponseWriter,
 			}
 			epparm.Error = edErr
 			h.AdminTemplates.ExecuteTemplate(w, adminProductNameSearchPage, &epparm)
+		} else {
+			http.Redirect(w, r, adminLogin, http.StatusFound)
+		}
+	}
+}
+
+//StoreAdminSearchProductByCategoryPage StoreAdminSearchProductByCategoryPage
+func (h *Six910Handler) StoreAdminSearchProductByCategoryPage(w http.ResponseWriter, r *http.Request) {
+	s, suc := h.getSession(r)
+	h.Log.Debug("session suc in prod search by cat view", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(s) {
+			ecdErr := r.URL.Query().Get("error")
+			var cepparm ProdPage
+			cidStr := r.FormValue("cid")
+			h.Log.Debug("cidStr", cidStr)
+			hd := h.getHeader(s)
+			cats := h.API.GetCategoryList(hd)
+			h.Log.Debug("prod  in edit", cats)
+			cepparm.CategoryList = cats
+			if cidStr != "" {
+				cid, _ := strconv.ParseInt(cidStr, 10, 64)
+				cepparm.LastCatSearch = cid
+				prods := h.API.GetProductsByCaterory(cid, 0, 100, hd)
+				h.Log.Debug("prods by name", *prods)
+				cepparm.Products = prods
+				if len(*prods) > 0 {
+					cepparm.HasProducts = true
+				}
+			} else {
+				var plst []sdbi.Product
+				cepparm.Products = &plst
+			}
+			cepparm.Error = ecdErr
+			h.AdminTemplates.ExecuteTemplate(w, adminProductCatSearchPage, &cepparm)
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}

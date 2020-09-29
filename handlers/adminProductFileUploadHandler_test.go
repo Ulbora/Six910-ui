@@ -190,7 +190,7 @@ func TestSix910Handler_StoreAdminUploadProductFile(t *testing.T) {
 	h.StoreAdminUploadProductFile(w, r)
 	fmt.Println("code: ", w.Code)
 
-	if w.Code != 200 {
+	if w.Code != 302 {
 		t.Fail()
 	}
 }
@@ -311,7 +311,7 @@ func TestSix910Handler_StoreAdminUploadProductFileNotGzfile(t *testing.T) {
 	h.StoreAdminUploadProductFile(w, r)
 	fmt.Println("code: ", w.Code)
 
-	if w.Code != 200 {
+	if w.Code != 302 {
 		t.Fail()
 	}
 }
@@ -492,7 +492,7 @@ func TestSix910Handler_StoreAdminUploadProductFileFail(t *testing.T) {
 	sapi.MockAddCategoryResp3 = &cr3
 
 	var pr api.ResponseID
-	pr.Success = true
+	//pr.Success = true
 	pr.ID = 5
 	sapi.MockAddProductResp = &pr
 
@@ -553,7 +553,7 @@ func TestSix910Handler_StoreAdminUploadProductFileFail(t *testing.T) {
 	h.StoreAdminUploadProductFile(w, r)
 	fmt.Println("code: ", w.Code)
 
-	if w.Code != 200 {
+	if w.Code != 302 {
 		t.Fail()
 	}
 }
@@ -684,7 +684,7 @@ func TestSix910Handler_StoreAdminUploadProductFileOauth(t *testing.T) {
 	h.StoreAdminUploadProductFile(w, r)
 	fmt.Println("code: ", w.Code)
 
-	if w.Code != 200 {
+	if w.Code != 302 {
 		t.Fail()
 	}
 }

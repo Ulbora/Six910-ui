@@ -78,20 +78,25 @@ func (h *Six910Handler) StoreAdminUploadProductFile(w http.ResponseWriter, r *ht
 
 			//h.Log.Debug("updata not zip: ", string(updata))
 			dcupdata := h.extractTarGz(&updata)
-			//h.Log.Debug("updata file in handlers: ", string(dcupdata))
+			h.Log.Debug("updata file in handlers: ", string(dcupdata))
 
 			hd := h.getHeader(s)
-			suc, notImported := h.Manager.UploadProductFile(dcupdata, hd)
+			h.Log.Debug("header: ", hd)
+			h.Log.Debug("manager: ", h.Manager)
+			icnt, notImported := h.Manager.UploadProductFile(dcupdata, hd)
+			h.Log.Debug("Imported: ", icnt)
 			h.Log.Debug("notImported: ", notImported)
 
-			var pg PageValues
-			if suc {
-				pg.Suc = suc
-				pg.RecordsNotImported = notImported
-				h.AdminTemplates.ExecuteTemplate(w, productUploadResultPage, &pg)
+			//var pg PageValues
+			if icnt != 0 {
+				//pg.Suc = suc
+				//pg.RecordsNotImported = notImported
+				//h.AdminTemplates.ExecuteTemplate(w, productUploadResultPage, &pg)
+				http.Redirect(w, r, adminProductList, http.StatusFound)
 			} else {
 				h.Log.Debug("csv upload of " + handler.Filename + " failed")
-				h.AdminTemplates.ExecuteTemplate(w, productUploadResultPage, &pg)
+				//h.AdminTemplates.ExecuteTemplate(w, productUploadResultPage, &pg)
+				http.Redirect(w, r, adminProductListError, http.StatusFound)
 			}
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)

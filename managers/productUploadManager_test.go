@@ -96,11 +96,11 @@ func TestSix910Manager_UploadProductFile(t *testing.T) {
 	m := sm.GetNew()
 	sourceFile, err := ioutil.ReadFile("../scripts/testUploadFile.csv")
 	fmt.Println("readFile err: ", err)
-	suc, cnt := m.UploadProductFile(sourceFile, &head)
-	fmt.Println("suc upload file: ", suc)
+	scnt, cnt := m.UploadProductFile(sourceFile, &head)
+	fmt.Println("suc upload file: ", scnt)
 	fmt.Println("not imported: ", cnt)
 
-	if !suc {
+	if scnt == 0 {
 		t.Fail()
 	}
 }
@@ -195,11 +195,11 @@ func TestSix910Manager_UploadProductFileExistingDist(t *testing.T) {
 	m := sm.GetNew()
 	sourceFile, err := ioutil.ReadFile("../scripts/testUploadFile.csv")
 	fmt.Println("readFile err: ", err)
-	suc, cnt := m.UploadProductFile(sourceFile, &head)
-	fmt.Println("suc upload file: ", suc)
+	scnt, cnt := m.UploadProductFile(sourceFile, &head)
+	fmt.Println("suc upload file: ", scnt)
 	fmt.Println("not imported: ", cnt)
 
-	if !suc {
+	if scnt == 0 {
 		t.Fail()
 	}
 }

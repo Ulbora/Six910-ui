@@ -257,7 +257,7 @@ type Manager interface {
 
 	StoreAdminLogin(u *api.User, hd *api.Headers) (bool, *api.User)
 	StoreAdminChangePassword(u *api.User, hd *api.Headers) (bool, *api.User)
-	UploadProductFile(file []byte, hd *api.Headers) (success bool, productNotImported int)
+	UploadProductFile(file []byte, hd *api.Headers) (productsImported int, productNotImported int)
 
 	// //category
 	// AddCategory(c *sdbi.Category, hd *Headers) *ResponseID

@@ -61,6 +61,7 @@ type Handler interface {
 	StoreAdminEditProduct(w http.ResponseWriter, r *http.Request)
 	StoreAdminSearchProductBySkuPage(w http.ResponseWriter, r *http.Request)
 	StoreAdminSearchProductByNamePage(w http.ResponseWriter, r *http.Request)
+	StoreAdminSearchProductByCategoryPage(w http.ResponseWriter, r *http.Request)
 	StoreAdminViewProductList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteProduct(w http.ResponseWriter, r *http.Request)
 

@@ -1,9 +1,9 @@
 package managers
 
 import ( //api "github.com/Ulbora/Six910API-Go"
-	//api "github.com/Ulbora/Six910API-Go"
-
 	"sync"
+
+	//api "github.com/Ulbora/Six910API-Go"
 
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
@@ -27,58 +27,133 @@ import ( //api "github.com/Ulbora/Six910API-Go"
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-func (m *Six910Manager) importProducts(prodList *[]Product, hd *api.Headers) bool {
-	var rtn = true
+// func (m *Six910Manager) importProducts(prodList *[]Product, hd *api.Headers) bool {
+// 	var rtn = true
+// 	var wg sync.WaitGroup
+// 	var pchan = make(chan *api.ResponseID, len(*prodList))
+
+// 	var cnt = 0
+// 	for i := range *prodList {
+// 		m.Log.Debug("cnt :", cnt)
+// 		//time.Sleep(2000 * time.Millisecond)
+// 		cnt++
+// 		if cnt > 10 {
+// 			m.Log.Debug("sleeping :", 5000*time.Millisecond)
+// 			cnt = 0
+// 			m.Log.Debug("cnt :", cnt)
+// 			time.Sleep(5000 * time.Millisecond)
+// 		}
+// 		var cp = &(*prodList)[i]
+// 		m.Log.Debug("before goroutine :", cp.Sku)
+// 		wg.Add(1)
+// 		go func(product *Product, header *api.Headers, prodchan chan *api.ResponseID) {
+// 			m.Log.Debug("in goroutine product address:", product)
+// 			m.Log.Debug("in goroutine product.Sku:", product.Sku)
+// 			m.Log.Debug("in goroutine product.Name:", product.Name)
+// 			defer wg.Done()
+// 			// need to search for product before adding
+// 			fpd := m.API.GetProductBySku(product.Sku, product.DistributorID, hd)
+// 			if fpd != nil && fpd.ID != 0 {
+// 				ep := m.parseExistingProduct(fpd, product)
+// 				m.Log.Debug("in goroutine parsed existing product:", *ep)
+// 				pres := m.API.UpdateProduct(ep, hd)
+// 				m.Log.Debug("in goroutine pres existing:", pres)
+// 				var npres api.ResponseID
+// 				npres.Success = pres.Success
+// 				prodchan <- &npres
+// 			} else {
+// 				np := m.parseProduct(product)
+// 				m.Log.Debug("in goroutine parsed product:", *np)
+// 				pres := m.API.AddProduct(np, header)
+// 				m.Log.Debug("in goroutine pres:", pres)
+// 				if pres.Success && pres.ID != 0 {
+// 					if product.CategoryID != 0 {
+// 						var pc sdbi.ProductCategory
+// 						pc.CategoryID = product.CategoryID
+// 						pc.ProductID = pres.ID
+// 						cres := m.API.AddProductCategory(&pc, header)
+// 						pres.Success = cres.Success
+// 					}
+// 				}
+// 				prodchan <- pres
+// 			}
+// 		}(cp, hd, pchan)
+// 	}
+// 	m.Log.Debug("before wait")
+// 	wg.Wait()
+// 	m.Log.Debug("after wait")
+// 	close(pchan)
+// 	m.Log.Debug("chan len :", len(pchan))
+// 	for res := range pchan {
+// 		if !res.Success {
+// 			rtn = false
+// 		}
+// 	}
+// 	return rtn
+// }
+
+func (m *Six910Manager) importProducts(prodList *[]Product, hd *api.Headers) int {
+	var rtn int
 	var wg sync.WaitGroup
 	var pchan = make(chan *api.ResponseID, len(*prodList))
 
-	for i := range *prodList {
-		var cp = &(*prodList)[i]
-		m.Log.Debug("before goroutine :", cp.Sku)
-		wg.Add(1)
-		go func(product *Product, header *api.Headers, prodchan chan *api.ResponseID) {
-			m.Log.Debug("in goroutine product address:", product)
-			m.Log.Debug("in goroutine product.Sku:", product.Sku)
-			m.Log.Debug("in goroutine product.Name:", product.Name)
-			defer wg.Done()
+	wg.Add(1)
+	go func(pl *[]Product, header *api.Headers, prodchan chan *api.ResponseID) {
+		defer wg.Done()
+
+		for i := range *pl {
+			var cp = &(*pl)[i]
+			m.Log.Debug("before goroutine :", cp.Sku)
+			//wg.Add(1)
+			//go func(product *Product, header *api.Headers, prodchan chan *api.ResponseID) {
+			//m.Log.Debug("in goroutine product address:", product)
+			//m.Log.Debug("in goroutine product.Sku:", product.Sku)
+			//m.Log.Debug("in goroutine product.Name:", product.Name)
+			//defer wg.Done()
 			// need to search for product before adding
-			fpd := m.API.GetProductBySku(product.Sku, product.DistributorID, hd)
+			fpd := m.API.GetProductBySku(cp.Sku, cp.DistributorID, header)
 			if fpd != nil && fpd.ID != 0 {
-				ep := m.parseExistingProduct(fpd)
+				ep := m.parseExistingProduct(fpd, cp)
 				m.Log.Debug("in goroutine parsed existing product:", *ep)
-				pres := m.API.UpdateProduct(ep, hd)
+				pres := m.API.UpdateProduct(ep, header)
 				m.Log.Debug("in goroutine pres existing:", pres)
 				var npres api.ResponseID
-				npres.Success = pres.Success
-				prodchan <- &npres
+				if pres.Success {
+					npres.Success = pres.Success
+					prodchan <- &npres
+				}
 			} else {
-				np := m.parseProduct(product)
+				np := m.parseProduct(cp)
 				m.Log.Debug("in goroutine parsed product:", *np)
 				pres := m.API.AddProduct(np, header)
 				m.Log.Debug("in goroutine pres:", pres)
 				if pres.Success && pres.ID != 0 {
-					if product.CategoryID != 0 {
+					if cp.CategoryID != 0 {
 						var pc sdbi.ProductCategory
-						pc.CategoryID = product.CategoryID
+						pc.CategoryID = cp.CategoryID
 						pc.ProductID = pres.ID
 						cres := m.API.AddProductCategory(&pc, header)
 						pres.Success = cres.Success
 					}
 				}
-				prodchan <- pres
+				if pres.Success {
+					prodchan <- pres
+				}
 			}
-		}(cp, hd, pchan)
-	}
+			//}(cp, hd, pchan)
+		}
+	}(prodList, hd, pchan)
 	m.Log.Debug("before wait")
 	wg.Wait()
 	m.Log.Debug("after wait")
 	close(pchan)
 	m.Log.Debug("chan len :", len(pchan))
-	for res := range pchan {
-		if !res.Success {
-			rtn = false
-		}
-	}
+	rtn = len(pchan)
+	// for res := range pchan {
+	// 	if !res.Success {
+	// 		rtn = false
+	// 	}
+	// }
 	return rtn
 }
 
@@ -125,46 +200,104 @@ func (m *Six910Manager) parseProduct(p *Product) *sdbi.Product {
 	return &rtn
 }
 
-func (m *Six910Manager) parseExistingProduct(ep *sdbi.Product) *sdbi.Product {
-	var rtn sdbi.Product
-	rtn.ID = ep.ID
-	rtn.Color = ep.Color
-	rtn.Cost = ep.Cost
-	rtn.Currency = ep.Currency
-	rtn.Depth = ep.Depth
-	rtn.Desc = ep.Desc
-	rtn.DistributorID = ep.DistributorID
-	rtn.Dropship = ep.Dropship
-	rtn.FreeShipping = ep.FreeShipping
-	rtn.Gtin = ep.Gtin
-	rtn.Height = ep.Height
-	rtn.Image1 = ep.Image1
-	rtn.Image2 = ep.Image2
-	rtn.Image3 = ep.Image3
-	rtn.Image4 = ep.Image4
-	rtn.Manufacturer = ep.Manufacturer
-	rtn.ManufacturerID = ep.ManufacturerID
-	rtn.Map = ep.Map
-	rtn.Msrp = ep.Msrp
-	rtn.MultiBox = ep.MultiBox
-	rtn.Name = ep.Name
-	rtn.ParentProductID = ep.ParentProductID
-	rtn.Price = ep.Price
-	rtn.Promoted = ep.Promoted
-	rtn.SalePrice = ep.SalePrice
-	rtn.Searchable = ep.Searchable
-	rtn.ShipSeparately = ep.ShipSeparately
-	rtn.ShippingMarkup = ep.ShippingMarkup
-	rtn.ShortDesc = ep.ShortDesc
-	rtn.Size = ep.Size
-	rtn.Sku = ep.Sku
-	rtn.SpecialProcessing = ep.SpecialProcessing
-	rtn.SpecialProcessingType = ep.SpecialProcessingType
-	rtn.Stock = ep.Stock
-	rtn.StockAlert = ep.StockAlert
-	rtn.Thumbnail = ep.Thumbnail
-	rtn.Visible = ep.Visible
-	rtn.Weight = ep.Weight
-	rtn.Width = ep.Width
-	return &rtn
+func (m *Six910Manager) parseExistingProduct(ep *sdbi.Product, up *Product) *sdbi.Product {
+	var rtn = ep
+	//rtn.ID = ep.ID
+	if up.Color != "" {
+		rtn.Color = up.Color
+	}
+	if up.Cost != 0 {
+		rtn.Cost = up.Cost
+	}
+	if up.Currency != "" {
+		rtn.Currency = up.Currency
+	}
+	if up.Depth != 0 {
+		rtn.Depth = up.Depth
+	}
+	if up.Desc != "" {
+		rtn.Desc = up.Desc
+	}
+	//rtn.DistributorID = ep.DistributorID
+	//rtn.Dropship = ep.Dropship
+	//rtn.FreeShipping = ep.FreeShipping
+	if up.Gtin != "" {
+		rtn.Gtin = up.Gtin
+	}
+	if up.Height != 0 {
+		rtn.Height = up.Height
+	}
+	if up.Image1 != "" {
+		rtn.Image1 = up.Image1
+	}
+	if up.Image2 != "" {
+		rtn.Image2 = up.Image2
+	}
+	if up.Image3 != "" {
+		rtn.Image3 = up.Image3
+	}
+	if up.Image4 != "" {
+		rtn.Image4 = up.Image4
+	}
+
+	//rtn.Image2 = ep.Image2
+	//rtn.Image3 = ep.Image3
+	//rtn.Image4 = ep.Image4
+	if up.Manufacturer != "" {
+		rtn.Manufacturer = up.Manufacturer
+	}
+
+	if up.ManufacturerID != "" {
+		rtn.ManufacturerID = up.ManufacturerID
+	}
+	if up.Map != 0 {
+		rtn.Map = up.Map
+	}
+	if up.Msrp != 0 {
+		rtn.Msrp = up.Msrp
+	}
+
+	//rtn.MultiBox = ep.MultiBox
+	if up.Name != "" {
+		rtn.Name = up.Name
+	}
+
+	//rtn.ParentProductID = ep.ParentProductID
+	if up.Price != 0 {
+		rtn.Price = up.Price
+	}
+
+	//rtn.Promoted = ep.Promoted
+	if up.SalePrice != 0 {
+		rtn.SalePrice = up.SalePrice
+	}
+
+	//rtn.Searchable = ep.Searchable
+	//rtn.ShipSeparately = ep.ShipSeparately
+	//rtn.ShippingMarkup = ep.ShippingMarkup
+	if up.ShortDesc != "" {
+		rtn.ShortDesc = up.ShortDesc
+	}
+	if up.Size != "" {
+		rtn.Size = up.Size
+	}
+
+	//rtn.Sku = ep.Sku
+	//rtn.SpecialProcessing = ep.SpecialProcessing
+	//rtn.SpecialProcessingType = ep.SpecialProcessingType
+	//rtn.Stock = ep.Stock
+	//rtn.StockAlert = ep.StockAlert
+	if up.Thumbnail != "" {
+		rtn.Thumbnail = up.Thumbnail
+	}
+
+	//rtn.Visible = ep.Visible
+	if up.Weight != 0 {
+		rtn.Weight = up.Weight
+	}
+	if up.Width != 0 {
+		rtn.Width = up.Width
+	}
+
+	return rtn
 }

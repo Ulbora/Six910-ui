@@ -259,6 +259,7 @@ const (
 	adminEditProductPage       = "editProduct.html"
 	adminProductSkuSearchPage  = "productSkuSearch.html"
 	adminProductNameSearchPage = "productNameSearch.html"
+	adminProductCatSearchPage  = "productCatSearch.html"
 	adminProductListPage       = "productList.html"
 
 	//pages product

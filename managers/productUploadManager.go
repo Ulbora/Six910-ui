@@ -71,7 +71,7 @@ import (
 // Category              string //required cat/cat2/cat3/cat4
 
 //UploadProductFile UploadProductFile
-func (m *Six910Manager) UploadProductFile(file []byte, hd *api.Headers) (success bool, productNotImported int) {
+func (m *Six910Manager) UploadProductFile(file []byte, hd *api.Headers) (productsImported int, productNotImported int) {
 	//var rtn bool
 	var cr frr.CsvFileReader
 	//var rprep fpp.RecordPrep
@@ -115,10 +115,10 @@ func (m *Six910Manager) UploadProductFile(file []byte, hd *api.Headers) (success
 		m.Log.Debug("prods: ", prods)
 		m.Log.Debug("holdProds: ", holdProds)
 		productNotImported = len(*holdProds)
-		success = m.importProducts(prods, hd)
+		productsImported = m.importProducts(prods, hd)
 	}
 
-	return success, productNotImported
+	return productsImported, productNotImported
 }
 
 func (m *Six910Manager) prepProducts(distributorID int64, csvRecs *[][]string, hd *api.Headers) (productList *[]Product, holdProductList *[]Product) {
@@ -126,10 +126,18 @@ func (m *Six910Manager) prepProducts(distributorID int64, csvRecs *[][]string, h
 	var holdProdList []Product
 	var col []string
 
+	//var cnt = 0
 	for i, row := range *csvRecs {
 		if i == 0 {
 			col = row
 		} else {
+			// cnt++
+			// if cnt > 10 {
+			// 	m.Log.Debug("sleeping :", 2000*time.Millisecond)
+			// 	cnt = 0
+			// 	m.Log.Debug("cnt :", cnt)
+			// 	time.Sleep(2000 * time.Millisecond)
+			// }
 			var p Product
 			p.DistributorID = distributorID
 			var complete bool
@@ -320,6 +328,7 @@ func (m *Six910Manager) processProductCategory(val string, p *Product, hd *api.H
 }
 
 func (m *Six910Manager) createCategory(catList *[]string, hd *api.Headers) int64 {
+	//time.Sleep(100 * time.Millisecond)
 	var catID int64
 	m.Log.Debug("catList: ", catList)
 	var catList2 []string
@@ -348,6 +357,7 @@ func (m *Six910Manager) createCategory(catList *[]string, hd *api.Headers) int64
 			if len(clist) > 0 {
 				nc.ParentCategoryID = clist[i-1].ID
 			}
+			m.Log.Debug("Creating new category: ", nc)
 			res := m.API.AddCategory(&nc, hd)
 			if res.Success && res.ID != 0 {
 				nc.ID = res.ID
