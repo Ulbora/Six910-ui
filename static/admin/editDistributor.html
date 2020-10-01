@@ -44,6 +44,9 @@
             </div>
             <div class="tab-pane fade show " id="deleteDist" role="tabpanel" aria-labelledby="home-tab">
                 <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <div class="p-3 mb-2 bg-danger rounded text-white">
+                        Danger! Deleting this distributor will delete all products for this distributor.
+                    </div>
                     <a class="btn btn-primary"  href="/admin/deleteDistributor/{{.Distributor.ID}}" role="button">Delete Distributor</a>
                 </div>
             </div>

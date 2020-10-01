@@ -15,6 +15,7 @@ import (
 	m "github.com/Ulbora/Six910-ui/managers"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
+	ml "github.com/Ulbora/go-mail-sender"
 	oauth2 "github.com/Ulbora/go-oauth2-client"
 	sdbi "github.com/Ulbora/six910-database-interface"
 )
@@ -80,6 +81,12 @@ func TestSix910Handler_StoreAdminUploadProductFile(t *testing.T) {
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l
 
+	var ms ml.MockSecureSender
+	ms.MockSuccess = true
+	sh.MailSender = ms.GetNew()
+
+	sh.MailSenderAddress = "test@test.com"
+
 	var sapi mapi.MockAPI
 	sapi.SetStoreID(59)
 
@@ -92,6 +99,7 @@ func TestSix910Handler_StoreAdminUploadProductFile(t *testing.T) {
 	man.Log = &l
 	sh.Manager = man.GetNew()
 	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+	sh.API = &sapi
 
 	//-----------start mocking------------------
 	// var sapi mapi.MockAPI
@@ -137,6 +145,10 @@ func TestSix910Handler_StoreAdminUploadProductFile(t *testing.T) {
 	cr.Success = true
 
 	sapi.MockAddProductCategoryResp = &cr
+
+	var str sdbi.Store
+	str.ID = 5
+	sapi.MockStore = &str
 
 	//-----------end mocking --------
 

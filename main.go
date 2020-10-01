@@ -31,6 +31,7 @@ import (
 	hand "github.com/Ulbora/Six910-ui/handlers"
 	m "github.com/Ulbora/Six910-ui/managers"
 	api "github.com/Ulbora/Six910API-Go"
+	ml "github.com/Ulbora/go-mail-sender"
 	"github.com/gorilla/mux"
 )
 
@@ -41,6 +42,13 @@ func main() {
 	var storeName string
 	var localDomain string
 	var apiKey string
+
+	var mailHost string
+	var mailUser string
+	var mailPassword string
+	var mailPort string
+	var mailSenderAddress string
+	var mailSubject string
 
 	if os.Getenv("API_URL") != "" {
 		apiURL = os.Getenv("API_URL")
@@ -66,10 +74,42 @@ func main() {
 		apiKey = "GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5"
 	}
 
+	if os.Getenv("EMAIL_HOST") != "" {
+		mailHost = os.Getenv("EMAIL_HOST")
+	}
+
+	if os.Getenv("EMAIL_USER") != "" {
+		mailUser = os.Getenv("EMAIL_USER")
+	}
+
+	if os.Getenv("EMAIL_PASSWORD") != "" {
+		mailPassword = os.Getenv("EMAIL_PASSWORD")
+	}
+
+	if os.Getenv("EMAIL_PORT") != "" {
+		mailPort = os.Getenv("EMAIL_PORT")
+	}
+
+	if os.Getenv("MAIL_SENDER_ADDRESS") != "" {
+		mailSenderAddress = os.Getenv("MAIL_SENDER_ADDRESS")
+	}
+
+	if os.Getenv("MAIL_SUBJECT") != "" {
+		mailSubject = os.Getenv("MAIL_SUBJECT")
+	} else {
+		mailSubject = "Six910 Shopping Cart Message"
+	}
+
 	var sapi api.Six910API
 	sapi.SetAPIKey(apiKey)
 	sapi.SetRestURL(apiURL)
 	sapi.SetStore(storeName, localDomain)
+
+	var ms ml.SecureSender
+	ms.MailHost = mailHost
+	ms.User = mailUser
+	ms.Password = mailPassword
+	ms.Port = mailPort
 
 	var sh hand.Six910Handler
 	sh.LocalDomain = localDomain
@@ -78,6 +118,10 @@ func main() {
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l
+	sh.MailSender = &ms
+	sh.MailSenderAddress = mailSenderAddress
+	sh.MailSubject = mailSubject
+
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
 		"./static/admin/subnavs/productNavbar.html", "./static/admin/pagination.html", "./static/admin/productSkuSearch.html",

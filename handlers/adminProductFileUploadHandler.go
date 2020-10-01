@@ -4,8 +4,10 @@ import (
 	"archive/tar"
 	"bytes"
 	"compress/gzip"
+	ml "github.com/Ulbora/go-mail-sender"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 )
 
 /*
@@ -86,6 +88,18 @@ func (h *Six910Handler) StoreAdminUploadProductFile(w http.ResponseWriter, r *ht
 			icnt, notImported := h.Manager.UploadProductFile(dcupdata, hd)
 			h.Log.Debug("Imported: ", icnt)
 			h.Log.Debug("notImported: ", notImported)
+			if h.MailSenderAddress != "" && icnt > 0 {
+				var icntStr = strconv.Itoa(icnt)
+				var m ml.Mailer
+				m.Subject = h.MailSubject
+				m.Body = mailMessageUploadComplete + icntStr
+				str := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
+				m.Recipients = []string{str.Email}
+				m.SenderAddress = h.MailSenderAddress
+
+				sendSuc := h.MailSender.SendMail(&m)
+				h.Log.Debug("sendSuc in contact: ", sendSuc)
+			}
 
 			//var pg PageValues
 			if icnt != 0 {

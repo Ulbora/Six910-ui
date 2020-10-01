@@ -5,7 +5,12 @@
 <body>
     <div class="container-sm">   
       <h4 class="text-center mt-4">Products File Upload</h4>   
-        <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">            
+        <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">  
+            <div class="p-3 mb-2 bg-warning rounded text-dark">
+               Once a file upload has started, you can leave this page and continue working elsewhere.
+               The upload process will run in the background. 
+               When the upload has completed, you will receive an email at the store email address.
+            </div>          
             <form method="POST" action="/admin/productsUpload" enctype="multipart/form-data">                
                 <div class="form-group">
                     <label for="name">Products File (tar.gz)</label>

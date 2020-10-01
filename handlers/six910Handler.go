@@ -14,6 +14,7 @@ import (
 	m "github.com/Ulbora/Six910-ui/managers"
 	users "github.com/Ulbora/Six910-ui/usersrv"
 	api "github.com/Ulbora/Six910API-Go"
+	ml "github.com/Ulbora/go-mail-sender"
 	oauth2 "github.com/Ulbora/go-oauth2-client"
 	gs "github.com/Ulbora/go-sessions"
 	"github.com/gorilla/sessions"
@@ -72,6 +73,10 @@ type Six910Handler struct {
 	LocalDomain   string
 	APIKey        string
 	OAuth2Enabled bool
+
+	MailSender        ml.Sender
+	MailSenderAddress string
+	MailSubject       string
 }
 
 //GetNew GetNew
