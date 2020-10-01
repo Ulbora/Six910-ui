@@ -73,3 +73,13 @@ $(document).ready(function () {
         document.getElementById("imageImg").src = imageName;
     });
 });
+
+
+
+$(document).ready(function () {
+    $("#logo").keyup(function () {
+        //alert( $(this).val());
+        var imageName = $(this).val();
+        document.getElementById("logoImg").src = imageName;
+    });
+});

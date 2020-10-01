@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+{{template "navbar"}}
+
+<body>
+    <div class="container">        
+        <h4 class="text-center mt-4">Edit Store Settings</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#stredit" role="tab"
+                    aria-controls="method" aria-selected="true">Store Settings</a>
+            </li>
+           
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="stredit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    
+                    <form method="POST" action="/admin/updateStore">
+                        <input name="id" type="hidden" id="id" value="{{.ID}}">
+                        <input name="localDomain" type="hidden" id="localDomain" value="{{.LocalDomain}}">
+                        <input name="storeName" type="hidden" id="storeName" value="{{.StoreName}}">
+                        <input name="enabled" type="hidden" id="enabled" value="{{.Enabled}}">
+                        
+                        <div class="form-group">
+                            <label for="storeNamedis">Store Name</label>
+                            <input name="storeNamedis" type="text" disabled class="form-control" id="storeNamedis" value="{{.StoreName}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="localDomaindis">Local Domain</label>
+                            <input name="localDomaindis" type="text" disabled class="form-control" id="localDomaindis" value="{{.LocalDomain}}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="remoteDomain">Remote Domain</label>
+                            <input name="remoteDomain" type="text" class="form-control" id="remoteDomain" value="{{.RemoteDomain}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="storeSlogan">Store Slogan</label>
+                            <input name="storeSlogan" type="text" class="form-control" id="storeSlogan" value="{{.StoreSlogan}}">
+                        </div>
+
+                        <label for="image1">Store Logo</label>
+                        <div class="form-row mt-3">
+                          <div class="col-md-1 mb-3 ">
+                            <img id="logoImg" style="width: 40%" class="img-fluid" style="max-width: 20%;"
+                              src="{{.Logo}}">
+                          </div>
+                          <div class="col-md-11 mb-3 ">
+                            <input name="logo" type="text" class="form-control" id="logo" value="{{.Logo}}">
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="currency">Currency</label>
+                            <input name="currency" type="text" class="form-control" id="currency" value="{{.Currency}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input name="company" type="text" class="form-control" id="company" value="{{.Company}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input name="firstName" type="text" class="form-control" id="firstName" value="{{.FirstName}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input name="lastName" type="text" class="form-control" id="lastName" value="{{.FirstName}}">
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="oauthClientID">Oauth Client ID</label>
+                            <input name="oauthClientID" type="text" class="form-control" id="oauthClientID" value="{{.OauthClientID}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="oauthSecret">Oauth Secret</label>
+                            <input name="oauthSecret" type="text" class="form-control" id="oauthSecret" value="{{.OauthSecret}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input name="email" type="text" class="form-control" id="email" value="{{.Email}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input name="city" type="text" class="form-control" id="city" value="{{.City}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state">State</label>
+                            <input name="state" type="text" class="form-control" id="state" value="{{.State}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="zip">Zip</label>
+                            <input name="zip" type="text" class="form-control" id="zip" value="{{.Zip}}">
+                        </div>
+                        
+                       
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+</body>
+
+</html>

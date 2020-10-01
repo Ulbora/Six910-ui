@@ -141,19 +141,24 @@ func (m *Six910Manager) prepProducts(distributorID int64, csvRecs *[][]string, h
 			var p Product
 			p.DistributorID = distributorID
 			var complete bool
+			var partialUpload = true
 			var holdParentSkuList []string
 			for i, v := range row {
 				var vname = col[i]
 				m.Log.Debug("vname: ", vname)
 				m.Log.Debug("val: ", v)
+				if vname == "desc" || vname == "parent_product_sku" {
+					partialUpload = false
+				}
 				complete = m.processValue(vname, v, &p, hd)
 				if !complete && vname == "parent_product_sku" {
 					holdParentSkuList = append(holdParentSkuList, v)
 				}
 				m.Log.Debug("complete: ", complete)
 			}
+			//m.Log.Debug("partialUpload: ", partialUpload)
 			m.Log.Debug("product: ", p)
-			if complete {
+			if complete || partialUpload {
 				prodList = append(prodList, p)
 			} else {
 				holdProdList = append(holdProdList, p)

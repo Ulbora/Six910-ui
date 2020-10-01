@@ -175,6 +175,9 @@ type MockAPI struct {
 	MockTaxRate           *sdbi.TaxRate
 	MockTaxRateList       *[]sdbi.TaxRate
 	MockDeleteTaxRateResp *api.Response
+
+	MockStore           *sdbi.Store
+	MockStoreUpdateResp *api.Response
 }
 
 //GetNew GetNew
@@ -926,12 +929,12 @@ func (a *MockAPI) AddStore(s *sdbi.Store, headers *api.Headers) *api.ResponseID 
 
 //UpdateStore UpdateStore
 func (a *MockAPI) UpdateStore(s *sdbi.Store, headers *api.Headers) *api.Response {
-	return nil
+	return a.MockStoreUpdateResp
 }
 
 //GetStore GetStore
 func (a *MockAPI) GetStore(sname string, localDomain string, headers *api.Headers) *sdbi.Store {
-	return nil
+	return a.MockStore
 }
 
 //DeleteStore DeleteStore

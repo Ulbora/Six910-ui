@@ -348,6 +348,8 @@ const (
 	adminAddZipZonePage  = "addZipZone.html"
 	adminZipZoneListPage = "zipZoneList.html"
 
+	adminEditStorePage = "editStore.html"
+
 	//customer pages
 	customerLoginPage                = "login.html"
 	customerIndexPage                = "index.html"

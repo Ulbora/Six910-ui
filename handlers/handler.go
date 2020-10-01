@@ -51,6 +51,10 @@ type Handler interface {
 
 	StoreAdminIndex(w http.ResponseWriter, r *http.Request)
 
+	//store settings
+	StoreAdminEditStorePage(w http.ResponseWriter, r *http.Request)
+	StoreAdminEditStore(w http.ResponseWriter, r *http.Request)
+
 	//products
 	StoreAdminUploadProductFilePage(w http.ResponseWriter, r *http.Request)
 	StoreAdminUploadProductFile(w http.ResponseWriter, r *http.Request)
