@@ -77,6 +77,9 @@ type Six910Handler struct {
 	MailSender        ml.Sender
 	MailSenderAddress string
 	MailSubject       string
+
+	ImagePath     string
+	ThumbnailPath string
 }
 
 //GetNew GetNew

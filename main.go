@@ -121,6 +121,8 @@ func main() {
 	sh.MailSender = &ms
 	sh.MailSenderAddress = mailSenderAddress
 	sh.MailSubject = mailSubject
+	sh.ImagePath = "./static/images"
+	sh.ThumbnailPath = "./static/thumbnail"
 
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
@@ -140,6 +142,7 @@ func main() {
 		"./static/admin/orderList.html", "./static/admin/editOrder.html",
 		"./static/admin/customerList.html", "./static/admin/customerEmailSearch.html", "./static/admin/editCustomer.html",
 		"./static/admin/productUpload.html", "./static/admin/editStore.html",
+		"./static/admin/imageFilesUpload.html", "./static/admin/thumbnailFilesUpload.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -254,6 +257,12 @@ func main() {
 	router.HandleFunc("/admin/updateCustomer", h.StoreAdminEditCustomer).Methods("POST")
 	router.HandleFunc("/admin/customerByEmail", h.StoreAdminSearchCustomerByEmailPage).Methods("GET")
 	router.HandleFunc("/admin/customerByEmail", h.StoreAdminSearchCustomerByEmailPage).Methods("POST")
+
+	router.HandleFunc("/admin/imagesUploadPage", h.StoreAdminUploadImageFilesPage).Methods("GET")
+	router.HandleFunc("/admin/imagesUpload", h.StoreAdminUploadImageFiles).Methods("POST")
+
+	router.HandleFunc("/admin/thumbnailsUploadPage", h.StoreAdminUploadThumbnailFilesPage).Methods("GET")
+	router.HandleFunc("/admin/thumbnailsUpload", h.StoreAdminUploadThumbnailFiles).Methods("POST")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

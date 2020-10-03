@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+{{template "navbar"}}
+<body>
+    <div class="container-sm">   
+      <h4 class="text-center mt-4">Images File Upload</h4>   
+        <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+            <form method="POST" action="/admin/imagesUpload" enctype="multipart/form-data">                
+                <div class="form-group">
+                    <label for="name">Images File (tar.gz)</label>
+                    <input name="imageFilesUpload" type="file" required class="form-control" id="imageFilesUpload">
+                </div>                
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>    
+</body>
+</html>

@@ -350,6 +350,9 @@ const (
 
 	adminEditStorePage = "editStore.html"
 
+	imageFilesUploadPage     = "imageFilesUpload.html"
+	thumbnailFilesUploadPage = "thumbnailFilesUpload.html"
+
 	//customer pages
 	customerLoginPage                = "login.html"
 	customerIndexPage                = "index.html"

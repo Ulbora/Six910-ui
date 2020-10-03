@@ -198,6 +198,12 @@ type Handler interface {
 	StoreAdminViewZipZoneList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteZipZone(w http.ResponseWriter, r *http.Request)
 
+	StoreAdminUploadImageFilesPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminUploadImageFiles(w http.ResponseWriter, r *http.Request)
+
+	StoreAdminUploadThumbnailFilesPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminUploadThumbnailFiles(w http.ResponseWriter, r *http.Request)
+
 	//abandoned carts --- for later---- requires new rest services to be added
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCartList(w http.ResponseWriter, r *http.Request)

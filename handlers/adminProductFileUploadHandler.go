@@ -39,10 +39,6 @@ func (h *Six910Handler) StoreAdminUploadProductFilePage(w http.ResponseWriter, r
 	s, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		// loggedInAuth := s.Values["loggedIn"]
-		// storeAdminUser := s.Values["storeAdminUser"]
-		// h.Log.Debug("loggedIn in backups: ", loggedInAuth)
-		// if loggedInAuth == true && storeAdminUser == true {
 		if h.isStoreAdminLoggedIn(s) {
 			h.AdminTemplates.ExecuteTemplate(w, productFileUploadPage, nil)
 		} else {
@@ -56,11 +52,6 @@ func (h *Six910Handler) StoreAdminUploadProductFile(w http.ResponseWriter, r *ht
 	s, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		// loggedInAuth := s.Values["loggedIn"]
-		// storeAdminUser := s.Values["storeAdminUser"]
-		// h.Log.Debug("loggedIn in upload : ", loggedInAuth)
-		// h.Log.Debug("storeAdminUser in upload : ", storeAdminUser)
-		// if loggedInAuth == true && storeAdminUser == true {
 		if h.isStoreAdminLoggedIn(s) {
 
 			uplerr := r.ParseMultipartForm(50000000)
