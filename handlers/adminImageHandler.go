@@ -91,6 +91,7 @@ func (h *Six910Handler) StoreAdminUploadImageFiles(w http.ResponseWriter, r *htt
 						if err == nil {
 							defer file.Close()
 							_, err = io.Copy(file, tr)
+							h.Log.Debug("io.Copy err : ", err)
 						}
 					}
 				}
@@ -168,6 +169,7 @@ func (h *Six910Handler) StoreAdminUploadThumbnailFiles(w http.ResponseWriter, r 
 						if err == nil {
 							defer file.Close()
 							_, err = io.Copy(file, tr)
+							h.Log.Debug("io.Copy err : ", err)
 						}
 					}
 				}
