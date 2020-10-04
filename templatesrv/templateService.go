@@ -1,4 +1,4 @@
-package tmptsrv
+package templatesrv
 
 /*
  Six910 is a shopping cart and E-commerce system.
@@ -17,6 +17,8 @@ package tmptsrv
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+//Template Service
 
 import (
 	"encoding/json"

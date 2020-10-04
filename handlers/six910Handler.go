@@ -12,6 +12,7 @@ import (
 	imgs "github.com/Ulbora/Six910-ui/imgsrv"
 	mails "github.com/Ulbora/Six910-ui/mailsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
+	tmpsrv "github.com/Ulbora/Six910-ui/templatesrv"
 	users "github.com/Ulbora/Six910-ui/usersrv"
 	api "github.com/Ulbora/Six910API-Go"
 	ml "github.com/Ulbora/go-mail-sender"
@@ -55,11 +56,12 @@ type Six910Handler struct {
 	Store          *sessions.CookieStore
 
 	//services
-	BackupService  bks.BackupService
-	ContentService conts.Service
-	ImageService   imgs.ImageService
-	MailService    mails.MailService
-	UserService    users.UserService
+	BackupService   bks.BackupService
+	ContentService  conts.Service
+	ImageService    imgs.ImageService
+	MailService     mails.MailService
+	UserService     users.UserService
+	TemplateService tmpsrv.TemplateService
 
 	OauthHost     string
 	UserHost      string
@@ -80,6 +82,9 @@ type Six910Handler struct {
 
 	ImagePath     string
 	ThumbnailPath string
+
+	ActiveTemplateName     string
+	ActiveTemplateLocation string
 }
 
 //GetNew GetNew

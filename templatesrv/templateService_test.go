@@ -1,4 +1,4 @@
-package tmptsrv
+package templatesrv
 
 /*
  Six910 is a shopping cart and E-commerce system.

@@ -213,6 +213,8 @@ type Handler interface {
 
 	Index(w http.ResponseWriter, r *http.Request)
 
+	LoadTemplate()
+
 	//products
 	ViewProductList(w http.ResponseWriter, r *http.Request)
 	SearchProductList(w http.ResponseWriter, r *http.Request)
