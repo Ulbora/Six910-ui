@@ -1,5 +1,8 @@
 {
     "name": "navBar",
+    "Brand":"TXkgU3RvcmU=",
+    "BrandHTML":"",
+    "BrandLink":"/",
     "active": true,
     "Location":"top",
     "shade": "light",
@@ -12,5 +15,19 @@
     "backgroundList":[
         "dark",
         "light"
+    ],
+    "menuItemList":[
+        {
+            "name":"Home",
+            "link": "/"
+        },
+        {
+            "name":"Features",
+            "link": "/pages/features"
+        },
+        {
+            "name":"New Products",
+            "link": "/pages/NewProducts"
+        }
     ]
 }

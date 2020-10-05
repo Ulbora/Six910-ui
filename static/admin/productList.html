@@ -2,36 +2,37 @@
 <html>
 {{template "head"}}
 
-{{template "navbar"}}
+
 
 <body>
-    <div class="container">
-        {{template "productNavbar"}}
-        <h4 class="text-center">Product Page</h4>
-        <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col"></th>
-                <th scope="col">SKU</th>
-                <th scope="col">Name</th>
-                <th scope="col">Stock</th>
-                <th scope="col">Price</th>
-              </tr>
-            </thead>
-            <tbody>
-                {{range .Products}}
-              <tr class='clickable-row' data-href='/admin/getProduct/{{.ID}}'>
-                <td style="width: 10%"><img class="img-fluid" style="max-width: 50%;" src="{{.Thumbnail}}"></td>
-                <td>{{.Sku}}</td>
-                <td>{{.Name}}</td>
-                <td>{{.Stock}}</td>
-                <td>{{.Price}}</td>
-              </tr>
-              {{end}}             
-            </tbody>
-          </table>         
-          {{template "pagination" .}}
-    </div>
+  {{template "navbar"}}
+  <div class="container">
+    {{template "productNavbar"}}
+    <h4 class="text-center">Product Page</h4>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">SKU</th>
+          <th scope="col">Name</th>
+          <th scope="col">Stock</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{range .Products}}
+        <tr class='clickable-row' data-href='/admin/getProduct/{{.ID}}'>
+          <td style="width: 10%"><img class="img-fluid" style="max-width: 50%;" src="{{.Thumbnail}}"></td>
+          <td>{{.Sku}}</td>
+          <td>{{.Name}}</td>
+          <td>{{.Stock}}</td>
+          <td>{{.Price}}</td>
+        </tr>
+        {{end}}
+      </tbody>
+    </table>
+    {{template "pagination" .}}
+  </div>
 </body>
 
 </html>

@@ -24,6 +24,8 @@ func TestSix910MenuService_AddMenu(t *testing.T) {
 
 	var m Menu
 	m.Name = "menu1"
+	m.Brand = "My Store"
+	m.BrandLink = "/test"
 	m.Active = true
 	m.Location = "top"
 	m.Shade = "light"
@@ -53,6 +55,8 @@ func TestSix910MenuService_UpdateMenu(t *testing.T) {
 
 	var m Menu
 	m.Name = "menu1"
+	m.Brand = "test"
+	m.BrandLink = "/test"
 	m.Active = true
 	m.Shade = "dark"
 	m.Background = "light"
@@ -82,6 +86,7 @@ func TestSix910MenuService_GetMenu(t *testing.T) {
 
 	suc, m := ms.GetMenu("menu1")
 	fmt.Println("found menu", *m)
+	fmt.Println("found menu html", m.BrandHTML)
 	if !suc {
 		t.Fail()
 	}

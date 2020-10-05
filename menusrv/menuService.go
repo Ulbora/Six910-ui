@@ -21,6 +21,7 @@ package menusrv
 //Template Service
 
 import (
+	b64 "encoding/base64"
 	"encoding/json"
 	"html/template"
 	//lg "github.com/Ulbora/Level_Logger"
@@ -32,12 +33,22 @@ type Menu struct {
 	Name           string
 	Location       string
 	Active         bool
+	Brand          string
+	BrandHTML      template.HTML
+	BrandLink      string
 	Shade          string
 	Background     string
 	Style          string
 	StyleCSS       template.CSS
 	ShadeList      *[]string
 	BackgroundList *[]string
+	MenuItemList   *[]MenuItemItem
+}
+
+//MenuItemItem MenuItemItem
+type MenuItemItem struct {
+	Name string
+	Link string
 }
 
 //Response Response
@@ -51,6 +62,7 @@ type Response struct {
 func (c *Six910MenuService) AddMenu(menu *Menu) bool {
 	var rtn bool
 	c.Log.Debug("menu in add: ", *menu)
+	menu.Brand = b64.StdEncoding.EncodeToString([]byte(menu.Brand))
 	em := c.MenuStore.Read(menu.Name)
 	if *em == nil {
 		suc := c.MenuStore.Save(menu.Name, menu)
@@ -62,6 +74,7 @@ func (c *Six910MenuService) AddMenu(menu *Menu) bool {
 //UpdateMenu UpdateMenu
 func (c *Six910MenuService) UpdateMenu(menu *Menu) bool {
 	var rtn bool
+	menu.Brand = b64.StdEncoding.EncodeToString([]byte(menu.Brand))
 	c.Log.Debug("menu in update: ", *menu)
 	em := c.MenuStore.Read(menu.Name)
 	if *em != nil {
@@ -70,11 +83,14 @@ func (c *Six910MenuService) UpdateMenu(menu *Menu) bool {
 		c.Log.Debug("found menu in update: ", m)
 		if err == nil {
 			m.Active = menu.Active
+			m.Brand = menu.Brand
+			m.BrandLink = menu.BrandLink
 			m.Background = menu.Background
 			m.BackgroundList = menu.BackgroundList
 			m.Shade = menu.Shade
 			m.ShadeList = menu.ShadeList
 			m.Style = menu.Style
+			m.MenuItemList = menu.MenuItemList
 			suc := c.MenuStore.Save(menu.Name, m)
 			rtn = suc
 		}
@@ -91,10 +107,15 @@ func (c *Six910MenuService) GetMenu(name string) (bool, *Menu) {
 		var m Menu
 		err := json.Unmarshal(*em, &m)
 		if err == nil {
-			m.StyleCSS = template.CSS(m.Style)
-			c.Log.Debug("menu item:  ", m)
-			rtn = m
-			suc = true
+			bnd, err2 := b64.StdEncoding.DecodeString(m.Brand)
+			if err2 == nil {
+				m.Brand = string(bnd)
+				m.BrandHTML = template.HTML(m.Brand)
+				m.StyleCSS = template.CSS(m.Style)
+				c.Log.Debug("menu item:  ", m)
+				rtn = m
+				suc = true
+			}
 		}
 	}
 	return suc, &rtn
@@ -109,8 +130,13 @@ func (c *Six910MenuService) GetMenuList() *[]Menu {
 		err := json.Unmarshal((*res)[r], &m)
 		c.Log.Debug("found menu item in list: ", m)
 		if err == nil {
-			m.StyleCSS = template.CSS(m.Style)
-			rtn = append(rtn, m)
+			bnd, err2 := b64.StdEncoding.DecodeString(m.Brand)
+			if err2 == nil {
+				m.Brand = string(bnd)
+				m.BrandHTML = template.HTML(m.Brand)
+				m.StyleCSS = template.CSS(m.Style)
+				rtn = append(rtn, m)
+			}
 		}
 	}
 	return &rtn
