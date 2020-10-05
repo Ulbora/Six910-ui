@@ -1,4 +1,4 @@
-package contsrv
+package contentsrv
 
 /*
  Six910 is a shopping cart and E-commerce system.

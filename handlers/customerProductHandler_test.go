@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
-	conts "github.com/Ulbora/Six910-ui/contsrv"
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	ds "github.com/Ulbora/json-datastore"
 	sdbi "github.com/Ulbora/six910-database-interface"
@@ -42,7 +42,7 @@ func TestSix910Handler_ViewProductList(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -114,7 +114,7 @@ func TestSix910Handler_SearchProductList(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -187,7 +187,7 @@ func TestSix910Handler_ViewProduct(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()

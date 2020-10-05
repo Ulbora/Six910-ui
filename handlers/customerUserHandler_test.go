@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
-	conts "github.com/Ulbora/Six910-ui/contsrv"
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
@@ -50,7 +50,7 @@ func TestSix910Handler_CustomerLoginPage(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -238,7 +238,7 @@ func TestSix910Handler_CustomerChangePasswordPage(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -339,7 +339,7 @@ func TestSix910Handler_CustomerChangePasswordPageLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -441,7 +441,7 @@ func TestSix910Handler_CustomerChangePassword(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -542,7 +542,7 @@ func TestSix910Handler_CustomerChangePasswordLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -643,7 +643,7 @@ func TestSix910Handler_CustomerChangePasswordFail(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()

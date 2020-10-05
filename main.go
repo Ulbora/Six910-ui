@@ -28,6 +28,7 @@ import (
 	"os"
 
 	lg "github.com/Ulbora/Level_Logger"
+	csrv "github.com/Ulbora/Six910-ui/contentsrv"
 	hand "github.com/Ulbora/Six910-ui/handlers"
 	m "github.com/Ulbora/Six910-ui/managers"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
@@ -142,6 +143,16 @@ func main() {
 	mds.Path = "./data/menuStore"
 	sms.MenuStore = mds.GetNew()
 	sh.MenuService = sms.GetNew()
+
+	var ccs csrv.CmsService
+	ccs.Log = &l
+
+	var cds ds.DataStore
+	cds.Path = "./data/contentStore"
+	ccs.Store = cds.GetNew()
+	ccs.ContentStorePath = "./data/contentStore"
+
+	sh.ContentService = &ccs
 
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",

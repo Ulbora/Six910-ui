@@ -8,7 +8,7 @@ import (
 
 	lg "github.com/Ulbora/Level_Logger"
 	bks "github.com/Ulbora/Six910-ui/bkupsrv"
-	conts "github.com/Ulbora/Six910-ui/contsrv"
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	imgs "github.com/Ulbora/Six910-ui/imgsrv"
 	mails "github.com/Ulbora/Six910-ui/mailsrv"
 	m "github.com/Ulbora/Six910-ui/managers"

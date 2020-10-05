@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
-	conts "github.com/Ulbora/Six910-ui/contsrv"
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
@@ -64,7 +64,7 @@ func TestSix910Handler_AddProductToCart(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -158,7 +158,7 @@ func TestSix910Handler_ViewCart(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -254,7 +254,7 @@ func TestSix910Handler_ViewCartCartSession(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -364,7 +364,7 @@ func TestSix910Handler_UpdateProductToCart(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -474,7 +474,7 @@ func TestSix910Handler_UpdateProductToCartFail(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -590,7 +590,7 @@ func TestSix910Handler_CheckOutView(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -706,7 +706,7 @@ func TestSix910Handler_CheckOutViewLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -822,7 +822,7 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -943,7 +943,7 @@ func TestSix910Handler_CheckOutContinueLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()

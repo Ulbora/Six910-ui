@@ -1,4 +1,4 @@
-package contsrv
+package contentsrv
 
 import (
 	"fmt"

@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
-	conts "github.com/Ulbora/Six910-ui/contsrv"
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	ds "github.com/Ulbora/json-datastore"
@@ -42,7 +42,7 @@ func TestSix910Handler_Index(t *testing.T) {
 
 	var c conts.CmsService
 	var cds ds.DataStore
-	cds.Path = "../contsrv/testFiles"
+	cds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = cds.GetNew()

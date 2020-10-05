@@ -4,7 +4,7 @@ import (
 	"net/http"
 	//"strconv"
 
-	conts "github.com/Ulbora/Six910-ui/contsrv"
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	//"github.com/gorilla/mux"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"

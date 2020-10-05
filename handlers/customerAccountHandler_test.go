@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
-	conts "github.com/Ulbora/Six910-ui/contsrv"
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
@@ -45,7 +45,7 @@ func TestSix910Handler_CreateCustomerAccountPage(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -165,7 +165,7 @@ func TestSix910Handler_CreateCustomerAccount(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -292,7 +292,7 @@ func TestSix910Handler_CreateCustomerAccountFail(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -419,7 +419,7 @@ func TestSix910Handler_CreateCustomerAccountExisting(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -513,7 +513,7 @@ func TestSix910Handler_UpdateCustomerAccountPage(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -607,7 +607,7 @@ func TestSix910Handler_UpdateCustomerAccountPageLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -732,7 +732,7 @@ func TestSix910Handler_UpdateCustomerAccount(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -858,7 +858,7 @@ func TestSix910Handler_UpdateCustomerAccountLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -984,7 +984,7 @@ func TestSix910Handler_UpdateCustomerAccountFail(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -1078,7 +1078,7 @@ func TestSix910Handler_CustomerAddAddressPage(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -1172,7 +1172,7 @@ func TestSix910Handler_CustomerAddAddressPageLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -1297,7 +1297,7 @@ func TestSix910Handler_CustomerAddAddress(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -1424,7 +1424,7 @@ func TestSix910Handler_CustomerAddAddressLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -1550,7 +1550,7 @@ func TestSix910Handler_CustomerAddAddressFail(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -1643,7 +1643,7 @@ func TestSix910Handler_DeleteCustomerAddress(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -1736,7 +1736,7 @@ func TestSix910Handler_DeleteCustomerAddressLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -1829,7 +1829,7 @@ func TestSix910Handler_DeleteCustomerAddressFail(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()

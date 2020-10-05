@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
-	conts "github.com/Ulbora/Six910-ui/contsrv"
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	ds "github.com/Ulbora/json-datastore"
 	sdbi "github.com/Ulbora/six910-database-interface"
@@ -49,7 +49,7 @@ func TestSix910Handler_ViewCustomerOrder(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -131,7 +131,7 @@ func TestSix910Handler_ViewCustomerOrderLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -215,7 +215,7 @@ func TestSix910Handler_ViewCustomerOrderList(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()
@@ -299,7 +299,7 @@ func TestSix910Handler_ViewCustomerOrderListLogin(t *testing.T) {
 
 	var c conts.CmsService
 	var ds ds.DataStore
-	ds.Path = "../contsrv/testFiles"
+	ds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
 	c.Store = ds.GetNew()

@@ -2,7 +2,7 @@ cd bkupsrv
 go test -coverprofile=coverage.out
 sleep 15
 cd ..
-cd contsrv
+cd contentsrv
 go test -coverprofile=coverage.out
 sleep 15
 cd ..
@@ -14,7 +14,7 @@ cd mailsrv
 go test -coverprofile=coverage.out
 sleep 15
 cd ..
-cd tmptsrv
+cd templatesrv
 go test -coverprofile=coverage.out
 sleep 15
 cd ..
