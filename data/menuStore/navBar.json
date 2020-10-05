@@ -1,0 +1,16 @@
+{
+    "name": "navBar",
+    "active": true,
+    "Location":"top",
+    "shade": "light",
+    "background": "light",
+    "style": "background-color: #e3f2fd;",
+    "shadeList":[
+        "dark",
+        "light"
+    ],
+    "backgroundList":[
+        "dark",
+        "light"
+    ]
+}

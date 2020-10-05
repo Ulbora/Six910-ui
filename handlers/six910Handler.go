@@ -12,6 +12,7 @@ import (
 	imgs "github.com/Ulbora/Six910-ui/imgsrv"
 	mails "github.com/Ulbora/Six910-ui/mailsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
+	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	tmpsrv "github.com/Ulbora/Six910-ui/templatesrv"
 	users "github.com/Ulbora/Six910-ui/usersrv"
 	api "github.com/Ulbora/Six910API-Go"
@@ -62,6 +63,7 @@ type Six910Handler struct {
 	MailService     mails.MailService
 	UserService     users.UserService
 	TemplateService tmpsrv.TemplateService
+	MenuService     musrv.MenuService
 
 	OauthHost     string
 	UserHost      string

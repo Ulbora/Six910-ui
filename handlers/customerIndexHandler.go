@@ -2,11 +2,12 @@ package handlers
 
 import (
 	"net/http"
-	"strconv"
+	//"strconv"
 
 	conts "github.com/Ulbora/Six910-ui/contsrv"
 	sdbi "github.com/Ulbora/six910-database-interface"
-	"github.com/gorilla/mux"
+	//"github.com/gorilla/mux"
+	musrv "github.com/Ulbora/Six910-ui/menusrv"
 )
 
 /*
@@ -32,6 +33,7 @@ type CustomerPage struct {
 	ProductList *[]sdbi.Product
 	Product     *sdbi.Product
 	Content     *conts.Content
+	MenuList    *[]musrv.Menu
 }
 
 //Index Index
@@ -39,23 +41,26 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 	cis, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		civars := mux.Vars(r)
-		ciststr := civars["start"]
-		ciendstr := civars["end"]
-		cistart, _ := strconv.ParseInt(ciststr, 10, 64)
-		ciend, _ := strconv.ParseInt(ciendstr, 10, 64)
-		if ciend == 0 {
-			ciend = 100
-		}
+		// civars := mux.Vars(r)
+		// //ciststr := civars["start"]
+		// ciendstr := civars["end"]
+		// //cistart, _ := strconv.ParseInt(ciststr, 10, 64)
+		// ciend, _ := strconv.ParseInt(ciendstr, 10, 64)
+		// if ciend == 0 {
+		// 	ciend = 100
+		// }
 		hd := h.getHeader(cis)
-		ppl := h.API.GetProductsByPromoted(cistart, ciend, hd)
-		cisuc, cicont := h.ContentService.GetContent(indexContent)
+		ppl := h.API.GetProductsByPromoted(0, 100, hd)
+		h.Log.Debug("promoted products", *ppl)
+		//cisuc, cicont := h.ContentService.GetContent(indexContent)
 
 		var cipage CustomerPage
 		cipage.ProductList = ppl
-		if cisuc {
-			cipage.Content = cicont
-		}
+		cipage.MenuList = h.MenuService.GetMenuList()
+		h.Log.Debug("MenuList", *cipage.MenuList)
+		// if cisuc {
+		// 	cipage.Content = cicont
+		// }
 		h.Log.Debug("cipage: ", cipage)
 		h.Templates.ExecuteTemplate(w, customerIndexPage, &cipage)
 	}

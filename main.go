@@ -30,8 +30,11 @@ import (
 	lg "github.com/Ulbora/Level_Logger"
 	hand "github.com/Ulbora/Six910-ui/handlers"
 	m "github.com/Ulbora/Six910-ui/managers"
+	musrv "github.com/Ulbora/Six910-ui/menusrv"
+	tmpsrv "github.com/Ulbora/Six910-ui/templatesrv"
 	api "github.com/Ulbora/Six910API-Go"
 	ml "github.com/Ulbora/go-mail-sender"
+	ds "github.com/Ulbora/json-datastore"
 	"github.com/gorilla/mux"
 )
 
@@ -124,6 +127,22 @@ func main() {
 	sh.ImagePath = "./static/images"
 	sh.ThumbnailPath = "./static/thumbnail"
 
+	var ts tmpsrv.Six910TemplateService
+	ts.TemplateStorePath = "./data/templateStore"
+	ts.Log = &l
+	var tds ds.DataStore
+	tds.Path = "./data/templateStore"
+	ts.TemplateStore = tds.GetNew()
+	sh.TemplateService = ts.GetNew()
+	sh.ActiveTemplateLocation = "./static/templates"
+
+	var sms musrv.Six910MenuService
+	sms.Log = &l
+	var mds ds.DataStore
+	mds.Path = "./data/menuStore"
+	sms.MenuStore = mds.GetNew()
+	sh.MenuService = sms.GetNew()
+
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
 		"./static/admin/subnavs/productNavbar.html", "./static/admin/pagination.html", "./static/admin/productSkuSearch.html",
@@ -155,11 +174,17 @@ func main() {
 	man.Log = &l
 	sh.Manager = man.GetNew()
 
+	sh.LoadTemplate()
+
 	h := sh.GetNew()
 
 	fmt.Println("Six910 (six nine ten) UI is running on port 8080!")
 	router := mux.NewRouter()
 
+	//site pages
+	router.HandleFunc("/", h.Index).Methods("GET")
+
+	//admin pages
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")
 	router.HandleFunc("/admin/login", h.StoreAdminLogin).Methods("GET")
 	router.HandleFunc("/admin/loginNonOAuth", h.StoreAdminLoginNonOAuthUser).Methods("POST")

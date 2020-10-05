@@ -1,0 +1,20 @@
+mode: set
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:49.54,53.16 4 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:57.2,57.12 1 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:53.16,56.3 2 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:61.57,65.16 4 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:80.2,80.12 1 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:65.16,69.17 4 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:69.17,78.4 8 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:84.64,88.16 4 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:96.2,96.18 1 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:88.16,91.17 3 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:91.17,94.4 2 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:100.51,103.22 3 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:111.2,111.13 1 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:103.22,107.17 4 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:107.17,109.4 1 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:115.58,118.9 3 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:121.2,121.12 1 1
+github.com/Ulbora/Six910-ui/menusrv/menuService.go:118.9,120.3 1 1
+github.com/Ulbora/Six910-ui/menusrv/service.go:45.50,47.2 1 1

@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html>
     {{template "head"}}
-
+   
+    {{range .MenuList}}    
+        {{if and (eq .Location "top")  (eq .Active true) (eq .Name "navBar")}}          
+           {{template "navBar" .}}
+        {{end}}
+    {{end}}
     
     <body>
     Test Page

@@ -197,6 +197,8 @@ func (m *Six910Manager) parseProduct(p *Product) *sdbi.Product {
 	rtn.Visible = p.Visible
 	rtn.Weight = p.Weight
 	rtn.Width = p.Width
+	rtn.Visible = true
+	rtn.Searchable = true
 	return &rtn
 }
 
