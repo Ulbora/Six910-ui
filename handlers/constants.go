@@ -359,9 +359,9 @@ const (
 	imageFilesUploadPage     = "imageFilesUpload.html"
 	thumbnailFilesUploadPage = "thumbnailFilesUpload.html"
 
-	adminAddContentPage = "addContent.html"
-	adminUpdateContent  = "updateContent.html"
-	adminContentListPage    = "contentList.html"
+	adminAddContentPage  = "addContent.html"
+	adminUpdateContent   = "updateContent.html"
+	adminContentListPage = "contentList.html"
 
 	//customer pages
 	customerLoginPage                = "login.html"
