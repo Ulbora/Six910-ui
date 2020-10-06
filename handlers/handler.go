@@ -204,6 +204,13 @@ type Handler interface {
 	StoreAdminUploadThumbnailFilesPage(w http.ResponseWriter, r *http.Request)
 	StoreAdminUploadThumbnailFiles(w http.ResponseWriter, r *http.Request)
 
+	StoreAdminAddContentPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddContent(w http.ResponseWriter, r *http.Request)
+	StoreAdminUpdateContent(w http.ResponseWriter, r *http.Request)
+	StoreAdminGetContent(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteContent(w http.ResponseWriter, r *http.Request)
+	StoreAdminContentList(w http.ResponseWriter, r *http.Request)
+
 	//abandoned carts --- for later---- requires new rest services to be added
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCartList(w http.ResponseWriter, r *http.Request)

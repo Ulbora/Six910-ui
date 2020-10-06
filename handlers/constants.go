@@ -222,6 +222,12 @@ const (
 	adminIncZipZoneListView     = "/admin/includedZipZone"
 	adminIncZipZoneListViewFail = "/admin/zipZoneListView?error=Add Failed"
 
+	//content
+	adminAddContent     = "/admin/addContent"
+	adminAddContentFail = "/admin/addContent?error=Add Failed"
+	adminGetContent     = "/admin/getContent"
+	adminContentList    = "/admin/contentList"
+
 	//routes customer
 	customerIndexView     = "/customerIndex"
 	customerIndexViewFail = "/customerIndex?error=Add Failed"
@@ -352,6 +358,10 @@ const (
 
 	imageFilesUploadPage     = "imageFilesUpload.html"
 	thumbnailFilesUploadPage = "thumbnailFilesUpload.html"
+
+	adminAddContentPage = "addContent.html"
+	adminUpdateContent  = "updateContent.html"
+	adminContentListPage    = "contentList.html"
 
 	//customer pages
 	customerLoginPage                = "login.html"

@@ -58,7 +58,7 @@ func (c *Six910ImageService) GetImageList() *[]Image {
 				//fmt.Println("sfile: ", sfile)
 				var imgfile Image
 				imgfile.Name = ifile.Name()
-				imgfile.ImageURL = ".." + string(filepath.Separator) + ".." + string(filepath.Separator) + "images" + string(filepath.Separator) + ifile.Name()
+				imgfile.ImageURL = ".." + string(filepath.Separator) + ".." + string(filepath.Separator) + "img" + string(filepath.Separator) + ifile.Name()
 				c.Log.Debug("image ImageURL in list: ", imgfile.ImageURL)
 				rtn = append(rtn, imgfile)
 			}

@@ -30,6 +30,7 @@ import (
 	lg "github.com/Ulbora/Level_Logger"
 	csrv "github.com/Ulbora/Six910-ui/contentsrv"
 	hand "github.com/Ulbora/Six910-ui/handlers"
+	isrv "github.com/Ulbora/Six910-ui/imgsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	tmpsrv "github.com/Ulbora/Six910-ui/templatesrv"
@@ -152,7 +153,14 @@ func main() {
 	ccs.Store = cds.GetNew()
 	ccs.ContentStorePath = "./data/contentStore"
 
-	sh.ContentService = &ccs
+	sh.ContentService = ccs.GetNew()
+
+	var iss isrv.Six910ImageService
+	iss.ImagePath = "./static/img"
+	iss.ImageFullPath = "./static/img"
+	iss.Log = &l
+
+	sh.ImageService = iss.GetNew()
 
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
@@ -173,6 +181,8 @@ func main() {
 		"./static/admin/customerList.html", "./static/admin/customerEmailSearch.html", "./static/admin/editCustomer.html",
 		"./static/admin/productUpload.html", "./static/admin/editStore.html",
 		"./static/admin/imageFilesUpload.html", "./static/admin/thumbnailFilesUpload.html",
+		"./static/admin/addContent.html", "./static/admin/contentList.html",
+		"./static/admin/updateContent.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -299,6 +309,13 @@ func main() {
 
 	router.HandleFunc("/admin/thumbnailsUploadPage", h.StoreAdminUploadThumbnailFilesPage).Methods("GET")
 	router.HandleFunc("/admin/thumbnailsUpload", h.StoreAdminUploadThumbnailFiles).Methods("POST")
+
+	router.HandleFunc("/admin/addContentPage", h.StoreAdminAddContentPage).Methods("GET")
+	router.HandleFunc("/admin/addContent", h.StoreAdminAddContent).Methods("POST")
+	router.HandleFunc("/admin/contentList", h.StoreAdminContentList).Methods("GET")
+	router.HandleFunc("/admin/getContent/{name}", h.StoreAdminGetContent).Methods("GET")
+	router.HandleFunc("/admin/updateContent", h.StoreAdminUpdateContent).Methods("POST")
+	router.HandleFunc("/admin/deleteContent/{name}", h.StoreAdminDeleteContent).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

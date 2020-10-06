@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+<body>
+    {{template "navbar"}}
+    <div class="container-fluid">
+        <h4 class="text-center mt-4">Add Content</h4>
+        <div class="row mb-4">
+            <div class="col-9">
+                <h4 class="text-center">Page</h4>
+                <form method="POST" action="/admin/addContent">
+                    <textarea id="content-area" name="content" required> Some Text</textarea>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input name="name" type="text" class="form-control" placeholder="Name" id="name" required>
+                    </div>
+                    <div class="form-group form-check">
+                        <input name="visible" class="form-check-input" type="checkbox" id="visible">
+                        <label class="form-check-label" for="visible">
+                            Visible
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">Title</label>
+                        <input name="title" type="text" class="form-control" placeholder="Title" id="title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input name="subject" type="text" class="form-control" placeholder="Subject" id="subject"
+                            required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="author">Author</label>
+                        <input name="author" type="text" class="form-control" placeholder="Author" id="author">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="metaKeyWords">Key Words</label>
+                        <input name="metaKeyWords" type="text" class="form-control" id="metaKeyWords"
+                            placeholder="Meta Key Words. Example: books, music">
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="desc">Description</label>
+                        <textarea name="desc" class="form-control" id="desc" rows="3"
+                            placeholder="Description"></textarea>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <input name="blogpost" class="form-check-input" type="checkbox" id="blogpost">
+                        <label class="form-check-label" for="blogpost">
+                            Blog Post
+                        </label>
+                    </div>
+
+
+                    <div class="form-group form-check">
+                        <input name="archived" class="form-check-input" type="checkbox" id="archived">
+                        <label class="form-check-label" for="archived">
+                            Archived
+                        </label>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                </form>
+            </div>
+            <div class="col-3">
+                <h4 class="text-left">Images</h4>
+                <h8 class="text-left">(Drag and Drop)</h8>
+                {{range .ImageList}}
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h6 class="card-title">Name:</h6>
+                        <p class="card-text">{{.Name}}</p>
+                    </div>
+                    <img src="{{.ImageURL}}" class="card-img-bottom" alt="..." style="width:20%;">
+                    <div class="card-body">
+                        <h6 class="card-title">Link:</h6>
+                        <p class="card-text">{{.ImageURL}}</p>
+                    </div>
+                    
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
