@@ -228,6 +228,9 @@ const (
 	adminGetContent     = "/admin/getContent"
 	adminContentList    = "/admin/contentList"
 
+	adminImageList     = "/admin/imageList"
+	adminImageListFail = "/admin/imageList?error=Add Failed"
+
 	//routes customer
 	customerIndexView     = "/customerIndex"
 	customerIndexViewFail = "/customerIndex?error=Add Failed"
@@ -362,6 +365,9 @@ const (
 	adminAddContentPage  = "addContent.html"
 	adminUpdateContent   = "updateContent.html"
 	adminContentListPage = "contentList.html"
+
+	adminImageUploadPage = "imageUpload.html"
+	adminImageListPage  = "imageList.html"
 
 	//customer pages
 	customerLoginPage                = "login.html"

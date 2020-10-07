@@ -211,6 +211,11 @@ type Handler interface {
 	StoreAdminDeleteContent(w http.ResponseWriter, r *http.Request)
 	StoreAdminContentList(w http.ResponseWriter, r *http.Request)
 
+	StoreAdminAddImagePage(w http.ResponseWriter, r *http.Request)
+	StoreAdminUploadImage(w http.ResponseWriter, r *http.Request)
+	StoreAdminImageList(w http.ResponseWriter, r *http.Request)
+	StoreAdminDeleteImage(w http.ResponseWriter, r *http.Request)
+
 	//abandoned carts --- for later---- requires new rest services to be added
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCartList(w http.ResponseWriter, r *http.Request)

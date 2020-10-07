@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+<body>
+    {{template "navbar"}}
+    <div class="container-sm">   
+      <h4 class="text-center mt-4">Images Upload</h4>   
+        <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+            <form method="POST" action="/admin/addImage" enctype="multipart/form-data">                
+                <div class="form-group">
+                    <label for="image">Images</label>
+                    <input name="image" type="file" required class="form-control" id="image">
+                </div>                
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>    
+</body>
+</html>
