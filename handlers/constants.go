@@ -367,7 +367,7 @@ const (
 	adminContentListPage = "contentList.html"
 
 	adminImageUploadPage = "imageUpload.html"
-	adminImageListPage  = "imageList.html"
+	adminImageListPage   = "imageList.html"
 
 	//customer pages
 	customerLoginPage                = "login.html"
