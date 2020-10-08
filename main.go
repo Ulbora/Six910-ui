@@ -205,6 +205,7 @@ func main() {
 
 	//site pages
 	router.HandleFunc("/", h.Index).Methods("GET")
+	router.HandleFunc("/viewProduct/{id}", h.ViewProduct).Methods("GET")
 
 	//admin pages
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")

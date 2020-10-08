@@ -9,6 +9,7 @@ import (
 
 	lg "github.com/Ulbora/Level_Logger"
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
+	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	ds "github.com/Ulbora/json-datastore"
 	sdbi "github.com/Ulbora/six910-database-interface"
@@ -183,14 +184,22 @@ func TestSix910Handler_ViewProduct(t *testing.T) {
 	// plst = append(plst, prod)
 	// sapi.MockProductList = &plst
 
+	var pclst = []int64{2, 4}
+	sapi.MockProductCategoryIDList = pclst
+
+	var cat sdbi.Category
+	cat.ID = 2
+	cat.ParentCategoryID = 0
+	sapi.MockCategory = &cat
+
 	//-----------end mocking --------
 
 	var c conts.CmsService
-	var ds ds.DataStore
-	ds.Path = "../contentsrv/testFiles"
+	var cds ds.DataStore
+	cds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
-	c.Store = ds.GetNew()
+	c.Store = cds.GetNew()
 
 	var ct conts.Content
 	ct.Name = "product"
@@ -204,6 +213,28 @@ func TestSix910Handler_ViewProduct(t *testing.T) {
 	fmt.Println("content save: ", res)
 
 	sh.ContentService = c.GetNew()
+
+	var sms musrv.Six910MenuService
+	var mds ds.DataStore
+	mds.Path = "./testFiles"
+	sms.MenuStore = mds.GetNew()
+	sms.Log = &l
+	ms := sms.GetNew()
+
+	var m musrv.Menu
+	m.Name = "menu1"
+	m.Active = true
+	m.Location = "top"
+	m.Shade = "light"
+	m.Background = "light"
+	m.Style = ""
+	m.ShadeList = &[]string{"light", "dark"}
+	m.BackgroundList = &[]string{"light", "dark"}
+
+	msuc := ms.AddMenu(&m)
+	fmt.Println("menu save: ", msuc)
+
+	sh.MenuService = ms
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"

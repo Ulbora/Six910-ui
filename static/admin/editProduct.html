@@ -37,6 +37,9 @@
             <input name="storeId" type="hidden" id="storeId" value="{{.Product.StoreID}}">
 
             <div class="form-group">
+              <img src="{{.Product.Image1}}" class="img-thumbnail" style="width: 40%;">
+            </div>
+            <div class="form-group">
               <label for="name">Product ID</label>
               <input name="prodIdDisp" disabled type="text" class="form-control" id="name" value="{{.Product.ID}}">
             </div>

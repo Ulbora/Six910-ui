@@ -39,6 +39,7 @@ func (h *Six910Handler) LoadTemplate() {
 		h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/index.html",
 		h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/header.html",
 		h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/navBar.html",
+		h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/product.html",
 	)
 
 	//h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/footer.html", h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/navbar.html",

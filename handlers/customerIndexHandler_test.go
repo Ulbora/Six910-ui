@@ -31,11 +31,30 @@ func TestSix910Handler_Index(t *testing.T) {
 	//-----------start mocking------------------
 
 	var prod sdbi.Product
-	prod.ID = 2
+	prod.ID = 1
+	prod.Sku = "1"
 	prod.Desc = "test"
+
+	var prod2 sdbi.Product
+	prod2.ID = 2
+	prod2.Sku = "2"
+	prod2.Desc = "test"
+
+	var prod3 sdbi.Product
+	prod3.ID = 3
+	prod3.Sku = "3"
+	prod3.Desc = "test"
+
+	var prod4 sdbi.Product
+	prod4.ID = 4
+	prod4.Sku = "4"
+	prod4.Desc = "test"
 
 	var plst []sdbi.Product
 	plst = append(plst, prod)
+	plst = append(plst, prod2)
+	plst = append(plst, prod3)
+	plst = append(plst, prod4)
 	sapi.MockProductList = &plst
 
 	//-----------end mocking --------

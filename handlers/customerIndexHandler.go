@@ -28,12 +28,24 @@ import (
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+//ProductRow ProductRow
+type ProductRow struct {
+	ProductLeft   sdbi.Product
+	ProductMiddle sdbi.Product
+	ProductRight  sdbi.Product
+}
+
 //CustomerPage CustomerPage
 type CustomerPage struct {
-	ProductList *[]sdbi.Product
-	Product     *sdbi.Product
-	Content     *conts.Content
-	MenuList    *[]musrv.Menu
+	//ProductListLift   *[]sdbi.Product
+	//ProductListMiddle *[]sdbi.Product
+	//ProductListRight  *[]sdbi.Product
+	ProductListRowList *[]*ProductRow
+	ProductList        *[]sdbi.Product
+	Product            *sdbi.Product
+	Content            *conts.Content
+	MenuList           *[]musrv.Menu
+	CategoryList       *[]sdbi.Category
 }
 
 //Index Index
@@ -55,9 +67,49 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 		//cisuc, cicont := h.ContentService.GetContent(indexContent)
 
 		var cipage CustomerPage
-		cipage.ProductList = ppl
+		//var lp []sdbi.Product
+		//var mp []sdbi.Product
+		//var rp []sdbi.Product
+		//cipage.ProductList = ppl
+		var prowList []*ProductRow
+		var prow *ProductRow
+		var rc = 1
+		for i, p := range *ppl {
+			if rc == 1 {
+				h.Log.Debug("sku1", p.Sku)
+				prow = new(ProductRow)
+				prow.ProductLeft = p
+				rc++
+				if i == len(*ppl)-1 {
+					prowList = append(prowList, prow)
+				}
+				continue
+			} else if rc == 2 {
+				h.Log.Debug("sku2", p.Sku)
+				prow.ProductMiddle = p
+				rc++
+				if i == len(*ppl)-1 {
+					prowList = append(prowList, prow)
+				}
+				continue
+			} else if rc == 3 {
+				h.Log.Debug("sku3", p.Sku)
+				prow.ProductRight = p
+				h.Log.Debug("prow", prow)
+				prowList = append(prowList, prow)
+				rc = 1
+			}
+		}
+		//cipage.ProductListLift = &lp
+		//cipage.ProductListMiddle = &mp
+		cipage.ProductListRowList = &prowList
+
+		h.Log.Debug("prowList", prowList)
+
 		cipage.MenuList = h.MenuService.GetMenuList()
 		h.Log.Debug("MenuList", *cipage.MenuList)
+		_, cont := h.ContentService.GetContent("home")
+		cipage.Content = cont
 		// if cisuc {
 		// 	cipage.Content = cicont
 		// }

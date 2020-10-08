@@ -1,9 +1,12 @@
 package handlers
 
 import (
+	"container/list"
 	"net/http"
 	"strconv"
 
+	api "github.com/Ulbora/Six910API-Go"
+	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
 
@@ -97,9 +100,40 @@ func (h *Six910Handler) ViewProduct(w http.ResponseWriter, r *http.Request) {
 		h.Log.Debug("cplcatid: ", cplcatid)
 		hd := h.getHeader(cvps)
 		pp := h.API.GetProductByID(cplcatid, hd)
+
+		prodCat := h.API.GetProductCategoryList(cplcatid, hd)
+		var catList []sdbi.Category
+		for _, pcc := range prodCat {
+			h.Log.Debug("pcc: ", pcc)
+			l := list.New()
+			h.getProductCatList(l, pcc, hd)
+			h.Log.Debug("l len: ", l.Len())
+			h.Log.Debug("l vals: ", *l)
+			for e := l.Front(); e != nil; e = e.Next() {
+				// do something with e.Value
+
+				h.Log.Debug("l e vals: ", *e.Value.(*sdbi.Category))
+				catList = append(catList, *e.Value.(*sdbi.Category))
+			}
+			break
+			// pc := h.API.GetCategory(pcc, hd)
+			// l.PushFront(pc)
+			// if pc.ParentCategoryID != 0 {
+			// 	pc := h.API.GetCategory(pcc, hd)
+			// 	l.PushFront(pc)
+			// }
+
+		}
+
 		cisuc, cicont := h.ContentService.GetContent(productContent)
 
 		var cplpage CustomerPage
+		cplpage.CategoryList = &catList
+		cplpage.MenuList = h.MenuService.GetMenuList()
+		h.Log.Debug("MenuList", *cplpage.MenuList)
+		_, cont := h.ContentService.GetContent("product")
+		cplpage.Content = cont
+
 		cplpage.Product = pp
 		if cisuc {
 			cplpage.Content = cicont
@@ -107,4 +141,15 @@ func (h *Six910Handler) ViewProduct(w http.ResponseWriter, r *http.Request) {
 		h.Log.Debug("cplpage: ", cplpage)
 		h.Templates.ExecuteTemplate(w, customerProductPage, &cplpage)
 	}
+}
+
+func (h *Six910Handler) getProductCatList(l *list.List, cid int64, hd *api.Headers) int64 {
+	if cid == 0 {
+		return 0
+	}
+	pc := h.API.GetCategory(cid, hd)
+	h.Log.Debug("pc: ", *pc)
+	l.PushFront(pc)
+	return h.getProductCatList(l, pc.ParentCategoryID, hd)
+
 }

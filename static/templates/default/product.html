@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+
+<body>
+    {{range .MenuList}}
+    {{if and (eq .Location "top")  (eq .Active true) (eq .Name "navBar")}}
+    {{template "navBar" .}}
+    {{end}}
+    {{end}}
+    <div class="container-fluid">
+        {{.Content.TextHTML}}
+    </div>   
+    <div class="container-fluid mb-5">
+        {{range .CategoryList}}
+            <a href="/getProductsByCategory/{{.ID}}" class="stretched-link text-dark ">{{.Name}} /</a>
+        {{end}}
+    </div>
+    
+    <div class="container mt-5 mb-5">
+        <h4 class="text-center mt-5">{{.Product.ShortDesc}}</h4>
+    </div>
+
+</body>
+
+</html>
