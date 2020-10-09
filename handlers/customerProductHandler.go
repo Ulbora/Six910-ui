@@ -110,18 +110,11 @@ func (h *Six910Handler) ViewProduct(w http.ResponseWriter, r *http.Request) {
 			h.Log.Debug("l len: ", l.Len())
 			h.Log.Debug("l vals: ", *l)
 			for e := l.Front(); e != nil; e = e.Next() {
-				// do something with e.Value
 
 				h.Log.Debug("l e vals: ", *e.Value.(*sdbi.Category))
 				catList = append(catList, *e.Value.(*sdbi.Category))
 			}
 			break
-			// pc := h.API.GetCategory(pcc, hd)
-			// l.PushFront(pc)
-			// if pc.ParentCategoryID != 0 {
-			// 	pc := h.API.GetCategory(pcc, hd)
-			// 	l.PushFront(pc)
-			// }
 
 		}
 

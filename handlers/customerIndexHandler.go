@@ -37,9 +37,6 @@ type ProductRow struct {
 
 //CustomerPage CustomerPage
 type CustomerPage struct {
-	//ProductListLift   *[]sdbi.Product
-	//ProductListMiddle *[]sdbi.Product
-	//ProductListRight  *[]sdbi.Product
 	ProductListRowList *[]*ProductRow
 	ProductList        *[]sdbi.Product
 	Product            *sdbi.Product
@@ -53,24 +50,13 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 	cis, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		// civars := mux.Vars(r)
-		// //ciststr := civars["start"]
-		// ciendstr := civars["end"]
-		// //cistart, _ := strconv.ParseInt(ciststr, 10, 64)
-		// ciend, _ := strconv.ParseInt(ciendstr, 10, 64)
-		// if ciend == 0 {
-		// 	ciend = 100
-		// }
+
 		hd := h.getHeader(cis)
 		ppl := h.API.GetProductsByPromoted(0, 100, hd)
 		h.Log.Debug("promoted products", *ppl)
-		//cisuc, cicont := h.ContentService.GetContent(indexContent)
 
 		var cipage CustomerPage
-		//var lp []sdbi.Product
-		//var mp []sdbi.Product
-		//var rp []sdbi.Product
-		//cipage.ProductList = ppl
+
 		var prowList []*ProductRow
 		var prow *ProductRow
 		var rc = 1
@@ -100,8 +86,7 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 				rc = 1
 			}
 		}
-		//cipage.ProductListLift = &lp
-		//cipage.ProductListMiddle = &mp
+
 		cipage.ProductListRowList = &prowList
 
 		h.Log.Debug("prowList", prowList)
@@ -110,9 +95,7 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 		h.Log.Debug("MenuList", *cipage.MenuList)
 		_, cont := h.ContentService.GetContent("home")
 		cipage.Content = cont
-		// if cisuc {
-		// 	cipage.Content = cicont
-		// }
+
 		h.Log.Debug("cipage: ", cipage)
 		h.Templates.ExecuteTemplate(w, customerIndexPage, &cipage)
 	}
