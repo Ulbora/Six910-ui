@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
@@ -58,33 +59,161 @@ func (h *Six910Handler) ViewProductList(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
+//ViewProductByCatList ViewProductByCatList
+func (h *Six910Handler) ViewProductByCatList(w http.ResponseWriter, r *http.Request) {
+	cpls, suc := h.getSession(r)
+	h.Log.Debug("session suc", suc)
+	if suc {
+		cplvars := mux.Vars(r)
+		ccplcatidstr := cplvars["catId"]
+		catName := cplvars["catName"]
+		ccplststr := cplvars["start"]
+		ccplendstr := cplvars["end"]
+		cplcatid, _ := strconv.ParseInt(ccplcatidstr, 10, 64)
+		cplstart, _ := strconv.ParseInt(ccplststr, 10, 64)
+		cplend, _ := strconv.ParseInt(ccplendstr, 10, 64)
+		if cplend == 0 {
+			cplend = 100
+		}
+		h.Log.Debug("cplcatid: ", cplcatid)
+		hd := h.getHeader(cpls)
+		ppl := h.API.GetProductsByCaterory(cplcatid, cplstart, cplend, hd)
+		cisuc, cicont := h.ContentService.GetContent(productCategoryListContent)
+
+		var cplpage CustomerPage
+		cplpage.ProductList = ppl
+		if cisuc {
+			cplpage.Content = cicont
+		} else {
+			var ct conts.Content
+			cplpage.Content = &ct
+		}
+		cplpage.CategoryName = catName
+
+		cplpage.MenuList = h.MenuService.GetMenuList()
+		h.Log.Debug("MenuList", *cplpage.MenuList)
+
+		var prowListc []*ProductRow
+		var prowc *ProductRow
+		var rc = 1
+		for i, p := range *ppl {
+			if rc == 1 {
+				h.Log.Debug("sku1", p.Sku)
+				prowc = new(ProductRow)
+				prowc.ProductLeft = p
+				rc++
+				if i == len(*ppl)-1 {
+					prowListc = append(prowListc, prowc)
+				}
+				continue
+			} else if rc == 2 {
+				h.Log.Debug("sku2", p.Sku)
+				prowc.ProductMiddle = p
+				rc++
+				if i == len(*ppl)-1 {
+					prowListc = append(prowListc, prowc)
+				}
+				continue
+			} else if rc == 3 {
+				h.Log.Debug("sku3", p.Sku)
+				prowc.ProductRight = p
+				h.Log.Debug("prow", prowc)
+				prowListc = append(prowListc, prowc)
+				rc = 1
+			}
+		}
+
+		cplpage.ProductListRowList = &prowListc
+
+		h.Log.Debug("prowList", prowListc)
+		cplpage.Pagination = h.doPagination(cplstart, len(*ppl), 100, "/productByCategoryList/"+ccplcatidstr+"/"+catName)
+		h.Log.Debug("plparm.Pagination:", *cplpage.Pagination)
+		h.Log.Debug("plparm.Pagination.Pages:", *cplpage.Pagination.Pages)
+		h.Log.Debug("cplpage: ", cplpage)
+		h.Templates.ExecuteTemplate(w, customerProductByCatPage, &cplpage)
+	}
+}
+
 //SearchProductList SearchProductList
 func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request) {
 	cspls, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		csplvars := mux.Vars(r)
-		csplsearch := csplvars["search"]
-		csplststr := csplvars["start"]
-		csplendstr := csplvars["end"]
 
-		csplstart, _ := strconv.ParseInt(csplststr, 10, 64)
-		csplend, _ := strconv.ParseInt(csplendstr, 10, 64)
+		csplsearch := r.FormValue("search")
+		var csplstart int64
+		var csplend int64
+
+		if csplsearch == "" {
+			csplvars := mux.Vars(r)
+			csplsearch = csplvars["search"]
+			csplststr := csplvars["start"]
+			csplendstr := csplvars["end"]
+
+			csplstart, _ = strconv.ParseInt(csplststr, 10, 64)
+			csplend, _ = strconv.ParseInt(csplendstr, 10, 64)
+		}
+
 		if csplend == 0 {
 			csplend = 100
 		}
 		h.Log.Debug("csplsearch: ", csplsearch)
 		hd := h.getHeader(cspls)
 		ppl := h.API.GetProductsByName(csplsearch, csplstart, csplend, hd)
+
 		cisuc, cscont := h.ContentService.GetContent(productListContent)
 
 		var csplpage CustomerPage
 		csplpage.ProductList = ppl
 		if cisuc {
 			csplpage.Content = cscont
+		} else {
+			var ct conts.Content
+			csplpage.Content = &ct
 		}
+		csplpage.SearchName = csplsearch
+
+		csplpage.MenuList = h.MenuService.GetMenuList()
+		h.Log.Debug("MenuList", *csplpage.MenuList)
+
+		var prowListc []*ProductRow
+		var prowc *ProductRow
+		var rc = 1
+		for i, p := range *ppl {
+			if rc == 1 {
+				h.Log.Debug("sku1", p.Sku)
+				prowc = new(ProductRow)
+				prowc.ProductLeft = p
+				rc++
+				if i == len(*ppl)-1 {
+					prowListc = append(prowListc, prowc)
+				}
+				continue
+			} else if rc == 2 {
+				h.Log.Debug("sku2", p.Sku)
+				prowc.ProductMiddle = p
+				rc++
+				if i == len(*ppl)-1 {
+					prowListc = append(prowListc, prowc)
+				}
+				continue
+			} else if rc == 3 {
+				h.Log.Debug("sku3", p.Sku)
+				prowc.ProductRight = p
+				h.Log.Debug("prow", prowc)
+				prowListc = append(prowListc, prowc)
+				rc = 1
+			}
+		}
+
+		csplpage.ProductListRowList = &prowListc
+
+		h.Log.Debug("prowList", prowListc)
+		csplpage.Pagination = h.doPagination(csplstart, len(*ppl), 100, "/searchProductsByName/"+csplsearch)
+		h.Log.Debug("plparm.Pagination:", *csplpage.Pagination)
+		h.Log.Debug("plparm.Pagination.Pages:", *csplpage.Pagination.Pages)
 		h.Log.Debug("csplpage: ", csplpage)
-		h.Templates.ExecuteTemplate(w, customerProductListPage, &csplpage)
+		h.Templates.ExecuteTemplate(w, customerProductsSearchListPage, &csplpage)
 	}
 }
 

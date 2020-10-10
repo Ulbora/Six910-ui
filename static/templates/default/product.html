@@ -11,15 +11,48 @@
     {{end}}
     <div class="container-fluid">
         {{.Content.TextHTML}}
-    </div>   
-    <div class="container-fluid mb-5">
+    </div>
+    <div class="container-fluid mt-2">
         {{range .CategoryList}}
-            <a href="/getProductsByCategory/{{.ID}}" class="stretched-link text-dark ">{{.Name}} /</a>
+        <a href="/productByCategoryList/{{.ID}}/{{.Name}}/0/100" class="text-dark ">/{{.Name}} </a>        
         {{end}}
     </div>
-    
+
     <div class="container mt-5 mb-5">
         <h4 class="text-center mt-5">{{.Product.ShortDesc}}</h4>
+        <div class="row mt-5">
+            <div class="col">
+                <img src="{{.Product.Image1}}" class="img-fluid">
+            </div>
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        {{if ne .Product.SalePrice 0.0}}
+                        <h5 class="card-title text-danger">On Sale: ${{.Product.SalePrice}}</h5>
+                        {{else}}
+                        <h5 class="card-title">Price: ${{.Product.Price}}</h5>
+                        {{end}}
+                        <h6 class="card-title">Stock: {{.Product.Stock}}</h6>
+                        <h6 class="card-title">Sku: {{.Product.Sku}}</h6>
+                        <h6 class="card-title">Manufacturer: </h6>
+                        <h6 class="card-title">{{.Product.Manufacturer}}</h6>
+                        <form method="GET" action="/addProductToCart">
+                            <label for="cost">Quantity</label>
+                            <input name="qty" min="0" max="{{.Product.Stock}}" type="number" class="form-control" id="qty">
+                            <input name="id" type="hidden" id="id" value="{{.Product.ID}}">
+                            <button type="submit" class="btn btn-primary mt-3">Add to Cart</button>
+                        </form>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5 mb-5">
+        <h4 class="text-center mt-5">Description</h4>
+        <div class="alert alert-success" role="alert">
+            {{.Product.Desc}}
+        </div>
+
     </div>
 
 </body>

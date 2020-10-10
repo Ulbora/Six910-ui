@@ -43,6 +43,9 @@ type CustomerPage struct {
 	Content            *conts.Content
 	MenuList           *[]musrv.Menu
 	CategoryList       *[]sdbi.Category
+	Pagination         *Pagination
+	CategoryName       string
+	SearchName         string
 }
 
 //Index Index

@@ -373,6 +373,8 @@ const (
 	customerLoginPage                = "login.html"
 	customerIndexPage                = "index.html"
 	customerProductListPage          = "productList.html"
+	customerProductByCatPage         = "productsByCategory.html"
+	customerProductsSearchListPage   = "productsSearch.html"
 	customerProductPage              = "product.html"
 	customerShoppingCartPage         = "shoppingCart.html"
 	customerShoppingCartContinuePage = "shoppingCartContinue.html"
@@ -392,9 +394,10 @@ const (
 	timeFormat = "2006-01-02 15:04:05"
 
 	//content pages
-	indexContent       = "index"
-	productListContent = "productList"
-	productContent     = "product"
+	indexContent               = "index"
+	productListContent         = "productList"
+	productCategoryListContent = "productCategoryList"
+	productContent             = "product"
 
 	usernameForAddedNotes = "System Admin"
 
