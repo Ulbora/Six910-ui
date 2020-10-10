@@ -176,39 +176,39 @@ func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request
 		csplpage.MenuList = h.MenuService.GetMenuList()
 		h.Log.Debug("MenuList", *csplpage.MenuList)
 
-		var prowListc []*ProductRow
-		var prowc *ProductRow
+		var sprowListc []*ProductRow
+		var sprowc *ProductRow
 		var rc = 1
 		for i, p := range *ppl {
 			if rc == 1 {
 				h.Log.Debug("sku1", p.Sku)
-				prowc = new(ProductRow)
-				prowc.ProductLeft = p
+				sprowc = new(ProductRow)
+				sprowc.ProductLeft = p
 				rc++
 				if i == len(*ppl)-1 {
-					prowListc = append(prowListc, prowc)
+					sprowListc = append(sprowListc, sprowc)
 				}
 				continue
 			} else if rc == 2 {
 				h.Log.Debug("sku2", p.Sku)
-				prowc.ProductMiddle = p
+				sprowc.ProductMiddle = p
 				rc++
 				if i == len(*ppl)-1 {
-					prowListc = append(prowListc, prowc)
+					sprowListc = append(sprowListc, sprowc)
 				}
 				continue
 			} else if rc == 3 {
 				h.Log.Debug("sku3", p.Sku)
-				prowc.ProductRight = p
-				h.Log.Debug("prow", prowc)
-				prowListc = append(prowListc, prowc)
+				sprowc.ProductRight = p
+				h.Log.Debug("prow", sprowc)
+				sprowListc = append(sprowListc, sprowc)
 				rc = 1
 			}
 		}
 
-		csplpage.ProductListRowList = &prowListc
+		csplpage.ProductListRowList = &sprowListc
 
-		h.Log.Debug("prowList", prowListc)
+		h.Log.Debug("prowList", sprowListc)
 		csplpage.Pagination = h.doPagination(csplstart, len(*ppl), 100, "/searchProductsByName/"+csplsearch)
 		h.Log.Debug("plparm.Pagination:", *csplpage.Pagination)
 		h.Log.Debug("plparm.Pagination.Pages:", *csplpage.Pagination.Pages)
