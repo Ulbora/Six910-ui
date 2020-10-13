@@ -178,6 +178,8 @@ type MockAPI struct {
 
 	MockStore           *sdbi.Store
 	MockStoreUpdateResp *api.Response
+
+	MockManufactureList *[]string
 }
 
 //GetNew GetNew
@@ -734,6 +736,28 @@ func (a *MockAPI) GetProductList(start int64, end int64, headers *api.Headers) *
 //DeleteProduct DeleteProduct
 func (a *MockAPI) DeleteProduct(id int64, headers *api.Headers) *api.Response {
 	return a.MockDeleteProductResp
+}
+
+//GetProductManufacturerListByProductName GetProductManufacturerListByProductName
+func (a *MockAPI) GetProductManufacturerListByProductName(name string, headers *api.Headers) *[]string {
+	return a.MockManufactureList
+}
+
+//GetProductByNameAndManufacturerName GetProductByNameAndManufacturerName
+func (a *MockAPI) GetProductByNameAndManufacturerName(manf string, name string,
+	start int64, end int64, headers *api.Headers) *[]sdbi.Product {
+	return a.MockProductList
+}
+
+//GetProductManufacturerListByCatID GetProductManufacturerListByCatID
+func (a *MockAPI) GetProductManufacturerListByCatID(catID int64, headers *api.Headers) *[]string {
+	return a.MockManufactureList
+}
+
+//GetProductByCatAndManufacturer GetProductByCatAndManufacturer
+func (a *MockAPI) GetProductByCatAndManufacturer(catID int64, manf string,
+	start int64, end int64, headers *api.Headers) *[]sdbi.Product {
+	return a.MockProductList
 }
 
 //product category

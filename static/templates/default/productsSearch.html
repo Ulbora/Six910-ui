@@ -12,73 +12,89 @@
     <div class="container-fluid">
         {{.Content.TextHTML}}
     </div>
-   
+
     <h4 class="text-center mt-5">Search by: {{.SearchName}}</h4>
-    <div class="container mt-5 mb-5">
-        {{range .ProductListRowList}}
-        <div class="row mt-5 mb-5">
-            <div class="col-sm">
-                {{if ne .ProductLeft.Sku ""}}
-                <div class="card" style="width: 18rem;">
-                    <a href="/viewProduct/{{.ProductLeft.ID}}"> <img src="{{.ProductLeft.Image1}}"
-                            class="card-img-top"></a>
-                    <div class="card-body">
-                        <h5 class="card-title">Sku: {{.ProductLeft.Sku}}</h5>
-                        {{if ne .ProductLeft.SalePrice 0.0}}
-                        <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
-                        {{else}}
-                        <h6 class="card-title">${{.ProductLeft.Price}}</h6>
-                        {{end}}                        
-                        <h6 class="card-title">Stock: {{.ProductLeft.Stock}}</h6>
-                        <p class="card-text">{{.ProductLeft.ShortDesc}}</p>
-                        <a href="/viewProduct/{{.ProductLeft.ID}}" class="btn btn-primary">View Product</a>
-                        <a href="/addToCart/{{.ProductLeft.ID}}" class="btn btn-success">Add to Cart</a>
-                    </div>
+    {{if ne .Manufacturer ""}}
+    <h4 class="text-center mt-1">Manufacturer: {{.Manufacturer}}</h4>
+    {{end}}
+    <div class="container-fluid mt-5 mb-5">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="list-group mt-5">
+                    <h5 class="text-center">Manufacturers</h5>
+                    {{range .ManufacturerList}}
+                    <a href="/searchProductsByManufacturerAndName/{{.}}/{{$.SearchName}}/0/100" class="list-group-item list-group-item-action">{{.}}</a>
+                    {{end}}                   
                 </div>
-                {{end}}
             </div>
-            <div class="col-sm">
-                {{if ne .ProductMiddle.Sku ""}}
-                <div class="card" style="width: 18rem;">
-                    <a href="/viewProduct/{{.ProductMiddle.ID}}"> <img src="{{.ProductMiddle.Image1}}"
-                            class="card-img-top"></a>
-                    <div class="card-body">
-                        <h5 class="card-title">Sku: {{.ProductMiddle.Sku}}</h5>
-                        {{if ne .ProductMiddle.SalePrice 0.0}}
-                        <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
-                        {{else}}
-                        <h6 class="card-title">${{.ProductMiddle.Price}}</h6>
-                        {{end}}                        
-                        <h6 class="card-title">Stock: {{.ProductMiddle.Stock}}</h6>
-                        <p class="card-text">{{.ProductMiddle.ShortDesc}}</p>
-                        <a href="/viewProduct/{{.ProductMiddle.ID}}" class="btn btn-primary">View Product</a>
-                        <a href="/addToCart/{{.ProductMiddle.ID}}" class="btn btn-success">Add to Cart</a>
+            <div class="col-sm-10">
+                {{range .ProductListRowList}}
+                <div class="row mt-5 mb-5">
+                    <div class="col-sm">
+                        {{if ne .ProductLeft.Sku ""}}
+                        <div class="card" style="width: 18rem;">
+                            <a href="/viewProduct/{{.ProductLeft.ID}}"> <img src="{{.ProductLeft.Image1}}"
+                                    class="card-img-top"></a>
+                            <div class="card-body">
+                                <h5 class="card-title">Sku: {{.ProductLeft.Sku}}</h5>
+                                {{if ne .ProductLeft.SalePrice 0.0}}
+                                <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
+                                {{else}}
+                                <h6 class="card-title">${{.ProductLeft.Price}}</h6>
+                                {{end}}
+                                <h6 class="card-title">Available: {{.ProductLeft.Stock}}</h6>
+                                <p class="card-text">{{.ProductLeft.ShortDesc}}</p>
+                                <a href="/viewProduct/{{.ProductLeft.ID}}" class="btn btn-primary">View Product</a>
+                                <a href="/addToCart/{{.ProductLeft.ID}}" class="btn btn-success">Add to Cart</a>
+                            </div>
+                        </div>
+                        {{end}}
                     </div>
-                </div>
-                {{end}}
-            </div>
-            <div class="col-sm">
-                {{if ne .ProductRight.Sku ""}}
-                <div class="card" style="width: 18rem;">
-                    <a href="/viewProduct/{{.ProductRight.ID}}"> <img src="{{.ProductRight.Image1}}"
-                            class="card-img-top"></a>
-                    <div class="card-body">
-                        <h5 class="card-title">Sku: {{.ProductRight.Sku}}</h5>
-                        {{if ne .ProductRight.SalePrice 0.0}}
-                        <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
-                        {{else}}
-                        <h6 class="card-title">${{.ProductRight.Price}}</h6>
-                        {{end}}                        
-                        <h6 class="card-title">Stock: {{.ProductRight.Stock}}</h6>
-                        <p class="card-text">{{.ProductRight.ShortDesc}}</p>
-                        <a href="/viewProduct/{{.ProductRight.ID}}" class="btn btn-primary">View Product</a>
-                        <a href="/addToCart/{{.ProductRight.ID}}" class="btn btn-success">Add to Cart</a>
+                    <div class="col-sm">
+                        {{if ne .ProductMiddle.Sku ""}}
+                        <div class="card" style="width: 18rem;">
+                            <a href="/viewProduct/{{.ProductMiddle.ID}}"> <img src="{{.ProductMiddle.Image1}}"
+                                    class="card-img-top"></a>
+                            <div class="card-body">
+                                <h5 class="card-title">Sku: {{.ProductMiddle.Sku}}</h5>
+                                {{if ne .ProductMiddle.SalePrice 0.0}}
+                                <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
+                                {{else}}
+                                <h6 class="card-title">${{.ProductMiddle.Price}}</h6>
+                                {{end}}
+                                <h6 class="card-title">Available: {{.ProductMiddle.Stock}}</h6>
+                                <p class="card-text">{{.ProductMiddle.ShortDesc}}</p>
+                                <a href="/viewProduct/{{.ProductMiddle.ID}}" class="btn btn-primary">View Product</a>
+                                <a href="/addToCart/{{.ProductMiddle.ID}}" class="btn btn-success">Add to Cart</a>
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                    <div class="col-sm">
+                        {{if ne .ProductRight.Sku ""}}
+                        <div class="card" style="width: 18rem;">
+                            <a href="/viewProduct/{{.ProductRight.ID}}"> <img src="{{.ProductRight.Image1}}"
+                                    class="card-img-top"></a>
+                            <div class="card-body">
+                                <h5 class="card-title">Sku: {{.ProductRight.Sku}}</h5>
+                                {{if ne .ProductRight.SalePrice 0.0}}
+                                <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
+                                {{else}}
+                                <h6 class="card-title">${{.ProductRight.Price}}</h6>
+                                {{end}}
+                                <h6 class="card-title">Available: {{.ProductRight.Stock}}</h6>
+                                <p class="card-text">{{.ProductRight.ShortDesc}}</p>
+                                <a href="/viewProduct/{{.ProductRight.ID}}" class="btn btn-primary">View Product</a>
+                                <a href="/addToCart/{{.ProductRight.ID}}" class="btn btn-success">Add to Cart</a>
+                            </div>
+                        </div>
+                        {{end}}
                     </div>
                 </div>
                 {{end}}
             </div>
         </div>
-        {{end}}
+
     </div>
     {{template "pagination" .}}
 

@@ -230,7 +230,9 @@ type Handler interface {
 	//products
 	ViewProductList(w http.ResponseWriter, r *http.Request)
 	ViewProductByCatList(w http.ResponseWriter, r *http.Request)
+	ViewProductByCatAndManufacturerList(w http.ResponseWriter, r *http.Request)
 	SearchProductList(w http.ResponseWriter, r *http.Request)
+	SearchProductByManufacturerList(w http.ResponseWriter, r *http.Request)
 	ViewProduct(w http.ResponseWriter, r *http.Request)
 
 	//cart
