@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+
+
+<body>
+    {{template "navbar"}}
+    <div class="container">        
+        <h4 class="text-center mt-4">Edit Menu</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#menuedit" role="tab"
+                    aria-controls="method" aria-selected="true">Menu</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#deleteMenu" role="tab" aria-controls="add"
+                    aria-selected="false">Delete</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="menuedit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">                    
+                    <form method="POST" action="/admin/updateMenu">
+                        <input name="name" type="hidden" id="name" value="{{.Name}}">
+                        
+                        <div class="form-group">
+                            <label for="namedisp">Name</label>
+                            <input name="namedisp" type="text" disabled class="form-control" id="namedisp" value="{{.Name}}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input name="location" type="text" class="form-control" id="location" value="{{.Location}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="brand">Brand</label>
+                            <input name="brand" type="text" class="form-control" id="brand" value="{{.Brand}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="brandLink">BrandLink</label>
+                            <input name="brandLink" type="text" class="form-control" id="brandLink" value="{{.BrandLink}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shade">Shade</label>
+                            <input name="shade" type="text" class="form-control" id="shade" value="{{.Shade}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="background">Background</label>
+                            <input name="background" type="text" class="form-control" id="background" value="{{.Background}}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="style">Style</label>
+                            <input name="style" type="text" class="form-control" id="style" value="{{.Style}}">
+                        </div>
+
+                        <div class="form-group mt-5 mt-5 border border-success p-3">
+                            <label for="">Shade List</label>
+                            {{range $i, $s := .ShadeList}}
+                            <input name="shade{{$i}}" type="text" class="form-control" id="shade{{$i}}" value="{{$s}}">
+                            {{end}}                            
+                        </div>
+
+                        <div class="form-group mt-5 mt-5 border border-success p-3">
+                            <label for="">Background List</label>
+                            {{range $i, $s := .BackgroundList}}
+                            <input name="bg{{$i}}" type="text" class="form-control" id="bg{{$i}}" value="{{$s}}">
+                            {{end}}                            
+                        </div>
+
+                        <div class="form-group mt-5 border border-success p-3">
+                            <h5 class="text-center mb-3">Menu Item List</h5>                            
+                            {{range $i, $s := .MenuItemList}}
+                            <div class="form-row mb-5">
+                                <div class="col">
+                                    <label for="menuName{{$i}}">Menu Text</label>
+                                    <input name="menuName{{$i}}" type="text" class="form-control" id="menuName{{$i}}" value="{{$s.Name}}" >
+                                </div>
+                                <div class="col">
+                                    <label for="menuLink{{$i}}">Menu Link</label>
+                                    <input name="menuLink{{$i}}" type="text" class="form-control" id="menuLink{{$i}}" value="{{$s.Link}}" >
+                                </div>
+                            </div>                            
+                            {{end}}                            
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input name="active" class="form-check-input" type="checkbox" id="active" 
+                                {{if .Active}} checked {{end}}>
+                                <label class="form-check-label" for="active">Active</label>
+                            </div>                           
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade show " id="deleteMenu" role="tabpanel" aria-labelledby="home-tab">
+                <div class="p-3 mb-2 bg-danger text-white mt-5">Delete will remove this menu from your store.</div>
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <a class="btn btn-primary"  href="/admin/deleteMenu/{{.Name}}" role="button">Delete Menu</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

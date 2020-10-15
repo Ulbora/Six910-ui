@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+<body>
+  {{template "navbar"}}
+  <div class="container">
+    <h4 class="text-center mt-3">Site Menus</h4>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Location</th>
+          <th scope="col">Active</th>         
+        </tr>
+      </thead>
+      <tbody>
+        {{range .}}
+        <tr class='clickable-row' data-href='/admin/getMenu/{{.Name}}'>
+          <td>{{.Name}}</td>
+          <td>{{.Location}}</td>
+          <td>{{.Active}}</td>          
+        </tr>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>

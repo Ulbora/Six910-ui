@@ -216,6 +216,13 @@ type Handler interface {
 	StoreAdminImageList(w http.ResponseWriter, r *http.Request)
 	StoreAdminDeleteImage(w http.ResponseWriter, r *http.Request)
 
+	StoreAdminAddMenuPage(w http.ResponseWriter, r *http.Request)
+	StoreAdminAddMenu(w http.ResponseWriter, r *http.Request)
+	StoreAdminUpdateMenu(w http.ResponseWriter, r *http.Request)
+	StoreAdminGetMenu(w http.ResponseWriter, r *http.Request)
+	StoreAdminMenuList(w http.ResponseWriter, r *http.Request)
+	// StoreAdminDeleteMenu(w http.ResponseWriter, r *http.Request)
+
 	//abandoned carts --- for later---- requires new rest services to be added
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCartList(w http.ResponseWriter, r *http.Request)

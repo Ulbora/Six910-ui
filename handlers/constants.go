@@ -231,6 +231,12 @@ const (
 	adminImageList     = "/admin/imageList"
 	adminImageListFail = "/admin/imageList?error=Add Failed"
 
+	//menu
+	adminAddMenu     = "/admin/addMenu"
+	adminAddMenuFail = "/admin/addMenu?error=Add Failed"
+	adminGetMenu     = "/admin/getMenu"
+	adminMenuList    = "/admin/menuList"
+
 	//routes customer
 	customerIndexView     = "/customerIndex"
 	customerIndexViewFail = "/customerIndex?error=Add Failed"
@@ -368,6 +374,10 @@ const (
 
 	adminImageUploadPage = "imageUpload.html"
 	adminImageListPage   = "imageList.html"
+
+	adminAddMenuPage  = "addMenu.html"
+	adminUpdateMenu   = "editMenu.html"
+	adminMenuListPage = "menuList.html"
 
 	//customer pages
 	customerLoginPage                = "login.html"

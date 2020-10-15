@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+
+
+<body>
+    {{template "navbar"}}
+    <div class="container">
+        <h4 class="text-center mt-4">Add New Menu</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#menuadd" role="tab"
+                    aria-controls="method" aria-selected="true">Menu</a>
+            </li>
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="menuadd" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/addMenu">
+
+                        <div class="form-group">
+                            <label for="namedisp">Name</label>
+                            <input name="name" type="text" class="form-control" id="name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input name="location" type="text" class="form-control" id="location">
+                        </div>
+                        <div class="form-group">
+                            <label for="brand">Brand</label>
+                            <input name="brand" type="text" class="form-control" id="brand">
+                        </div>
+                        <div class="form-group">
+                            <label for="brandLink">BrandLink</label>
+                            <input name="brandLink" type="text" class="form-control" id="brandLink">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shade">Shade</label>
+                            <input name="shade" type="text" class="form-control" id="shade">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="background">Background</label>
+                            <input name="background" type="text" class="form-control" id="background">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="style">Style</label>
+                            <input name="style" type="text" class="form-control" id="style">
+                        </div>
+
+                        <div class="form-group mt-5 mt-5 border border-success p-3">
+                            <label for="">Shade List</label>
+                            <input name="shade0" type="text" class="form-control" id="shade0">
+                            <input name="shade1" type="text" class="form-control" id="shade1">
+                            <input name="shade2" type="text" class="form-control" id="shade2">
+                            <input name="shade3" type="text" class="form-control" id="shade3">
+                            <input name="shade4" type="text" class="form-control" id="shade4">
+                            <input name="shade5" type="text" class="form-control" id="shade5">
+                        </div>
+
+                        <div class="form-group mt-5 mt-5 border border-success p-3">
+                            <label for="">Background List</label>
+                            <input name="bg0" type="text" class="form-control" id="bg0">
+                            <input name="bg1" type="text" class="form-control" id="bg1">
+                            <input name="bg2" type="text" class="form-control" id="bg2">
+                            <input name="bg3" type="text" class="form-control" id="bg3">
+                            <input name="bg4" type="text" class="form-control" id="bg4">
+                            <input name="bg5" type="text" class="form-control" id="bg5">
+                        </div>
+
+                        <div class="form-group mt-5 border border-success p-3">
+                            <h5 class="text-center mb-3">Menu Item List</h5>
+
+                            <div class="form-row mb-5">
+                                <div class="col">
+                                    <label for="menuName0">Menu Text</label>
+                                    <input name="menuName0" type="text" class="form-control" id="menuName0">
+                                </div>
+                                <div class="col">
+                                    <label for="menuLink0">Menu Link</label>
+                                    <input name="menuLink0" type="text" class="form-control" id="menuLink0">
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-5">
+                                <div class="col">
+                                    <label for="menuName1">Menu Text</label>
+                                    <input name="menuName1" type="text" class="form-control" id="menuName1">
+                                </div>
+                                <div class="col">
+                                    <label for="menuLink1">Menu Link</label>
+                                    <input name="menuLink1" type="text" class="form-control" id="menuLink1">
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-5">
+                                <div class="col">
+                                    <label for="menuName2">Menu Text</label>
+                                    <input name="menuName2" type="text" class="form-control" id="menuName2">
+                                </div>
+                                <div class="col">
+                                    <label for="menuLink2">Menu Link</label>
+                                    <input name="menuLink2" type="text" class="form-control" id="menuLink2">
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-5">
+                                <div class="col">
+                                    <label for="menuName3">Menu Text</label>
+                                    <input name="menuName3" type="text" class="form-control" id="menuName3">
+                                </div>
+                                <div class="col">
+                                    <label for="menuLink3">Menu Link</label>
+                                    <input name="menuLink3" type="text" class="form-control" id="menuLink3">
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-5">
+                                <div class="col">
+                                    <label for="menuName4">Menu Text</label>
+                                    <input name="menuName4" type="text" class="form-control" id="menuName4">
+                                </div>
+                                <div class="col">
+                                    <label for="menuLink4">Menu Link</label>
+                                    <input name="menuLink4" type="text" class="form-control" id="menuLink4">
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-5">
+                                <div class="col">
+                                    <label for="menuName5">Menu Text</label>
+                                    <input name="menuName5" type="text" class="form-control" id="menuName5">
+                                </div>
+                                <div class="col">
+                                    <label for="menuLink5">Menu Link</label>
+                                    <input name="menuLink5" type="text" class="form-control" id="menuLink5">
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-5">
+                                <div class="col">
+                                    <label for="menuName6">Menu Text</label>
+                                    <input name="menuName6" type="text" class="form-control" id="menuName6">
+                                </div>
+                                <div class="col">
+                                    <label for="menuLink6">Menu Link</label>
+                                    <input name="menuLink6" type="text" class="form-control" id="menuLink6">
+                                </div>
+                            </div>
+
+                            <div class="form-row mb-5">
+                                <div class="col">
+                                    <label for="menuName7">Menu Text</label>
+                                    <input name="menuName7" type="text" class="form-control" id="menuName7">
+                                </div>
+                                <div class="col">
+                                    <label for="menuLink7">Menu Link</label>
+                                    <input name="menuLink7" type="text" class="form-control" id="menuLink7">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input name="active" class="form-check-input" type="checkbox" id="active">
+                                <label class="form-check-label" for="active">Active</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

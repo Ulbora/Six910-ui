@@ -183,7 +183,8 @@ func main() {
 		"./static/admin/imageFilesUpload.html", "./static/admin/thumbnailFilesUpload.html",
 		"./static/admin/addContent.html", "./static/admin/contentList.html",
 		"./static/admin/updateContent.html", "./static/admin/imageList.html",
-		"./static/admin/imageUpload.html",
+		"./static/admin/imageUpload.html", "./static/admin/menuList.html",
+		"./static/admin/editMenu.html", "./static/admin/addMenu.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -329,6 +330,13 @@ func main() {
 	router.HandleFunc("/admin/addImage", h.StoreAdminUploadImage).Methods("POST")
 	router.HandleFunc("/admin/imageList", h.StoreAdminImageList).Methods("GET")
 	router.HandleFunc("/admin/deleteImage/{name}", h.StoreAdminDeleteImage).Methods("GET")
+
+	router.HandleFunc("/admin/addMenuPage", h.StoreAdminAddMenuPage).Methods("GET")
+	router.HandleFunc("/admin/addMenu", h.StoreAdminAddMenu).Methods("POST")
+	router.HandleFunc("/admin/menuList", h.StoreAdminMenuList).Methods("GET")
+	router.HandleFunc("/admin/getMenu/{name}", h.StoreAdminGetMenu).Methods("GET")
+	router.HandleFunc("/admin/updateMenu", h.StoreAdminUpdateMenu).Methods("POST")
+	// router.HandleFunc("/admin/deleteContent/{name}", h.StoreAdminDeleteContent).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

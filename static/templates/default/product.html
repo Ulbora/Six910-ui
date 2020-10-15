@@ -21,10 +21,10 @@
     <div class="container mt-5 mb-5">
         <h4 class="text-center mt-5">{{.Product.ShortDesc}}</h4>
         <div class="row mt-5">
-            <div class="col">
+            <div class="col-sm-8">
                 <img src="{{.Product.Image1}}" class="img-fluid">
             </div>
-            <div class="col">
+            <div class="col-sm-4">
                 <div class="card" style="width: 18rem;">
                     <div class="card-body">
                         {{if ne .Product.SalePrice 0.0}}
