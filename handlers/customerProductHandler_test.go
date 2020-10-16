@@ -305,7 +305,6 @@ func TestSix910Handler_SearchProductList2(t *testing.T) {
 
 	sh.MenuService = ms
 
-
 	var css csssrv.Six910CSSService
 	var csds ds.DataStore
 	csds.Path = "./testFiles"
