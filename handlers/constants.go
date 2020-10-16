@@ -379,6 +379,8 @@ const (
 	adminUpdateMenu   = "editMenu.html"
 	adminMenuListPage = "menuList.html"
 
+	adminEditPageCSS = "editPageCss.html"
+
 	//customer pages
 	customerLoginPage                = "login.html"
 	customerIndexPage                = "index.html"

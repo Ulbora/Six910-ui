@@ -9,6 +9,7 @@ import (
 
 	lg "github.com/Ulbora/Level_Logger"
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
+	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	ds "github.com/Ulbora/json-datastore"
@@ -100,6 +101,13 @@ func TestSix910Handler_Index(t *testing.T) {
 	fmt.Println("menu save: ", msuc)
 
 	sh.MenuService = ms
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
@@ -215,6 +223,13 @@ func TestSix910Handler_Index2(t *testing.T) {
 	fmt.Println("menu save: ", msuc)
 
 	sh.MenuService = ms
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"

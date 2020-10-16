@@ -7,6 +7,7 @@ import (
 	"time"
 
 	sr "github.com/Ulbora/Six910-ui/contentsrv"
+	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	img "github.com/Ulbora/Six910-ui/imgsrv"
 	"github.com/gorilla/mux"
 )
@@ -34,6 +35,7 @@ type ContPage struct {
 	Error     string
 	ImageList *[]img.Image
 	Content   *sr.Content
+	PageCSS   *csssrv.Page
 }
 
 //StoreAdminAddContentPage StoreAdminAddContentPage

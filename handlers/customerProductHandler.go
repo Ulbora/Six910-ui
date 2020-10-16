@@ -226,7 +226,7 @@ func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request
 	cspls, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-
+		//var pagebdy PageBody
 		csplsearch := r.FormValue("search")
 		var csplstart int64
 		var csplend int64
@@ -256,6 +256,8 @@ func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request
 		cisuc, cscont := h.ContentService.GetContent(productListContent)
 
 		var csplpage CustomerPage
+		_, csspg := h.CSSService.GetPageCSS("pageCss")
+		csplpage.PageBody = csspg
 		csplpage.ProductList = ppl
 		csplpage.ManufacturerList = mlst
 		if cisuc {

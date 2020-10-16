@@ -16,6 +16,7 @@ import (
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 	//"github.com/gorilla/sessions"
+	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 )
 
 func TestSix910Handler_ViewProductList(t *testing.T) {
@@ -176,6 +177,13 @@ func TestSix910Handler_SearchProductList(t *testing.T) {
 
 	sh.MenuService = ms
 
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
+
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
 	sh.ClientCreds = &cc
@@ -296,6 +304,14 @@ func TestSix910Handler_SearchProductList2(t *testing.T) {
 	fmt.Println("menu save: ", msuc)
 
 	sh.MenuService = ms
+
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"

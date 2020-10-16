@@ -9,6 +9,7 @@ import (
 	lg "github.com/Ulbora/Level_Logger"
 	bks "github.com/Ulbora/Six910-ui/bkupsrv"
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
+	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	imgs "github.com/Ulbora/Six910-ui/imgsrv"
 	mails "github.com/Ulbora/Six910-ui/mailsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
@@ -64,6 +65,7 @@ type Six910Handler struct {
 	UserService     users.UserService
 	TemplateService tmpsrv.TemplateService
 	MenuService     musrv.MenuService
+	CSSService      csssrv.CSSService
 
 	OauthHost     string
 	UserHost      string

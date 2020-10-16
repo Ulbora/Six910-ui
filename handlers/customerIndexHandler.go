@@ -1,12 +1,14 @@
 package handlers
 
 import (
+	//"html/template"
 	"net/http"
 	//"strconv"
 
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	//"github.com/gorilla/mux"
+	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 )
 
@@ -35,6 +37,13 @@ type ProductRow struct {
 	ProductRight  sdbi.Product
 }
 
+// //PageBody PageBody
+// type PageBody struct {
+// 	Background template.CSS
+// 	Color      template.CSS
+// 	PageTitle  template.CSS
+// }
+
 //CustomerPage CustomerPage
 type CustomerPage struct {
 	ProductListRowList *[]*ProductRow
@@ -49,6 +58,7 @@ type CustomerPage struct {
 	SearchName         string
 	ManufacturerList   *[]string
 	Manufacturer       string
+	PageBody           *csssrv.PageCSS
 }
 
 //Index Index
@@ -56,12 +66,21 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 	cis, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
+		//var pagebdy PageBody
+		// pagebdy.Background = "background: grey !important;"
+		// pagebdy.Color = "" //"color: white;"
 
 		hd := h.getHeader(cis)
 		ppl := h.API.GetProductsByPromoted(0, 100, hd)
 		h.Log.Debug("promoted products", *ppl)
 
 		var cipage CustomerPage
+
+		_, csspg := h.CSSService.GetPageCSS("pageCss")
+
+		h.Log.Debug("PageBody: ", *csspg)
+
+		cipage.PageBody = csspg
 
 		var prowList []*ProductRow
 		var prow *ProductRow

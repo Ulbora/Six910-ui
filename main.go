@@ -29,6 +29,7 @@ import (
 
 	lg "github.com/Ulbora/Level_Logger"
 	csrv "github.com/Ulbora/Six910-ui/contentsrv"
+	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	hand "github.com/Ulbora/Six910-ui/handlers"
 	isrv "github.com/Ulbora/Six910-ui/imgsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
@@ -162,6 +163,14 @@ func main() {
 
 	sh.ImageService = iss.GetNew()
 
+	var css csssrv.Six910CSSService
+	css.CSSStorePath = "./data/cssStore"
+	css.Log = &l
+	var csds ds.DataStore
+	csds.Path = "./data/cssStore"
+	css.CSSStore = csds.GetNew()
+	sh.CSSService = css.GetNew()
+
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
 		"./static/admin/subnavs/productNavbar.html", "./static/admin/pagination.html", "./static/admin/productSkuSearch.html",
@@ -185,6 +194,7 @@ func main() {
 		"./static/admin/updateContent.html", "./static/admin/imageList.html",
 		"./static/admin/imageUpload.html", "./static/admin/menuList.html",
 		"./static/admin/editMenu.html", "./static/admin/addMenu.html",
+		"./static/admin/editPageCss.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -337,6 +347,9 @@ func main() {
 	router.HandleFunc("/admin/getMenu/{name}", h.StoreAdminGetMenu).Methods("GET")
 	router.HandleFunc("/admin/updateMenu", h.StoreAdminUpdateMenu).Methods("POST")
 	// router.HandleFunc("/admin/deleteContent/{name}", h.StoreAdminDeleteContent).Methods("GET")
+
+	router.HandleFunc("/admin/getPageCss/{name}", h.StoreAdminGetPageCSS).Methods("GET")
+	router.HandleFunc("/admin/updatePageCss", h.StoreAdminUpdatePageCSS).Methods("POST")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 

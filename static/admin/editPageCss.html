@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+
+
+<body>
+    {{template "navbar"}}
+    <div class="container">       
+        <h4 class="text-center">Edit Page CSS</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#cssedit" role="tab"
+                    aria-controls="distributors" aria-selected="true">Page CSS</a>
+            </li>
+
+           
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="cssedit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/updatePageCss">
+                        <input name="name" type="hidden" id="name" value="{{.PageCSS.Name}}">
+                        <div class="form-group">
+                            <label for="background">Background Color</label>
+                            <input name="background" type="text" class="form-control" id="background" value="{{.PageCSS.Background}}">
+                          </div>
+                          <div class="form-group">
+                            <label for="color">Text Color</label>
+                            <input name="color" type="text" class="form-control" id="color" value="{{.PageCSS.Color}}">
+                          </div>
+                          <div class="form-group">
+                            <label for="pageTitle">Page Title Color</label>
+                            <input name="pageTitle" type="text" class="form-control" id="pageTitle"  value="{{.PageCSS.PageTitle}}" >
+                          </div>
+                          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>            
+        </div>
+
+    </div>
+</body>
+
+</html>
