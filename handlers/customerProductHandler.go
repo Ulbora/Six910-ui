@@ -84,6 +84,11 @@ func (h *Six910Handler) ViewProductByCatList(w http.ResponseWriter, r *http.Requ
 		mlst := h.API.GetProductManufacturerListByCatID(cplcatid, hd)
 
 		var cplpage CustomerPage
+
+		_, csspg := h.CSSService.GetPageCSS("pageCss")
+		h.Log.Debug("PageBody: ", *csspg)
+		cplpage.PageBody = csspg
+
 		cplpage.ProductList = ppl
 		cplpage.ManufacturerList = mlst
 		if cisuc {
@@ -165,6 +170,11 @@ func (h *Six910Handler) ViewProductByCatAndManufacturerList(w http.ResponseWrite
 		mlst := h.API.GetProductManufacturerListByCatID(mcplcatid, hd)
 
 		var mcplpage CustomerPage
+
+		_, csspg := h.CSSService.GetPageCSS("pageCss")
+		h.Log.Debug("PageBody: ", *csspg)
+		mcplpage.PageBody = csspg
+
 		mcplpage.ProductList = ppl
 		mcplpage.ManufacturerList = mlst
 		if cisuc {
@@ -256,8 +266,10 @@ func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request
 		cisuc, cscont := h.ContentService.GetContent(productListContent)
 
 		var csplpage CustomerPage
+
 		_, csspg := h.CSSService.GetPageCSS("pageCss")
 		csplpage.PageBody = csspg
+
 		csplpage.ProductList = ppl
 		csplpage.ManufacturerList = mlst
 		if cisuc {
@@ -350,6 +362,10 @@ func (h *Six910Handler) SearchProductByManufacturerList(w http.ResponseWriter, r
 		cisuc, cscont := h.ContentService.GetContent(productListContent)
 
 		var mcsplpage CustomerPage
+
+		_, csspg := h.CSSService.GetPageCSS("pageCss")
+		mcsplpage.PageBody = csspg
+
 		mcsplpage.ProductList = ppl
 		mcsplpage.ManufacturerList = mlst
 		if cisuc {
@@ -438,6 +454,11 @@ func (h *Six910Handler) ViewProduct(w http.ResponseWriter, r *http.Request) {
 		cisuc, cicont := h.ContentService.GetContent(productContent)
 
 		var cplpage CustomerPage
+
+		_, csspg := h.CSSService.GetPageCSS("pageCss")
+		h.Log.Debug("PageBody: ", *csspg)
+		cplpage.PageBody = csspg
+
 		cplpage.CategoryList = &catList
 		cplpage.MenuList = h.MenuService.GetMenuList()
 		h.Log.Debug("MenuList", *cplpage.MenuList)

@@ -23,7 +23,8 @@ func TestSix910CSSService_GetPageCSS(t *testing.T) {
 	s := cs.GetNew()
 
 	suc, pg := s.GetPageCSS("testPage")
-	fmt.Println("found page css", *pg)
+	fmt.Println("found page css", pg)
+	fmt.Println("found page css", pg.Link)
 	if !suc {
 		t.Fail()
 	}
@@ -47,6 +48,13 @@ func TestSix910CSSService_UpdatePageCSS(t *testing.T) {
 	p.Background = "red"
 	p.Color = "green"
 	p.PageTitle = "black"
+
+	var lnk Link
+	lnk.Visited = "white"
+	lnk.Color = "black"
+	lnk.Hover = "red"
+	lnk.Active = "white"
+	p.Link = &lnk
 
 	suc := s.UpdatePage(&p)
 	if !suc {
@@ -73,6 +81,13 @@ func TestSix910CSSService_UpdatePageCSS2(t *testing.T) {
 	p.Background = "grey"
 	p.Color = "white"
 	p.PageTitle = "blue"
+
+	var lnk Link
+	lnk.Visited = "white"
+	lnk.Color = "black"
+	lnk.Hover = "red"
+	lnk.Active = "white"
+	p.Link = &lnk
 
 	suc := s.UpdatePage(&p)
 	if !suc {

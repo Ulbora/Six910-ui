@@ -427,6 +427,13 @@ func TestSix910Handler_SearchProductByManufacturerList(t *testing.T) {
 
 	sh.MenuService = ms
 
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
+
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
 	sh.ClientCreds = &cc
@@ -549,6 +556,13 @@ func TestSix910Handler_SearchProductByManufacturerList2(t *testing.T) {
 
 	sh.MenuService = ms
 
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
+
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
 	sh.ClientCreds = &cc
@@ -654,6 +668,13 @@ func TestSix910Handler_ViewProduct(t *testing.T) {
 	fmt.Println("menu save: ", msuc)
 
 	sh.MenuService = ms
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
@@ -767,6 +788,13 @@ func TestSix910Handler_ViewProductByCatList(t *testing.T) {
 	fmt.Println("menu save: ", msuc)
 
 	sh.MenuService = ms
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
@@ -883,6 +911,13 @@ func TestSix910Handler_ViewProductByCatList2(t *testing.T) {
 
 	sh.MenuService = ms
 
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
+
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
 	sh.ClientCreds = &cc
@@ -991,6 +1026,13 @@ func TestSix910Handler_ViewProductByCatAndManufacturerList(t *testing.T) {
 	fmt.Println("menu save: ", msuc)
 
 	sh.MenuService = ms
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
@@ -1106,6 +1148,13 @@ func TestSix910Handler_ViewProductByCatAndManufacturerList2(t *testing.T) {
 	fmt.Println("menu save: ", msuc)
 
 	sh.MenuService = ms
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"

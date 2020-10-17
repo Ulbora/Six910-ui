@@ -29,6 +29,7 @@ type Page struct {
 	Background string
 	Color      string
 	PageTitle  string
+	Link       *Link
 }
 
 //PageCSS PageCSS
@@ -37,6 +38,15 @@ type PageCSS struct {
 	Background template.CSS
 	Color      template.CSS
 	PageTitle  template.CSS
+	Link       *Link
+}
+
+//Link Link
+type Link struct {
+	Color   string
+	Visited string
+	Hover   string
+	Active  string
 }
 
 //GetPageCSS GetPageCSS
@@ -48,13 +58,29 @@ func (c *Six910CSSService) GetPageCSS(name string) (bool, *PageCSS) {
 		var p Page
 		err := json.Unmarshal(*ep, &p)
 		if err == nil {
-			var bgnd = "background: " + p.Background + " !important; "
+			var bgnd string
+			if p.Background != "" {
+				bgnd = "background: " + p.Background + " !important; "
+			}
 			rtn.Background = template.CSS(bgnd)
 			c.Log.Debug("bgnd :  ", bgnd)
-			var col = "color: " + p.Color + "; "
+			var col string
+			if p.Color != "" {
+				col = "color: " + p.Color + "; "
+			}
 			rtn.Color = template.CSS(col)
-			var tcol = "color: " + p.PageTitle + "; "
+
+			var tcol string
+			if p.PageTitle != "" {
+				tcol = "color: " + p.PageTitle + "; "
+			}
 			rtn.PageTitle = template.CSS(tcol)
+			var lnk Link
+			lnk.Active = p.Link.Active
+			lnk.Color = p.Link.Color
+			lnk.Hover = p.Link.Hover
+			lnk.Visited = p.Link.Visited
+			rtn.Link = &lnk
 			suc = true
 		}
 	}
@@ -87,6 +113,12 @@ func (c *Six910CSSService) UpdatePage(page *Page) bool {
 			p.Background = page.Background
 			p.Color = page.Color
 			p.PageTitle = page.PageTitle
+			var lnk Link
+			lnk.Active = page.Link.Active
+			lnk.Color = page.Link.Color
+			lnk.Hover = page.Link.Hover
+			lnk.Visited = page.Link.Visited
+			p.Link = &lnk
 			suc := c.CSSStore.Save(page.Name, p)
 			rtn = suc
 		}

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-{{template "head"}}
+{{template "head" .}}
 
 
 <body>
@@ -13,15 +13,15 @@
         {{.Content.TextHTML}}
     </div>
    
-    <h4 class="text-center mt-5">Product Category: {{.CategoryName}}</h4>
+    <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Product Category: {{.CategoryName}}</h4>
     {{if ne .Manufacturer ""}}
-    <h4 class="text-center mt-1">Manufacturer: {{.Manufacturer}}</h4>
+    <h4 class="text-center mt-1" style="{{.PageBody.PageTitle}}">Manufacturer: {{.Manufacturer}}</h4>
     {{end}}
     <div class="container-fluid mt-5 mb-5">
         <div class="row">
             <div class="col-sm-2">
                 <div class="list-group mt-5">
-                    <h5 class="text-center">Manufacturers</h5>
+                    <h5 class="text-center" style="{{.PageBody.PageTitle}}">Manufacturers</h5>
                     {{range .ManufacturerList}}
                     <a href="/productByCategoryAndManufacturerList/{{$.CategoryID}}/{{$.CategoryName}}/{{.}}/0/100" class="list-group-item list-group-item-action">{{.}}</a>
                     {{end}}                   

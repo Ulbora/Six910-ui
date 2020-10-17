@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-{{template "head"}}
+{{template "head" .}}
 
 
 <body>
@@ -12,14 +12,14 @@
     <div class="container-fluid">
         {{.Content.TextHTML}}
     </div>
-    <div class="container-fluid mt-2">
+    <div class="container-fluid mt-2 navLinks">
         {{range .CategoryList}}
-        <a href="/productByCategoryList/{{.ID}}/{{.Name}}/0/100" class="text-dark ">/{{.Name}} </a>        
+        <a href="/productByCategoryList/{{.ID}}/{{.Name}}/0/100" >/{{.Name}} </a>
         {{end}}
     </div>
 
     <div class="container mt-5 mb-5">
-        <h4 class="text-center mt-5">{{.Product.ShortDesc}}</h4>
+        <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">{{.Product.ShortDesc}}</h4>
         <div class="row mt-5">
             <div class="col-sm-8">
                 <img src="{{.Product.Image1}}" class="img-fluid">
@@ -38,10 +38,11 @@
                         <h6 class="card-title">{{.Product.Manufacturer}}</h6>
                         <form method="GET" action="/addProductToCart">
                             <label for="cost">Quantity</label>
-                            <input name="qty" min="0" max="{{.Product.Stock}}" type="number" class="form-control" id="qty">
+                            <input name="qty" min="0" max="{{.Product.Stock}}" type="number" class="form-control"
+                                id="qty">
                             <input name="id" type="hidden" id="id" value="{{.Product.ID}}">
                             <button type="submit" class="btn btn-primary mt-3">Add to Cart</button>
-                        </form>                        
+                        </form>
                     </div>
                 </div>
             </div>

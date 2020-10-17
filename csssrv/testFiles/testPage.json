@@ -1,1 +1,1 @@
-{"Name":"testPage","Background":"grey","Color":"white","PageTitle":"blue"}
+{"Name":"testPage","Background":"grey","Color":"white","PageTitle":"blue","Link":{"Color":"black","Visited":"white","Hover":"red","Active":"white"}}

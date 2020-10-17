@@ -54,6 +54,8 @@ func (h *Six910Handler) StoreAdminUpdatePageCSS(w http.ResponseWriter, r *http.R
 		if h.isStoreAdminLoggedIn(s) {
 
 			var csspg csssrv.Page
+			var lnk csssrv.Link
+			csspg.Link = &lnk
 
 			name := r.FormValue("name")
 			h.Log.Debug("css name in update: ", name)
@@ -67,10 +69,27 @@ func (h *Six910Handler) StoreAdminUpdatePageCSS(w http.ResponseWriter, r *http.R
 			pageTitle := r.FormValue("pageTitle")
 			h.Log.Debug("css pageTitle in update: ", pageTitle)
 
+			linkColor := r.FormValue("linkColor")
+			h.Log.Debug("css linkColor in update: ", linkColor)
+
+			linkVisited := r.FormValue("linkVisited")
+			h.Log.Debug("css linkVisited in update: ", linkVisited)
+
+			linkHover := r.FormValue("linkHover")
+			h.Log.Debug("css linkHover in update: ", linkHover)
+
+			linkActive := r.FormValue("linkActive")
+			h.Log.Debug("css linkActive in update: ", linkActive)
+
 			csspg.Name = name
 			csspg.Background = background
 			csspg.Color = color
 			csspg.PageTitle = pageTitle
+
+			csspg.Link.Active = linkActive
+			csspg.Link.Color = linkColor
+			csspg.Link.Hover = linkHover
+			csspg.Link.Visited = linkVisited
 
 			res := h.CSSService.UpdatePage(&csspg)
 			h.Log.Debug("update page css res", res)

@@ -56,6 +56,24 @@
             {{.PageBody.Color}}
             
         }
+        
+      .navLinks a:link {
+        color: {{.PageBody.Link.Color}};
+      }
+      /* visited link */
+      .navLinks a:visited {
+        color: {{.PageBody.Link.Visited}};
+      }
+      /* mouse over link */
+      .navLinks :hover {
+        color: {{.PageBody.Link.Hover}};
+      }
+      /* selected link */
+      .navLinks a:active {
+        color: {{.PageBody.Link.Active}};
+      }
+        
+      
 
         /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
     </style>
