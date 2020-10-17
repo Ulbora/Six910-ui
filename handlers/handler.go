@@ -226,6 +226,9 @@ type Handler interface {
 	StoreAdminUpdatePageCSS(w http.ResponseWriter, r *http.Request)
 	StoreAdminGetPageCSS(w http.ResponseWriter, r *http.Request)
 
+	StoreAdminUpdateCarousel(w http.ResponseWriter, r *http.Request)
+	StoreAdminGetCarousel(w http.ResponseWriter, r *http.Request)
+
 	//abandoned carts --- for later---- requires new rest services to be added
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCartList(w http.ResponseWriter, r *http.Request)

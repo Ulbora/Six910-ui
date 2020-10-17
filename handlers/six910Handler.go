@@ -8,6 +8,7 @@ import (
 
 	lg "github.com/Ulbora/Level_Logger"
 	bks "github.com/Ulbora/Six910-ui/bkupsrv"
+	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	imgs "github.com/Ulbora/Six910-ui/imgsrv"
@@ -66,6 +67,7 @@ type Six910Handler struct {
 	TemplateService tmpsrv.TemplateService
 	MenuService     musrv.MenuService
 	CSSService      csssrv.CSSService
+	CarouselService carsrv.CarouselService
 
 	OauthHost     string
 	UserHost      string

@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	sr "github.com/Ulbora/Six910-ui/contentsrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	img "github.com/Ulbora/Six910-ui/imgsrv"
@@ -36,6 +37,7 @@ type ContPage struct {
 	ImageList *[]img.Image
 	Content   *sr.Content
 	PageCSS   *csssrv.Page
+	Carousel  *carsrv.Carousel
 }
 
 //StoreAdminAddContentPage StoreAdminAddContentPage

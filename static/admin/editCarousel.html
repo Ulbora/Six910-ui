@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+
+
+<body>
+  {{template "navbar"}}
+  <div class="container">
+    <h4 class="text-center">Edit Carousel</h4>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+      <li class="nav-item" role="presentation">
+        <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#cssedit" role="tab"
+          aria-controls="distributors" aria-selected="true">Carousel</a>
+      </li>
+
+
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="cssedit" role="tabpanel" aria-labelledby="home-tab">
+        <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+          <form method="POST" action="/admin/updateCarousel">
+            <input name="name" type="hidden" id="name" value="{{.Carousel.Name}}">
+            <div class="form-group">
+              <label for="image1">Image 1</label>
+              <input name="image1" type="text" class="form-control" id="image1" value="{{.Carousel.Image1}}">
+            </div>
+            <div class="form-group">
+              <label for="image2">Image 2</label>
+              <input name="image2" type="text" class="form-control" id="image2" value="{{.Carousel.Image2}}">
+            </div>
+            <div class="form-group">
+              <label for="image3">Image 3</label>
+              <input name="image3" type="text" class="form-control" id="image3" value="{{.Carousel.Image3}}">
+            </div>
+            <div class="form-group">
+              <div class="form-check form-check-inline">
+                <input name="enabled" class="form-check-input" type="checkbox" id="enabled" {{if .Carousel.Enabled}}
+                  checked {{end}}>
+                <label class="form-check-label" for="enabled">Enabled</label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

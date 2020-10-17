@@ -381,6 +381,8 @@ const (
 
 	adminEditPageCSS = "editPageCss.html"
 
+	adminEditCarousel = "editCarousel.html"
+
 	//customer pages
 	customerLoginPage                = "login.html"
 	customerIndexPage                = "index.html"

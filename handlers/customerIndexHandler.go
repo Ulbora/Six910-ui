@@ -8,6 +8,7 @@ import (
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	//"github.com/gorilla/mux"
+	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 )
@@ -59,6 +60,7 @@ type CustomerPage struct {
 	ManufacturerList   *[]string
 	Manufacturer       string
 	PageBody           *csssrv.PageCSS
+	Carousel           *carsrv.Carousel
 }
 
 //Index Index
@@ -77,10 +79,12 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 		var cipage CustomerPage
 
 		_, csspg := h.CSSService.GetPageCSS("pageCss")
-
 		h.Log.Debug("PageBody: ", *csspg)
-
 		cipage.PageBody = csspg
+
+		_, carpg := h.CarouselService.GetCarousel("carousel")
+		h.Log.Debug("Carousel: ", *carpg)
+		cipage.Carousel = carpg
 
 		var prowList []*ProductRow
 		var prow *ProductRow

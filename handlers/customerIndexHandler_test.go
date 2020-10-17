@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
+	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
@@ -108,6 +109,14 @@ func TestSix910Handler_Index(t *testing.T) {
 	css.CSSStore = csds.GetNew()
 	css.Log = &l
 	sh.CSSService = css.GetNew()
+
+	var cars carsrv.Six910CarouselService
+	cars.StorePath = "../carouselsrv/testFiles"
+	cars.Log = &l
+	var cards ds.DataStore
+	cards.Path = "../carouselsrv/testFiles"
+	cars.Store = cds.GetNew()
+	sh.CarouselService = cars.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
@@ -230,6 +239,14 @@ func TestSix910Handler_Index2(t *testing.T) {
 	css.CSSStore = csds.GetNew()
 	css.Log = &l
 	sh.CSSService = css.GetNew()
+
+	var cars carsrv.Six910CarouselService
+	cars.StorePath = "../carouselsrv/testFiles"
+	cars.Log = &l
+	var cards ds.DataStore
+	cards.Path = "../carouselsrv/testFiles"
+	cars.Store = cds.GetNew()
+	sh.CarouselService = cars.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
