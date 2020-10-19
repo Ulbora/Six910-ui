@@ -233,6 +233,11 @@ func main() {
 	router.HandleFunc("/searchProductsByName/{search}/{start}/{end}", h.SearchProductList).Methods("GET")
 	router.HandleFunc("/searchProductsByManufacturerAndName/{manf}/{search}/{start}/{end}", h.SearchProductByManufacturerList).Methods("GET")
 
+	router.HandleFunc("/addProductToCart", h.AddProductToCart).Methods("GET")
+	router.HandleFunc("/addToCart/{prodId}", h.AddProductToCart).Methods("GET")
+
+	router.HandleFunc("/shoppingCartView", h.ViewCart).Methods("GET")
+
 	//admin pages
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")
 	router.HandleFunc("/admin/login", h.StoreAdminLogin).Methods("GET")

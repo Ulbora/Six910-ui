@@ -451,24 +451,69 @@ func (h *Six910Handler) ViewProduct(w http.ResponseWriter, r *http.Request) {
 
 		}
 
+		var likeProdCatID int64
+		if len(catList) > 0 {
+			likeProdCatID = catList[len(catList)-1].ID
+		}
+
+		likeProdList := h.API.GetProductsByCaterory(likeProdCatID, 0, 9, hd)
+
 		cisuc, cicont := h.ContentService.GetContent(productContent)
 
 		var cplpage CustomerPage
+		cplpage.ProductList = likeProdList
 
 		_, csspg := h.CSSService.GetPageCSS("pageCss")
 		h.Log.Debug("PageBody: ", *csspg)
 		cplpage.PageBody = csspg
 
 		cplpage.CategoryList = &catList
+
 		cplpage.MenuList = h.MenuService.GetMenuList()
 		h.Log.Debug("MenuList", *cplpage.MenuList)
-		_, cont := h.ContentService.GetContent("product")
-		cplpage.Content = cont
+		//_, cont := h.ContentService.GetContent("product")
+		//cplpage.Content = cont
 
 		cplpage.Product = pp
 		if cisuc {
 			cplpage.Content = cicont
+		} else {
+			var ct conts.Content
+			cplpage.Content = &ct
 		}
+
+		var pmsprowListc []*ProductRow
+		var psprowc *ProductRow
+		var rc = 1
+		for i, p := range *likeProdList {
+			if rc == 1 {
+				h.Log.Debug("sku1", p.Sku)
+				psprowc = new(ProductRow)
+				psprowc.ProductLeft = p
+				rc++
+				if i == len(*likeProdList)-1 {
+					pmsprowListc = append(pmsprowListc, psprowc)
+				}
+				continue
+			} else if rc == 2 {
+				h.Log.Debug("sku2", p.Sku)
+				psprowc.ProductMiddle = p
+				rc++
+				if i == len(*likeProdList)-1 {
+					pmsprowListc = append(pmsprowListc, psprowc)
+				}
+				continue
+			} else if rc == 3 {
+				h.Log.Debug("sku3", p.Sku)
+				psprowc.ProductRight = p
+				h.Log.Debug("prow", psprowc)
+				pmsprowListc = append(pmsprowListc, psprowc)
+				rc = 1
+			}
+		}
+
+		cplpage.ProductListRowList = &pmsprowListc
+
 		h.Log.Debug("cplpage: ", cplpage)
 		h.Templates.ExecuteTemplate(w, customerProductPage, &cplpage)
 	}

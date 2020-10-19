@@ -412,6 +412,7 @@ const (
 	productListContent         = "productList"
 	productCategoryListContent = "productCategoryList"
 	productContent             = "product"
+	shoppingCartContent        = "shoppingCart"
 
 	usernameForAddedNotes = "System Admin"
 

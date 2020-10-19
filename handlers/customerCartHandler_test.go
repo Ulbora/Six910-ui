@@ -10,7 +10,9 @@ import (
 
 	lg "github.com/Ulbora/Level_Logger"
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
+	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	m "github.com/Ulbora/Six910-ui/managers"
+	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
 	ds "github.com/Ulbora/json-datastore"
@@ -63,11 +65,11 @@ func TestSix910Handler_AddProductToCart(t *testing.T) {
 	//-----------end mocking --------
 
 	var c conts.CmsService
-	var ds ds.DataStore
-	ds.Path = "../contentsrv/testFiles"
+	var cds ds.DataStore
+	cds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
-	c.Store = ds.GetNew()
+	c.Store = cds.GetNew()
 
 	var ct conts.Content
 	ct.Name = "product"
@@ -82,6 +84,35 @@ func TestSix910Handler_AddProductToCart(t *testing.T) {
 
 	sh.ContentService = c.GetNew()
 
+	var sms musrv.Six910MenuService
+	var mds ds.DataStore
+	mds.Path = "./testFiles"
+	sms.MenuStore = mds.GetNew()
+	sms.Log = &l
+	ms := sms.GetNew()
+
+	var m musrv.Menu
+	m.Name = "menu1"
+	m.Active = true
+	m.Location = "top"
+	m.Shade = "light"
+	m.Background = "light"
+	m.Style = ""
+	m.ShadeList = &[]string{"light", "dark"}
+	m.BackgroundList = &[]string{"light", "dark"}
+
+	msuc := ms.AddMenu(&m)
+	fmt.Println("menu save: ", msuc)
+
+	sh.MenuService = ms
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
+
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
 	sh.ClientCreds = &cc
@@ -92,10 +123,153 @@ func TestSix910Handler_AddProductToCart(t *testing.T) {
 
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
 	vars := map[string]string{
-		"prodId":   "12",
-		"quantity": "2",
+		"prodId": "12",
+		//"quantity": "2",
 	}
 	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["customerUser"] = true
+	s.Values["customerId"] = 55
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.AddProductToCart(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_AddProductToCart2(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+	sh.API = &sapi
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
+	//-----------start mocking------------------
+
+	var prod sdbi.Product
+	prod.ID = 2
+	prod.Desc = "test"
+	sapi.MockProduct = &prod
+
+	var crtres api.ResponseID
+	crtres.ID = 3
+	crtres.Success = true
+
+	sapi.MockAddCartResp = &crtres
+
+	var cires api.ResponseID
+	cires.ID = 4
+	cires.Success = true
+
+	sapi.MockCartItemAddResp = &cires
+
+	// var plst []sdbi.Product
+	// plst = append(plst, prod)
+	// sapi.MockProductList = &plst
+
+	var c conts.CmsService
+	var cds ds.DataStore
+	cds.Path = "../contentsrv/testFiles"
+	//ds.Delete("books1")
+	c.Log = &l
+	c.Store = cds.GetNew()
+
+	var ct conts.Content
+	ct.Name = "index"
+	ct.Author = "ken"
+	ct.MetaAuthorName = "ken"
+	ct.MetaDesc = "shopping cart index"
+	ct.Text = "some book text"
+	ct.Title = "the best book ever"
+	ct.Visible = true
+	res := c.AddContent(&ct)
+	fmt.Println("content save: ", res)
+
+	sh.ContentService = c.GetNew()
+
+	var sms musrv.Six910MenuService
+	var mds ds.DataStore
+	mds.Path = "./testFiles"
+	sms.MenuStore = mds.GetNew()
+	sms.Log = &l
+	ms := sms.GetNew()
+
+	var m musrv.Menu
+	m.Name = "menu1"
+	m.Active = true
+	m.Location = "top"
+	m.Shade = "light"
+	m.Background = "light"
+	m.Style = ""
+	m.ShadeList = &[]string{"light", "dark"}
+	m.BackgroundList = &[]string{"light", "dark"}
+
+	msuc := ms.AddMenu(&m)
+	fmt.Println("menu save: ", msuc)
+
+	sh.MenuService = ms
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
+
+	//-----------end mocking --------
+
+	// var c conts.CmsService
+	// var ds ds.DataStore
+	// ds.Path = "../contentsrv/testFiles"
+	// //ds.Delete("books1")
+	// c.Log = &l
+	// c.Store = ds.GetNew()
+
+	// var ct conts.Content
+	// ct.Name = "product"
+	// ct.Author = "ken"
+	// ct.MetaAuthorName = "ken"
+	// ct.MetaDesc = "shopping cart index"
+	// ct.Text = "some book text"
+	// ct.Title = "the best book ever"
+	// ct.Visible = true
+	// res := c.AddContent(&ct)
+	// fmt.Println("content save: ", res)
+
+	sh.ContentService = c.GetNew()
+
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+
+	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("POST", "https://test.com?id=123&qty=3", nil)
+	// vars := map[string]string{
+	// 	"prodId": "12",
+	// 	//"quantity": "2",
+	// }
+	// r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
 	fmt.Println("suc: ", suc)
@@ -157,14 +331,14 @@ func TestSix910Handler_ViewCart(t *testing.T) {
 	//-----------end mocking --------
 
 	var c conts.CmsService
-	var ds ds.DataStore
-	ds.Path = "../contentsrv/testFiles"
+	var cds ds.DataStore
+	cds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
-	c.Store = ds.GetNew()
+	c.Store = cds.GetNew()
 
 	var ct conts.Content
-	ct.Name = "product"
+	ct.Name = "shoppingCart"
 	ct.Author = "ken"
 	ct.MetaAuthorName = "ken"
 	ct.MetaDesc = "shopping cart index"
@@ -175,6 +349,35 @@ func TestSix910Handler_ViewCart(t *testing.T) {
 	fmt.Println("content save: ", res)
 
 	sh.ContentService = c.GetNew()
+
+	var sms musrv.Six910MenuService
+	var mds ds.DataStore
+	mds.Path = "./testFiles"
+	sms.MenuStore = mds.GetNew()
+	sms.Log = &l
+	ms := sms.GetNew()
+
+	var m musrv.Menu
+	m.Name = "menu1"
+	m.Active = true
+	m.Location = "top"
+	m.Shade = "light"
+	m.Background = "light"
+	m.Style = ""
+	m.ShadeList = &[]string{"light", "dark"}
+	m.BackgroundList = &[]string{"light", "dark"}
+
+	msuc := ms.AddMenu(&m)
+	fmt.Println("menu save: ", msuc)
+
+	sh.MenuService = ms
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
@@ -253,24 +456,54 @@ func TestSix910Handler_ViewCartCartSession(t *testing.T) {
 	//-----------end mocking --------
 
 	var c conts.CmsService
-	var ds ds.DataStore
-	ds.Path = "../contentsrv/testFiles"
+	var cds ds.DataStore
+	cds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
-	c.Store = ds.GetNew()
+	c.Store = cds.GetNew()
 
 	var ct conts.Content
-	ct.Name = "product"
+	ct.Name = "shoppingCart"
 	ct.Author = "ken"
 	ct.MetaAuthorName = "ken"
 	ct.MetaDesc = "shopping cart index"
 	ct.Text = "some book text"
 	ct.Title = "the best book ever"
 	ct.Visible = true
-	res := c.AddContent(&ct)
+	//res := c.AddContent(&ct)
+	res := c.DeleteContent("shoppingCart")
 	fmt.Println("content save: ", res)
 
 	sh.ContentService = c.GetNew()
+
+	var sms musrv.Six910MenuService
+	var mds ds.DataStore
+	mds.Path = "./testFiles"
+	sms.MenuStore = mds.GetNew()
+	sms.Log = &l
+	ms := sms.GetNew()
+
+	var mm musrv.Menu
+	mm.Name = "menu1"
+	mm.Active = true
+	mm.Location = "top"
+	mm.Shade = "light"
+	mm.Background = "light"
+	mm.Style = ""
+	mm.ShadeList = &[]string{"light", "dark"}
+	mm.BackgroundList = &[]string{"light", "dark"}
+
+	msuc := ms.AddMenu(&mm)
+	fmt.Println("menu save: ", msuc)
+
+	sh.MenuService = ms
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"

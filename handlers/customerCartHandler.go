@@ -5,10 +5,14 @@ import (
 	"strconv"
 	"sync"
 
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
 	six910api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
+
+	csssrv "github.com/Ulbora/Six910-ui/csssrv"
+	musrv "github.com/Ulbora/Six910-ui/menusrv"
 )
 
 /*
@@ -43,16 +47,37 @@ type CheckoutPage struct {
 	InsuranceList      *[]sdbi.Insurance
 }
 
+//CartPage CartPage
+type CartPage struct {
+	CustomerCart *m.CustomerCart
+	PageBody     *csssrv.PageCSS
+	MenuList     *[]musrv.Menu
+	Content      *conts.Content
+}
+
 //AddProductToCart AddProductToCart
 func (h *Six910Handler) AddProductToCart(w http.ResponseWriter, r *http.Request) {
 	cpls, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		appvars := mux.Vars(r)
-		appidstr := appvars["prodId"]
-		appqtystr := appvars["quantity"]
-		cppid, _ := strconv.ParseInt(appidstr, 10, 64)
-		cppqty, _ := strconv.ParseInt(appqtystr, 10, 64)
+		var cppid int64
+		var cppqty int64
+
+		query := r.URL.Query()
+		id := query.Get("id")
+		qty := query.Get("qty")
+		if id != "" && qty != "" {
+			cppid, _ = strconv.ParseInt(id, 10, 64)
+			cppqty, _ = strconv.ParseInt(qty, 10, 64)
+		} else {
+			appvars := mux.Vars(r)
+			appidstr := appvars["prodId"]
+			// appqtystr := appvars["quantity"]
+			cppid, _ = strconv.ParseInt(appidstr, 10, 64)
+			// cppqty, _ = strconv.ParseInt(appqtystr, 10, 64)
+			cppqty = 1
+		}
+
 		var cpd m.CustomerProduct
 		cpd.ProductID = cppid
 		cpd.Quantity = cppqty
@@ -91,8 +116,27 @@ func (h *Six910Handler) ViewCart(w http.ResponseWriter, r *http.Request) {
 			ncv.Items = &ncil
 			cv = &ncv
 		}
+
+		var cpage CartPage
+		cpage.CustomerCart = cc
+
+		_, csspg := h.CSSService.GetPageCSS("pageCss")
+		h.Log.Debug("PageBody: ", *csspg)
+		cpage.PageBody = csspg
+
+		cpage.MenuList = h.MenuService.GetMenuList()
+		h.Log.Debug("MenuList", *cpage.MenuList)
+
+		cisuc, cicont := h.ContentService.GetContent(shoppingCartContent)
+		if cisuc {
+			cpage.Content = cicont
+		} else {
+			var ct conts.Content
+			cpage.Content = &ct
+		}
+
 		h.Log.Debug("CartView: ", *cv)
-		h.Templates.ExecuteTemplate(w, customerShoppingCartPage, &cv)
+		h.Templates.ExecuteTemplate(w, customerShoppingCartPage, &cpage)
 	}
 }
 
