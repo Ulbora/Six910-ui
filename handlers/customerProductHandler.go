@@ -31,7 +31,7 @@ import (
 
 //ViewProductList ViewProductList
 func (h *Six910Handler) ViewProductList(w http.ResponseWriter, r *http.Request) {
-	cpls, suc := h.getSession(r)
+	cpls, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		cplvars := mux.Vars(r)
@@ -61,7 +61,7 @@ func (h *Six910Handler) ViewProductList(w http.ResponseWriter, r *http.Request) 
 
 //ViewProductByCatList ViewProductByCatList
 func (h *Six910Handler) ViewProductByCatList(w http.ResponseWriter, r *http.Request) {
-	cpls, suc := h.getSession(r)
+	cpls, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		cplvars := mux.Vars(r)
@@ -84,6 +84,8 @@ func (h *Six910Handler) ViewProductByCatList(w http.ResponseWriter, r *http.Requ
 		mlst := h.API.GetProductManufacturerListByCatID(cplcatid, hd)
 
 		var cplpage CustomerPage
+		var turl = "/productByCategoryList/" + ccplcatidstr + "/" + catName + "/0/100"
+		cplpage.HeaderData = h.processMetaData(turl, catName, r)
 
 		_, csspg := h.CSSService.GetPageCSS("pageCss")
 		h.Log.Debug("PageBody: ", *csspg)
@@ -149,7 +151,7 @@ func (h *Six910Handler) ViewProductByCatList(w http.ResponseWriter, r *http.Requ
 
 //ViewProductByCatAndManufacturerList ViewProductByCatAndManufacturerList
 func (h *Six910Handler) ViewProductByCatAndManufacturerList(w http.ResponseWriter, r *http.Request) {
-	mcpls, suc := h.getSession(r)
+	mcpls, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		mcplvars := mux.Vars(r)
@@ -173,6 +175,8 @@ func (h *Six910Handler) ViewProductByCatAndManufacturerList(w http.ResponseWrite
 		mlst := h.API.GetProductManufacturerListByCatID(mcplcatid, hd)
 
 		var mcplpage CustomerPage
+		var turl = "/productByCategoryAndManufacturerList/" + mccplcatidstr + "/" + mcatName + "/" + manf + "/0/100"
+		mcplpage.HeaderData = h.processMetaData(turl, mcatName, r)
 
 		_, csspg := h.CSSService.GetPageCSS("pageCss")
 		h.Log.Debug("PageBody: ", *csspg)
@@ -239,7 +243,7 @@ func (h *Six910Handler) ViewProductByCatAndManufacturerList(w http.ResponseWrite
 
 //SearchProductList SearchProductList
 func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request) {
-	cspls, suc := h.getSession(r)
+	cspls, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		//var pagebdy PageBody
@@ -272,6 +276,8 @@ func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request
 		cisuc, cscont := h.ContentService.GetContent(productListContent)
 
 		var csplpage CustomerPage
+		var turl = "/searchProductsByName/" + csplsearch + "/0/100"
+		csplpage.HeaderData = h.processMetaData(turl, csplsearch, r)
 
 		_, csspg := h.CSSService.GetPageCSS("pageCss")
 		csplpage.PageBody = csspg
@@ -336,7 +342,7 @@ func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request
 
 //SearchProductByManufacturerList SearchProductByManufacturerList
 func (h *Six910Handler) SearchProductByManufacturerList(w http.ResponseWriter, r *http.Request) {
-	mcspls, suc := h.getSession(r)
+	mcspls, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 
@@ -371,6 +377,8 @@ func (h *Six910Handler) SearchProductByManufacturerList(w http.ResponseWriter, r
 		cisuc, cscont := h.ContentService.GetContent(productListContent)
 
 		var mcsplpage CustomerPage
+		var turl = "/searchProductsByManufacturerAndName/" + manf + "/" + mcsplsearch + "/0/100"
+		mcsplpage.HeaderData = h.processMetaData(turl, mcsplsearch, r)
 
 		_, csspg := h.CSSService.GetPageCSS("pageCss")
 		mcsplpage.PageBody = csspg
@@ -435,7 +443,7 @@ func (h *Six910Handler) SearchProductByManufacturerList(w http.ResponseWriter, r
 
 //ViewProduct ViewProduct
 func (h *Six910Handler) ViewProduct(w http.ResponseWriter, r *http.Request) {
-	cvps, suc := h.getSession(r)
+	cvps, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		cvpvars := mux.Vars(r)
@@ -473,6 +481,7 @@ func (h *Six910Handler) ViewProduct(w http.ResponseWriter, r *http.Request) {
 		cisuc, cicont := h.ContentService.GetContent(productContent)
 
 		var cplpage CustomerPage
+		cplpage.HeaderData = h.processProductMetaData(pp, r)
 		cplpage.ProductList = likeProdList
 
 		_, csspg := h.CSSService.GetPageCSS("pageCss")

@@ -56,6 +56,10 @@ func main() {
 	var mailPort string
 	var mailSenderAddress string
 	var mailSubject string
+	var schemeDefault string
+
+	var companyName string
+	var six910CartSite string
 
 	if os.Getenv("API_URL") != "" {
 		apiURL = os.Getenv("API_URL")
@@ -107,6 +111,21 @@ func main() {
 		mailSubject = "Six910 Shopping Cart Message"
 	}
 
+	if os.Getenv("COMPANY_NAME") != "" {
+		companyName = os.Getenv("COMPANY_NAME")
+	} else {
+		companyName = "Six910 Shopping Cart"
+	}
+
+	if os.Getenv("SIX910_CART_SITE") != "" {
+		six910CartSite = os.Getenv("SIX910_CART_SITE")
+	}
+	if os.Getenv("SCHEME_DEFAULT") != "" {
+		schemeDefault = os.Getenv("SCHEME_DEFAULT")
+	} else {
+		schemeDefault = "http://"
+	}
+
 	var sapi api.Six910API
 	sapi.SetAPIKey(apiKey)
 	sapi.SetRestURL(apiURL)
@@ -119,6 +138,9 @@ func main() {
 	ms.Port = mailPort
 
 	var sh hand.Six910Handler
+	sh.SchemeDefault = schemeDefault
+	sh.Six910SiteURL = six910CartSite
+	sh.CompanyName = companyName
 	sh.LocalDomain = localDomain
 	sh.StoreName = storeName
 	sh.API = sapi.GetNew()

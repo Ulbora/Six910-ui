@@ -3,8 +3,11 @@ package handlers
 import (
 	b64 "encoding/base64"
 	"encoding/gob"
+
 	"html/template"
 	"net/http"
+	"strconv"
+	"strings"
 
 	lg "github.com/Ulbora/Level_Logger"
 	bks "github.com/Ulbora/Six910-ui/bkupsrv"
@@ -21,6 +24,7 @@ import (
 	ml "github.com/Ulbora/go-mail-sender"
 	oauth2 "github.com/Ulbora/go-oauth2-client"
 	gs "github.com/Ulbora/go-sessions"
+	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/sessions"
 )
 
@@ -54,9 +58,11 @@ type Six910Handler struct {
 	API     api.API
 
 	Session        gs.GoSession
+	UserSession    gs.GoSession
 	Templates      *template.Template
 	AdminTemplates *template.Template
 	Store          *sessions.CookieStore
+	UserStore      *sessions.CookieStore
 
 	//services
 	BackupService   bks.BackupService
@@ -91,7 +97,116 @@ type Six910Handler struct {
 
 	ActiveTemplateName     string
 	ActiveTemplateLocation string
+
+	//domain of site www.somesite.com
+	Six910SiteURL string
+
+	CompanyName string
 }
+
+//HeaderData HeaderData
+type HeaderData struct {
+	Title         string
+	SiteData      *SiteData
+	BasicSiteData *BasicSiteData
+}
+
+//SiteData SiteData
+type SiteData struct {
+	Canonical   template.URL
+	OgImage     template.URL
+	OgType      string
+	OgSiteName  string
+	OgTitle     string
+	OgURL       template.URL
+	Description string
+}
+
+//BasicSiteData BasicSiteData
+type BasicSiteData struct {
+	Canonical   template.URL
+	Description string
+}
+
+func (h *Six910Handler) processProductMetaData(prod *sdbi.Product, r *http.Request) *HeaderData {
+	var rtn HeaderData
+	var scheme = r.URL.Scheme
+	// fmt.Println("scheme: ", scheme)
+	// fmt.Println("scheme: ", len(scheme))
+	var serverHost string
+	if scheme != "" {
+		serverHost = r.URL.String()
+	} else {
+		serverHost = h.SchemeDefault + r.Host
+	}
+	var sd SiteData
+	rtn.Title = prod.ShortDesc
+	pidstr := strconv.FormatInt(prod.ID, 10)
+	if h.Six910SiteURL != "" {
+		sd.Canonical = template.URL(h.Six910SiteURL + "/viewProduct/" + pidstr)
+	} else {
+		sd.Canonical = template.URL(serverHost + "/viewProduct/" + pidstr)
+	}
+
+	if strings.Contains(prod.Image1, "http") {
+		sd.OgImage = template.URL(prod.Image1)
+	} else if h.Six910SiteURL != "" {
+		sd.OgImage = template.URL(h.Six910SiteURL + prod.Image1)
+	} else {
+		sd.OgImage = template.URL(serverHost + prod.Image1)
+	}
+
+	sd.OgType = "product"
+
+	sd.OgSiteName = h.CompanyName
+
+	sd.OgTitle = prod.ShortDesc
+
+	if h.Six910SiteURL != "" {
+		sd.OgURL = template.URL(h.Six910SiteURL + "/viewProduct/" + pidstr)
+	} else {
+		sd.OgURL = template.URL(serverHost + "/viewProduct/" + pidstr)
+	}
+
+	if len(prod.Desc) > 159 {
+		sd.Description = prod.Desc[0:158]
+	} else {
+		sd.Description = prod.Desc
+	}
+	rtn.SiteData = &sd
+
+	return &rtn
+}
+
+func (h *Six910Handler) processMetaData(url string, name string, r *http.Request) *HeaderData {
+	var rtn HeaderData
+	var scheme = r.URL.Scheme
+	// fmt.Println("scheme: ", scheme)
+	// fmt.Println("scheme: ", len(scheme))
+	var serverHost string
+	if scheme != "" {
+		serverHost = r.URL.String()
+	} else {
+		serverHost = h.SchemeDefault + r.Host
+	}
+	var bsd BasicSiteData
+	rtn.Title = name
+
+	if h.Six910SiteURL != "" {
+		bsd.Canonical = template.URL(h.Six910SiteURL + url)
+	} else {
+		bsd.Canonical = template.URL(serverHost + url)
+	}
+
+	bsd.Description = name
+	rtn.BasicSiteData = &bsd
+
+	return &rtn
+}
+
+// func (h *Six910Handler) getSiteURL(r *http.Request) string {
+// 	if h.Six910SiteURL != ""
+// }
 
 //GetNew GetNew
 func (h *Six910Handler) GetNew() Handler {
@@ -121,6 +236,50 @@ func (h *Six910Handler) getSession(r *http.Request) (*sessions.Session, bool) {
 
 		//h.Session.InitSessionStore()
 		s, err := h.Store.Get(r, h.Session.Name)
+		//s, err := store.Get(r, "temp-name")
+		//s, err := store.Get(r, "goauth2")
+
+		loggedInAuth := s.Values["userLoggenIn"]
+		//userAuth := s.Values["user"]
+		h.Log.Debug("userLoggenIn: ", loggedInAuth)
+		//h.Log.Debug("user: ", userAuth)
+
+		//larii := s.Values["authReqInfo"]
+		//h.Log.Debug("arii-----login", larii)
+
+		h.Log.Debug("session error in getSession: ", err)
+		if err == nil {
+			suc = true
+			srtn = s
+		}
+	}
+	//fmt.Println("exit getSession--------------------------------------------------")
+	return srtn, suc
+}
+
+func (h *Six910Handler) getUserSession(r *http.Request) (*sessions.Session, bool) {
+	//fmt.Println("getSession--------------------------------------------------")
+	var suc bool
+	var srtn *sessions.Session
+	if h.UserStore == nil {
+		h.UserSession.Name = "Six910-ui-user"
+		h.UserSession.MaxAge = 36000000
+		h.UserStore = h.UserSession.InitSessionStore()
+		h.Log.Debug("h.UserStore : ", h.UserStore)
+		//errors without this
+		gob.Register(&m.CustomerCart{})
+		//-------gob.Register(&AuthorizeRequestInfo{})
+	}
+	if r != nil {
+		// fmt.Println("secure in getSession", h.Session.Secure)
+		// fmt.Println("name in getSession", h.Session.Name)
+		// fmt.Println("MaxAge in getSession", h.Session.MaxAge)
+		// fmt.Println("SessionKey in getSession", h.Session.SessionKey)
+
+		//h.Session.HTTPOnly = true
+
+		//h.Session.InitSessionStore()
+		s, err := h.UserStore.Get(r, h.UserSession.Name)
 		//s, err := store.Get(r, "temp-name")
 		//s, err := store.Get(r, "goauth2")
 

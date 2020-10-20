@@ -61,11 +61,14 @@ type CustomerPage struct {
 	Manufacturer       string
 	PageBody           *csssrv.PageCSS
 	Carousel           *carsrv.Carousel
+
+	//meta data
+	HeaderData *HeaderData
 }
 
 //Index Index
 func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
-	cis, suc := h.getSession(r)
+	cis, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		//var pagebdy PageBody
