@@ -33,6 +33,7 @@ func (m *Six910Manager) AddProductToCart(cp *CustomerProduct, hd *api.Headers) *
 	var rtn CustomerCart
 	var cart *sdbi.Cart
 	m.Log.Debug("cp cart : ", cp.Cart)
+	m.Log.Debug("cp quantity : ", cp.Quantity)
 	if cp.CustomerID != 0 && cp.Cart == nil {
 		cart = m.API.GetCart(cp.CustomerID, hd)
 	} else if cp.Cart != nil {
@@ -54,6 +55,19 @@ func (m *Six910Manager) AddProductToCart(cp *CustomerProduct, hd *api.Headers) *
 	if cart != nil && cart.ID != 0 {
 		m.Log.Debug("cart in add prod to cart: ", *cart)
 		m.Log.Debug("cart.ID: ", cart.ID)
+		prod := m.API.GetProductByID(cp.ProductID, hd)
+		//citm := m.API.GetCartItem(cart.ID, prod.ID, hd)
+		m.Log.Debug("prod stock : ", prod.Stock)
+		m.Log.Debug("cp.Quantity : ", cp.Quantity)
+		m.Log.Debug("cart.ID : ", cart.ID)
+		m.Log.Debug("prod.ID : ", prod.ID)
+		//m.Log.Debug("citm : ", cp.CartItem.Quantity)
+
+		m.Log.Debug("cp.Quantity before adjust : ", cp.Quantity)
+		if cp.CartItem != nil && (cp.Quantity+cp.CartItem.Quantity) > prod.Stock {
+			cp.Quantity = 0
+		}
+		m.Log.Debug("cp.Quantity : ", cp.Quantity)
 		var ci sdbi.CartItem
 		ci.CartID = cart.ID
 		ci.ProductID = cp.ProductID
@@ -81,9 +95,11 @@ func (m *Six910Manager) ViewCart(cc *CustomerCart, hd *api.Headers) *CartView {
 			var cvi CartViewItem
 			prod := m.API.GetProductByID(cItem.ProductID, header)
 			//m.Log.Debug("in goroutine prod:", *prod)
+			cvi.ProductName = prod.Name
 			cvi.ProductID = prod.ID
 			cvi.Desc = prod.ShortDesc
 			cvi.Image = prod.Thumbnail
+			cvi.Stock = prod.Stock
 			cvi.Quantity = cItem.Quantity
 			if prod.SalePrice != 0 {
 				cvi.Price = prod.SalePrice
@@ -114,7 +130,12 @@ func (m *Six910Manager) ViewCart(cc *CustomerCart, hd *api.Headers) *CartView {
 func (m *Six910Manager) UpdateProductToCart(cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart {
 	var rtn CustomerCart
 	if cp.Cart != nil && cp.CartItem != nil {
-		res := m.API.UpdateCartItem(cp.CartItem, cp.CustomerID, hd)
+		var res *api.Response
+		if cp.CartItem.Quantity == 0 {
+			res = m.API.DeleteCartItem(cp.CartItem.ID, cp.CartItem.ProductID, cp.CartItem.CartID, hd)
+		} else {
+			res = m.API.UpdateCartItem(cp.CartItem, cp.CustomerID, hd)
+		}
 		if res.Success {
 			rtn.Cart = cp.Cart
 			rtn.Items = m.API.GetCartItemList(cp.Cart.ID, cp.CustomerID, hd)

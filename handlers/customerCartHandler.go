@@ -87,6 +87,17 @@ func (h *Six910Handler) AddProductToCart(w http.ResponseWriter, r *http.Request)
 		h.Log.Debug("cusid: ", cpd.CustomerID)
 
 		hd := h.getHeader(cpls)
+		cc := h.getCustomerCart(cpls)
+		if cc != nil {
+			cpd.Cart = cc.Cart
+			if cc.Items != nil {
+				for i := range *cc.Items {
+					if (*cc.Items)[i].ProductID == cppid {
+						cpd.CartItem = &(*cc.Items)[i]
+					}
+				}
+			}
+		}
 		cres := h.Manager.AddProductToCart(&cpd, hd)
 		acres := h.storeCustomerCart(cres, cpls, w, r)
 
@@ -105,8 +116,8 @@ func (h *Six910Handler) ViewCart(w http.ResponseWriter, r *http.Request) {
 		var cv *m.CartView
 		cc := h.getCustomerCart(ccvs)
 		h.Log.Debug("cc: ", cc)
-		if cc != nil {
-			hd := h.getHeader(ccvs)
+		hd := h.getHeader(ccvs)
+		if cc != nil && cc.Items != nil && len(*cc.Items) > 0 {
 			cv = h.Manager.ViewCart(cc, hd)
 			cc.CartView = cv
 			h.storeCustomerCart(cc, ccvs, w, r)
@@ -124,7 +135,10 @@ func (h *Six910Handler) ViewCart(w http.ResponseWriter, r *http.Request) {
 		h.Log.Debug("PageBody: ", *csspg)
 		cpage.PageBody = csspg
 
-		cpage.MenuList = h.MenuService.GetMenuList()
+		ml := h.MenuService.GetMenuList()
+		h.getCartTotal(ccvs, ml, hd)
+		cpage.MenuList = ml
+
 		h.Log.Debug("MenuList", *cpage.MenuList)
 
 		cisuc, cicont := h.ContentService.GetContent(shoppingCartContent)
@@ -145,11 +159,13 @@ func (h *Six910Handler) UpdateProductToCart(w http.ResponseWriter, r *http.Reque
 	ucpls, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		uappvars := mux.Vars(r)
-		uappidstr := uappvars["prodId"]
-		uappqtystr := uappvars["quantity"]
+
+		query := r.URL.Query()
+		uappidstr := query.Get("id")
+		uappqtystr := query.Get("qty")
 		ucppid, _ := strconv.ParseInt(uappidstr, 10, 64)
 		ucppqty, _ := strconv.ParseInt(uappqtystr, 10, 64)
+
 		var ucpd m.CustomerProductUpdate
 
 		if h.isStoreCustomerLoggedIn(ucpls) {
@@ -161,7 +177,7 @@ func (h *Six910Handler) UpdateProductToCart(w http.ResponseWriter, r *http.Reque
 		for i := range *ccart.Items {
 			h.Log.Debug("(*ccart.Items)[i]: ", (*ccart.Items)[i])
 			if (*ccart.Items)[i].ProductID == ucppid {
-				(*ccart.Items)[i].Quantity += ucppqty
+				(*ccart.Items)[i].Quantity = ucppqty
 				ucpd.CartItem = &(*ccart.Items)[i]
 				break
 			}

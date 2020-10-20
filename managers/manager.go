@@ -2,7 +2,6 @@
 package managers
 
 import (
-	
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 )
@@ -95,8 +94,8 @@ type CustomerProduct struct {
 	//Cart      *CustomerCart
 	CustomerID int64
 	//CartID     int64
-	Cart *sdbi.Cart
-	//CartItem   *sdbi.CartItem
+	Cart     *sdbi.Cart
+	CartItem *sdbi.CartItem
 	//CustomerEmail string
 	StoreID int64
 }
@@ -152,18 +151,20 @@ type OrderItemResults struct {
 
 //CartViewItem CartViewItem
 type CartViewItem struct {
-	ProductID int64
-	Desc      string
-	Image     string
-	Quantity  int64
-	Price     float64
-	Total     float64
+	ProductID   int64
+	ProductName string
+	Desc        string
+	Image       string
+	Quantity    int64
+	Stock       int64
+	Price       float64
+	Total       float64
 }
 
 //CartView CartView
 type CartView struct {
-	Items    *[]*CartViewItem
-	Total    float64	
+	Items *[]*CartViewItem
+	Total float64
 }
 
 //Manager Manager

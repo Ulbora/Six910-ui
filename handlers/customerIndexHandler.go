@@ -120,7 +120,10 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 
 		h.Log.Debug("prowList", prowList)
 
-		cipage.MenuList = h.MenuService.GetMenuList()
+		//cipage.MenuList = h.MenuService.GetMenuList()
+		ml := h.MenuService.GetMenuList()
+		h.getCartTotal(cis, ml, hd)
+		cipage.MenuList = ml
 		h.Log.Debug("MenuList", *cipage.MenuList)
 		_, cont := h.ContentService.GetContent("home")
 		cipage.Content = cont

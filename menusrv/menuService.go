@@ -43,6 +43,7 @@ type Menu struct {
 	ShadeList      *[]string
 	BackgroundList *[]string
 	MenuItemList   *[]MenuItemItem
+	CartCount      int64
 }
 
 //MenuItemItem MenuItemItem

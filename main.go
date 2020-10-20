@@ -236,6 +236,8 @@ func main() {
 	router.HandleFunc("/addProductToCart", h.AddProductToCart).Methods("GET")
 	router.HandleFunc("/addToCart/{prodId}", h.AddProductToCart).Methods("GET")
 
+	router.HandleFunc("/updateCart", h.UpdateProductToCart).Methods("GET")
+
 	router.HandleFunc("/shoppingCartView", h.ViewCart).Methods("GET")
 
 	//admin pages

@@ -100,7 +100,10 @@ func (h *Six910Handler) ViewProductByCatList(w http.ResponseWriter, r *http.Requ
 		cplpage.CategoryName = catName
 		cplpage.CategoryID = ccplcatidstr
 
-		cplpage.MenuList = h.MenuService.GetMenuList()
+		//cplpage.MenuList = h.MenuService.GetMenuList()
+		ml := h.MenuService.GetMenuList()
+		h.getCartTotal(cpls, ml, hd)
+		cplpage.MenuList = ml
 		h.Log.Debug("MenuList", *cplpage.MenuList)
 
 		var prowListc []*ProductRow
@@ -187,7 +190,10 @@ func (h *Six910Handler) ViewProductByCatAndManufacturerList(w http.ResponseWrite
 		mcplpage.CategoryID = mccplcatidstr
 		mcplpage.Manufacturer = manf
 
-		mcplpage.MenuList = h.MenuService.GetMenuList()
+		//mcplpage.MenuList = h.MenuService.GetMenuList()
+		ml := h.MenuService.GetMenuList()
+		h.getCartTotal(mcpls, ml, hd)
+		mcplpage.MenuList = ml
 		h.Log.Debug("MenuList", *mcplpage.MenuList)
 
 		var mprowListc []*ProductRow
@@ -281,7 +287,10 @@ func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request
 		csplpage.SearchName = csplsearch
 		csplpage.Manufacturer = ""
 
-		csplpage.MenuList = h.MenuService.GetMenuList()
+		//csplpage.MenuList = h.MenuService.GetMenuList()
+		ml := h.MenuService.GetMenuList()
+		h.getCartTotal(cspls, ml, hd)
+		csplpage.MenuList = ml
 		h.Log.Debug("MenuList", *csplpage.MenuList)
 
 		var sprowListc []*ProductRow
@@ -377,7 +386,10 @@ func (h *Six910Handler) SearchProductByManufacturerList(w http.ResponseWriter, r
 		mcsplpage.SearchName = mcsplsearch
 		mcsplpage.Manufacturer = manf
 
-		mcsplpage.MenuList = h.MenuService.GetMenuList()
+		//mcsplpage.MenuList = h.MenuService.GetMenuList()
+		ml := h.MenuService.GetMenuList()
+		h.getCartTotal(mcspls, ml, hd)
+		mcsplpage.MenuList = ml
 		h.Log.Debug("MenuList", *mcsplpage.MenuList)
 
 		var msprowListc []*ProductRow
@@ -469,7 +481,10 @@ func (h *Six910Handler) ViewProduct(w http.ResponseWriter, r *http.Request) {
 
 		cplpage.CategoryList = &catList
 
-		cplpage.MenuList = h.MenuService.GetMenuList()
+		//cplpage.MenuList = h.MenuService.GetMenuList()
+		ml := h.MenuService.GetMenuList()
+		h.getCartTotal(cvps, ml, hd)
+		cplpage.MenuList = ml
 		h.Log.Debug("MenuList", *cplpage.MenuList)
 		//_, cont := h.ContentService.GetContent("product")
 		//cplpage.Content = cont

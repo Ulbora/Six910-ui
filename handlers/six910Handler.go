@@ -211,3 +211,19 @@ func (h *Six910Handler) getCustomerCart(s *sessions.Session) *m.CustomerCart {
 	}
 	return rtn
 }
+
+func (h *Six910Handler) getCartTotal(s *sessions.Session, ml *[]musrv.Menu, hd *api.Headers) {
+	var rtn int64
+	cc := h.getCustomerCart(s)
+	if cc != nil && cc.Items != nil && len(*cc.Items) > 0 {
+		cv := h.Manager.ViewCart(cc, hd)
+		for _, itm := range *cv.Items {
+			rtn += itm.Quantity
+		}
+		for i := range *ml {
+			if (*ml)[i].Name == "navBar" && (*ml)[i].Location == "top" {
+				(*ml)[i].CartCount = rtn
+			}
+		}
+	}
+}

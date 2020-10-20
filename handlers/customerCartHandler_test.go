@@ -91,17 +91,17 @@ func TestSix910Handler_AddProductToCart(t *testing.T) {
 	sms.Log = &l
 	ms := sms.GetNew()
 
-	var m musrv.Menu
-	m.Name = "menu1"
-	m.Active = true
-	m.Location = "top"
-	m.Shade = "light"
-	m.Background = "light"
-	m.Style = ""
-	m.ShadeList = &[]string{"light", "dark"}
-	m.BackgroundList = &[]string{"light", "dark"}
+	var mm musrv.Menu
+	mm.Name = "menu1"
+	mm.Active = true
+	mm.Location = "top"
+	mm.Shade = "light"
+	mm.Background = "light"
+	mm.Style = ""
+	mm.ShadeList = &[]string{"light", "dark"}
+	mm.BackgroundList = &[]string{"light", "dark"}
 
-	msuc := ms.AddMenu(&m)
+	msuc := ms.AddMenu(&mm)
 	fmt.Println("menu save: ", msuc)
 
 	sh.MenuService = ms
@@ -128,11 +128,30 @@ func TestSix910Handler_AddProductToCart(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
+
+	var cilstp []sdbi.CartItem
+
+	var ctit1 sdbi.CartItem
+	ctit1.Quantity = 3
+	ctit1.ProductID = 7
+	cilstp = append(cilstp, ctit1)
+
+	var ctit2 sdbi.CartItem
+	ctit2.Quantity = 4
+	ctit2.ProductID = 12
+	cilstp = append(cilstp, ctit2)
+
+	var cccs m.CustomerCart
+	var crt sdbi.Cart
+	cccs.Cart = &crt
+	cccs.Items = &cilstp
+
 	s, suc := sh.getSession(r)
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = 55
+	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.AddProductToCart(w, r)
@@ -212,17 +231,17 @@ func TestSix910Handler_AddProductToCart2(t *testing.T) {
 	sms.Log = &l
 	ms := sms.GetNew()
 
-	var m musrv.Menu
-	m.Name = "menu1"
-	m.Active = true
-	m.Location = "top"
-	m.Shade = "light"
-	m.Background = "light"
-	m.Style = ""
-	m.ShadeList = &[]string{"light", "dark"}
-	m.BackgroundList = &[]string{"light", "dark"}
+	var mm musrv.Menu
+	mm.Name = "menu1"
+	mm.Active = true
+	mm.Location = "top"
+	mm.Shade = "light"
+	mm.Background = "light"
+	mm.Style = ""
+	mm.ShadeList = &[]string{"light", "dark"}
+	mm.BackgroundList = &[]string{"light", "dark"}
 
-	msuc := ms.AddMenu(&m)
+	msuc := ms.AddMenu(&mm)
 	fmt.Println("menu save: ", msuc)
 
 	sh.MenuService = ms
@@ -270,12 +289,18 @@ func TestSix910Handler_AddProductToCart2(t *testing.T) {
 	// 	//"quantity": "2",
 	// }
 	// r = mux.SetURLVars(r, vars)
+
+	var cccs m.CustomerCart
+	var crt sdbi.Cart
+	cccs.Cart = &crt
+
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = 55
+	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.AddProductToCart(w, r)
@@ -484,7 +509,7 @@ func TestSix910Handler_ViewCartCartSession(t *testing.T) {
 	ms := sms.GetNew()
 
 	var mm musrv.Menu
-	mm.Name = "menu1"
+	mm.Name = "navBar"
 	mm.Active = true
 	mm.Location = "top"
 	mm.Shade = "light"
@@ -623,7 +648,7 @@ func TestSix910Handler_UpdateProductToCart(t *testing.T) {
 
 	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
 
-	r, _ := http.NewRequest("POST", "https://test.com", nil)
+	r, _ := http.NewRequest("GET", "https://test.com?id=9&quantity=2", nil)
 	vars := map[string]string{
 		"prodId":   "9",
 		"quantity": "2",
