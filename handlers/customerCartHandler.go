@@ -42,9 +42,14 @@ type PaymentMethod struct {
 //CheckoutPage CheckoutPage
 type CheckoutPage struct {
 	CustomerCart       *m.CustomerCart
+	PageBody           *csssrv.PageCSS
+	MenuList           *[]musrv.Menu
+	Content            *conts.Content
 	PaymentMethodList  *[]PaymentMethod
 	ShippingMethodList *[]sdbi.ShippingMethod
 	InsuranceList      *[]sdbi.Insurance
+
+	HeaderData *HeaderData
 }
 
 //CartPage CartPage
@@ -217,6 +222,7 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 				defer wg.Done()
 				var mplist []PaymentMethod
 				pgs := h.API.GetPaymentGateways(header)
+				h.Log.Debug("Payment Gateways: ", *pgs)
 				for i := range *pgs {
 					var pg = (*pgs)[i]
 					sp := h.API.GetStorePlugin(pg.StorePluginsID, header)
@@ -242,8 +248,26 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 
 			wg.Wait()
 
+			_, csspg := h.CSSService.GetPageCSS("pageCss")
+			h.Log.Debug("PageBody: ", *csspg)
+			cop.PageBody = csspg
+
+			ml := h.MenuService.GetMenuList()
+			h.getCartTotal(cocvs, ml, hd)
+			cop.MenuList = ml
+
+			h.Log.Debug("MenuList", *cop.MenuList)
+
+			cisuc, cicont := h.ContentService.GetContent(shoppingCartContent2)
+			if cisuc {
+				cop.Content = cicont
+			} else {
+				var ct conts.Content
+				cop.Content = &ct
+			}
+
 			h.Log.Debug("CheckoutPage: ", cop)
-			h.Templates.ExecuteTemplate(w, customerShoppingCartPage, &cop)
+			h.Templates.ExecuteTemplate(w, customerShoppingCartPage2, &cop)
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)
 		}

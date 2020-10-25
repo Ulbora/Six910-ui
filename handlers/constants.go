@@ -242,7 +242,7 @@ const (
 	customerIndexViewFail = "/customerIndex?error=Add Failed"
 
 	//routes shopping cart
-	customerLoginView            = "/customerLogin"
+	customerLoginView            = "/customerLoginPage"
 	customerLoginViewFail        = "/customerLogin?error=Add Failed"
 	customerShoppingCartView     = "/shoppingCartView"
 	customerShoppingCartViewFail = "/shoppingCartView?error=Add Failed"
@@ -391,6 +391,7 @@ const (
 	customerProductsSearchListPage   = "productsSearch.html"
 	customerProductPage              = "product.html"
 	customerShoppingCartPage         = "shoppingCart.html"
+	customerShoppingCartPage2        = "shoppingCart2.html"
 	customerShoppingCartContinuePage = "shoppingCartContinue.html"
 	customerCreatePage               = "createCustomer.html"
 	customerCreateAddressPage        = "createCustomerAddress.html"
@@ -413,6 +414,7 @@ const (
 	productCategoryListContent = "productCategoryList"
 	productContent             = "product"
 	shoppingCartContent        = "shoppingCart"
+	shoppingCartContent2       = "shoppingCart2"
 
 	usernameForAddedNotes = "System Admin"
 

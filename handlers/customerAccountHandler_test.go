@@ -11,6 +11,7 @@ import (
 	lg "github.com/Ulbora/Level_Logger"
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
+	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
 	ds "github.com/Ulbora/json-datastore"
@@ -33,6 +34,11 @@ func TestSix910Handler_CreateCustomerAccountPage(t *testing.T) {
 
 	//-----------start mocking------------------
 
+	var prod1 sdbi.Product
+	prod1.ID = 2
+	prod1.Desc = "test"
+	sapi.MockProduct = &prod1
+
 	var prod sdbi.Product
 	prod.ID = 2
 	prod.Desc = "test"
@@ -42,6 +48,28 @@ func TestSix910Handler_CreateCustomerAccountPage(t *testing.T) {
 	sapi.MockProductList = &plst
 
 	//-----------end mocking --------
+
+	var sms musrv.Six910MenuService
+	var mds ds.DataStore
+	mds.Path = "./testFiles"
+	sms.MenuStore = mds.GetNew()
+	sms.Log = &l
+	ms := sms.GetNew()
+
+	var mm musrv.Menu
+	mm.Name = "menu1"
+	mm.Active = true
+	mm.Location = "top"
+	mm.Shade = "light"
+	mm.Background = "light"
+	mm.Style = ""
+	mm.ShadeList = &[]string{"light", "dark"}
+	mm.BackgroundList = &[]string{"light", "dark"}
+
+	msuc := ms.AddMenu(&mm)
+	fmt.Println("menu save: ", msuc)
+
+	sh.MenuService = ms
 
 	var c conts.CmsService
 	var ds ds.DataStore

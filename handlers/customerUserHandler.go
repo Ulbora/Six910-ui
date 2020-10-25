@@ -26,16 +26,17 @@ import (
 
 //CustomerLoginPage CustomerLoginPage
 func (h *Six910Handler) CustomerLoginPage(w http.ResponseWriter, r *http.Request) {
-	clinss, suc := h.getSession(r)
+	clinss, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", clinss)
 	if suc {
-		h.Templates.ExecuteTemplate(w, customerLoginPage, nil)
+		var locp CustomerPage
+		h.Templates.ExecuteTemplate(w, customerLoginPage, locp)
 	}
 }
 
 //CustomerLogin CustomerLogin
 func (h *Six910Handler) CustomerLogin(w http.ResponseWriter, r *http.Request) {
-	slin, suc := h.getSession(r)
+	slin, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		cusername := r.FormValue("username")

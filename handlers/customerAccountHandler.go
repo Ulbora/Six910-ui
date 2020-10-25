@@ -29,10 +29,15 @@ import (
 
 //CreateCustomerAccountPage CreateCustomerAccountPage
 func (h *Six910Handler) CreateCustomerAccountPage(w http.ResponseWriter, r *http.Request) {
-	ccuss, suc := h.getSession(r)
+	ccuss, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", ccuss)
 	if suc {
-		h.Templates.ExecuteTemplate(w, customerCreatePage, nil)
+		hd := h.getHeader(ccuss)
+		var caocp CustomerPage
+		ml := h.MenuService.GetMenuList()
+		h.getCartTotal(ccuss, ml, hd)
+		caocp.MenuList = ml
+		h.Templates.ExecuteTemplate(w, customerCreatePage, caocp)
 	}
 }
 

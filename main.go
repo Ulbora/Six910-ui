@@ -262,6 +262,12 @@ func main() {
 
 	router.HandleFunc("/shoppingCartView", h.ViewCart).Methods("GET")
 
+	router.HandleFunc("/startCheckout", h.CheckOutView).Methods("GET")
+
+	router.HandleFunc("/customerLoginPage", h.CustomerLoginPage).Methods("GET")
+
+	router.HandleFunc("/register", h.CreateCustomerAccountPage).Methods("GET")
+
 	//admin pages
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")
 	router.HandleFunc("/admin/login", h.StoreAdminLogin).Methods("GET")

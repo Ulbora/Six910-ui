@@ -82,9 +82,22 @@
             <p class="card-text">Total: ${{.CustomerCart.CartView.Total}}</p>
           </div>
         </div>
+        <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+          <form method="POST" action="/checkoutContinue">
+            {{.PaymentMethodList}}
+            {{range .PaymentMethodList}}
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod" value="{{.PaymentGateway.ID}}">
+              <label class="form-check-label" for="paymentMethod">
+                {{.Name}}
+              </label>
+            </div>
+            {{end}}
+          </form>
+        </div>
         <div class="card text-center">
           <div class="card-body">   
-            <a href="/startCheckout" class="btn btn-success">Start Checkout</a>
+            <a href="/startCheckout" class="btn btn-info">Continue Checkout</a>
           </div>
         </div>
       </div>
