@@ -39,15 +39,26 @@ type PaymentMethod struct {
 	PaymentGateway *sdbi.PaymentGateway
 }
 
+//ShippingMethod ShippingMethod
+type ShippingMethod struct {
+	ID         int64   `json:"id"`
+	Name       string  `json:"name"`
+	Cost       float64 `json:"cost"`
+	RegionName string  `json:"regionName"`
+}
+
 //CheckoutPage CheckoutPage
 type CheckoutPage struct {
-	CustomerCart       *m.CustomerCart
-	PageBody           *csssrv.PageCSS
-	MenuList           *[]musrv.Menu
-	Content            *conts.Content
-	PaymentMethodList  *[]PaymentMethod
-	ShippingMethodList *[]sdbi.ShippingMethod
-	InsuranceList      *[]sdbi.Insurance
+	CustomerCart        *m.CustomerCart
+	PageBody            *csssrv.PageCSS
+	MenuList            *[]musrv.Menu
+	Content             *conts.Content
+	PaymentMethodList   *[]PaymentMethod
+	ShippingMethodList  *[]ShippingMethod
+	InsuranceList       *[]sdbi.Insurance
+	ShowInsurance       bool
+	CustomerAddressList *[]sdbi.Address
+	ShowAddressList     bool
 
 	HeaderData *HeaderData
 }
@@ -105,7 +116,8 @@ func (h *Six910Handler) AddProductToCart(w http.ResponseWriter, r *http.Request)
 				}
 			}
 		}
-		cres := h.Manager.AddProductToCart(&cpd, hd)
+
+		cres := h.Manager.AddProductToCart(cc, &cpd, hd)
 		acres := h.storeCustomerCart(cres, cpls, w, r)
 
 		h.Log.Debug("cres: ", cres)
@@ -196,7 +208,8 @@ func (h *Six910Handler) UpdateProductToCart(w http.ResponseWriter, r *http.Reque
 		//h.Log.Debug("CustomerProductUpdate item: ", *ucpd.CartItem)
 
 		hd := h.getHeader(ucpls)
-		ucres := h.Manager.UpdateProductToCart(&ucpd, hd)
+		cc := h.getCustomerCart(ucpls)
+		ucres := h.Manager.UpdateProductToCart(cc, &ucpd, hd)
 		acres := h.storeCustomerCart(ucres, ucpls, w, r)
 
 		h.Log.Debug("cres: ", ucres)
@@ -214,6 +227,8 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 		if h.isStoreCustomerLoggedIn(cocvs) {
 			var cop CheckoutPage
 			cocc := h.getCustomerCart(cocvs)
+			h.Log.Debug("Customer cart: ", *cocc)
+			h.Log.Debug("Customer Account: ", cocc.CustomerAccount)
 			cop.CustomerCart = cocc
 			var wg sync.WaitGroup
 			hd := h.getHeader(cocvs)
@@ -237,14 +252,39 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				cop.ShippingMethodList = h.API.GetShippingMethodList(header)
+				slst := h.API.GetShippingMethodList(header)
+				var smlst []ShippingMethod
+				for _, sm := range *slst {
+					var nsm ShippingMethod
+					nsm.ID = sm.ID
+					nsm.Cost = sm.Cost
+					nsm.Name = sm.Name
+					rg := h.API.GetRegion(sm.RegionID, hd)
+					nsm.RegionName = rg.Name
+					smlst = append(smlst, nsm)
+				}
+				cop.ShippingMethodList = &smlst
 			}(hd)
 
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
 				cop.InsuranceList = h.API.GetInsuranceList(header)
+				if len(*cop.InsuranceList) > 0 {
+					cop.ShowInsurance = true
+				}
 			}(hd)
+
+			wg.Add(1)
+			go func(cart *m.CustomerCart, header *six910api.Headers) {
+				defer wg.Done()
+				if cart.CustomerAccount != nil && cart.CustomerAccount.Customer != nil {
+					cop.CustomerAddressList = h.API.GetAddressList(cart.CustomerAccount.Customer.ID, header)
+					if len(*cop.CustomerAddressList) > 0 {
+						cop.ShowAddressList = true
+					}
+				}
+			}(cocc, hd)
 
 			wg.Wait()
 

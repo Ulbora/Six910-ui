@@ -78,7 +78,7 @@ func (h *Six910Handler) CustomerLogin(w http.ResponseWriter, r *http.Request) {
 
 //CustomerChangePasswordPage CustomerChangePasswordPage
 func (h *Six910Handler) CustomerChangePasswordPage(w http.ResponseWriter, r *http.Request) {
-	ccpwpuvss, suc := h.getSession(r)
+	ccpwpuvss, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", ccpwpuvss)
 	if suc {
 		if h.isStoreCustomerLoggedIn(ccpwpuvss) {
@@ -102,7 +102,7 @@ func (h *Six910Handler) CustomerChangePasswordPage(w http.ResponseWriter, r *htt
 
 //CustomerChangePassword CustomerChangePassword
 func (h *Six910Handler) CustomerChangePassword(w http.ResponseWriter, r *http.Request) {
-	ccpwuvss, suc := h.getSession(r)
+	ccpwuvss, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", ccpwuvss)
 	if suc {
 		if h.isStoreCustomerLoggedIn(ccpwuvss) {

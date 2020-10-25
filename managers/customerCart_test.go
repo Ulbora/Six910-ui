@@ -78,11 +78,95 @@ func TestSix910Manager_AddProductToCart(t *testing.T) {
 	cp.Quantity = 3
 	cp.StoreID = 59
 
+	var cc1 CustomerCart
+
 	var head api.Headers
 	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
 	m := sm.GetNew()
-	cc := m.AddProductToCart(&cp, &head)
+	cc := m.AddProductToCart(&cc1, &cp, &head)
+
+	fmt.Println("customer cc: ", cc)
+	if cc.Cart == nil || cc.Cart.CustomerID != 18 || cc.Items == nil {
+		t.Fail()
+	}
+}
+
+func TestSix910Manager_AddProductToCart2(t *testing.T) {
+	var sm Six910Manager
+
+	//var sapi api.Six910API
+
+	//-----------start mocking------------------
+	var sapi mapi.MockAPI
+	var cart sdbi.Cart
+	cart.CustomerID = 18
+	cart.ID = 3
+	cart.StoreID = 59
+	sapi.MockCart = &cart
+
+	var ciares api.ResponseID
+	ciares.Success = true
+	ciares.ID = 5
+	sapi.MockCartItemAddResp = &ciares
+
+	var ci sdbi.CartItem
+	ci.CartID = 3
+	ci.ID = 7
+	ci.ProductID = 7
+	ci.Quantity = 3
+
+	var cilst []sdbi.CartItem
+	cilst = append(cilst, ci)
+
+	sapi.MockCartItemList = &cilst
+
+	var prod sdbi.Product
+	prod.Stock = 1
+	sapi.MockProduct = &prod
+
+	//-----------end mocking --------
+
+	//sapi.SetAPIKey("123")
+	//sapi.storeID = 59
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	//api := sapi.GetNew()
+
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sm.API = sapi.GetNew()
+
+	// //---mock out the call
+	// var gp px.MockGoProxy
+	// var mres http.Response
+	// mres.Body = ioutil.NopCloser(bytes.NewBufferString(`{"username": "tester123", "enabled": true, "role": "customer" }`))
+	// gp.MockResp = &mres
+	// gp.MockDoSuccess1 = true
+	// gp.MockRespCode = 200
+	// sapi.OverrideProxy(&gp)
+	// //---end mock out the call
+
+	sapi.SetLogLever(lg.AllLevel)
+	sm.Log = &l
+
+	var cp CustomerProduct
+	cp.CustomerID = 18
+	cp.ProductID = 7
+	cp.Quantity = 3
+	cp.StoreID = 59
+
+	//var cc1 CustomerCart
+
+	var head api.Headers
+	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
+
+	m := sm.GetNew()
+	cc := m.AddProductToCart(nil, &cp, &head)
 
 	fmt.Println("customer cc: ", cc)
 	if cc.Cart == nil || cc.Cart.CustomerID != 18 || cc.Items == nil {
@@ -163,8 +247,10 @@ func TestSix910Manager_AddProductToCartNoCID(t *testing.T) {
 	var head api.Headers
 	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
+	var cc1 CustomerCart
+
 	m := sm.GetNew()
-	cc := m.AddProductToCart(&cp, &head)
+	cc := m.AddProductToCart(&cc1, &cp, &head)
 
 	fmt.Println("customer cc: ", cc)
 	if cc.Cart == nil || cc.Items == nil {
@@ -252,8 +338,9 @@ func TestSix910Manager_AddProductToCartNoCIDExistingCartID(t *testing.T) {
 	var head api.Headers
 	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
+	var cc1 CustomerCart
 	m := sm.GetNew()
-	cc := m.AddProductToCart(&cp, &head)
+	cc := m.AddProductToCart(&cc1, &cp, &head)
 
 	fmt.Println("customer cc: ", cc)
 	if cc.Cart == nil || cc.Items == nil {
@@ -337,8 +424,9 @@ func TestSix910Manager_UpdateProductToCart(t *testing.T) {
 	var head api.Headers
 	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
+	var cc1 CustomerCart
 	m := sm.GetNew()
-	cc := m.UpdateProductToCart(&cp, &head)
+	cc := m.UpdateProductToCart(&cc1, &cp, &head)
 
 	fmt.Println("customer cc: ", cc)
 	if cc.Cart == nil || cc.Cart.CustomerID != 18 || cc.Items == nil {
@@ -422,8 +510,10 @@ func TestSix910Manager_UpdateProductToCart2(t *testing.T) {
 	var head api.Headers
 	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
+	var cc1 CustomerCart
+
 	m := sm.GetNew()
-	cc := m.UpdateProductToCart(&cp, &head)
+	cc := m.UpdateProductToCart(&cc1, &cp, &head)
 
 	fmt.Println("customer cc: ", cc)
 	if cc.Cart == nil || cc.Cart.CustomerID != 18 || cc.Items == nil {

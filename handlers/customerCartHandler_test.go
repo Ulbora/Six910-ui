@@ -842,12 +842,23 @@ func TestSix910Handler_CheckOutView(t *testing.T) {
 	smslt = append(smslt, sm)
 	sapi.MockShippingMethodList = &smslt
 
+	var rgn sdbi.Region
+	rgn.ID = 1
+	rgn.Name = "test"
+	sapi.MockRegion = &rgn
+
 	var ins sdbi.Insurance
 	ins.ID = 4
 	ins.Cost = 4.55
 	var inslst []sdbi.Insurance
 	inslst = append(inslst, ins)
 	sapi.MockInsuranceList = &inslst
+
+	var cadd sdbi.Address
+	cadd.ID = 3
+	var caddlst []sdbi.Address
+	caddlst = append(caddlst, cadd)
+	sapi.MockAddressList1 = &caddlst
 
 	//-----------end mocking --------
 
@@ -928,6 +939,11 @@ func TestSix910Handler_CheckOutView(t *testing.T) {
 
 	var cccs m.CustomerCart
 	cccs.Items = &cilstp
+	var cus sdbi.Customer
+	cus.ID = 3
+	var cusa m.CustomerAccount
+	cusa.Customer = &cus
+	cccs.CustomerAccount = &cusa
 
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
@@ -991,6 +1007,11 @@ func TestSix910Handler_CheckOutView2(t *testing.T) {
 	var smslt []sdbi.ShippingMethod
 	smslt = append(smslt, sm)
 	sapi.MockShippingMethodList = &smslt
+
+	var rgn sdbi.Region
+	rgn.ID = 1
+	rgn.Name = "test"
+	sapi.MockRegion = &rgn
 
 	var ins sdbi.Insurance
 	ins.ID = 4

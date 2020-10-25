@@ -268,6 +268,8 @@ func main() {
 
 	router.HandleFunc("/register", h.CreateCustomerAccountPage).Methods("GET")
 
+	router.HandleFunc("/createCustomerAccount", h.CreateCustomerAccount).Methods("POST")
+
 	//admin pages
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")
 	router.HandleFunc("/admin/login", h.StoreAdminLogin).Methods("GET")

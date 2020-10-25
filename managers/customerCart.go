@@ -29,9 +29,13 @@ import (
 */
 
 //AddProductToCart AddProductToCart
-func (m *Six910Manager) AddProductToCart(cp *CustomerProduct, hd *api.Headers) *CustomerCart {
-	var rtn CustomerCart
-	var cart *sdbi.Cart
+func (m *Six910Manager) AddProductToCart(cc *CustomerCart, cp *CustomerProduct, hd *api.Headers) *CustomerCart {
+	m.Log.Debug("cc : ", cc)
+	var rtn *CustomerCart = cc
+	if rtn == nil {
+		rtn = new(CustomerCart)
+	}
+	var cart = rtn.Cart //*sdbi.Cart
 	m.Log.Debug("cp cart : ", cp.Cart)
 	m.Log.Debug("cp quantity : ", cp.Quantity)
 	if cp.CustomerID != 0 && cp.Cart == nil {
@@ -79,7 +83,7 @@ func (m *Six910Manager) AddProductToCart(cp *CustomerProduct, hd *api.Headers) *
 			rtn.Items = m.API.GetCartItemList(cart.ID, cp.CustomerID, hd)
 		}
 	}
-	return &rtn
+	return rtn
 }
 
 //ViewCart ViewCart
@@ -127,8 +131,8 @@ func (m *Six910Manager) ViewCart(cc *CustomerCart, hd *api.Headers) *CartView {
 }
 
 //UpdateProductToCart UpdateCart
-func (m *Six910Manager) UpdateProductToCart(cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart {
-	var rtn CustomerCart
+func (m *Six910Manager) UpdateProductToCart(cc *CustomerCart, cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart {
+	var rtn *CustomerCart = cc
 	if cp.Cart != nil && cp.CartItem != nil {
 		var res *api.Response
 		if cp.CartItem.Quantity == 0 {
@@ -141,7 +145,7 @@ func (m *Six910Manager) UpdateProductToCart(cp *CustomerProductUpdate, hd *api.H
 			rtn.Items = m.API.GetCartItemList(cp.Cart.ID, cp.CustomerID, hd)
 		}
 	}
-	return &rtn
+	return rtn
 }
 
 //CheckOut CheckOut

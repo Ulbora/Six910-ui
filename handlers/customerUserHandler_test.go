@@ -78,7 +78,7 @@ func TestSix910Handler_CustomerLoginPage(t *testing.T) {
 
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
 	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
+	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -269,7 +269,7 @@ func TestSix910Handler_CustomerChangePasswordPage(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
+	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
@@ -370,7 +370,7 @@ func TestSix910Handler_CustomerChangePasswordPageLogin(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
+	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	//s.Values["loggedIn"] = true
@@ -472,7 +472,7 @@ func TestSix910Handler_CustomerChangePassword(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
+	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
@@ -573,7 +573,7 @@ func TestSix910Handler_CustomerChangePasswordLogin(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
+	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	//s.Values["loggedIn"] = true
@@ -674,7 +674,7 @@ func TestSix910Handler_CustomerChangePasswordFail(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
+	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
@@ -709,7 +709,7 @@ func TestSix910Handler_CustomerLogout(t *testing.T) {
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
-	s, suc := sh.getSession(r)
+	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 
 	s.Values["accessTokenKey"] = "123"

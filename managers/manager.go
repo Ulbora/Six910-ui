@@ -173,9 +173,9 @@ type Manager interface {
 
 	//--------------------start----new------------
 
-	AddProductToCart(cp *CustomerProduct, hd *api.Headers) *CustomerCart
+	AddProductToCart(cc *CustomerCart, cp *CustomerProduct, hd *api.Headers) *CustomerCart
 	ViewCart(cc *CustomerCart, hd *api.Headers) *CartView
-	UpdateProductToCart(cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart
+	UpdateProductToCart(cc *CustomerCart, cp *CustomerProductUpdate, hd *api.Headers) *CustomerCart
 	CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerOrder
 	CalculateCartTotals(cart *CustomerCart, hd *api.Headers) *CustomerCart
 
