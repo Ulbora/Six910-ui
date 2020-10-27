@@ -13,6 +13,7 @@ import (
 	m "github.com/Ulbora/Six910-ui/managers"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
+	stsrv "github.com/Ulbora/Six910-ui/statesrv"
 	api "github.com/Ulbora/Six910API-Go"
 	ds "github.com/Ulbora/json-datastore"
 	sdbi "github.com/Ulbora/six910-database-interface"
@@ -72,11 +73,11 @@ func TestSix910Handler_CreateCustomerAccountPage(t *testing.T) {
 	sh.MenuService = ms
 
 	var c conts.CmsService
-	var ds ds.DataStore
-	ds.Path = "../contentsrv/testFiles"
+	var cds ds.DataStore
+	cds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
-	c.Store = ds.GetNew()
+	c.Store = cds.GetNew()
 
 	var ct conts.Content
 	ct.Name = "index"
@@ -90,6 +91,15 @@ func TestSix910Handler_CreateCustomerAccountPage(t *testing.T) {
 	fmt.Println("content save: ", res)
 
 	sh.ContentService = c.GetNew()
+
+	var st stsrv.Six910StateService
+	var sds ds.DataStore
+	sds.Path = "../statesrv/testFiles"
+	//ds.Delete("books1")
+	st.Log = &l
+	st.StateStore = sds.GetNew()
+
+	sh.StateService = st.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
@@ -540,11 +550,11 @@ func TestSix910Handler_UpdateCustomerAccountPage(t *testing.T) {
 	//-----------end mocking --------
 
 	var c conts.CmsService
-	var ds ds.DataStore
-	ds.Path = "../contentsrv/testFiles"
+	var cds ds.DataStore
+	cds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
-	c.Store = ds.GetNew()
+	c.Store = cds.GetNew()
 
 	var ct conts.Content
 	ct.Name = "product"
@@ -565,6 +575,45 @@ func TestSix910Handler_UpdateCustomerAccountPage(t *testing.T) {
 	sh.ClientCreds.AuthCodeClient = "1"
 	sh.OauthHost = "test.com"
 
+	var cccs m.CustomerCart
+	//cccs.Items = &cilstp
+	var cus sdbi.Customer
+	cus.ID = 3
+	var cusa m.CustomerAccount
+	cusa.Customer = &cus
+	cccs.CustomerAccount = &cusa
+
+	var sms musrv.Six910MenuService
+	var mds ds.DataStore
+	mds.Path = "./testFiles"
+	sms.MenuStore = mds.GetNew()
+	sms.Log = &l
+	ms := sms.GetNew()
+
+	var mm musrv.Menu
+	mm.Name = "menu1"
+	mm.Active = true
+	mm.Location = "top"
+	mm.Shade = "light"
+	mm.Background = "light"
+	mm.Style = ""
+	mm.ShadeList = &[]string{"light", "dark"}
+	mm.BackgroundList = &[]string{"light", "dark"}
+
+	msuc := ms.AddMenu(&mm)
+	fmt.Println("menu save: ", msuc)
+
+	sh.MenuService = ms
+
+	var st stsrv.Six910StateService
+	var sds ds.DataStore
+	sds.Path = "../statesrv/testFiles"
+	//ds.Delete("books1")
+	st.Log = &l
+	st.StateStore = sds.GetNew()
+
+	sh.StateService = st.GetNew()
+
 	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
 
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
@@ -579,6 +628,7 @@ func TestSix910Handler_UpdateCustomerAccountPage(t *testing.T) {
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = 55
 	s.Values["username"] = "tester"
+	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.UpdateCustomerAccountPage(w, r)

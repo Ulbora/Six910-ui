@@ -11,6 +11,7 @@ import (
 	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
+	stsrv "github.com/Ulbora/Six910-ui/statesrv"
 )
 
 /*
@@ -61,6 +62,9 @@ type CustomerPage struct {
 	Manufacturer       string
 	PageBody           *csssrv.PageCSS
 	Carousel           *carsrv.Carousel
+	Customer           *sdbi.Customer
+	AddressList        *[]sdbi.Address
+	StateList          *[]stsrv.State
 
 	//meta data
 	HeaderData *HeaderData

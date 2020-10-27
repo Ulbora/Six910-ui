@@ -146,6 +146,13 @@ func TestSix910Handler_AddProductToCart(t *testing.T) {
 	cccs.Cart = &crt
 	cccs.Items = &cilstp
 
+	var cus sdbi.Customer
+	cus.ID = 3
+
+	var cusa m.CustomerAccount
+	cusa.Customer = &cus
+	cccs.CustomerAccount = &cusa
+
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
@@ -293,6 +300,13 @@ func TestSix910Handler_AddProductToCart2(t *testing.T) {
 	var cccs m.CustomerCart
 	var crt sdbi.Cart
 	cccs.Cart = &crt
+
+	var cus sdbi.Customer
+	cus.ID = 3
+
+	var cusa m.CustomerAccount
+	cusa.Customer = &cus
+	cccs.CustomerAccount = &cusa
 
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
@@ -560,6 +574,13 @@ func TestSix910Handler_ViewCartCartSession(t *testing.T) {
 	var cccs m.CustomerCart
 	cccs.Items = &cilstp
 
+	var cus sdbi.Customer
+	cus.ID = 3
+
+	var cusa m.CustomerAccount
+	cusa.Customer = &cus
+	cccs.CustomerAccount = &cusa
+
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
@@ -668,6 +689,13 @@ func TestSix910Handler_UpdateProductToCart(t *testing.T) {
 
 	var cccs m.CustomerCart
 	cccs.Items = &cilstp
+
+	var cus sdbi.Customer
+	cus.ID = 3
+
+	var cusa m.CustomerAccount
+	cusa.Customer = &cus
+	cccs.CustomerAccount = &cusa
 
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
@@ -778,6 +806,13 @@ func TestSix910Handler_UpdateProductToCartFail(t *testing.T) {
 
 	var cccs m.CustomerCart
 	cccs.Items = &cilstp
+
+	var cus sdbi.Customer
+	cus.ID = 3
+
+	var cusa m.CustomerAccount
+	cusa.Customer = &cus
+	cccs.CustomerAccount = &cusa
 
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
@@ -1336,6 +1371,13 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 
 	var cccs m.CustomerCart
 	cccs.Items = &cilstp
+
+	var cus sdbi.Customer
+	cus.ID = 3
+
+	var cusa m.CustomerAccount
+	cusa.Customer = &cus
+	cccs.CustomerAccount = &cusa
 
 	//r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()

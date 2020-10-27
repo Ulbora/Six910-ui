@@ -44,6 +44,7 @@ type Menu struct {
 	BackgroundList *[]string
 	MenuItemList   *[]MenuItemItem
 	CartCount      int64
+	LoggedIn       bool
 }
 
 //MenuItemItem MenuItemItem

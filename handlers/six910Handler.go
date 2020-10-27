@@ -18,6 +18,7 @@ import (
 	mails "github.com/Ulbora/Six910-ui/mailsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
+	stsrv "github.com/Ulbora/Six910-ui/statesrv"
 	tmpsrv "github.com/Ulbora/Six910-ui/templatesrv"
 	users "github.com/Ulbora/Six910-ui/usersrv"
 	api "github.com/Ulbora/Six910API-Go"
@@ -74,6 +75,7 @@ type Six910Handler struct {
 	MenuService     musrv.MenuService
 	CSSService      csssrv.CSSService
 	CarouselService carsrv.CarouselService
+	StateService    stsrv.StateService
 
 	OauthHost     string
 	UserHost      string
@@ -354,6 +356,7 @@ func (h *Six910Handler) getCustomerID(s *sessions.Session) int64 {
 func (h *Six910Handler) storeCustomerCart(cc *m.CustomerCart, s *sessions.Session, w http.ResponseWriter, r *http.Request) bool {
 	var rtn bool
 	s.Values["customerCart"] = cc
+	s.Values["customerId"] = cc.CustomerAccount.Customer.ID
 	serr := s.Save(r, w)
 	h.Log.Debug("serr", serr)
 	if serr == nil {
@@ -373,6 +376,7 @@ func (h *Six910Handler) getCustomerCart(s *sessions.Session) *m.CustomerCart {
 
 func (h *Six910Handler) getCartTotal(s *sessions.Session, ml *[]musrv.Menu, hd *api.Headers) {
 	var rtn int64
+	var isLoggedIn = h.isStoreCustomerLoggedIn(s)
 	cc := h.getCustomerCart(s)
 	if cc != nil && cc.Items != nil && len(*cc.Items) > 0 {
 		cv := h.Manager.ViewCart(cc, hd)
@@ -382,6 +386,7 @@ func (h *Six910Handler) getCartTotal(s *sessions.Session, ml *[]musrv.Menu, hd *
 		for i := range *ml {
 			if (*ml)[i].Name == "navBar" && (*ml)[i].Location == "top" {
 				(*ml)[i].CartCount = rtn
+				(*ml)[i].LoggedIn = isLoggedIn
 			}
 		}
 	}

@@ -35,6 +35,7 @@ import (
 	isrv "github.com/Ulbora/Six910-ui/imgsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
+	stsrv "github.com/Ulbora/Six910-ui/statesrv"
 	tmpsrv "github.com/Ulbora/Six910-ui/templatesrv"
 	api "github.com/Ulbora/Six910API-Go"
 	ml "github.com/Ulbora/go-mail-sender"
@@ -202,6 +203,14 @@ func main() {
 	cars.Store = cards.GetNew()
 	sh.CarouselService = cars.GetNew()
 
+	var st stsrv.Six910StateService
+	var sds ds.DataStore
+	sds.Path = "./data/stateStore"
+	st.Log = &l
+	st.StateStore = sds.GetNew()
+
+	sh.StateService = st.GetNew()
+
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
 		"./static/admin/subnavs/productNavbar.html", "./static/admin/pagination.html", "./static/admin/productSkuSearch.html",
@@ -269,6 +278,8 @@ func main() {
 	router.HandleFunc("/register", h.CreateCustomerAccountPage).Methods("GET")
 
 	router.HandleFunc("/createCustomerAccount", h.CreateCustomerAccount).Methods("POST")
+
+	router.HandleFunc("/viewCustomerAccount", h.UpdateCustomerAccountPage).Methods("GET")
 
 	//admin pages
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")

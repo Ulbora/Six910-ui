@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	m "github.com/Ulbora/Six910-ui/managers"
+
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 )
@@ -37,6 +38,7 @@ func (h *Six910Handler) CreateCustomerAccountPage(w http.ResponseWriter, r *http
 		ml := h.MenuService.GetMenuList()
 		h.getCartTotal(ccuss, ml, hd)
 		caocp.MenuList = ml
+		caocp.StateList = h.StateService.GetStateList("states")
 		h.Templates.ExecuteTemplate(w, customerCreatePage, caocp)
 	}
 }
@@ -151,16 +153,29 @@ func (h *Six910Handler) UpdateCustomerAccountPage(w http.ResponseWriter, r *http
 		if h.isStoreCustomerLoggedIn(ccuuss) {
 			//cupvars := mux.Vars(r)
 			//ccuemail := cupvars["email"]
-			var uname string
-			ccuemail := ccuuss.Values["username"]
-			h.Log.Debug("ccuemail: ", ccuemail)
-			if ccuemail != nil {
-				uname = ccuemail.(string)
-			}
+			//var uname string
+			//ccuemail := ccuuss.Values["username"]
+			//h.Log.Debug("ccuemail: ", ccuemail)
+			//if ccuemail != nil {
+			//uname = ccuemail.(string)
+			//}
+
 			hd := h.getHeader(ccuuss)
-			cus := h.API.GetCustomer(uname, hd)
-			h.Log.Debug("cus: ", cus)
-			h.Templates.ExecuteTemplate(w, customerCreatePage, &cus)
+			//cc.CustomerAccount.Customer.ID
+			cc := h.getCustomerCart(ccuuss)
+			cus := h.API.GetCustomerID(cc.CustomerAccount.Customer.ID, hd)
+			addlst := h.API.GetAddressList(cus.ID, hd)
+			//cus := h.API.GetCustomer(uname, hd)
+			h.Log.Debug("cus: ", *cus)
+			h.Log.Debug("cus ID: ", h.getCustomerID(ccuuss))
+			var ucaocp CustomerPage
+			ml := h.MenuService.GetMenuList()
+			h.getCartTotal(ccuuss, ml, hd)
+			ucaocp.MenuList = ml
+			ucaocp.Customer = cus
+			ucaocp.AddressList = addlst
+			ucaocp.StateList = h.StateService.GetStateList("states")
+			h.Templates.ExecuteTemplate(w, customerUpdatePage, &ucaocp)
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)
 		}
