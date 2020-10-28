@@ -274,7 +274,7 @@ func TestSix910Handler_CustomerChangePasswordPage(t *testing.T) {
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Values["username"] = "tester"
 	s.Values["password"] = "tester"
@@ -375,7 +375,7 @@ func TestSix910Handler_CustomerChangePasswordPageLogin(t *testing.T) {
 	var cccs m.CustomerCart
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Values["username"] = "tester"
 	s.Values["password"] = "tester"
@@ -477,7 +477,7 @@ func TestSix910Handler_CustomerChangePassword(t *testing.T) {
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Values["username"] = "tester"
 	s.Values["password"] = "tester"
@@ -578,7 +578,7 @@ func TestSix910Handler_CustomerChangePasswordLogin(t *testing.T) {
 	var cccs m.CustomerCart
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Values["username"] = "tester"
 	s.Values["password"] = "tester"
@@ -679,7 +679,7 @@ func TestSix910Handler_CustomerChangePasswordFail(t *testing.T) {
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Values["username"] = "tester"
 	s.Values["password"] = "tester"

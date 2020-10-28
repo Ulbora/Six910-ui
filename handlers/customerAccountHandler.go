@@ -189,6 +189,8 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 	if suc {
 		if h.isStoreCustomerLoggedIn(ccuuuss) {
 			hd := h.getHeader(ccuuuss)
+			idstr := r.FormValue("id")
+			id, _ := strconv.ParseInt(idstr, 10, 64)
 			uemail := r.FormValue("email")
 			ufcus := h.API.GetCustomer(uemail, hd)
 			h.Log.Debug("uemail: ", uemail)
@@ -200,9 +202,11 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 			ustate := r.FormValue("state")
 			uzip := r.FormValue("zip")
 			uphone := r.FormValue("phone")
-			h.Log.Debug("ufcus: ", ufcus)
+			password := r.FormValue("password")
+			oldpw := r.FormValue("oldPassword")
+			h.Log.Debug("ufcus: ", *ufcus)
 			var success bool
-			if ufcus != nil {
+			if ufcus != nil && ufcus.ID == id {
 				ufcus.City = ucity
 				ufcus.Company = ucompany
 				ufcus.FirstName = ufirstName
@@ -211,12 +215,59 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 				ufcus.State = ustate
 				ufcus.Zip = uzip
 				res := h.API.UpdateCustomer(ufcus, hd)
+				h.Log.Debug("UpdateCustomer: ", *res)
 				success = res.Success
+				if success && password != "" && oldpw != "" {
+					var u api.User
+					u.Username = uemail
+					u.Password = password
+					u.OldPassword = oldpw
+					u.CustomerID = ufcus.ID
+					h.Log.Debug("user in change pw: ", u)
+					suc, uu := h.Manager.CustomerChangePassword(&u, hd)
+					h.Log.Debug("user update suc: ", suc)
+					h.Log.Debug("uu: ", uu)
+					if suc {
+						ccuuuss.Values["password"] = password
+						serr := ccuuuss.Save(r, w)
+						h.Log.Debug("serr", serr)
+					}
+					success = suc
+				}
+				if success {
+					addLst := h.API.GetAddressList(ufcus.ID, hd)
+					var delSuc = true
+					var uSuc = true
+					for _, a := range *addLst {
+						idstr = strconv.FormatInt(a.ID, 10)
+						del := r.FormValue("delete_" + idstr)
+						h.Log.Debug("delete_"+idstr, "delete_"+idstr)
+						if del == "on" {
+							dares := h.API.DeleteAddress(a.ID, ufcus.ID, hd)
+							if !dares.Success {
+								delSuc = false
+							}
+						} else {
+							a.Address = r.FormValue("address_" + idstr)
+							a.City = r.FormValue("city_" + idstr)
+							a.State = r.FormValue("state_" + idstr)
+							a.Zip = r.FormValue("zip_" + idstr)
+							usuc := h.API.UpdateAddress(&a, hd)
+							h.Log.Debug("update add suc: ", usuc.Success)
+							if !usuc.Success {
+								uSuc = false
+							}
+						}
+					}
+					if !delSuc || !uSuc {
+						success = false
+					}
+				}
 			}
 			if success {
-				http.Redirect(w, r, customerInfoView, http.StatusFound)
+				http.Redirect(w, r, customerIndexView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, customerInfoViewFail, http.StatusFound)
+				http.Redirect(w, r, customerIndexView, http.StatusFound)
 			}
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)

@@ -85,7 +85,7 @@ func TestSix910Handler_ViewCustomerOrder(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -167,7 +167,7 @@ func TestSix910Handler_ViewCustomerOrderLogin(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -251,7 +251,7 @@ func TestSix910Handler_ViewCustomerOrderList(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -335,7 +335,7 @@ func TestSix910Handler_ViewCustomerOrderListLogin(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
 	s.Save(r, w)
 	h := sh.GetNew()

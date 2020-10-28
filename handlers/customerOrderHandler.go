@@ -86,11 +86,11 @@ func (h *Six910Handler) ViewCustomerOrderList(w http.ResponseWriter, r *http.Req
 	if suc {
 		if h.isStoreCustomerLoggedIn(vorrls) {
 			var cid int64
-			var cidi int
+			//var cidi int
 			fcid := vorrls.Values["customerId"]
 			if fcid != nil {
-				cidi = fcid.(int)
-				cid = int64(cidi)
+				cid = fcid.(int64)
+				//cid = int64(cidi)
 			}
 			h.Log.Debug("cid: ", cid)
 			hd := h.getHeader(vorrls)

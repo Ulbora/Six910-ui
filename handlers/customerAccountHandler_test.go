@@ -239,7 +239,7 @@ func TestSix910Handler_CreateCustomerAccount(t *testing.T) {
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -366,7 +366,7 @@ func TestSix910Handler_CreateCustomerAccountFail(t *testing.T) {
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -493,7 +493,7 @@ func TestSix910Handler_CreateCustomerAccountExisting(t *testing.T) {
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -626,7 +626,7 @@ func TestSix910Handler_UpdateCustomerAccountPage(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
@@ -721,7 +721,7 @@ func TestSix910Handler_UpdateCustomerAccountPageLogin(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.UpdateCustomerAccountPage(w, r)
@@ -764,6 +764,7 @@ func TestSix910Handler_UpdateCustomerAccount(t *testing.T) {
 	sapi.MockUpdateCustomerResp = &macres
 
 	var a1 sdbi.Address
+	a1.ID = 1
 	a1.Address = "123 Whitehead St"
 	a1.City = "Key West"
 	a1.Country = "Conch Republic"
@@ -777,6 +778,7 @@ func TestSix910Handler_UpdateCustomerAccount(t *testing.T) {
 	sapi.MockAddressList1 = &malst
 
 	var a2 sdbi.Address
+	a1.ID = 3
 	a2.Address = "907 Whitehead St"
 	a2.City = "Key West"
 	a2.Country = "Conch Republic"
@@ -792,7 +794,8 @@ func TestSix910Handler_UpdateCustomerAccount(t *testing.T) {
 
 	var mu api.UserResponse
 	mu.Enabled = true
-	mu.Username = "tester"
+	mu.Username = "bob@bob.com"
+	mu.Role = customerRole
 
 	sapi.MockUser = &mu
 
@@ -805,6 +808,14 @@ func TestSix910Handler_UpdateCustomerAccount(t *testing.T) {
 	aures.Success = true
 
 	sapi.MockAddCustomerUserRes = &aures
+
+	var ur api.Response
+	ur.Success = true
+	sapi.MockUpdateUserResp = &ur
+
+	var ua api.Response
+	ua.Success = true
+	sapi.MockUpdateAddressRes = &ua
 
 	//-----------end mocking --------
 
@@ -838,7 +849,8 @@ func TestSix910Handler_UpdateCustomerAccount(t *testing.T) {
 
 	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("email=bob@bob.com&firstName=tester&"+
 		"lastName=testertest&zip=12345&billAddress=123&billCity=dd&billState=rr&billZip=22&"+
-		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
+		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55&"+
+		"password=tester&oldPassword=oldtester"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
@@ -846,7 +858,149 @@ func TestSix910Handler_UpdateCustomerAccount(t *testing.T) {
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
+	s.Values["customerCart"] = &cccs
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.UpdateCustomerAccount(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_UpdateCustomerAccount2(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+	sh.API = &sapi
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
+	//-----------start mocking------------------
+
+	var cusm sdbi.Customer
+	//cusm.ID = 5
+	cusm.Email = "test@tester.com"
+	sapi.MockCustomer = &cusm
+
+	var macres api.Response
+	macres.Success = true
+
+	sapi.MockUpdateCustomerResp = &macres
+
+	var a1 sdbi.Address
+	a1.ID = 1
+	a1.Address = "123 Whitehead St"
+	a1.City = "Key West"
+	a1.Country = "Conch Republic"
+	a1.County = "Monroe"
+	a1.State = "FL"
+	a1.Type = "Shipping"
+
+	//var malst []sdbi.Address
+	//malst = append(malst, a1)
+
+	//sapi.MockAddressList1 = &malst
+
+	var a2 sdbi.Address
+	a2.ID = 3
+	a2.Address = "907 Whitehead St"
+	a2.City = "Key West"
+	a2.Country = "Conch Republic"
+	a2.County = "Monroe"
+	a2.State = "FL"
+	a2.Type = "Billing"
+
+	var malst2 []sdbi.Address
+	malst2 = append(malst2, a1)
+	malst2 = append(malst2, a2)
+
+	sapi.MockAddressList1 = &malst2
+
+	var mu api.UserResponse
+	mu.Enabled = true
+	mu.Username = "bob@bob.com"
+	mu.Role = customerRole
+
+	sapi.MockUser = &mu
+
+	var aares api.ResponseID
+	aares.Success = true
+	aares.ID = 8
+	sapi.MockAddAddressRes = &aares
+
+	var aures api.Response
+	aures.Success = true
+
+	sapi.MockAddCustomerUserRes = &aures
+
+	var ur api.Response
+	ur.Success = true
+	sapi.MockUpdateUserResp = &ur
+
+	var ua api.Response
+	ua.Success = false
+	sapi.MockUpdateAddressRes = &ua
+
+	var da api.Response
+	da.Success = false
+	sapi.MockDeleteAddressRes = &da
+
+	//-----------end mocking --------
+
+	var c conts.CmsService
+	var ds ds.DataStore
+	ds.Path = "../contentsrv/testFiles"
+	//ds.Delete("books1")
+	c.Log = &l
+	c.Store = ds.GetNew()
+
+	var ct conts.Content
+	ct.Name = "product"
+	ct.Author = "ken"
+	ct.MetaAuthorName = "ken"
+	ct.MetaDesc = "shopping cart index"
+	ct.Text = "some book text"
+	ct.Title = "the best book ever"
+	ct.Visible = true
+	res := c.AddContent(&ct)
+	fmt.Println("content save: ", res)
+
+	sh.ContentService = c.GetNew()
+
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+
+	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("email=bob@bob.com&firstName=tester&"+
+		"lastName=testertest&zip=12345&billAddress=123&billCity=dd&billState=rr&billZip=22&"+
+		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55&"+
+		"password=tester&oldPassword=oldtester&delete_1=on"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	s, suc := sh.getUserSession(r)
+	fmt.Println("suc: ", suc)
+	var cccs m.CustomerCart
+	s.Values["loggedIn"] = true
+	s.Values["customerUser"] = true
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -972,7 +1126,7 @@ func TestSix910Handler_UpdateCustomerAccountLogin(t *testing.T) {
 	var cccs m.CustomerCart
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -1098,7 +1252,7 @@ func TestSix910Handler_UpdateCustomerAccountFail(t *testing.T) {
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -1192,7 +1346,7 @@ func TestSix910Handler_CustomerAddAddressPage(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -1286,7 +1440,7 @@ func TestSix910Handler_CustomerAddAddressPageLogin(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.CustomerAddAddressPage(w, r)
@@ -1411,7 +1565,7 @@ func TestSix910Handler_CustomerAddAddress(t *testing.T) {
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Values["username"] = "tester"
 	s.Save(r, w)
@@ -1538,7 +1692,7 @@ func TestSix910Handler_CustomerAddAddressLogin(t *testing.T) {
 	var cccs m.CustomerCart
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -1664,7 +1818,7 @@ func TestSix910Handler_CustomerAddAddressFail(t *testing.T) {
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -1758,7 +1912,7 @@ func TestSix910Handler_DeleteCustomerAddress(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.DeleteCustomerAddress(w, r)
@@ -1851,7 +2005,7 @@ func TestSix910Handler_DeleteCustomerAddressLogin(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.DeleteCustomerAddress(w, r)
@@ -1944,7 +2098,7 @@ func TestSix910Handler_DeleteCustomerAddressFail(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.DeleteCustomerAddress(w, r)

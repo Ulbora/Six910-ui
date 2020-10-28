@@ -157,7 +157,7 @@ func TestSix910Handler_AddProductToCart(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -313,7 +313,7 @@ func TestSix910Handler_AddProductToCart2(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -437,7 +437,7 @@ func TestSix910Handler_ViewCart(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.ViewCart(w, r)
@@ -586,7 +586,7 @@ func TestSix910Handler_ViewCartCartSession(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -703,7 +703,7 @@ func TestSix910Handler_UpdateProductToCart(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -820,7 +820,7 @@ func TestSix910Handler_UpdateProductToCartFail(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -986,7 +986,7 @@ func TestSix910Handler_CheckOutView(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -1141,7 +1141,7 @@ func TestSix910Handler_CheckOutView2(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -1257,7 +1257,7 @@ func TestSix910Handler_CheckOutViewLogin(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -1385,7 +1385,7 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -1504,7 +1504,7 @@ func TestSix910Handler_CheckOutContinueLogin(t *testing.T) {
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
-	s.Values["customerId"] = 55
+	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
 	s.Save(r, w)
 	h := sh.GetNew()

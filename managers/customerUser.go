@@ -58,7 +58,9 @@ func (m *Six910Manager) CustomerChangePassword(u *api.User, hd *api.Headers) (bo
 	usrcc := m.API.GetUser(u, hd)
 	m.Log.Debug("usr: ", *usrcc)
 	if usrcc.Enabled && usrcc.Username == u.Username && usrcc.Role == customerRole {
+		u.Enabled = usrcc.Enabled
 		res := m.API.UpdateUser(u, hd)
+		m.Log.Debug("usrcc: ", *usrcc)
 		succc = res.Success
 		rtncc.Enabled = usrcc.Enabled
 		rtncc.Role = usrcc.Role

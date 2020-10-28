@@ -346,9 +346,10 @@ func (h *Six910Handler) isStoreCustomerLoggedIn(s *sessions.Session) bool {
 func (h *Six910Handler) getCustomerID(s *sessions.Session) int64 {
 	var rtn int64
 	cidstr := s.Values["customerId"]
+	h.Log.Debug("cidstr", cidstr)
 	if cidstr != nil {
-		cid := cidstr.(int)
-		rtn = int64(cid)
+		cid := cidstr.(int64)
+		rtn = cid
 	}
 	return rtn
 }

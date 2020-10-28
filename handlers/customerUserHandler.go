@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	api "github.com/Ulbora/Six910API-Go"
 )
@@ -108,6 +109,8 @@ func (h *Six910Handler) CustomerChangePassword(w http.ResponseWriter, r *http.Re
 		if h.isStoreCustomerLoggedIn(ccpwuvss) {
 			ccpwpwnpw := r.FormValue("password")
 			ccpwpwopw := r.FormValue("oldPassword")
+			ccpwpwocid := r.FormValue("customerId")
+			cid, _ := strconv.ParseInt(ccpwpwocid, 10, 64)
 
 			hd := h.getHeader(ccpwuvss)
 
@@ -122,6 +125,7 @@ func (h *Six910Handler) CustomerChangePassword(w http.ResponseWriter, r *http.Re
 			u.Username = ccpwuemail
 			u.Password = ccpwpwnpw
 			u.OldPassword = ccpwpwopw
+			u.CustomerID = cid
 			h.Log.Debug("user in change pw: ", u)
 			suc, uu := h.Manager.CustomerChangePassword(&u, hd)
 			h.Log.Debug("uu: ", uu)
