@@ -135,6 +135,8 @@ func (h *Six910Handler) ViewCart(w http.ResponseWriter, r *http.Request) {
 		var cv *m.CartView
 		cc := h.getCustomerCart(ccvs)
 		h.Log.Debug("cc: ", cc)
+		//h.Log.Debug("cc: ", *cc.Cart)
+		//h.Log.Debug("cc items: ", *cc.Items)
 		hd := h.getHeader(ccvs)
 		if cc != nil && cc.Items != nil && len(*cc.Items) > 0 {
 			cv = h.Manager.ViewCart(cc, hd)

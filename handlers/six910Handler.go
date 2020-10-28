@@ -1,8 +1,12 @@
 package handlers
 
 import (
+	"bytes"
+	"compress/gzip"
 	b64 "encoding/base64"
 	"encoding/gob"
+	"encoding/json"
+	"io/ioutil"
 
 	"html/template"
 	"net/http"
@@ -356,8 +360,14 @@ func (h *Six910Handler) getCustomerID(s *sessions.Session) int64 {
 
 func (h *Six910Handler) storeCustomerCart(cc *m.CustomerCart, s *sessions.Session, w http.ResponseWriter, r *http.Request) bool {
 	var rtn bool
-	s.Values["customerCart"] = cc
-	s.Values["customerId"] = cc.CustomerAccount.Customer.ID
+	//h.Log.Debug("cc items in save session: ", *cc.Items)
+	b, _ := json.Marshal(cc)
+	bb := h.compressObj(b)
+	s.Values["customerCart"] = bb
+	if cc.CustomerAccount != nil && cc.CustomerAccount.Customer != nil {
+		s.Values["customerId"] = cc.CustomerAccount.Customer.ID
+	}
+
 	serr := s.Save(r, w)
 	h.Log.Debug("serr", serr)
 	if serr == nil {
@@ -367,18 +377,44 @@ func (h *Six910Handler) storeCustomerCart(cc *m.CustomerCart, s *sessions.Sessio
 }
 
 func (h *Six910Handler) getCustomerCart(s *sessions.Session) *m.CustomerCart {
-	var rtn *m.CustomerCart
+	var rtn m.CustomerCart
 	fc := s.Values["customerCart"]
 	if fc != nil {
-		rtn = fc.(*m.CustomerCart)
+		b := fc.([]byte)
+		bb := h.decompressObj(b)
+		json.Unmarshal(bb, &rtn)
+		//rtn = fc.(*m.CustomerCart)
 	}
-	return rtn
+	return &rtn
+}
+
+func (h *Six910Handler) compressObj(s []byte) []byte {
+
+	zipbuf := bytes.Buffer{}
+	zipped, _ := gzip.NewWriterLevel(&zipbuf, gzip.BestCompression)
+	zipped.Write(s)
+	zipped.Close()
+	h.Log.Debug("compressed size (bytes): ", len(zipbuf.Bytes()))
+	return zipbuf.Bytes()
+}
+
+func (h *Six910Handler) decompressObj(s []byte) []byte {
+
+	rdr, _ := gzip.NewReader(bytes.NewReader(s))
+	data, err := ioutil.ReadAll(rdr)
+	h.Log.Debug("decompress err ", err)
+	rdr.Close()
+	h.Log.Debug("uncompressed size (bytes): ", len(data))
+	return data
 }
 
 func (h *Six910Handler) getCartTotal(s *sessions.Session, ml *[]musrv.Menu, hd *api.Headers) {
 	var rtn int64
 	var isLoggedIn = h.isStoreCustomerLoggedIn(s)
+	h.Log.Debug("isLoggedIn in carttotal: ", isLoggedIn)
 	cc := h.getCustomerCart(s)
+	h.Log.Debug("cc: ", cc)
+	h.Log.Debug("cc.Items: ", cc.Items)
 	if cc != nil && cc.Items != nil && len(*cc.Items) > 0 {
 		cv := h.Manager.ViewCart(cc, hd)
 		for _, itm := range *cv.Items {
@@ -387,6 +423,12 @@ func (h *Six910Handler) getCartTotal(s *sessions.Session, ml *[]musrv.Menu, hd *
 		for i := range *ml {
 			if (*ml)[i].Name == "navBar" && (*ml)[i].Location == "top" {
 				(*ml)[i].CartCount = rtn
+				(*ml)[i].LoggedIn = isLoggedIn
+			}
+		}
+	} else if cc != nil {
+		for i := range *ml {
+			if (*ml)[i].Name == "navBar" && (*ml)[i].Location == "top" {
 				(*ml)[i].LoggedIn = isLoggedIn
 			}
 		}

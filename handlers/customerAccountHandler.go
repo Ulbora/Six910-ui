@@ -135,6 +135,11 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 				h.Log.Debug("serr", serr)
 				cc := h.getCustomerCart(crcuss)
 				cc.CustomerAccount = cres
+				h.Log.Debug("cc: ", *cc)
+				h.Log.Debug("cc cart: ", *cc.Cart)
+				cc.Cart.CustomerID = cres.Customer.ID
+				cures := h.API.UpdateCart(cc.Cart, hd)
+				h.Log.Debug("cures", cures)
 				h.storeCustomerCart(cc, crcuss, w, r)
 
 				http.Redirect(w, r, customerShoppingCartView, http.StatusFound)
@@ -206,6 +211,10 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 			oldpw := r.FormValue("oldPassword")
 			h.Log.Debug("ufcus: ", *ufcus)
 			var success bool
+			var userUpdateFail bool
+			var addressUpdateFail bool
+			var passwordChangeFail bool
+			//var addreddAddFail bool
 			if ufcus != nil && ufcus.ID == id {
 				ufcus.City = ucity
 				ufcus.Company = ucompany
@@ -217,6 +226,9 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 				res := h.API.UpdateCustomer(ufcus, hd)
 				h.Log.Debug("UpdateCustomer: ", *res)
 				success = res.Success
+				if !success {
+					userUpdateFail = true
+				}
 				if success && password != "" && oldpw != "" {
 					var u api.User
 					u.Username = uemail
@@ -231,6 +243,8 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 						ccuuuss.Values["password"] = password
 						serr := ccuuuss.Save(r, w)
 						h.Log.Debug("serr", serr)
+					} else {
+						passwordChangeFail = true
 					}
 					success = suc
 				}
@@ -261,13 +275,38 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 					}
 					if !delSuc || !uSuc {
 						success = false
+						addressUpdateFail = true
 					}
+				}
+				newAddress := r.FormValue("newAddress")
+				if newAddress != "" && success {
+					newCity := r.FormValue("newCity")
+					newState := r.FormValue("newState")
+					newZip := r.FormValue("newZip")
+					newType := r.FormValue("newType")
+					var nadd sdbi.Address
+					nadd.Address = newAddress
+					nadd.City = newCity
+					nadd.State = newState
+					nadd.Zip = newZip
+					nadd.Type = newType
+					nadd.CustomerID = ufcus.ID
+					naddres := h.API.AddAddress(&nadd, hd)
+					success = naddres.Success
 				}
 			}
 			if success {
 				http.Redirect(w, r, customerIndexView, http.StatusFound)
 			} else {
-				http.Redirect(w, r, customerIndexView, http.StatusFound)
+				if userUpdateFail {
+					http.Redirect(w, r, customerIndexViewUserFail, http.StatusFound)
+				} else if addressUpdateFail {
+					http.Redirect(w, r, customerIndexViewAddressFail, http.StatusFound)
+				} else if passwordChangeFail {
+					http.Redirect(w, r, customerIndexViewPasswordFail, http.StatusFound)
+				} else {
+					http.Redirect(w, r, customerIndexViewAddressAddFail, http.StatusFound)
+				}
 			}
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)

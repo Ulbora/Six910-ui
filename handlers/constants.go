@@ -238,8 +238,11 @@ const (
 	adminMenuList    = "/admin/menuList"
 
 	//routes customer
-	customerIndexView     = "/"
-	customerIndexViewFail = "/?error=Add Failed"
+	customerIndexView               = "/"
+	customerIndexViewUserFail       = "/?error=user_update_failed"
+	customerIndexViewAddressFail    = "/?error=address_update_failed"
+	customerIndexViewPasswordFail   = "/?error=password_change_failed"
+	customerIndexViewAddressAddFail = "/?error=address_add_failed"
 
 	//routes shopping cart
 	customerLoginView            = "/customerLoginPage"

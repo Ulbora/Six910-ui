@@ -76,11 +76,13 @@ func (m *Six910Manager) AddProductToCart(cc *CustomerCart, cp *CustomerProduct, 
 		ci.CartID = cart.ID
 		ci.ProductID = cp.ProductID
 		ci.Quantity = cp.Quantity
+		m.Log.Debug("CartItem: ", ci)
 		res := m.API.AddCartItem(&ci, cp.CustomerID, hd)
 		m.Log.Debug("cart add res: ", *res)
 		if res.Success {
 			rtn.Cart = cart
 			rtn.Items = m.API.GetCartItemList(cart.ID, cp.CustomerID, hd)
+			//m.Log.Debug("cart Items: ", *rtn.Items)
 		}
 	}
 	return rtn
