@@ -631,7 +631,7 @@ func TestSix910Handler_UpdateCustomerAccountPage(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
@@ -866,7 +866,7 @@ func TestSix910Handler_UpdateCustomerAccount(t *testing.T) {
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
@@ -1008,7 +1008,7 @@ func TestSix910Handler_UpdateCustomerAccount2(t *testing.T) {
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
@@ -1146,7 +1146,7 @@ func TestSix910Handler_UpdateCustomerAccount3(t *testing.T) {
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
@@ -1284,7 +1284,7 @@ func TestSix910Handler_UpdateCustomerAccount4(t *testing.T) {
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
@@ -1535,7 +1535,7 @@ func TestSix910Handler_UpdateCustomerAccountFail(t *testing.T) {
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
@@ -1629,7 +1629,7 @@ func TestSix910Handler_CustomerAddAddressPage(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
@@ -1848,7 +1848,7 @@ func TestSix910Handler_CustomerAddAddress(t *testing.T) {
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
@@ -2101,7 +2101,7 @@ func TestSix910Handler_CustomerAddAddressFail(t *testing.T) {
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
@@ -2195,7 +2195,7 @@ func TestSix910Handler_DeleteCustomerAddress(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Save(r, w)
@@ -2381,7 +2381,7 @@ func TestSix910Handler_DeleteCustomerAddressFail(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Save(r, w)

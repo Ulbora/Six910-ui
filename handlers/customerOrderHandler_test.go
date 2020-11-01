@@ -83,7 +83,7 @@ func TestSix910Handler_ViewCustomerOrder(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
@@ -249,7 +249,7 @@ func TestSix910Handler_ViewCustomerOrderList(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"

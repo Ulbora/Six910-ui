@@ -156,7 +156,7 @@ func TestSix910Handler_AddProductToCart(t *testing.T) {
 
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	//s.Values["customerCart"] = &cccs
@@ -711,7 +711,7 @@ func TestSix910Handler_UpdateProductToCart(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	//s.Values["customerCart"] = &cccs
@@ -1000,7 +1000,7 @@ func TestSix910Handler_CheckOutView(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	//s.Values["customerCart"] = &cccs
@@ -1073,6 +1073,13 @@ func TestSix910Handler_CheckOutView2(t *testing.T) {
 	var inslst []sdbi.Insurance
 	inslst = append(inslst, ins)
 	sapi.MockInsuranceList = &inslst
+
+	var add sdbi.Address
+	add.ID = 1
+
+	var adlst []sdbi.Address
+	adlst = append(adlst, add)
+	sapi.MockAddressList1 = &adlst
 
 	//-----------end mocking --------
 
@@ -1158,7 +1165,7 @@ func TestSix910Handler_CheckOutView2(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	//s.Values["customerCart"] = &cccs
@@ -1231,6 +1238,13 @@ func TestSix910Handler_CheckOutView3(t *testing.T) {
 	var inslst []sdbi.Insurance
 	inslst = append(inslst, ins)
 	sapi.MockInsuranceList = &inslst
+
+	var add sdbi.Address
+	add.ID = 1
+
+	var adlst []sdbi.Address
+	adlst = append(adlst, add)
+	sapi.MockAddressList1 = &adlst
 
 	//-----------end mocking --------
 
@@ -1316,7 +1330,7 @@ func TestSix910Handler_CheckOutView3(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	//s.Values["customerCart"] = &cccs
@@ -1565,7 +1579,7 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	//s.Values["customerCart"] = &cccs

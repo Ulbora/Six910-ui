@@ -41,6 +41,7 @@ func (m *Six910Manager) CustomerLogin(u *api.User, hd *api.Headers) (bool, *api.
 		rtncl.Role = usrcl.Role
 		rtncl.StoreID = usrcl.StoreID
 		rtncl.Username = usrcl.Username
+		rtncl.CustomerID = usrcl.CustomerID
 	}
 	m.Log.Debug("rtn: ", rtncl)
 	return succl, &rtncl

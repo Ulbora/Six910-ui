@@ -246,7 +246,7 @@ const (
 
 	//routes shopping cart
 	customerLoginView            = "/customerLoginPage"
-	customerLoginViewFail        = "/customerLogin?error=Add Failed"
+	customerLoginViewFail        = "/customerLoginPage?error=Login Failed"
 	customerShoppingCartView     = "/shoppingCartView"
 	customerShoppingCartViewFail = "/shoppingCartView?error=Add Failed"
 

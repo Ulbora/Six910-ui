@@ -129,8 +129,9 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 
 				crcuss.Values["username"] = email
 				crcuss.Values["password"] = password
-				crcuss.Values["loggedIn"] = true
+				crcuss.Values["userLoggenIn"] = true
 				crcuss.Values["customerUser"] = true
+				crcuss.Values["customerId"] = cres.Customer.ID
 				serr := crcuss.Save(r, w)
 				h.Log.Debug("serr", serr)
 				cc := h.getCustomerCart(crcuss)
@@ -158,17 +159,17 @@ func (h *Six910Handler) UpdateCustomerAccountPage(w http.ResponseWriter, r *http
 		if h.isStoreCustomerLoggedIn(ccuuss) {
 			//cupvars := mux.Vars(r)
 			//ccuemail := cupvars["email"]
-			//var uname string
-			//ccuemail := ccuuss.Values["username"]
-			//h.Log.Debug("ccuemail: ", ccuemail)
-			//if ccuemail != nil {
-			//uname = ccuemail.(string)
-			//}
+			var uname string
+			ccuemail := ccuuss.Values["username"]
+			h.Log.Debug("ccuemail: ", ccuemail)
+			if ccuemail != nil {
+				uname = ccuemail.(string)
+			}
 
 			hd := h.getHeader(ccuuss)
 			//cc.CustomerAccount.Customer.ID
-			cc := h.getCustomerCart(ccuuss)
-			cus := h.API.GetCustomerID(cc.CustomerAccount.Customer.ID, hd)
+			//cc := h.getCustomerCart(ccuuss)
+			cus := h.API.GetCustomer(uname, hd)
 			addlst := h.API.GetAddressList(cus.ID, hd)
 			//cus := h.API.GetCustomer(uname, hd)
 			h.Log.Debug("cus: ", *cus)

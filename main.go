@@ -256,6 +256,11 @@ func main() {
 
 	//site pages
 	router.HandleFunc("/", h.Index).Methods("GET")
+	router.HandleFunc("/customerLoginPage", h.CustomerLoginPage).Methods("GET")
+	router.HandleFunc("/customerLogin", h.CustomerLogin).Methods("POST")
+	router.HandleFunc("/register", h.CreateCustomerAccountPage).Methods("GET")
+	router.HandleFunc("/customerLogout", h.CustomerLogout).Methods("GET")
+
 	router.HandleFunc("/viewProduct/{id}", h.ViewProduct).Methods("GET")
 	router.HandleFunc("/productByCategoryList/{catId}/{catName}/{start}/{end}", h.ViewProductByCatList).Methods("GET")
 	router.HandleFunc("/productByCategoryAndManufacturerList/{catId}/{catName}/{manf}/{start}/{end}", h.ViewProductByCatAndManufacturerList).Methods("GET")
@@ -272,10 +277,6 @@ func main() {
 	router.HandleFunc("/shoppingCartView", h.ViewCart).Methods("GET")
 
 	router.HandleFunc("/startCheckout", h.CheckOutView).Methods("GET")
-
-	router.HandleFunc("/customerLoginPage", h.CustomerLoginPage).Methods("GET")
-
-	router.HandleFunc("/register", h.CreateCustomerAccountPage).Methods("GET")
 
 	router.HandleFunc("/createCustomerAccount", h.CreateCustomerAccount).Methods("POST")
 

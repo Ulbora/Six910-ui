@@ -272,7 +272,7 @@ func TestSix910Handler_CustomerChangePasswordPage(t *testing.T) {
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
@@ -475,7 +475,7 @@ func TestSix910Handler_CustomerChangePassword(t *testing.T) {
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
@@ -677,7 +677,7 @@ func TestSix910Handler_CustomerChangePasswordFail(t *testing.T) {
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
-	s.Values["loggedIn"] = true
+	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["customerCart"] = &cccs
@@ -713,6 +713,8 @@ func TestSix910Handler_CustomerLogout(t *testing.T) {
 	fmt.Println("suc: ", suc)
 
 	s.Values["accessTokenKey"] = "123"
+	s.Values["userLoggenIn"] = true
+	s.Values["customerUser"] = true
 
 	w := httptest.NewRecorder()
 	s.Save(r, w)

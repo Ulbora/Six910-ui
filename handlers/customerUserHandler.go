@@ -60,7 +60,7 @@ func (h *Six910Handler) CustomerLogin(w http.ResponseWriter, r *http.Request) {
 		h.Log.Debug("login suc", loginSuc)
 		if loginSuc {
 			//if lari.ResponseType == codeRespType || lari.ResponseType == tokenRespType {
-			slin.Values["loggedIn"] = true
+			slin.Values["userLoggenIn"] = true
 			slin.Values["customerUser"] = true
 			slin.Values["username"] = cusername
 			slin.Values["password"] = cpassword
@@ -142,21 +142,30 @@ func (h *Six910Handler) CustomerChangePassword(w http.ResponseWriter, r *http.Re
 
 //CustomerLogout CustomerLogout
 func (h *Six910Handler) CustomerLogout(w http.ResponseWriter, r *http.Request) {
-	h.token = nil
-	ccookie := &http.Cookie{
-		Name:   "Six910-ui",
-		Value:  "",
-		Path:   "/",
-		MaxAge: -1,
+	cloutss, suc := h.getUserSession(r)
+	h.Log.Debug("session suc", cloutss)
+	if suc {
+		if h.isStoreCustomerLoggedIn(cloutss) {
+			cloutss.Values["userLoggenIn"] = false
+			serr := cloutss.Save(r, w)
+			h.Log.Debug("serr", serr)
+		}
 	}
-	http.SetCookie(w, ccookie)
+	// h.token = nil
+	// ccookie := &http.Cookie{
+	// 	Name:   "Six910-ui-user",
+	// 	Value:  "",
+	// 	Path:   "/",
+	// 	MaxAge: -1,
+	// }
+	// http.SetCookie(w, ccookie)
 
-	ccookie2 := &http.Cookie{
-		Name:   "Six910",
-		Value:  "",
-		Path:   "/",
-		MaxAge: -1,
-	}
-	http.SetCookie(w, ccookie2)
+	// ccookie2 := &http.Cookie{
+	// 	Name:   "Six910",
+	// 	Value:  "",
+	// 	Path:   "/",
+	// 	MaxAge: -1,
+	// }
+	// http.SetCookie(w, ccookie2)
 	http.Redirect(w, r, "/", http.StatusFound)
 }

@@ -106,6 +106,7 @@ func (h *Six910Handler) AddProductToCart(w http.ResponseWriter, r *http.Request)
 
 		hd := h.getHeader(cpls)
 		cc := h.getCustomerCart(cpls)
+		h.Log.Debug("cc: ", cc)
 		if cc != nil {
 			cpd.Cart = cc.Cart
 			if cc.Items != nil {
@@ -234,6 +235,8 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 			cop.CustomerCart = cocc
 			var wg sync.WaitGroup
 			hd := h.getHeader(cocvs)
+			cid := h.getCustomerID(cocvs)
+			h.Log.Debug("Customer ID: ", cid)
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
@@ -278,15 +281,29 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 			}(hd)
 
 			wg.Add(1)
-			go func(cart *m.CustomerCart, header *six910api.Headers) {
+			// go func(cart *m.CustomerCart, header *six910api.Headers) {
+			// 	defer wg.Done()
+			// 	//if cart.CustomerAccount != nil && cart.CustomerAccount.Customer != nil {
+
+			// 	if h.getCustomerID != 0 {
+			// 		cop.CustomerAddressList = h.API.GetAddressList(h.getCustomerID, header)
+			// 		if len(*cop.CustomerAddressList) > 0 {
+			// 			cop.ShowAddressList = true
+			// 		}
+			// 	}
+			// }(cocc, hd)
+
+			go func(cusId int64, header *six910api.Headers) {
 				defer wg.Done()
-				if cart.CustomerAccount != nil && cart.CustomerAccount.Customer != nil {
-					cop.CustomerAddressList = h.API.GetAddressList(cart.CustomerAccount.Customer.ID, header)
+				//if cart.CustomerAccount != nil && cart.CustomerAccount.Customer != nil {
+
+				if cusId != 0 {
+					cop.CustomerAddressList = h.API.GetAddressList(cusId, header)
 					if len(*cop.CustomerAddressList) > 0 {
 						cop.ShowAddressList = true
 					}
 				}
-			}(cocc, hd)
+			}(cid, hd)
 
 			wg.Wait()
 

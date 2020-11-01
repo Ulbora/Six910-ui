@@ -36,6 +36,7 @@ func (m *Six910Manager) AddProductToCart(cc *CustomerCart, cp *CustomerProduct, 
 		rtn = new(CustomerCart)
 	}
 	var cart = rtn.Cart //*sdbi.Cart
+	m.Log.Debug("customerId : ", cp.CustomerID)
 	m.Log.Debug("cp cart : ", cp.Cart)
 	m.Log.Debug("cp quantity : ", cp.Quantity)
 	if cp.CustomerID != 0 && cp.Cart == nil {

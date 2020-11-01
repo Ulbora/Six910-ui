@@ -15,8 +15,19 @@
       {{end}}
       {{end}}
       {{if eq .LoggedIn true}}
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          My Account
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/viewCustomerAccount">View Account</a>
+          <a class="dropdown-item" href="/customerLogout">Logout</a>         
+        </div>
+      </li>
+      {{else}}
       <li class="nav-item">
-        <a class="nav-link" href="/viewCustomerAccount">My Account</a>
+        <a class="nav-link" href="/customerLoginPage">Login</a>
       </li>
       {{end}}
     </ul>

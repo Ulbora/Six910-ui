@@ -338,9 +338,9 @@ func (h *Six910Handler) isStoreAdminLoggedIn(s *sessions.Session) bool {
 
 func (h *Six910Handler) isStoreCustomerLoggedIn(s *sessions.Session) bool {
 	var rtn bool
-	loggedInAuthpa := s.Values["loggedIn"]
+	loggedInAuthpa := s.Values["userLoggenIn"]
 	storeCustomerUserpa := s.Values["customerUser"]
-	h.Log.Debug("loggedIn : ", loggedInAuthpa)
+	h.Log.Debug("userLoggenIn : ", loggedInAuthpa)
 	if loggedInAuthpa == true && storeCustomerUserpa == true {
 		rtn = true
 	}
