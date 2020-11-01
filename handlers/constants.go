@@ -251,9 +251,9 @@ const (
 	customerShoppingCartViewFail = "/shoppingCartView?error=Add Failed"
 
 	//routes customer
-	createCustomerView      = "/createCustomerView"
-	createCustomerViewFail  = "/createCustomerView?error=Customer Email Already Used"
-	createCustomerViewError = "/createCustomerView?error=Customer Create Error"
+	createCustomerView      = "/register"
+	createCustomerViewFail  = "/register?error=Customer Email Already Used"
+	createCustomerViewError = "/register?error=Customer Create Error"
 	createCustomer          = "/createCustomer"
 	customerInfoView        = "/customerInfo"
 	customerInfoViewFail    = "/customerInfo?error=Add Failed"

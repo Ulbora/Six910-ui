@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -122,6 +123,10 @@ func TestSix910Handler_CustomerLogin(t *testing.T) {
 	ur.Success = true
 	sapi.MockUpdateUserResp = &ur
 
+	var crt sdbi.Cart
+	crt.ID = 4
+	sapi.MockCart = &crt
+
 	sh.API = &sapi
 
 	//-----------end mocking --------
@@ -130,6 +135,82 @@ func TestSix910Handler_CustomerLogin(t *testing.T) {
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	//r.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
+	h := sh.GetNew()
+	h.CustomerLogin(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_CustomerLogin2(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	//-----------start mocking------------------
+	var user api.UserResponse
+	user.Username = "tester123"
+	user.Role = customerRole
+	user.Enabled = true
+
+	sapi.MockUser = &user
+
+	var ur api.Response
+	ur.Success = true
+	sapi.MockUpdateUserResp = &ur
+
+	var crt sdbi.Cart
+	crt.ID = 4
+	sapi.MockCart = &crt
+
+	var cilstp []sdbi.CartItem
+
+	var ctit1 sdbi.CartItem
+	ctit1.Quantity = 3
+	ctit1.ProductID = 7
+	cilstp = append(cilstp, ctit1)
+
+	var ctit2 sdbi.CartItem
+	ctit2.Quantity = 4
+	ctit2.ProductID = 9
+	cilstp = append(cilstp, ctit2)
+
+	var cccs m.CustomerCart
+	cccs.Items = &cilstp
+
+	sapi.MockCartItemList = &cilstp
+
+	sh.API = &sapi
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "/test", strings.NewReader("username=tester123&password=tester"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	//r.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	s, suc := sh.getUserSession(r)
+	fmt.Println("suc: ", suc)
+	b, _ := json.Marshal(cccs)
+	bb := sh.compressObj(b)
+	s.Values["customerCart"] = bb
+	s.Save(r, w)
+
 	h := sh.GetNew()
 	h.CustomerLogin(w, r)
 	fmt.Println("code: ", w.Code)

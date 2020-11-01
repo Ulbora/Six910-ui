@@ -6,7 +6,12 @@
     <div class="container-sm">
         <div class="shadow-none p-3 mb-5 mt-5 bg-white text-dark rounded">
             <h1>Login</h1>
-            <form method="POST" action="/customerLogin">                
+            {{if ne .Error ""}}
+            <div class="alert alert-danger" role="alert">
+                {{.Error}}
+            </div>
+            {{end}}
+            <form method="POST" action="/customerLogin">
                 <div class="form-group">
                     <label for="username">Email</label>
                     <input name="username" type="email" class="form-control" id="username">

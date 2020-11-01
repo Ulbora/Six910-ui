@@ -33,12 +33,15 @@ func (h *Six910Handler) CreateCustomerAccountPage(w http.ResponseWriter, r *http
 	ccuss, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", ccuss)
 	if suc {
+		pageErr := r.URL.Query().Get("error")
 		hd := h.getHeader(ccuss)
 		var caocp CustomerPage
+		caocp.Error = pageErr
 		ml := h.MenuService.GetMenuList()
 		h.getCartTotal(ccuss, ml, hd)
 		caocp.MenuList = ml
 		caocp.StateList = h.StateService.GetStateList("states")
+
 		h.Templates.ExecuteTemplate(w, customerCreatePage, caocp)
 	}
 }
@@ -52,6 +55,7 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 		//appvars := mux.Vars(r)
 		email := r.FormValue("email")
 		fcus := h.API.GetCustomer(email, hd)
+		h.Log.Debug("existing customer: ", fcus)
 		if fcus != nil && fcus.ID != 0 {
 			http.Redirect(w, r, createCustomerViewFail, http.StatusFound)
 		} else {
@@ -137,10 +141,12 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 				cc := h.getCustomerCart(crcuss)
 				cc.CustomerAccount = cres
 				h.Log.Debug("cc: ", *cc)
-				h.Log.Debug("cc cart: ", *cc.Cart)
-				cc.Cart.CustomerID = cres.Customer.ID
-				cures := h.API.UpdateCart(cc.Cart, hd)
-				h.Log.Debug("cures", cures)
+				h.Log.Debug("cc cart: ", cc.Cart)
+				if cc.Cart != nil {
+					cc.Cart.CustomerID = cres.Customer.ID
+					cures := h.API.UpdateCart(cc.Cart, hd)
+					h.Log.Debug("cures", cures)
+				}
 				h.storeCustomerCart(cc, crcuss, w, r)
 
 				http.Redirect(w, r, customerShoppingCartView, http.StatusFound)

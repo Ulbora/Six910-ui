@@ -68,6 +68,7 @@ type CustomerPage struct {
 
 	//meta data
 	HeaderData *HeaderData
+	Error      string
 }
 
 //Index Index

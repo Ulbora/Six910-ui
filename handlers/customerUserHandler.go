@@ -30,7 +30,9 @@ func (h *Six910Handler) CustomerLoginPage(w http.ResponseWriter, r *http.Request
 	clinss, suc := h.getUserSession(r)
 	h.Log.Debug("session suc", clinss)
 	if suc {
+		pageErr := r.URL.Query().Get("error")
 		var locp CustomerPage
+		locp.Error = pageErr
 		h.Templates.ExecuteTemplate(w, customerLoginPage, locp)
 	}
 }
@@ -68,6 +70,27 @@ func (h *Six910Handler) CustomerLogin(w http.ResponseWriter, r *http.Request) {
 
 			serr := slin.Save(r, w)
 			h.Log.Debug("serr", serr)
+			cc := h.getCustomerCart(slin)
+			h.Log.Debug("cusID in login", uu.CustomerID)
+			h.Log.Debug("cc in login", cc)
+			if cc != nil {
+				h.Log.Debug("cart in login", cc.Cart)
+				cc.Cart = h.API.GetCart(uu.CustomerID, hd)
+				if cc.Cart != nil {
+					h.Log.Debug("cart in login", *cc.Cart)
+					itmlst := h.API.GetCartItemList(cc.Cart.ID, uu.CustomerID, hd)
+					if cc.Items != nil {
+						for i := range *itmlst {
+							*cc.Items = append(*cc.Items, (*itmlst)[i])
+						}
+					} else {
+						cc.Items = itmlst
+					}
+					h.Log.Debug("cart items in login", cc.Items)
+				}
+
+				h.storeCustomerCart(cc, slin, w, r)
+			}
 
 			http.Redirect(w, r, customerIndexView, http.StatusFound)
 
