@@ -180,7 +180,10 @@ func (m *Six910Manager) CalculateCartTotals(cart *CustomerCart, hd *api.Headers)
 			cart.InsuranceCost = ins.Cost
 		}
 		sad := m.API.GetAddress(cart.ShippingAddressID, cart.Cart.CustomerID, hd)
+		m.Log.Debug("sad:", sad)
 		trs := m.API.GetTaxRate(sad.Country, sad.State, hd)
+		m.Log.Debug("trs:", trs)
+		m.Log.Debug("trs len:", len(*trs))
 		var tr *sdbi.TaxRate
 		if len(*trs) > 1 {
 			for i := range *trs {
@@ -200,7 +203,7 @@ func (m *Six910Manager) CalculateCartTotals(cart *CustomerCart, hd *api.Headers)
 				}
 			}
 		}
-		if tr.PercentRate != 0 {
+		if tr != nil && tr.PercentRate != 0 {
 			var hTax float64
 			var sTax float64
 			if tr.IncludeHandling {

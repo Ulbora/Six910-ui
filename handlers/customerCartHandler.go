@@ -138,6 +138,7 @@ func (h *Six910Handler) ViewCart(w http.ResponseWriter, r *http.Request) {
 		h.Log.Debug("cc: ", cc)
 		//h.Log.Debug("cc: ", *cc.Cart)
 		//h.Log.Debug("cc items: ", *cc.Items)
+		h.Log.Debug("cusId in viewCart: ", h.getCustomerID(ccvs))
 		hd := h.getHeader(ccvs)
 		if cc != nil && cc.Items != nil && len(*cc.Items) > 0 {
 			cv = h.Manager.ViewCart(cc, hd)
@@ -378,7 +379,29 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			h.Log.Debug("ccotres: ", ccotres)
 			h.Log.Debug("acres: ", acres)
 
-			h.Templates.ExecuteTemplate(w, customerShoppingCartContinuePage, &ccotres)
+			// var wg sync.WaitGroup
+			var ccop CheckoutPage
+			ccop.CustomerCart = ccotres
+
+			_, csspg := h.CSSService.GetPageCSS("pageCss")
+			h.Log.Debug("PageBody: ", *csspg)
+			ccop.PageBody = csspg
+
+			ml := h.MenuService.GetMenuList()
+			h.getCartTotal(cocccs, ml, hd)
+			ccop.MenuList = ml
+
+			h.Log.Debug("MenuList", *ccop.MenuList)
+
+			cisuc, cicont := h.ContentService.GetContent(shoppingCartContent3)
+			if cisuc {
+				ccop.Content = cicont
+			} else {
+				var ct conts.Content
+				ccop.Content = &ct
+			}
+
+			h.Templates.ExecuteTemplate(w, customerShoppingCartContinuePage, &ccop)
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)
 		}

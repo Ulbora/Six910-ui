@@ -1513,11 +1513,11 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 	//-----------end mocking --------
 
 	var c conts.CmsService
-	var ds ds.DataStore
-	ds.Path = "../contentsrv/testFiles"
+	var cds ds.DataStore
+	cds.Path = "../contentsrv/testFiles"
 	//ds.Delete("books1")
 	c.Log = &l
-	c.Store = ds.GetNew()
+	c.Store = cds.GetNew()
 
 	var ct conts.Content
 	ct.Name = "product"
@@ -1531,6 +1531,35 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 	fmt.Println("content save: ", res)
 
 	sh.ContentService = c.GetNew()
+
+	var css csssrv.Six910CSSService
+	var csds ds.DataStore
+	csds.Path = "./testFiles"
+	css.CSSStore = csds.GetNew()
+	css.Log = &l
+	sh.CSSService = css.GetNew()
+
+	var sms musrv.Six910MenuService
+	var mds ds.DataStore
+	mds.Path = "./testFiles"
+	sms.MenuStore = mds.GetNew()
+	sms.Log = &l
+	ms := sms.GetNew()
+
+	var mm musrv.Menu
+	mm.Name = "navBar"
+	mm.Active = true
+	mm.Location = "top"
+	mm.Shade = "light"
+	mm.Background = "light"
+	mm.Style = ""
+	mm.ShadeList = &[]string{"light", "dark"}
+	mm.BackgroundList = &[]string{"light", "dark"}
+
+	msuc := ms.AddMenu(&mm)
+	fmt.Println("menu save: ", msuc)
+
+	sh.MenuService = ms
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"

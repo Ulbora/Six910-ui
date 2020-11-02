@@ -30,6 +30,7 @@ import (
 	lg "github.com/Ulbora/Level_Logger"
 	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	csrv "github.com/Ulbora/Six910-ui/contentsrv"
+	cntrysrv "github.com/Ulbora/Six910-ui/countrysrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	hand "github.com/Ulbora/Six910-ui/handlers"
 	isrv "github.com/Ulbora/Six910-ui/imgsrv"
@@ -211,6 +212,15 @@ func main() {
 
 	sh.StateService = st.GetNew()
 
+	var cntry cntrysrv.Six910CountryService
+	var cntds ds.DataStore
+	cntds.Path = "./data/countryStore"
+	//ds.Delete("books1")
+	cntry.Log = &l
+	cntry.CountryStore = cntds.GetNew()
+
+	sh.CountryService = cntry.GetNew()
+
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
 		"./static/admin/subnavs/productNavbar.html", "./static/admin/pagination.html", "./static/admin/productSkuSearch.html",
@@ -277,6 +287,8 @@ func main() {
 	router.HandleFunc("/shoppingCartView", h.ViewCart).Methods("GET")
 
 	router.HandleFunc("/startCheckout", h.CheckOutView).Methods("GET")
+
+	router.HandleFunc("/checkoutContinue", h.CheckOutContinue).Methods("POST")
 
 	router.HandleFunc("/createCustomerAccount", h.CreateCustomerAccount).Methods("POST")
 

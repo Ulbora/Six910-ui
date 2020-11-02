@@ -41,6 +41,7 @@ func (h *Six910Handler) CreateCustomerAccountPage(w http.ResponseWriter, r *http
 		h.getCartTotal(ccuss, ml, hd)
 		caocp.MenuList = ml
 		caocp.StateList = h.StateService.GetStateList("states")
+		caocp.CountryList = h.CountryService.GetCountryList("countries")
 
 		h.Templates.ExecuteTemplate(w, customerCreatePage, caocp)
 	}
@@ -78,7 +79,7 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 			billState := r.FormValue("billState")
 			billZip := r.FormValue("billZip")
 			billCountry := r.FormValue("billCountry")
-			if billAddress != "" && billCity != "" && billState != "" && billZip != "" {
+			if billAddress != "" && billCity != "" && billState != "" && billZip != "" && billCountry != "" {
 				var ba sdbi.Address
 				ba.Address = billAddress
 				ba.City = billCity
@@ -94,7 +95,7 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 			shipState := r.FormValue("shipState")
 			shipZip := r.FormValue("shipZip")
 			shipCountry := r.FormValue("shipCountry")
-			if shipAddress != "" && shipCity != "" && shipState != "" && shipZip != "" {
+			if shipAddress != "" && shipCity != "" && shipState != "" && shipZip != "" && shipCountry != "" {
 				var sa sdbi.Address
 				sa.Address = shipAddress
 				sa.City = shipCity
@@ -187,6 +188,7 @@ func (h *Six910Handler) UpdateCustomerAccountPage(w http.ResponseWriter, r *http
 			ucaocp.Customer = cus
 			ucaocp.AddressList = addlst
 			ucaocp.StateList = h.StateService.GetStateList("states")
+			ucaocp.CountryList = h.CountryService.GetCountryList("countries")
 			h.Templates.ExecuteTemplate(w, customerUpdatePage, &ucaocp)
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)
@@ -273,6 +275,7 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 							a.City = r.FormValue("city_" + idstr)
 							a.State = r.FormValue("state_" + idstr)
 							a.Zip = r.FormValue("zip_" + idstr)
+							a.Country = r.FormValue("country_" + idstr)
 							usuc := h.API.UpdateAddress(&a, hd)
 							h.Log.Debug("update add suc: ", usuc.Success)
 							if !usuc.Success {
@@ -291,11 +294,13 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 					newState := r.FormValue("newState")
 					newZip := r.FormValue("newZip")
 					newType := r.FormValue("newType")
+					newCountry := r.FormValue("newCountry")
 					var nadd sdbi.Address
 					nadd.Address = newAddress
 					nadd.City = newCity
 					nadd.State = newState
 					nadd.Zip = newZip
+					nadd.Country = newCountry
 					nadd.Type = newType
 					nadd.CustomerID = ufcus.ID
 					naddres := h.API.AddAddress(&nadd, hd)

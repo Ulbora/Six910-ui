@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
+	m "github.com/Ulbora/Six910-ui/managers"
 	api "github.com/Ulbora/Six910API-Go"
 )
 
@@ -71,15 +72,33 @@ func (h *Six910Handler) CustomerLogin(w http.ResponseWriter, r *http.Request) {
 			serr := slin.Save(r, w)
 			h.Log.Debug("serr", serr)
 			cc := h.getCustomerCart(slin)
-			h.Log.Debug("cusID in login", uu.CustomerID)
+			h.Log.Debug("cusID uu in login", uu.CustomerID)
+			h.Log.Debug("cusID h.getCustomerID in login", h.getCustomerID(slin))
 			h.Log.Debug("cc in login", cc)
 			if cc != nil {
 				h.Log.Debug("cart in login", cc.Cart)
+				cc.CustomerAccount = new(m.CustomerAccount)
+				cc.CustomerAccount.User = uu
+				cc.CustomerAccount.Customer = h.API.GetCustomerID(uu.CustomerID, hd)
+				cc.CustomerAccount.Addresses = h.API.GetAddressList(uu.CustomerID, hd)
 				cc.Cart = h.API.GetCart(uu.CustomerID, hd)
 				if cc.Cart != nil {
 					h.Log.Debug("cart in login", *cc.Cart)
+					h.Log.Debug("cart item in login", cc.Items)
 					itmlst := h.API.GetCartItemList(cc.Cart.ID, uu.CustomerID, hd)
 					if cc.Items != nil {
+						h.Log.Debug("cart item len in login", len(*cc.Items))
+						for _, ci := range *cc.Items {
+							var delcartID = ci.CartID
+							h.Log.Debug("existing cart item in login", ci)
+							h.Log.Debug("existing cart item id in login", ci.ID)
+							h.Log.Debug("existing cart item cart id in login", ci.CartID)
+							ci.ID = 0
+							ci.CartID = cc.Cart.ID
+							ciadd := h.API.AddCartItem(&ci, uu.CustomerID, hd)
+							h.Log.Debug("add cart item in login", ciadd)
+							h.API.DeleteCart(delcartID, 0, hd)
+						}
 						for i := range *itmlst {
 							*cc.Items = append(*cc.Items, (*itmlst)[i])
 						}
@@ -172,6 +191,12 @@ func (h *Six910Handler) CustomerLogout(w http.ResponseWriter, r *http.Request) {
 			cloutss.Values["userLoggenIn"] = false
 			serr := cloutss.Save(r, w)
 			h.Log.Debug("serr", serr)
+			cc := h.getCustomerCart(cloutss)
+			cc.CustomerAccount = nil
+			cc.Items = nil
+			cc.Cart = nil
+			h.storeCustomerCart(cc, cloutss, w, r)
+
 		}
 	}
 	// h.token = nil

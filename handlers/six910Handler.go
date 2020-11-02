@@ -17,6 +17,7 @@ import (
 	bks "github.com/Ulbora/Six910-ui/bkupsrv"
 	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
+	cntrysrv "github.com/Ulbora/Six910-ui/countrysrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	imgs "github.com/Ulbora/Six910-ui/imgsrv"
 	mails "github.com/Ulbora/Six910-ui/mailsrv"
@@ -80,6 +81,7 @@ type Six910Handler struct {
 	CSSService      csssrv.CSSService
 	CarouselService carsrv.CarouselService
 	StateService    stsrv.StateService
+	CountryService  cntrysrv.CountryService
 
 	OauthHost     string
 	UserHost      string

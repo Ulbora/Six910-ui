@@ -9,6 +9,7 @@ import (
 	sdbi "github.com/Ulbora/six910-database-interface"
 	//"github.com/gorilla/mux"
 	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
+	cntrysrv "github.com/Ulbora/Six910-ui/countrysrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	stsrv "github.com/Ulbora/Six910-ui/statesrv"
@@ -65,6 +66,7 @@ type CustomerPage struct {
 	Customer           *sdbi.Customer
 	AddressList        *[]sdbi.Address
 	StateList          *[]stsrv.State
+	CountryList        *[]cntrysrv.Country
 
 	//meta data
 	HeaderData *HeaderData

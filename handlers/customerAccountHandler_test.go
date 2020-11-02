@@ -11,6 +11,7 @@ import (
 
 	lg "github.com/Ulbora/Level_Logger"
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
+	cntrysrv "github.com/Ulbora/Six910-ui/countrysrv"
 	m "github.com/Ulbora/Six910-ui/managers"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
@@ -101,6 +102,15 @@ func TestSix910Handler_CreateCustomerAccountPage(t *testing.T) {
 	st.StateStore = sds.GetNew()
 
 	sh.StateService = st.GetNew()
+
+	var cntry cntrysrv.Six910CountryService
+	var cntds ds.DataStore
+	cntds.Path = "../countrysrv/testFiles"
+	//ds.Delete("books1")
+	cntry.Log = &l
+	cntry.CountryStore = cntds.GetNew()
+
+	sh.CountryService = cntry.GetNew()
 
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
@@ -620,6 +630,15 @@ func TestSix910Handler_UpdateCustomerAccountPage(t *testing.T) {
 	st.StateStore = sds.GetNew()
 
 	sh.StateService = st.GetNew()
+
+	var cntry cntrysrv.Six910CountryService
+	var cntds ds.DataStore
+	cntds.Path = "../countrysrv/testFiles"
+	//ds.Delete("books1")
+	cntry.Log = &l
+	cntry.CountryStore = cntds.GetNew()
+
+	sh.CountryService = cntry.GetNew()
 
 	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
 
