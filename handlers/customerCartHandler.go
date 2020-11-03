@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"sync"
@@ -54,11 +55,20 @@ type CheckoutPage struct {
 	MenuList            *[]musrv.Menu
 	Content             *conts.Content
 	PaymentMethodList   *[]PaymentMethod
+	PaymentMethod       *PaymentMethod
 	ShippingMethodList  *[]ShippingMethod
+	ShippingMethod      *sdbi.ShippingMethod
 	InsuranceList       *[]sdbi.Insurance
 	ShowInsurance       bool
 	CustomerAddressList *[]sdbi.Address
+	BillingAddress      *sdbi.Address
+	ShippingAddress     *sdbi.Address
 	ShowAddressList     bool
+	Subtotal            string
+	ShippingHandling    string
+	InsuranceCost       string
+	Taxes               string
+	Total               string
 
 	HeaderData *HeaderData
 }
@@ -374,6 +384,14 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			hd := h.getHeader(cocccs)
 			ccotres := h.Manager.CalculateCartTotals(ccoart, hd)
 
+			pgw := h.API.GetPaymentGateway(pgwid, hd)
+			sp := h.API.GetStorePlugin(pgw.StorePluginsID, hd)
+			var pm PaymentMethod
+			pm.Name = sp.PluginName
+			pm.PaymentGateway = pgw
+
+			sm := h.API.GetShippingMethod(smid, hd)
+
 			acres := h.storeCustomerCart(ccotres, cocccs, w, r)
 
 			h.Log.Debug("ccotres: ", ccotres)
@@ -382,6 +400,15 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			// var wg sync.WaitGroup
 			var ccop CheckoutPage
 			ccop.CustomerCart = ccotres
+			ccop.PaymentMethod = &pm
+			ccop.ShippingMethod = sm
+			ccop.BillingAddress = h.API.GetAddress(baid, ccotres.Cart.CustomerID, hd)
+			ccop.ShippingAddress = h.API.GetAddress(said, ccotres.Cart.CustomerID, hd)
+			ccop.Subtotal = fmt.Sprintf("%.2f", ccotres.Subtotal)
+			ccop.ShippingHandling = fmt.Sprintf("%.2f", ccotres.ShippingHandling)
+			ccop.InsuranceCost = fmt.Sprintf("%.2f", ccotres.InsuranceCost)
+			ccop.Taxes = fmt.Sprintf("%.2f", ccotres.Taxes)
+			ccop.Total = fmt.Sprintf("%.2f", ccotres.Total)
 
 			_, csspg := h.CSSService.GetPageCSS("pageCss")
 			h.Log.Debug("PageBody: ", *csspg)

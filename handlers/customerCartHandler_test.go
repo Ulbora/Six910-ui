@@ -1491,6 +1491,8 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 	pglst = append(pglst, pg)
 	sapi.MockPaymentGatewayList = &pglst
 
+	sapi.MockPaymentGateway = &pg
+
 	var spi sdbi.StorePlugins
 	spi.ID = 4
 	spi.PluginName = "PAYPAL"
@@ -1595,12 +1597,17 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 	var cccs m.CustomerCart
 	cccs.Items = &cilstp
 
+	var crt sdbi.Cart
+	crt.ID = 3
+	cccs.Cart = &crt
+
 	var cus sdbi.Customer
 	cus.ID = 3
 
 	var cusa m.CustomerAccount
 	cusa.Customer = &cus
 	cccs.CustomerAccount = &cusa
+
 	var itmList []sdbi.CartItem
 	cccs.Items = &itmList
 
