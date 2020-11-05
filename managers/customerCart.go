@@ -156,6 +156,7 @@ func (m *Six910Manager) CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerO
 	var rtn *CustomerOrder
 	if cart.CustomerAccount.Customer.ID != 0 && cart.CustomerAccount.User.Enabled {
 		// check out with logged in user
+		m.Log.Debug("Completeing checkout for logged in user:")
 		rtn = m.completeOrder(cart, hd)
 	} else {
 		//user not logged in
@@ -255,7 +256,9 @@ func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *Cust
 	odr.Username = cart.CustomerAccount.User.Username
 
 	ores := m.API.AddOrder(&odr, hd)
+	m.Log.Debug("ores in completeOrder:", *ores)
 	if ores.Success && ores.ID != 0 {
+		odr.ID = ores.ID
 		rtn.Order = &odr
 		rtn.Cart = cart.Cart
 		rtn.CustomerAccount = cart.CustomerAccount

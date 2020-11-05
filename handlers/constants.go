@@ -396,6 +396,7 @@ const (
 	customerShoppingCartPage         = "shoppingCart.html"
 	customerShoppingCartPage2        = "shoppingCart2.html"
 	customerShoppingCartContinuePage = "shoppingCartContinue.html"
+	checkoutReceiptPage              = "checkoutReceipt.html"
 	customerCreatePage               = "createCustomer.html"
 	customerUpdatePage               = "updateCustomer.html"
 	customerCreateAddressPage        = "createCustomerAddress.html"

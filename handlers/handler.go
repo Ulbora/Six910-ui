@@ -254,7 +254,7 @@ type Handler interface {
 	UpdateProductToCart(w http.ResponseWriter, r *http.Request)
 	CheckOutView(w http.ResponseWriter, r *http.Request)
 	CheckOutContinue(w http.ResponseWriter, r *http.Request)
-	// CheckOut(w http.ResponseWriter, r *http.Request)
+	CheckOutComplateOrder(w http.ResponseWriter, r *http.Request)
 
 	//customer
 	CreateCustomerAccountPage(w http.ResponseWriter, r *http.Request)

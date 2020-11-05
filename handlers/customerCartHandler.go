@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"sync"
+	"time"
 
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
@@ -69,6 +71,8 @@ type CheckoutPage struct {
 	InsuranceCost       string
 	Taxes               string
 	Total               string
+	OrderInfo           string
+	PayPalPayment       bool
 	OrderNumber         string
 
 	HeaderData *HeaderData
@@ -83,6 +87,11 @@ type CartPage struct {
 	//meta data
 	HeaderData *HeaderData
 }
+
+// //PayPalPayload PayPalPayload
+// type PayPalPayload struct {
+// 	Description string `json:"description"`
+// }
 
 //AddProductToCart AddProductToCart
 func (h *Six910Handler) AddProductToCart(w http.ResponseWriter, r *http.Request) {
@@ -386,9 +395,13 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 
 			hd := h.getHeader(cocccs)
 			ccotres := h.Manager.CalculateCartTotals(ccoart, hd)
-
-			odrRes := h.Manager.CheckOut(ccotres, hd)
-			ccotres.OrderID = odrRes.Order.ID
+			// h.Log.Debug("ccotres.OrderID: ", ccotres.OrderID)
+			// if ccotres.OrderID == 0 {
+			// 	odrRes := h.Manager.CheckOut(ccotres, hd)
+			// 	h.Log.Debug("odrRes after CheckOut: ", *odrRes.Order)
+			// 	ccotres.OrderID = odrRes.Order.ID
+			// 	h.Log.Debug("ccotres.OrderID after create: ", ccotres.OrderID)
+			// }
 
 			pgw := h.API.GetPaymentGateway(pgwid, hd)
 			sp := h.API.GetStorePlugin(pgw.StorePluginsID, hd)
@@ -405,6 +418,11 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 
 			// var wg sync.WaitGroup
 			var ccop CheckoutPage
+			if strings.Contains(strings.ToLower(pm.Name), "paypal") {
+				h.Log.Debug("Using PayPay Gateway")
+				ccop.PayPalPayment = true
+			}
+			ccop.OrderInfo = h.CompanyName
 			ccop.CustomerCart = ccotres
 			ccop.PaymentMethod = &pm
 			ccop.ShippingMethod = sm
@@ -435,6 +453,99 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			}
 
 			h.Templates.ExecuteTemplate(w, customerShoppingCartContinuePage, &ccop)
+		} else {
+			http.Redirect(w, r, customerLoginView, http.StatusFound)
+		}
+	}
+}
+
+//CheckOutComplateOrder CheckOutComplateOrder
+func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Request) {
+	cocod, suc := h.getUserSession(r)
+	h.Log.Debug("session suc", suc)
+	if suc {
+		if h.isStoreCustomerLoggedIn(cocod) {
+			codrvars := mux.Vars(r)
+			//cartIdstr := codrvars["cartId"]
+			transactionCode := codrvars["transactionCode"]
+			// appqtystr := appvars["quantity"]
+			//cartID, _ = strconv.ParseInt(cartIdstr, 10, 64)
+
+			hd := h.getHeader(cocod)
+			comccotres := h.getCustomerCart(cocod)
+			h.Log.Debug("comccotres: ", *comccotres.CustomerAccount)
+			odrRes := h.Manager.CheckOut(comccotres, hd)
+			h.Log.Debug("odrRes after CheckOut: ", *odrRes.Order)
+			//ccotres.OrderID = odrRes.Order.ID
+			h.Log.Debug("comccotres.OrderID after create: ", comccotres.OrderID)
+
+			pgw := h.API.GetPaymentGateway(comccotres.PaymentGatewayID, hd)
+			sp := h.API.GetStorePlugin(pgw.StorePluginsID, hd)
+			var pm PaymentMethod
+			pm.Name = sp.PluginName
+			pm.PaymentGateway = pgw
+
+			sm := h.API.GetShippingMethod(comccotres.ShippingMethodID, hd)
+
+			var trans sdbi.OrderTransaction
+			trans.Gwid = pgw.ID
+			trans.Method = sp.PluginName
+			trans.OrderID = odrRes.Order.ID
+			trans.DateEntered = time.Now()
+			trans.ReferenceNumber = transactionCode
+			trans.ResponseCode = "200"
+			trans.ResponseMessage = "success"
+			trans.Success = true
+			trans.TransactionID = transactionCode
+			trans.Type = sp.PluginName
+			tres := h.API.AddOrderTransaction(&trans, hd)
+			h.Log.Debug("transaction res: ", *tres)
+
+			var ccopc CheckoutPage
+			// if strings.Contains(strings.ToLower(pm.Name), "paypal") {
+			// 	h.Log.Debug("Using PayPay Gateway")
+			// 	ccop.PayPalPayment = true
+			// }
+			ccopc.OrderNumber = odrRes.Order.OrderNumber
+			ccopc.OrderInfo = h.CompanyName
+			ccopc.CustomerCart = comccotres
+			ccopc.PaymentMethod = &pm
+			ccopc.ShippingMethod = sm
+			ccopc.BillingAddress = h.API.GetAddress(comccotres.BillingAddressID, comccotres.Cart.CustomerID, hd)
+			ccopc.ShippingAddress = h.API.GetAddress(comccotres.ShippingAddressID, comccotres.Cart.CustomerID, hd)
+			ccopc.Subtotal = fmt.Sprintf("%.2f", comccotres.Subtotal)
+			ccopc.ShippingHandling = fmt.Sprintf("%.2f", comccotres.ShippingHandling)
+			ccopc.InsuranceCost = fmt.Sprintf("%.2f", comccotres.InsuranceCost)
+			ccopc.Taxes = fmt.Sprintf("%.2f", comccotres.Taxes)
+			ccopc.Total = fmt.Sprintf("%.2f", comccotres.Total)
+
+			_, csspg := h.CSSService.GetPageCSS("pageCss")
+			h.Log.Debug("PageBody: ", *csspg)
+			ccopc.PageBody = csspg
+
+			ml := h.MenuService.GetMenuList()
+			//h.getCartTotal(cocccs, ml, hd)
+			ccopc.MenuList = ml
+
+			h.Log.Debug("MenuList", *ccopc.MenuList)
+
+			cisuc, cicont := h.ContentService.GetContent(shoppingCartContent3)
+			if cisuc {
+				ccopc.Content = cicont
+			} else {
+				var ct conts.Content
+				ccopc.Content = &ct
+			}
+
+			ecc := h.getCustomerCart(cocod)
+			ecc.CartView = nil
+			//ecc.CustomerAccount = nil
+			ecc.Items = nil
+			//ecc.Cart = nil
+			h.storeCustomerCart(ecc, cocod, w, r)
+
+			h.Templates.ExecuteTemplate(w, checkoutReceiptPage, &ccopc)
+
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)
 		}

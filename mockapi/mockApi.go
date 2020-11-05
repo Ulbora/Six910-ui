@@ -182,6 +182,8 @@ type MockAPI struct {
 	MockStoreUpdateResp *api.Response
 
 	MockManufactureList *[]string
+
+	MockOrderTransactionRes *api.ResponseID
 }
 
 //GetNew GetNew
@@ -631,7 +633,7 @@ func (a *MockAPI) DeleteOrderItem(id int64, headers *api.Headers) *api.Response 
 
 //AddOrderTransaction AddOrderTransaction
 func (a *MockAPI) AddOrderTransaction(t *sdbi.OrderTransaction, headers *api.Headers) *api.ResponseID {
-	return nil
+	return a.MockOrderTransactionRes
 }
 
 //GetOrderTransactionList GetOrderTransactionList

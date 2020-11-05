@@ -288,6 +288,8 @@ func main() {
 
 	router.HandleFunc("/startCheckout", h.CheckOutView).Methods("GET")
 
+	router.HandleFunc("/completeOrder/{transactionCode}", h.CheckOutComplateOrder).Methods("GET")
+
 	router.HandleFunc("/checkoutContinue", h.CheckOutContinue).Methods("POST")
 
 	router.HandleFunc("/createCustomerAccount", h.CreateCustomerAccount).Methods("POST")

@@ -19,7 +19,7 @@
     <div class="row mt-5">
 
       {{if and .CustomerCart .CustomerCart.Items}}
-      <div class="col-6">
+      <div class="col-6">        
         <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Cart Items</h4>
 
         {{range .CustomerCart.CartView.Items}}
@@ -35,18 +35,13 @@
                 <p class="card-text">
                 <div class="row">
                   <div class="col-sm">
-                    <form method="GET" action="/updateCart">
+                    <!-- <form method="GET" action="/updateCart"> -->
                       <label for="cost">Quantity</label>
-                      <input name="qty" min="1" max="{{.Stock}}" type="number" class="form-control" id="qty"
+                      <input disabled name="qty" min="1" max="{{.Stock}}" type="number" class="form-control" id="qty"
                         value="{{.Quantity}}">
                       <input name="id" type="hidden" id="id" value="{{.ProductID}}">
-                      <button type="submit" class="btn btn-primary mt-3">Update</button>
-                    </form>
-                    <form method="GET" action="/updateCart">
-                      <input name="qty" hidden type="number" class="form-control" id="qty" value="0">
-                      <input name="id" hidden type="hidden" id="id" value="{{.ProductID}}">
-                      <button type="submit" class="btn btn-danger mt-3">Remove</button>
-                    </form>
+                      <!-- <button type="submit" class="btn btn-primary mt-3">Update</button> -->
+                    <!-- </form>                    -->
                   </div>
                   <div class="col-sm">
                     <div class="card">
@@ -75,10 +70,13 @@
 
       </div>
       <div class="col-6">
+        <div class="alert alert-success text-center" role="alert">
+          Completed Successfully
+        </div>
         <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Summary</h4>
         <div class="card bg-light">
           <div class="card-body">
-            <h3 class="card-title">Order</h3>
+            <h3 class="card-title">Order # {{.OrderNumber}}</h3>
             <hr>
             <div class="row">
               <div class="col-6">Subtotal: </div>
@@ -148,13 +146,7 @@
             <a href="/viewCustomerAccount" class="alert-link">Add New Address </a>
           </div> -->
 
-          {{if eq .PayPalPayment true}}
-          <div class="card text-center border-0">            
-            <div class="card-body">
-              {{template "paypal" .}}
-            </div>
-          </div>
-          {{end}}
+          
 
           <!-- payment details: {"create_time":"2020-11-04T21:37:08Z","update_time":"2020-11-04T21:39:21Z","id":"3R887979G3474221J","intent":"CAPTURE","status":"COMPLETED","payer":{"email_address":"sb-o8hkr3654613@personal.example.com","payer_id":"RPBZ22MP66W2S","address":{"country_code":"US"},"name":{"given_name":"John","surname":"Doe"}},"purchase_units":[{"description":"Order # 45666HWT","reference_id":"default","soft_descriptor":"PAYPAL *TESTERTESTE","amount":{"value":"333.50","currency_code":"USD","breakdown":{"item_total":{"value":"253.44","currency_code":"USD"},"shipping":{"value":"12.52","currency_code":"USD"},"handling":{"value":"0.00","currency_code":"USD"},"tax_total":{"value":"67.54","currency_code":"USD"},"insurance":{"value":"0.00","currency_code":"USD"},"shipping_discount":{"value":"0.00","currency_code":"USD"}}},"payee":{"email_address":"six910@ulboralabs.com","merchant_id":"FEYTUT49W5RM6"},"shipping":{"name":{"full_name":"John Doe"},"address":{"address_line_1":"201 HARBORSIDE DR","admin_area_2":"DALLAS","admin_area_1":"GA","postal_code":"30132","country_code":"US"}},"payments":{"captures":[{"status":"COMPLETED","id":"57Y4402035981270P","final_capture":true,"create_time":"2020-11-04T21:39:21Z","update_time":"2020-11-04T21:39:21Z","amount":{"value":"333.50","currency_code":"USD"},"seller_protection":{"status":"ELIGIBLE","dispute_categories":["ITEM_NOT_RECEIVED","UNAUTHORIZED_TRANSACTION"]},"links":[{"href":"https://api.sandbox.paypal.com/v2/payments/captures/57Y4402035981270P","rel":"self","method":"GET","title":"GET"},{"href":"https://api.sandbox.paypal.com/v2/payments/captures/57Y4402035981270P/refund","rel":"refund","method":"POST","title":"POST"},{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3R887979G3474221J","rel":"up","method":"GET","title":"GET"}]}]}}],"links":[{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3R887979G3474221J","rel":"self","method":"GET","title":"GET"}]} -->
 
