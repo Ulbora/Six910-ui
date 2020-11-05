@@ -64,6 +64,7 @@ type MockAPI struct {
 
 	MockAddOrderItemResp *api.ResponseID
 	MockOrderItemList    *[]sdbi.OrderItem
+	MockOrderItem        *sdbi.OrderItem
 
 	MockAddCommentResp *api.ResponseID
 	MockCommentList    *[]sdbi.OrderComment
@@ -613,7 +614,7 @@ func (a *MockAPI) UpdateOrderItem(i *sdbi.OrderItem, headers *api.Headers) *api.
 
 //GetOrderItem GetOrderItem
 func (a *MockAPI) GetOrderItem(id int64, headers *api.Headers) *sdbi.OrderItem {
-	return nil
+	return a.MockOrderItem
 }
 
 //GetOrderItemList GetOrderItemList

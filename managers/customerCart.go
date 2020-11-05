@@ -178,6 +178,8 @@ func (m *Six910Manager) CalculateCartTotals(cart *CustomerCart, hd *api.Headers)
 		if cart.InsuranceID != 0 {
 			ins := m.API.GetInsurance(cart.InsuranceID, hd)
 			cart.InsuranceCost = ins.Cost
+		} else {
+			cart.InsuranceCost = 0
 		}
 		sad := m.API.GetAddress(cart.ShippingAddressID, cart.Cart.CustomerID, hd)
 		m.Log.Debug("sad:", sad)
@@ -278,6 +280,7 @@ func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *Cust
 
 func (m *Six910Manager) processOrderItems(ois *[]sdbi.CartItem, orderID int64, hd *api.Headers) (bool, *[]sdbi.OrderItem) {
 	m.Log.Debug("in processOrderItems")
+	m.Log.Debug("ois in processOrderItems:", ois)
 	var rtn = true
 	var rtnoi []sdbi.OrderItem
 	var wg sync.WaitGroup

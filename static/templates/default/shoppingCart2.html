@@ -19,7 +19,7 @@
     <div class="row mt-5">
       
       {{if and .CustomerCart .CustomerCart.Items}}
-      <div class="col-8">
+      <div class="col-6">
         <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Cart Items</h4>
 
         {{range .CustomerCart.CartView.Items}}
@@ -74,7 +74,7 @@
 
 
       </div>
-      <div class="col-4">
+      <div class="col-6">
         <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Summary</h4>
         <div class="card">
           <div class="card-body">
@@ -142,7 +142,7 @@
             </div>
             {{end}}
             <div class="alert alert-danger mt-3" role="alert">
-              <a href="/addCustomerAddress" class="alert-link">Add New Address </a>
+              <a href="/viewCustomerAccount" class="alert-link">Add New Address </a>
             </div>    
             {{else}}
             <h5 class="mt-3">Billing Address</h5> 
@@ -150,7 +150,7 @@
               <input hidden class="form-check-input" type="radio" name="billingAddressID" id="billingAddressID" value="" required>
               <label class="form-check-label" for="billingAddressID">
                 <div class="alert alert-danger" role="alert">
-                  <a href="/addCustomerAddress" class="alert-link">Add Billing Address </a>
+                  <a href="/viewCustomerAccount" class="alert-link">Add Billing Address </a>
                 </div>           
               </label>
             </div>
@@ -160,7 +160,7 @@
               <input hidden class="form-check-input" type="radio" name="shippingAddressID" id="shippingAddressID" value="" required>
               <label class="form-check-label" for="shippingAddressID">
                 <div class="alert alert-danger" role="alert">
-                  <a href="/addCustomerAddress" class="alert-link">Add Shipping Address </a>
+                  <a href="/viewCustomerAccount" class="alert-link">Add Shipping Address </a>
                 </div>          
               </label>
             </div>

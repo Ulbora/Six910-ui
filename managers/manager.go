@@ -131,6 +131,7 @@ type CustomerCart struct {
 	InsuranceID       int64
 	BillingAddressID  int64
 	ShippingAddressID int64
+	OrderID           int64
 }
 
 //CustomerOrder CustomerOrder

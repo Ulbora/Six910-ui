@@ -17,9 +17,9 @@
   <div class="container mt-5 mb-5">
     <h3 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Shopping Cart</h3>
     <div class="row mt-5">
-      
+
       {{if and .CustomerCart .CustomerCart.Items}}
-      <div class="col-8">
+      <div class="col-6">
         <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Cart Items</h4>
 
         {{range .CustomerCart.CartView.Items}}
@@ -74,23 +74,24 @@
 
 
       </div>
-      <div class="col-4">
+      <div class="col-6">
         <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Summary</h4>
-        <div class="card bg-light" >
+        <div class="card bg-light">
           <div class="card-body">
             <h3 class="card-title">Order</h3>
+            <hr>
             <div class="row">
               <div class="col-6">Subtotal: </div>
               <div class="col-6 text-right">${{.Subtotal}}</div>
             </div>
             <!-- <p class="card-text">Subtotal: ${{.CustomerCart.Subtotal}}</p> -->
             <div class="row">
-              <div class="col-6">ShippingHandling: </div>
+              <div class="col-6">Shipping: </div>
               <div class="col-6 text-right">${{.ShippingHandling}}</div>
             </div>
             <!-- <p class="card-text">ShippingHandling: ${{.CustomerCart.ShippingHandling}}</p> -->
             <div class="row">
-              <div class="col-6">InsuranceCost: </div>
+              <div class="col-6">Insurance: </div>
               <div class="col-6 text-right">${{.InsuranceCost}}</div>
             </div>
             <!-- <p class="card-text">InsuranceCost: ${{.CustomerCart.InsuranceCost}}</p> -->
@@ -107,86 +108,104 @@
           </div>
         </div>
         <div class="shadow-none p-3 mb-5 mt-2 bg-light rounded">
-          <form method="POST" action="/checkoutContinue">    
-            <h5>Payment Method </h5>                 
-            <div class="alert alert-info" role="alert">
-              {{.PaymentMethod.Name}}
-            </div>
-            <h5 class="mt-3">Shipping Method <span class="text-danger"> *</span></h5>  
-            <div class="alert alert-info" role="alert">
-              {{.ShippingMethod.Name}}
-            </div>  
-            
-            
-            {{if eq .ShowInsurance true}}
-            <h5 class="mt-3">Insurance</h5>     
-            {{range .InsuranceList}}
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="insuranceID" id="insuranceID" value="{{.ID}}">
-              <label class="form-check-label" for="insuranceID">
-                Max ${{.MaxOrderAmount}} 
-              </label>
-            </div>
-            {{end}}
-            {{end}}
+          <!-- <form method="POST" action="/checkoutContinue">    -->
 
-            {{if eq .ShowAddressList true}}
-            <h5 class="mt-3">Billing Address</h5>    
-            {{range .CustomerAddressList}}
-            {{if eq .Type "Billing"}}
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="billingAddressID" id="billingAddressID" value="{{.ID}}" required>
-              <label class="form-check-label" for="billingAddressID">
-               {{.Address}}
-               {{.City}}
-               {{.State}} {{.Zip}}
-              </label>
-            </div>
-            {{end}}
-            {{end}}
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Payment Method </h4>
+            <hr>
+            {{.PaymentMethod.Name}}
+          </div>
 
-            <h5 class="mt-3">Shipping Address</h5>    
-            {{range .CustomerAddressList}}
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="shippingAddressID" id="shippingAddressID" value="{{.ID}}" required>
-              <label class="form-check-label" for="shippingAddressID">
-               {{.Address}}
-               {{.City}}
-               {{.State}} {{.Zip}}
-              </label>
-            </div>
-            {{end}}
-            <div class="alert alert-danger mt-3" role="alert">
-              <a href="/addCustomerAddress" class="alert-link">Add New Address </a>
-            </div>    
-            {{else}}
-            <h5 class="mt-3">Billing Address</h5> 
-            <div class="form-check">
-              <input hidden class="form-check-input" type="radio" name="billingAddressID" id="billingAddressID" value="" required>
-              <label class="form-check-label" for="billingAddressID">
-                <div class="alert alert-danger" role="alert">
-                  <a href="/addCustomerAddress" class="alert-link">Add Billing Address </a>
-                </div>           
-              </label>
-            </div>
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Shipping Method </h4>
+            <hr>
+            {{.ShippingMethod.Name}}
+          </div>
 
-            <h5 class="mt-3">Shipping Address</h5> 
-            <div class="form-check">
-              <input hidden class="form-check-input" type="radio" name="shippingAddressID" id="shippingAddressID" value="" required>
-              <label class="form-check-label" for="shippingAddressID">
-                <div class="alert alert-danger" role="alert">
-                  <a href="/addCustomerAddress" class="alert-link">Add Shipping Address </a>
-                </div>          
-              </label>
+
+
+
+
+
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Billing Address</h4>
+            <hr>
+            <p>{{.BillingAddress.Address}}</p>
+            <p>{{.BillingAddress.City}}, {{.BillingAddress.State}} {{.BillingAddress.Zip}}</p>
+            <p>{{.BillingAddress.Country}}</p>
+          </div>
+
+
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Shipping Address</h4>
+            <hr>
+            <p>{{.ShippingAddress.Address}}</p>
+            <p>{{.ShippingAddress.City}}, {{.ShippingAddress.State}} {{.ShippingAddress.Zip}}</p>
+            <p>{{.ShippingAddress.Country}}</p>
+          </div>
+
+          <!-- <div class="alert alert-danger mt-3" role="alert">
+            <a href="/viewCustomerAccount" class="alert-link">Add New Address </a>
+          </div> -->
+
+
+          <div class="card text-center border-0">
+            <div class="card-body">
+
+              <div id="smart-button-container">
+                <div style="text-align: center;">
+                  <div id="paypal-button-container"></div>
+                </div>
+              </div>
+              <script
+                src="https://www.paypal.com/sdk/js?client-id=AcTqnPcGC2EMCW4RVQjekUFu88tWfqQlgTv1N1CC97q8vaxujuSkCk-CuF-h9z6ABXQ9EmBdbtIBaS_r&currency=USD"
+                data-sdk-integration-source="button-factory"></script>
+              <script>
+                function initPayPalButton() {
+                  paypal.Buttons({
+                    style: {
+                      shape: 'rect',
+                      color: 'gold',
+                      layout: 'vertical',
+                      label: 'paypal',
+
+                    },
+
+                    createOrder: function (data, actions) {
+                      return actions.order.create({
+                        purchase_units: [{ "description": "Order # 45666HWT", "amount": { "currency_code": "USD", "value": 333.5, "breakdown": { "item_total": { "currency_code": "USD", "value": 253.44 }, "shipping": { "currency_code": "USD", "value": 12.52 }, "tax_total": { "currency_code": "USD", "value": 67.54 } } } }]
+                      });
+                    },
+
+                    onApprove: function (data, actions) {
+                      return actions.order.capture().then(function (details) {
+                        // console.log("payment details: " + JSON.stringify(details))
+                        // alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                        window.location.href = "/completeOrder/{{.CustomerCart.Cart.ID}}/"+ details.purchase_units[0].payments.captures[0].id;
+                      });
+                    },
+
+                    onError: function (err) {
+                      console.log(err);
+                    }
+                  }).render('#paypal-button-container');
+                }
+                initPayPalButton();
+              </script>
+
             </div>
-            
-            {{end}}
+          </div>
 
-            
+          <!-- payment details: {"create_time":"2020-11-04T21:37:08Z","update_time":"2020-11-04T21:39:21Z","id":"3R887979G3474221J","intent":"CAPTURE","status":"COMPLETED","payer":{"email_address":"sb-o8hkr3654613@personal.example.com","payer_id":"RPBZ22MP66W2S","address":{"country_code":"US"},"name":{"given_name":"John","surname":"Doe"}},"purchase_units":[{"description":"Order # 45666HWT","reference_id":"default","soft_descriptor":"PAYPAL *TESTERTESTE","amount":{"value":"333.50","currency_code":"USD","breakdown":{"item_total":{"value":"253.44","currency_code":"USD"},"shipping":{"value":"12.52","currency_code":"USD"},"handling":{"value":"0.00","currency_code":"USD"},"tax_total":{"value":"67.54","currency_code":"USD"},"insurance":{"value":"0.00","currency_code":"USD"},"shipping_discount":{"value":"0.00","currency_code":"USD"}}},"payee":{"email_address":"six910@ulboralabs.com","merchant_id":"FEYTUT49W5RM6"},"shipping":{"name":{"full_name":"John Doe"},"address":{"address_line_1":"201 HARBORSIDE DR","admin_area_2":"DALLAS","admin_area_1":"GA","postal_code":"30132","country_code":"US"}},"payments":{"captures":[{"status":"COMPLETED","id":"57Y4402035981270P","final_capture":true,"create_time":"2020-11-04T21:39:21Z","update_time":"2020-11-04T21:39:21Z","amount":{"value":"333.50","currency_code":"USD"},"seller_protection":{"status":"ELIGIBLE","dispute_categories":["ITEM_NOT_RECEIVED","UNAUTHORIZED_TRANSACTION"]},"links":[{"href":"https://api.sandbox.paypal.com/v2/payments/captures/57Y4402035981270P","rel":"self","method":"GET","title":"GET"},{"href":"https://api.sandbox.paypal.com/v2/payments/captures/57Y4402035981270P/refund","rel":"refund","method":"POST","title":"POST"},{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3R887979G3474221J","rel":"up","method":"GET","title":"GET"}]}]}}],"links":[{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3R887979G3474221J","rel":"self","method":"GET","title":"GET"}]} -->
 
-            <button type="submit" class="btn btn-info mt-5">Checkout</button>
-          </form>
-        </div>        
+          <!-- <button type="submit" class="btn btn-info mt-5">Checkout</button> -->
+          <div class="card text-center border-0">
+            <div class="card-body">
+              <a href="/checkout" class="btn btn-success">Checkout</a>
+            </div>
+          </div>
+          <!-- </form> -->
+        </div>
       </div>
       {{else}}
       <div class="col">

@@ -69,6 +69,7 @@ type CheckoutPage struct {
 	InsuranceCost       string
 	Taxes               string
 	Total               string
+	OrderNumber         string
 
 	HeaderData *HeaderData
 }
@@ -380,9 +381,14 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			ccoart.BillingAddressID = baid
 			ccoart.ShippingAddressID = said
 			h.Log.Debug("ccoart: ", *ccoart)
+			h.Log.Debug("ccoart.InsuranceID: ", ccoart.InsuranceID)
+			h.Log.Debug("ccoart.Items: ", ccoart.Items)
 
 			hd := h.getHeader(cocccs)
 			ccotres := h.Manager.CalculateCartTotals(ccoart, hd)
+
+			odrRes := h.Manager.CheckOut(ccotres, hd)
+			ccotres.OrderID = odrRes.Order.ID
 
 			pgw := h.API.GetPaymentGateway(pgwid, hd)
 			sp := h.API.GetStorePlugin(pgw.StorePluginsID, hd)

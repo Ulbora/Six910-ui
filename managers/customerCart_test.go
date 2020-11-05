@@ -1684,7 +1684,7 @@ func TestSix910Manager_CalculateCartTotals2(t *testing.T) {
 	cc.Items = &cilstp
 	cc.CartView = &cvv
 	cc.Cart = &crt
-	cc.InsuranceID = 5
+	cc.InsuranceID = 0
 
 	var head api.Headers
 	//head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
@@ -1698,7 +1698,7 @@ func TestSix910Manager_CalculateCartTotals2(t *testing.T) {
 	fmt.Println("InsuranceCost: ", cv.InsuranceCost)
 	fmt.Println("Taxes: ", cv.Taxes)
 	fmt.Println("Total: ", cv.Total)
-	if cv.Total != 116.86 {
+	if cv.Total != 114.52 {
 		t.Fail()
 	}
 }
