@@ -538,6 +538,15 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 			}
 
 			ecc := h.getCustomerCart(cocod)
+			var wg sync.WaitGroup
+			for _, ci := range *ecc.Items {
+				wg.Add(1)
+				go func(id int64, pid int64, cid int64, header *six910api.Headers) {
+					defer wg.Done()
+					h.API.DeleteCartItem(id, pid, cid, header)
+				}(ci.ID, ci.ProductID, ci.CartID, hd)
+			}
+			wg.Wait()
 			ecc.CartView = nil
 			//ecc.CustomerAccount = nil
 			ecc.Items = nil

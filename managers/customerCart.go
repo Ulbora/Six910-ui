@@ -156,7 +156,7 @@ func (m *Six910Manager) CheckOut(cart *CustomerCart, hd *api.Headers) *CustomerO
 	var rtn *CustomerOrder
 	if cart.CustomerAccount.Customer.ID != 0 && cart.CustomerAccount.User.Enabled {
 		// check out with logged in user
-		m.Log.Debug("Completeing checkout for logged in user:")
+		m.Log.Debug("Completing checkout for logged in user:")
 		rtn = m.completeOrder(cart, hd)
 	} else {
 		//user not logged in
