@@ -105,7 +105,7 @@ type Six910Handler struct {
 	MailBodyOrderReceived    string
 
 	MailSubjectOrderProcessing string
-	MailBodyOrderProcession    string
+	MailBodyOrderProcessing    string
 
 	MailSubjectOrderShipped string
 	MailBodyOrderShipped    string
