@@ -555,7 +555,7 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 				sellerMail.SenderAddress = h.MailSenderAddress
 
 				sellerSendSuc := h.MailSender.SendMail(&sellerMail)
-				h.Log.Debug("sendSuc to seller: ", sellerSendSuc)
+				h.Log.Debug("sendSuc  to seller: ", sellerSendSuc)
 
 				var buyerMail mll.Mailer
 				buyerMail.Subject = fmt.Sprintf(h.MailSubjectOrderProcessing, h.CompanyName, odrRes.Order.OrderNumber)
