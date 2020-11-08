@@ -207,7 +207,7 @@ func main() {
 	sh.MailSubjectOrderReceived = mailSubjectOrderReceived
 	sh.MailBodyOrderReceived = mailBodyOrderReceived
 	sh.MailSubjectOrderProcessing = mailSubjectOrderProcessing
-	sh.MailBodyOrderProcession = mailBodyOrderProcessing
+	sh.MailBodyOrderProcessing = mailBodyOrderProcessing
 	sh.MailSubjectOrderShipped = mailSubjectOrderShipped
 	sh.MailBodyOrderShipped = mailBodyOrderShipped
 
