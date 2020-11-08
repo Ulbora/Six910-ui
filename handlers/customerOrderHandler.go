@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"sync"
 
+	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	six910api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
@@ -85,20 +86,47 @@ func (h *Six910Handler) ViewCustomerOrderList(w http.ResponseWriter, r *http.Req
 	h.Log.Debug("session suc", suc)
 	if suc {
 		if h.isStoreCustomerLoggedIn(vorrls) {
-			var cid int64
-			//var cidi int
-			fcid := vorrls.Values["customerId"]
-			if fcid != nil {
-				cid = fcid.(int64)
-				//cid = int64(cidi)
-			}
+			// var cid int64
+			// //var cidi int
+			// fcid := vorrls.Values["customerId"]
+			// if fcid != nil {
+			// 	cid = fcid.(int64)
+			// 	//cid = int64(cidi)
+			// }
+			comccotres := h.getCustomerCart(vorrls)
+			cid := comccotres.Cart.CustomerID
 			h.Log.Debug("cid: ", cid)
 			hd := h.getHeader(vorrls)
 
 			odlst := h.API.GetOrderList(cid, hd)
+			var opage CartPage
+			var newOdrLst []sdbi.Order
+
+			for i := len(*odlst) - 1; i >= 0; i-- {
+				newOdrLst = append(newOdrLst, (*odlst)[i])
+			}
+			opage.OrderList = &newOdrLst
+
+			_, csspg := h.CSSService.GetPageCSS("pageCss")
+			h.Log.Debug("PageBody: ", *csspg)
+			opage.PageBody = csspg
+
+			ml := h.MenuService.GetMenuList()
+			h.getCartTotal(vorrls, ml, hd)
+			opage.MenuList = ml
+
+			h.Log.Debug("MenuList", *opage.MenuList)
+
+			cisuc, cicont := h.ContentService.GetContent(orderListContent)
+			if cisuc {
+				opage.Content = cicont
+			} else {
+				var ct conts.Content
+				opage.Content = &ct
+			}
 
 			h.Log.Debug("odlst: ", odlst)
-			h.Templates.ExecuteTemplate(w, customerOrderListPage, &odlst)
+			h.Templates.ExecuteTemplate(w, customerOrderListPage, &opage)
 
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)

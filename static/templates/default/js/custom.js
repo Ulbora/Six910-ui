@@ -102,3 +102,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     $("#password2").keyup(checkPasswordMatch);
 });
+
+var showSpinner = function(){
+    document.getElementById("spinner").style.display = "block";
+}

@@ -91,6 +91,7 @@ type CartPage struct {
 	Content      *conts.Content
 	//meta data
 	HeaderData *HeaderData
+	OrderList  *[]sdbi.Order
 }
 
 // //PayPalPayload PayPalPayload
@@ -483,111 +484,113 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 			hd := h.getHeader(cocod)
 			comccotres := h.getCustomerCart(cocod)
 			h.Log.Debug("comccotres: ", *comccotres.CustomerAccount)
-			odrRes := h.Manager.CheckOut(comccotres, hd)
-			h.Log.Debug("odrRes after CheckOut: ", *odrRes.Order)
-			//ccotres.OrderID = odrRes.Order.ID
-			h.Log.Debug("comccotres.OrderID after create: ", comccotres.OrderID)
+			if comccotres.Items != nil {
+				odrRes := h.Manager.CheckOut(comccotres, hd)
+				h.Log.Debug("odrRes after CheckOut: ", *odrRes.Order)
+				//ccotres.OrderID = odrRes.Order.ID
+				h.Log.Debug("comccotres.OrderID after create: ", comccotres.OrderID)
 
-			pgw := h.API.GetPaymentGateway(comccotres.PaymentGatewayID, hd)
-			sp := h.API.GetStorePlugin(pgw.StorePluginsID, hd)
-			var pm PaymentMethod
-			pm.Name = sp.PluginName
-			pm.PaymentGateway = pgw
+				pgw := h.API.GetPaymentGateway(comccotres.PaymentGatewayID, hd)
+				sp := h.API.GetStorePlugin(pgw.StorePluginsID, hd)
+				var pm PaymentMethod
+				pm.Name = sp.PluginName
+				pm.PaymentGateway = pgw
 
-			sm := h.API.GetShippingMethod(comccotres.ShippingMethodID, hd)
+				sm := h.API.GetShippingMethod(comccotres.ShippingMethodID, hd)
 
-			var trans sdbi.OrderTransaction
-			trans.Gwid = pgw.ID
-			trans.Method = sp.PluginName
-			trans.OrderID = odrRes.Order.ID
-			trans.DateEntered = time.Now()
-			trans.ReferenceNumber = transactionCode
-			trans.ResponseCode = "200"
-			trans.ResponseMessage = "success"
-			trans.Success = true
-			trans.TransactionID = transactionCode
-			trans.Type = sp.PluginName
-			tres := h.API.AddOrderTransaction(&trans, hd)
-			h.Log.Debug("transaction res: ", *tres)
+				var trans sdbi.OrderTransaction
+				trans.Gwid = pgw.ID
+				trans.Method = sp.PluginName
+				trans.OrderID = odrRes.Order.ID
+				trans.DateEntered = time.Now()
+				trans.ReferenceNumber = transactionCode
+				trans.ResponseCode = "200"
+				trans.ResponseMessage = "success"
+				trans.Success = true
+				trans.TransactionID = transactionCode
+				trans.Type = sp.PluginName
+				tres := h.API.AddOrderTransaction(&trans, hd)
+				h.Log.Debug("transaction res: ", *tres)
 
-			var ccopc CheckoutPage
-			// if strings.Contains(strings.ToLower(pm.Name), "paypal") {
-			// 	h.Log.Debug("Using PayPay Gateway")
-			// 	ccop.PayPalPayment = true
-			// }
-			ccopc.OrderNumber = odrRes.Order.OrderNumber
-			ccopc.OrderInfo = h.CompanyName
-			ccopc.CustomerCart = comccotres
-			ccopc.PaymentMethod = &pm
-			ccopc.ShippingMethod = sm
-			ccopc.BillingAddress = h.API.GetAddress(comccotres.BillingAddressID, comccotres.Cart.CustomerID, hd)
-			ccopc.ShippingAddress = h.API.GetAddress(comccotres.ShippingAddressID, comccotres.Cart.CustomerID, hd)
-			ccopc.Subtotal = fmt.Sprintf("%.2f", comccotres.Subtotal)
-			ccopc.ShippingHandling = fmt.Sprintf("%.2f", comccotres.ShippingHandling)
-			ccopc.InsuranceCost = fmt.Sprintf("%.2f", comccotres.InsuranceCost)
-			ccopc.Taxes = fmt.Sprintf("%.2f", comccotres.Taxes)
-			ccopc.Total = fmt.Sprintf("%.2f", comccotres.Total)
+				var ccopc CheckoutPage
+				// if strings.Contains(strings.ToLower(pm.Name), "paypal") {
+				// 	h.Log.Debug("Using PayPay Gateway")
+				// 	ccop.PayPalPayment = true
+				// }
+				ccopc.OrderNumber = odrRes.Order.OrderNumber
+				ccopc.OrderInfo = h.CompanyName
+				ccopc.CustomerCart = comccotres
+				ccopc.PaymentMethod = &pm
+				ccopc.ShippingMethod = sm
+				ccopc.BillingAddress = h.API.GetAddress(comccotres.BillingAddressID, comccotres.Cart.CustomerID, hd)
+				ccopc.ShippingAddress = h.API.GetAddress(comccotres.ShippingAddressID, comccotres.Cart.CustomerID, hd)
+				ccopc.Subtotal = fmt.Sprintf("%.2f", comccotres.Subtotal)
+				ccopc.ShippingHandling = fmt.Sprintf("%.2f", comccotres.ShippingHandling)
+				ccopc.InsuranceCost = fmt.Sprintf("%.2f", comccotres.InsuranceCost)
+				ccopc.Taxes = fmt.Sprintf("%.2f", comccotres.Taxes)
+				ccopc.Total = fmt.Sprintf("%.2f", comccotres.Total)
 
-			_, csspg := h.CSSService.GetPageCSS("pageCss")
-			h.Log.Debug("PageBody: ", *csspg)
-			ccopc.PageBody = csspg
+				_, csspg := h.CSSService.GetPageCSS("pageCss")
+				h.Log.Debug("PageBody: ", *csspg)
+				ccopc.PageBody = csspg
 
-			ml := h.MenuService.GetMenuList()
-			//h.getCartTotal(cocccs, ml, hd)
-			ccopc.MenuList = ml
+				ml := h.MenuService.GetMenuList()
+				//h.getCartTotal(cocccs, ml, hd)
+				ccopc.MenuList = ml
 
-			h.Log.Debug("MenuList", *ccopc.MenuList)
+				h.Log.Debug("MenuList", *ccopc.MenuList)
 
-			cisuc, cicont := h.ContentService.GetContent(shoppingCartContent3)
-			if cisuc {
-				ccopc.Content = cicont
+				cisuc, cicont := h.ContentService.GetContent(shoppingCartContent3)
+				if cisuc {
+					ccopc.Content = cicont
+				} else {
+					var ct conts.Content
+					ccopc.Content = &ct
+				}
+
+				if h.MailSenderAddress != "" {
+					var sellerMail mll.Mailer
+					sellerMail.Subject = h.MailSubjectOrderReceived
+					sellerMail.Body = fmt.Sprintf(h.MailBodyOrderReceived, odrRes.Order.OrderNumber, odrRes.Order.CustomerName)
+					str := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
+					sellerMail.Recipients = []string{str.Email}
+					sellerMail.SenderAddress = h.MailSenderAddress
+
+					sellerSendSuc := h.MailSender.SendMail(&sellerMail)
+					h.Log.Debug("sendSuc  to seller: ", sellerSendSuc)
+
+					var buyerMail mll.Mailer
+					buyerMail.Subject = fmt.Sprintf(h.MailSubjectOrderProcessing, h.CompanyName, odrRes.Order.OrderNumber)
+					odridstr := strconv.FormatInt(odrRes.Order.ID, 10)
+					var olnk = "<a href='/viewOrder/'" + odridstr + ">" + odrRes.Order.OrderNumber + "</a>"
+					buyerMail.Body = fmt.Sprintf(h.MailBodyOrderProcessing, odrRes.Order.CustomerName, olnk)
+					//buystr := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
+					buyerMail.Recipients = []string{comccotres.CustomerAccount.User.Username}
+					buyerMail.SenderAddress = h.MailSenderAddress
+
+					buyerSendSuc := h.MailSender.SendMail(&buyerMail)
+					h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
+				}
+
+				ecc := h.getCustomerCart(cocod)
+				var wg sync.WaitGroup
+				for _, ci := range *ecc.Items {
+					wg.Add(1)
+					go func(id int64, pid int64, cid int64, header *six910api.Headers) {
+						defer wg.Done()
+						h.API.DeleteCartItem(id, pid, cid, header)
+					}(ci.ID, ci.ProductID, ci.CartID, hd)
+				}
+				wg.Wait()
+				ecc.CartView = nil
+				//ecc.CustomerAccount = nil
+				ecc.Items = nil
+				//ecc.Cart = nil
+				h.storeCustomerCart(ecc, cocod, w, r)
+				h.Templates.ExecuteTemplate(w, checkoutReceiptPage, &ccopc)
 			} else {
-				var ct conts.Content
-				ccopc.Content = &ct
+				http.Redirect(w, r, customerOrderListView, http.StatusFound)
 			}
-
-			if h.MailSenderAddress != "" {
-				var sellerMail mll.Mailer
-				sellerMail.Subject = h.MailSubjectOrderReceived
-				sellerMail.Body = fmt.Sprintf(h.MailBodyOrderReceived, odrRes.Order.OrderNumber, odrRes.Order.CustomerName)
-				str := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
-				sellerMail.Recipients = []string{str.Email}
-				sellerMail.SenderAddress = h.MailSenderAddress
-
-				sellerSendSuc := h.MailSender.SendMail(&sellerMail)
-				h.Log.Debug("sendSuc  to seller: ", sellerSendSuc)
-
-				var buyerMail mll.Mailer
-				buyerMail.Subject = fmt.Sprintf(h.MailSubjectOrderProcessing, h.CompanyName, odrRes.Order.OrderNumber)
-				odridstr := strconv.FormatInt(odrRes.Order.ID, 10)
-				var olnk = "<a href='/viewOrder/'" + odridstr + ">" + odrRes.Order.OrderNumber + "</a>"
-				buyerMail.Body = fmt.Sprintf(h.MailBodyOrderProcessing, odrRes.Order.CustomerName, olnk)
-				//buystr := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
-				buyerMail.Recipients = []string{comccotres.CustomerAccount.User.Username}
-				buyerMail.SenderAddress = h.MailSenderAddress
-
-				buyerSendSuc := h.MailSender.SendMail(&buyerMail)
-				h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
-			}
-
-			ecc := h.getCustomerCart(cocod)
-			var wg sync.WaitGroup
-			for _, ci := range *ecc.Items {
-				wg.Add(1)
-				go func(id int64, pid int64, cid int64, header *six910api.Headers) {
-					defer wg.Done()
-					h.API.DeleteCartItem(id, pid, cid, header)
-				}(ci.ID, ci.ProductID, ci.CartID, hd)
-			}
-			wg.Wait()
-			ecc.CartView = nil
-			//ecc.CustomerAccount = nil
-			ecc.Items = nil
-			//ecc.Cart = nil
-			h.storeCustomerCart(ecc, cocod, w, r)
-
-			h.Templates.ExecuteTemplate(w, checkoutReceiptPage, &ccopc)
-
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)
 		}

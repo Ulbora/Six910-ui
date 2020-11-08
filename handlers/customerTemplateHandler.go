@@ -50,6 +50,7 @@ func (h *Six910Handler) LoadTemplate() {
 		h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/createCustomer.html",
 		h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/updateCustomer.html",
 		h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/checkoutReceipt.html",
+		h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/customerOrderList.html",
 		h.ActiveTemplateLocation+"/paypal.html",
 		h.ActiveTemplateLocation+"/paypalAuthorize.html",
 	)

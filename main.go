@@ -357,6 +357,8 @@ func main() {
 
 	router.HandleFunc("/updateCustomerAccount", h.UpdateCustomerAccount).Methods("POST")
 
+	router.HandleFunc("/customerOrderList", h.ViewCustomerOrderList).Methods("GET")
+
 	//admin pages
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")
 	router.HandleFunc("/admin/login", h.StoreAdminLogin).Methods("GET")

@@ -422,6 +422,8 @@ const (
 	shoppingCartContent2       = "shoppingCart2"
 	shoppingCartContent3       = "shoppingCartContinue"
 
+	orderListContent = "orderList"
+
 	usernameForAddedNotes = "System Admin"
 
 	mailMessageUploadComplete = "Product file upload completed with a product upload count of: "

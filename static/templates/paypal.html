@@ -26,6 +26,7 @@
         },
 
         onApprove: function (data, actions) {
+          showSpinner();
           return actions.order.capture().then(function (details) {
             // console.log("payment details: " + JSON.stringify(details))
             // alert('Transaction completed by ' + details.payer.name.given_name + '!');

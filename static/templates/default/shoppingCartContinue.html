@@ -148,6 +148,12 @@
             <a href="/viewCustomerAccount" class="alert-link">Add New Address </a>
           </div> -->
 
+          <div id="spinner" class="text-center" style="display:none;">
+            <div class="spinner-border text-success" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+
           {{if eq .PayPalPayment true}}
           <div class="card text-center border-0">            
             <div class="card-body">
