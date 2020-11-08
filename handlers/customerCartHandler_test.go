@@ -16,6 +16,7 @@ import (
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
+	ml "github.com/Ulbora/go-mail-sender"
 	ds "github.com/Ulbora/json-datastore"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
@@ -1693,7 +1694,7 @@ func TestSix910Handler_CheckOutContinue2(t *testing.T) {
 
 	var spi sdbi.StorePlugins
 	spi.ID = 4
-	spi.PluginName = "PAYPAL"
+	spi.PluginName = "PAYPAL authorize"
 	sapi.MockStorePlugin = &spi
 
 	var sm sdbi.ShippingMethod
@@ -1989,6 +1990,12 @@ func TestSix910Handler_CheckOutComplateOrder(t *testing.T) {
 	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
 	sh.API = &sapi
 
+	var mss ml.MockSecureSender
+	mss.MockSuccess = true
+	sh.MailSender = mss.GetNew()
+
+	sh.MailSenderAddress = "test@test.com"
+
 	var man m.Six910Manager
 	man.API = &sapi
 	sh.API = &sapi
@@ -2047,6 +2054,10 @@ func TestSix910Handler_CheckOutComplateOrder(t *testing.T) {
 	tranres.ID = 3
 	tranres.Success = true
 	sapi.MockOrderTransactionRes = &tranres
+
+	var str sdbi.Store
+	str.ID = 5
+	sapi.MockStore = &str
 
 	//-----------end mocking --------
 

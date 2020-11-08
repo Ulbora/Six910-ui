@@ -156,6 +156,14 @@
           </div>
           {{end}}
 
+          {{if eq .PayPalAuthorizePayment true}}
+          <div class="card text-center border-0">            
+            <div class="card-body">
+              {{template "paypalauthorize" .}}
+            </div>
+          </div>
+          {{end}}
+
           <!-- payment details: {"create_time":"2020-11-04T21:37:08Z","update_time":"2020-11-04T21:39:21Z","id":"3R887979G3474221J","intent":"CAPTURE","status":"COMPLETED","payer":{"email_address":"sb-o8hkr3654613@personal.example.com","payer_id":"RPBZ22MP66W2S","address":{"country_code":"US"},"name":{"given_name":"John","surname":"Doe"}},"purchase_units":[{"description":"Order # 45666HWT","reference_id":"default","soft_descriptor":"PAYPAL *TESTERTESTE","amount":{"value":"333.50","currency_code":"USD","breakdown":{"item_total":{"value":"253.44","currency_code":"USD"},"shipping":{"value":"12.52","currency_code":"USD"},"handling":{"value":"0.00","currency_code":"USD"},"tax_total":{"value":"67.54","currency_code":"USD"},"insurance":{"value":"0.00","currency_code":"USD"},"shipping_discount":{"value":"0.00","currency_code":"USD"}}},"payee":{"email_address":"six910@ulboralabs.com","merchant_id":"FEYTUT49W5RM6"},"shipping":{"name":{"full_name":"John Doe"},"address":{"address_line_1":"201 HARBORSIDE DR","admin_area_2":"DALLAS","admin_area_1":"GA","postal_code":"30132","country_code":"US"}},"payments":{"captures":[{"status":"COMPLETED","id":"57Y4402035981270P","final_capture":true,"create_time":"2020-11-04T21:39:21Z","update_time":"2020-11-04T21:39:21Z","amount":{"value":"333.50","currency_code":"USD"},"seller_protection":{"status":"ELIGIBLE","dispute_categories":["ITEM_NOT_RECEIVED","UNAUTHORIZED_TRANSACTION"]},"links":[{"href":"https://api.sandbox.paypal.com/v2/payments/captures/57Y4402035981270P","rel":"self","method":"GET","title":"GET"},{"href":"https://api.sandbox.paypal.com/v2/payments/captures/57Y4402035981270P/refund","rel":"refund","method":"POST","title":"POST"},{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3R887979G3474221J","rel":"up","method":"GET","title":"GET"}]}]}}],"links":[{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3R887979G3474221J","rel":"self","method":"GET","title":"GET"}]} -->
 
           <!-- <button type="submit" class="btn btn-info mt-5">Checkout</button> -->

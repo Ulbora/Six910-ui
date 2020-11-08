@@ -100,6 +100,16 @@ type Six910Handler struct {
 	MailSenderAddress string
 	MailSubject       string
 
+	//order Emails
+	MailSubjectOrderReceived string
+	MailBodyOrderReceived    string
+
+	MailSubjectOrderProcessing string
+	MailBodyOrderProcession    string
+
+	MailSubjectOrderShipped string
+	MailBodyOrderShipped    string
+
 	ImagePath     string
 	ThumbnailPath string
 

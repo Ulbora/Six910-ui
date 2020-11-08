@@ -1,4 +1,4 @@
-{{define "paypal"}}
+{{define "paypalauthorize"}}
 
   <div id="smart-button-container">
     <div style="text-align: center;">
@@ -6,7 +6,7 @@
     </div>
   </div>
   <script
-    src="https://www.paypal.com/sdk/js?client-id={{.PaymentMethod.PaymentGateway.ClientID}}&currency=USD"
+    src="https://www.paypal.com/sdk/js?client-id={{.PaymentMethod.PaymentGateway.ClientID}}&intent=authorize&currency=USD"
     data-sdk-integration-source="button-factory"></script>
   <script>
     function initPayPalButton() {
@@ -26,10 +26,13 @@
         },
 
         onApprove: function (data, actions) {
-          return actions.order.capture().then(function (details) {
+          return actions.order.authorize().then(function(authorization){
             // console.log("payment details: " + JSON.stringify(details))
             // alert('Transaction completed by ' + details.payer.name.given_name + '!');
-            window.location.href = "/completeOrder/"+ details.purchase_units[0].payments.captures[0].id;
+            var authorizationID = authorization.purchase_units[0]
+          .payments.authorizations[0].id
+
+            window.location.href = "/completeOrder/"+ authorizationID;
           });
         },
 

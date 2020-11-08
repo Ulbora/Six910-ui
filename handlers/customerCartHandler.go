@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 	"strconv"
 	"strings"
@@ -16,6 +17,8 @@ import (
 
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
+
+	mll "github.com/Ulbora/go-mail-sender"
 )
 
 /*
@@ -40,6 +43,7 @@ import (
 type PaymentMethod struct {
 	Name           string
 	PaymentGateway *sdbi.PaymentGateway
+	CheckoutURL    template.URL
 }
 
 //ShippingMethod ShippingMethod
@@ -52,28 +56,29 @@ type ShippingMethod struct {
 
 //CheckoutPage CheckoutPage
 type CheckoutPage struct {
-	CustomerCart        *m.CustomerCart
-	PageBody            *csssrv.PageCSS
-	MenuList            *[]musrv.Menu
-	Content             *conts.Content
-	PaymentMethodList   *[]PaymentMethod
-	PaymentMethod       *PaymentMethod
-	ShippingMethodList  *[]ShippingMethod
-	ShippingMethod      *sdbi.ShippingMethod
-	InsuranceList       *[]sdbi.Insurance
-	ShowInsurance       bool
-	CustomerAddressList *[]sdbi.Address
-	BillingAddress      *sdbi.Address
-	ShippingAddress     *sdbi.Address
-	ShowAddressList     bool
-	Subtotal            string
-	ShippingHandling    string
-	InsuranceCost       string
-	Taxes               string
-	Total               string
-	OrderInfo           string
-	PayPalPayment       bool
-	OrderNumber         string
+	CustomerCart           *m.CustomerCart
+	PageBody               *csssrv.PageCSS
+	MenuList               *[]musrv.Menu
+	Content                *conts.Content
+	PaymentMethodList      *[]PaymentMethod
+	PaymentMethod          *PaymentMethod
+	ShippingMethodList     *[]ShippingMethod
+	ShippingMethod         *sdbi.ShippingMethod
+	InsuranceList          *[]sdbi.Insurance
+	ShowInsurance          bool
+	CustomerAddressList    *[]sdbi.Address
+	BillingAddress         *sdbi.Address
+	ShippingAddress        *sdbi.Address
+	ShowAddressList        bool
+	Subtotal               string
+	ShippingHandling       string
+	InsuranceCost          string
+	Taxes                  string
+	Total                  string
+	OrderInfo              string
+	PayPalAuthorizePayment bool
+	PayPalPayment          bool
+	OrderNumber            string
 
 	HeaderData *HeaderData
 }
@@ -408,6 +413,7 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			var pm PaymentMethod
 			pm.Name = sp.PluginName
 			pm.PaymentGateway = pgw
+			pm.CheckoutURL = template.URL(pgw.CheckoutURL)
 
 			sm := h.API.GetShippingMethod(smid, hd)
 
@@ -418,8 +424,11 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 
 			// var wg sync.WaitGroup
 			var ccop CheckoutPage
-			if strings.Contains(strings.ToLower(pm.Name), "paypal") {
-				h.Log.Debug("Using PayPay Gateway")
+			if strings.Contains(strings.ToLower(pm.Name), "paypal authorize") {
+				h.Log.Debug("Using PayPay Authorize Gateway")
+				ccop.PayPalAuthorizePayment = true
+			} else if strings.Contains(strings.ToLower(pm.Name), "paypal") {
+				h.Log.Debug("Using PayPay Regualr Gateway")
 				ccop.PayPalPayment = true
 			}
 			ccop.OrderInfo = h.CompanyName
@@ -535,6 +544,28 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 			} else {
 				var ct conts.Content
 				ccopc.Content = &ct
+			}
+
+			if h.MailSenderAddress != "" {
+				var sellerMail mll.Mailer
+				sellerMail.Subject = h.MailSubjectOrderReceived
+				sellerMail.Body = fmt.Sprintf(h.MailBodyOrderReceived, odrRes.Order.OrderNumber, odrRes.Order.CustomerName)
+				str := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
+				sellerMail.Recipients = []string{str.Email}
+				sellerMail.SenderAddress = h.MailSenderAddress
+
+				sellerSendSuc := h.MailSender.SendMail(&sellerMail)
+				h.Log.Debug("sendSuc to seller: ", sellerSendSuc)
+
+				var buyerMail mll.Mailer
+				buyerMail.Subject = h.MailSubjectOrderReceived
+				buyerMail.Body = fmt.Sprintf(h.MailBodyOrderReceived, odrRes.Order.OrderNumber, odrRes.Order.CustomerName)
+				//buystr := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
+				buyerMail.Recipients = []string{comccotres.CustomerAccount.User.Username}
+				buyerMail.SenderAddress = h.MailSenderAddress
+
+				buyerSendSuc := h.MailSender.SendMail(&buyerMail)
+				h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
 			}
 
 			ecc := h.getCustomerCart(cocod)

@@ -60,6 +60,15 @@ func main() {
 	var mailSubject string
 	var schemeDefault string
 
+	var mailSubjectOrderReceived string
+	var mailBodyOrderReceived string
+
+	var mailSubjectOrderProcessing string
+	var mailBodyOrderProcessing string
+
+	var mailSubjectOrderShipped string
+	var mailBodyOrderShipped string
+
 	var companyName string
 	var six910CartSite string
 
@@ -113,6 +122,48 @@ func main() {
 		mailSubject = "Six910 Shopping Cart Message"
 	}
 
+	//------------order email messages----------------------------------------------------
+
+	if os.Getenv("MAIL_SUBJECT_ORDER_RECEIVED") != "" {
+		mailSubjectOrderReceived = os.Getenv("MAIL_SUBJECT_ORDER_RECEIVED")
+	} else {
+		mailSubjectOrderReceived = "Six910 Shopping Cart New Order Received"
+	}
+
+	if os.Getenv("MAIL_BODY_ORDER_RECEIVED") != "" {
+		mailBodyOrderReceived = os.Getenv("MAIL_BODY_ORDER_RECEIVED")
+	} else {
+		mailBodyOrderReceived = "New Order # %s received from %s"
+	}
+
+	if os.Getenv("MAIL_SUBJECT_ORDER_PROCESSING") != "" {
+		mailSubjectOrderProcessing = os.Getenv("MAIL_SUBJECT_ORDER_PROCESSING")
+	} else {
+		mailSubjectOrderProcessing = "%s order # %s is processing"
+	}
+
+	if os.Getenv("MAIL_BODY_ORDER_PROCESSING") != "" {
+		mailBodyOrderProcessing = os.Getenv("MAIL_BODY_ORDER_PROCESSING")
+	} else {
+		mailBodyOrderProcessing = "%s new order # %s received and processing. " +
+			"You will receive an email when the order ships."
+	}
+
+	if os.Getenv("MAIL_SUBJECT_ORDER_SHIPPED") != "" {
+		mailSubjectOrderShipped = os.Getenv("MAIL_SUBJECT_ORDER_SHIPPED")
+	} else {
+		mailSubjectOrderShipped = "%s order # %s has shipped"
+	}
+
+	if os.Getenv("MAIL_BODY_ORDER_SHIPPED") != "" {
+		mailBodyOrderShipped = os.Getenv("MAIL_BODY_ORDER_SHIPPED")
+	} else {
+		mailBodyOrderShipped = "%s order # %s has shipped. " +
+			"Click the link in this email to see the tracking information."
+	}
+
+	//------------order email messages-----------------------------------------------
+
 	if os.Getenv("COMPANY_NAME") != "" {
 		companyName = os.Getenv("COMPANY_NAME")
 	} else {
@@ -152,6 +203,14 @@ func main() {
 	sh.MailSender = &ms
 	sh.MailSenderAddress = mailSenderAddress
 	sh.MailSubject = mailSubject
+
+	sh.MailSubjectOrderReceived = mailSubjectOrderReceived
+	sh.MailBodyOrderReceived = mailBodyOrderReceived
+	sh.MailSubjectOrderProcessing = mailSubjectOrderProcessing
+	sh.MailBodyOrderProcession = mailBodyOrderProcessing
+	sh.MailSubjectOrderShipped = mailSubjectOrderShipped
+	sh.MailBodyOrderShipped = mailBodyOrderShipped
+
 	sh.ImagePath = "./static/images"
 	sh.ThumbnailPath = "./static/thumbnail"
 
