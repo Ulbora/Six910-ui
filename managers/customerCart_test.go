@@ -593,31 +593,31 @@ func TestSix910Manager_processOrderItems(t *testing.T) {
 	var head api.Headers
 	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
-	var cilst []sdbi.CartItem
+	var cilst []*CartViewItem
 
-	var ci1 sdbi.CartItem
-	ci1.CartID = 1
+	var ci1 CartViewItem
+	//ci1.CartID = 1
 	ci1.ProductID = 1
 	ci1.Quantity = 1
-	cilst = append(cilst, ci1)
+	cilst = append(cilst, &ci1)
 
-	var ci22 sdbi.CartItem
-	ci22.CartID = 2
+	var ci22 CartViewItem
+	//ci22.CartID = 2
 	ci22.ProductID = 2
 	ci22.Quantity = 2
-	cilst = append(cilst, ci22)
+	cilst = append(cilst, &ci22)
 
-	var ci3 sdbi.CartItem
-	ci3.CartID = 3
+	var ci3 CartViewItem
+	//ci3.CartID = 3
 	ci3.ProductID = 3
 	ci3.Quantity = 3
-	cilst = append(cilst, ci3)
+	cilst = append(cilst, &ci3)
 
-	var ci4 sdbi.CartItem
-	ci4.CartID = 4
+	var ci4 CartViewItem
+	//ci4.CartID = 4
 	ci4.ProductID = 4
 	ci4.Quantity = 4
-	cilst = append(cilst, ci4)
+	cilst = append(cilst, &ci4)
 
 	suc, res := sm.processOrderItems(&cilst, 4, &head)
 	fmt.Println("suc from process cart items: ", suc)
@@ -692,31 +692,31 @@ func TestSix910Manager_processOrderItemsFail(t *testing.T) {
 	var head api.Headers
 	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
-	var cilst []sdbi.CartItem
+	var cilst []*CartViewItem
 
-	var ci1 sdbi.CartItem
-	ci1.CartID = 1
+	var ci1 CartViewItem
+	//ci1.CartID = 1
 	ci1.ProductID = 1
 	ci1.Quantity = 1
-	cilst = append(cilst, ci1)
+	cilst = append(cilst, &ci1)
 
-	var ci22 sdbi.CartItem
-	ci22.CartID = 2
+	var ci22 CartViewItem
+	//ci22.CartID = 2
 	ci22.ProductID = 2
 	ci22.Quantity = 2
-	cilst = append(cilst, ci22)
+	cilst = append(cilst, &ci22)
 
-	var ci3 sdbi.CartItem
-	ci3.CartID = 3
+	var ci3 CartViewItem
+	//ci3.CartID = 3
 	ci3.ProductID = 3
 	ci3.Quantity = 3
-	cilst = append(cilst, ci3)
+	cilst = append(cilst, &ci3)
 
-	var ci4 sdbi.CartItem
-	ci4.CartID = 4
+	var ci4 CartViewItem
+	//ci4.CartID = 4
 	ci4.ProductID = 4
 	ci4.Quantity = 4
-	cilst = append(cilst, ci4)
+	cilst = append(cilst, &ci4)
 
 	suc, res := sm.processOrderItems(&cilst, 4, &head)
 	fmt.Println("res from process cart items: ", *res)
@@ -768,6 +768,10 @@ func TestSix910Manager_completeOrder(t *testing.T) {
 
 	sapi.MockAddOrderItemResp = &oires
 
+	var smth sdbi.ShippingMethod
+	smth.Name = "UPS"
+	sapi.MockShippingMethod = &smth
+
 	//-----------end mocking --------
 
 	//sapi.SetAPIKey("123")
@@ -816,25 +820,25 @@ func TestSix910Manager_completeOrder(t *testing.T) {
 	var head api.Headers
 	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
-	var cilst []sdbi.CartItem
+	var cilst []*CartViewItem
 
-	var ci1 sdbi.CartItem
-	ci1.CartID = 21
+	var ci1 CartViewItem
+	//ci1.CartID = 21
 	ci1.ProductID = 7
 	ci1.Quantity = 1
-	cilst = append(cilst, ci1)
+	cilst = append(cilst, &ci1)
 
-	var ci22 sdbi.CartItem
-	ci22.CartID = 21
+	var ci22 CartViewItem
+	//ci22.CartID = 21
 	ci22.ProductID = 8
 	ci22.Quantity = 2
-	cilst = append(cilst, ci22)
+	cilst = append(cilst, &ci22)
 
-	var ci3 sdbi.CartItem
-	ci3.CartID = 21
+	var ci3 CartViewItem
+	//ci3.CartID = 21
 	ci3.ProductID = 9
 	ci3.Quantity = 3
-	cilst = append(cilst, ci3)
+	cilst = append(cilst, &ci3)
 
 	// var ci4 sdbi.CartItem
 	// ci4.CartID = 21
@@ -884,7 +888,9 @@ func TestSix910Manager_completeOrder(t *testing.T) {
 	var ccart CustomerCart
 	ccart.Cart = &cart2
 	ccart.CustomerAccount = &ca
-	ccart.Items = &cilst
+	var cv CartView
+	cv.Items = &cilst
+	ccart.CartView = &cv
 	ccart.InsuranceCost = 4.12
 	ccart.OrderType = "Delivery"
 	ccart.Pickup = false
@@ -1008,31 +1014,25 @@ func TestSix910Manager_completeOrderWithComment(t *testing.T) {
 	var head api.Headers
 	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
-	var cilst []sdbi.CartItem
+	var cilst []*CartViewItem
 
-	var ci1 sdbi.CartItem
-	ci1.CartID = 1
-	ci1.ProductID = 1
+	var ci1 CartViewItem
+	//ci1.CartID = 21
+	ci1.ProductID = 7
 	ci1.Quantity = 1
-	cilst = append(cilst, ci1)
+	cilst = append(cilst, &ci1)
 
-	var ci22 sdbi.CartItem
-	ci22.CartID = 2
-	ci22.ProductID = 2
+	var ci22 CartViewItem
+	//ci22.CartID = 21
+	ci22.ProductID = 8
 	ci22.Quantity = 2
-	cilst = append(cilst, ci22)
+	cilst = append(cilst, &ci22)
 
-	var ci3 sdbi.CartItem
-	ci3.CartID = 3
-	ci3.ProductID = 3
+	var ci3 CartViewItem
+	//ci3.CartID = 21
+	ci3.ProductID = 9
 	ci3.Quantity = 3
-	cilst = append(cilst, ci3)
-
-	var ci4 sdbi.CartItem
-	ci4.CartID = 4
-	ci4.ProductID = 4
-	ci4.Quantity = 4
-	cilst = append(cilst, ci4)
+	cilst = append(cilst, &ci3)
 
 	var usr api.User
 	usr.Password = "tester"
@@ -1076,7 +1076,9 @@ func TestSix910Manager_completeOrderWithComment(t *testing.T) {
 	var ccart CustomerCart
 	ccart.Cart = &cart
 	ccart.CustomerAccount = &ca
-	ccart.Items = &cilst
+	var cv CartView
+	cv.Items = &cilst
+	ccart.CartView = &cv
 	ccart.InsuranceCost = 4.12
 	ccart.OrderType = "Delivery"
 	ccart.Pickup = false
@@ -1228,31 +1230,25 @@ func TestSix910Manager_completeOrderCreateCustomer(t *testing.T) {
 	var head api.Headers
 	head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
-	var cilst []sdbi.CartItem
+	var cilst []*CartViewItem
 
-	var ci1 sdbi.CartItem
-	ci1.CartID = 1
-	ci1.ProductID = 1
+	var ci1 CartViewItem
+	//ci1.CartID = 21
+	ci1.ProductID = 7
 	ci1.Quantity = 1
-	cilst = append(cilst, ci1)
+	cilst = append(cilst, &ci1)
 
-	var ci22 sdbi.CartItem
-	ci22.CartID = 2
-	ci22.ProductID = 2
+	var ci22 CartViewItem
+	//ci22.CartID = 21
+	ci22.ProductID = 8
 	ci22.Quantity = 2
-	cilst = append(cilst, ci22)
+	cilst = append(cilst, &ci22)
 
-	var ci3 sdbi.CartItem
-	ci3.CartID = 3
-	ci3.ProductID = 3
+	var ci3 CartViewItem
+	//ci3.CartID = 21
+	ci3.ProductID = 9
 	ci3.Quantity = 3
-	cilst = append(cilst, ci3)
-
-	var ci4 sdbi.CartItem
-	ci4.CartID = 4
-	ci4.ProductID = 4
-	ci4.Quantity = 4
-	cilst = append(cilst, ci4)
+	cilst = append(cilst, &ci3)
 
 	var usr api.User
 	usr.Password = "tester"
@@ -1296,7 +1292,9 @@ func TestSix910Manager_completeOrderCreateCustomer(t *testing.T) {
 	var ccart CustomerCart
 	ccart.Cart = &cart
 	ccart.CustomerAccount = &ca
-	ccart.Items = &cilst
+	var cv CartView
+	cv.Items = &cilst
+	ccart.CartView = &cv
 	ccart.InsuranceCost = 4.12
 	ccart.OrderType = "Delivery"
 	ccart.Pickup = false

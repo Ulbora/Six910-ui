@@ -27,7 +27,7 @@
             </thead>
             <tbody>
                 {{range .OrderList}}
-                <tr class='clickable-row' data-href='/getCustomerOrder/{{.ID}}'>
+                <tr class='clickable-row' data-href='/viewCustomerOrder/{{.ID}}'>
                     <td>{{.OrderNumber}}</td>                               
                     <td>{{.OrderDate.Format "Jan 2, 2006"}}</td>                    
                     <td>${{printf "%.2f" .Total}}</td>

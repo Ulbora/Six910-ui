@@ -50,7 +50,8 @@
                                 value="{{.Order.OrderNumber}}">
                         </div>
 
-                        <input name="usernameForNotes" type="hidden" id="usernameForNotes" value="{{.UserNameForNotes}}">
+                        <input name="usernameForNotes" type="hidden" id="usernameForNotes"
+                            value="{{.UserNameForNotes}}">
 
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -93,7 +94,8 @@
 
                         <div class="form-group">
                             <label for="refundeddis">Refunded</label>
-                            <input name="refundeddis" disabled type="text" class="form-control" id="refundeddis" value="{{.Order.Refunded}}">
+                            <input name="refundeddis" disabled type="text" class="form-control" id="refundeddis"
+                                value="{{.Order.Refunded}}">
                         </div>
 
                         <div class="form-group">
@@ -162,11 +164,7 @@
                             {{range .OrderItemList}}
                             <tr>
                                 <td>{{.Sku}}</td>
-                                {{ if ne .SalePrice 0.0}}
-                                    <td>{{.SalePrice}}</td>
-                                {{else}}
-                                    <td>{{.Price}}</td>
-                                {{end}}
+                                <td>{{.Price}}</td>
                                 <td>{{.ProductName}}</td>
                                 <td>{{.Quantity}}</td>
                                 <td>{{.BackOrdered}}</td>

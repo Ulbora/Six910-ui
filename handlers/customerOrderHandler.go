@@ -6,6 +6,8 @@ import (
 	"sync"
 
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
+	csssrv "github.com/Ulbora/Six910-ui/csssrv"
+	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	six910api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
@@ -34,6 +36,30 @@ type OrderViewPage struct {
 	Order    *sdbi.Order
 	Items    *[]sdbi.OrderItem
 	Comments *[]sdbi.OrderComment
+	PageBody *csssrv.PageCSS
+	MenuList *[]musrv.Menu
+	Content  *conts.Content
+	//meta data
+	HeaderData      *HeaderData
+	CustomerName    string
+	PaymentMethod   string
+	ShippingMethod  string
+	ShippingAddress string
+	BillingAddress  string
+}
+
+//CustomerOrderItem CustomerOrderItem
+type CustomerOrderItem struct {
+	ID               int64  `json:"id"`
+	Quantity         int64  `json:"quantity"`
+	BackOrdered      bool   `json:"backOrdered"`
+	Dropship         bool   `json:"dropship"`
+	ProductName      string `json:"productName"`
+	ProductShortDesc string `json:"productShortDesc"`
+	ProductID        int64  `json:"productId"`
+	OrderID          int64  `json:"orderId"`
+	Desc             string `json:"desc"`
+	Image            string `json:"image"`
 }
 
 //ViewCustomerOrder ViewCustomerOrder
@@ -71,6 +97,35 @@ func (h *Six910Handler) ViewCustomerOrder(w http.ResponseWriter, r *http.Request
 			}(vodrid, hd)
 
 			wg.Wait()
+
+			ptranList := h.API.GetOrderTransactionList(ovpage.Order.ID, hd)
+			if len(*ptranList) > 0 {
+				ovpage.PaymentMethod = (*ptranList)[0].Method
+			}
+
+			ovpage.CustomerName = ovpage.Order.CustomerName
+
+			ovpage.ShippingMethod = ovpage.Order.ShippingMethodName
+			ovpage.BillingAddress = ovpage.Order.BillingAddress
+			ovpage.ShippingAddress = ovpage.Order.ShippingAddress
+
+			_, csspg := h.CSSService.GetPageCSS("pageCss")
+			h.Log.Debug("PageBody: ", *csspg)
+			ovpage.PageBody = csspg
+
+			ml := h.MenuService.GetMenuList()
+			h.getCartTotal(vorps, ml, hd)
+			ovpage.MenuList = ml
+
+			h.Log.Debug("MenuList", *ovpage.MenuList)
+
+			cisuc, cicont := h.ContentService.GetContent(orderContent)
+			if cisuc {
+				ovpage.Content = cicont
+			} else {
+				var ct conts.Content
+				ovpage.Content = &ct
+			}
 
 			h.Log.Debug("ovpage: ", ovpage)
 			h.Templates.ExecuteTemplate(w, customerOrderPage, &ovpage)

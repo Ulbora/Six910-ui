@@ -2055,6 +2055,10 @@ func TestSix910Handler_CheckOutComplateOrder(t *testing.T) {
 	tranres.Success = true
 	sapi.MockOrderTransactionRes = &tranres
 
+	var pupres api.Response
+	pupres.Success = true
+	sapi.MockUpdateProductQuantityResp = &pupres
+
 	var str sdbi.Store
 	str.ID = 5
 	sapi.MockStore = &str
@@ -2143,6 +2147,23 @@ func TestSix910Handler_CheckOutComplateOrder(t *testing.T) {
 
 	var cccs m.CustomerCart
 	cccs.Items = &cilstp
+
+	var cilstpv []*m.CartViewItem
+
+	var ctit1v m.CartViewItem
+	ctit1v.Quantity = 3
+	ctit1v.ProductID = 7
+	cilstpv = append(cilstpv, &ctit1v)
+
+	var ctit2v m.CartViewItem
+	ctit2v.Quantity = 4
+	ctit2v.ProductID = 9
+	cilstpv = append(cilstpv, &ctit2v)
+
+	//var cccs m.CustomerCart
+	var cv m.CartView
+	cv.Items = &cilstpv
+	cccs.CartView = &cv
 
 	var crt sdbi.Cart
 	crt.ID = 3
@@ -2262,6 +2283,10 @@ func TestSix910Handler_CheckOutComplateOrder2(t *testing.T) {
 	tranres.Success = true
 	sapi.MockOrderTransactionRes = &tranres
 
+	var pupres api.Response
+	pupres.Success = true
+	sapi.MockUpdateProductQuantityResp = &pupres
+
 	//-----------end mocking --------
 
 	var c conts.CmsService
@@ -2346,6 +2371,23 @@ func TestSix910Handler_CheckOutComplateOrder2(t *testing.T) {
 
 	var cccs m.CustomerCart
 	cccs.Items = &cilstp
+
+	var cilstpv []*m.CartViewItem
+
+	var ctit1v m.CartViewItem
+	ctit1v.Quantity = 3
+	ctit1v.ProductID = 7
+	cilstpv = append(cilstpv, &ctit1v)
+
+	var ctit2v m.CartViewItem
+	ctit2v.Quantity = 4
+	ctit2v.ProductID = 9
+	cilstpv = append(cilstpv, &ctit2v)
+
+	//var cccs m.CustomerCart
+	var cv m.CartView
+	cv.Items = &cilstpv
+	cccs.CartView = &cv
 
 	var crt sdbi.Cart
 	crt.ID = 3

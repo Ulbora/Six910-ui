@@ -104,7 +104,7 @@ func (h *Six910Handler) StoreAdminEditOrderPage(w http.ResponseWriter, r *http.R
 					noi.Quantity = oi.Quantity
 					noi.SpecialProcessing = prod.SpecialProcessing
 					noi.SpecialProcessingType = prod.SpecialProcessingType
-					noi.Price = prod.Price
+					noi.Price = oi.Price
 					noi.SalePrice = prod.SalePrice
 					ch <- noi
 

@@ -51,11 +51,12 @@ type MockAPI struct {
 	MockAddress          *sdbi.Address
 	MockDeleteAddressRes *api.Response
 
-	MockProduct           *sdbi.Product
-	MockAddProductResp    *api.ResponseID
-	MockUpdateProductResp *api.Response
-	MockProductList       *[]sdbi.Product
-	MockDeleteProductResp *api.Response
+	MockProduct                   *sdbi.Product
+	MockAddProductResp            *api.ResponseID
+	MockUpdateProductResp         *api.Response
+	MockUpdateProductQuantityResp *api.Response
+	MockProductList               *[]sdbi.Product
+	MockDeleteProductResp         *api.Response
 
 	MockAddOrderResp    *api.ResponseID
 	MockUpdateOrderResp *api.Response
@@ -183,7 +184,8 @@ type MockAPI struct {
 
 	MockManufactureList *[]string
 
-	MockOrderTransactionRes *api.ResponseID
+	MockOrderTransactionRes  *api.ResponseID
+	MockOrderTransactionList *[]sdbi.OrderTransaction
 }
 
 //GetNew GetNew
@@ -638,7 +640,7 @@ func (a *MockAPI) AddOrderTransaction(t *sdbi.OrderTransaction, headers *api.Hea
 
 //GetOrderTransactionList GetOrderTransactionList
 func (a *MockAPI) GetOrderTransactionList(orderID int64, headers *api.Headers) *[]sdbi.OrderTransaction {
-	return nil
+	return a.MockOrderTransactionList
 }
 
 //payment gateway
@@ -705,6 +707,11 @@ func (a *MockAPI) AddProduct(p *sdbi.Product, headers *api.Headers) *api.Respons
 //UpdateProduct UpdateProduct
 func (a *MockAPI) UpdateProduct(p *sdbi.Product, headers *api.Headers) *api.Response {
 	return a.MockUpdateProductResp
+}
+
+//UpdateProductQuantity UpdateProductQuantity
+func (a *MockAPI) UpdateProductQuantity(p *sdbi.Product, headers *api.Headers) *api.Response {
+	return a.MockUpdateProductQuantityResp
 }
 
 //GetProductByID GetProductByID

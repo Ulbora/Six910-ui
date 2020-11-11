@@ -423,6 +423,7 @@ const (
 	shoppingCartContent3       = "shoppingCartContinue"
 
 	orderListContent = "orderList"
+	orderContent     = "order"
 
 	usernameForAddedNotes = "System Admin"
 

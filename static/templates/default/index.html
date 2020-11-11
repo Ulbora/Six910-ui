@@ -42,7 +42,7 @@
         </div>
     </div>
     {{end}}
-<h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Featured Products</h4>
+    <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Featured Products</h4>
     <div class="container mt-5 mb-5">
         {{range .ProductListRowList}}
         <div class="row mt-5 mb-5">
@@ -57,11 +57,13 @@
                         <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
                         {{else}}
                         <h6 class="card-title">${{.ProductLeft.Price}}</h6>
-                        {{end}}                        
+                        {{end}}
                         <h6 class="card-title">Stock: {{.ProductLeft.Stock}}</h6>
                         <p class="card-text">{{.ProductLeft.ShortDesc}}</p>
                         <a href="/viewProduct/{{.ProductLeft.ID}}" class="btn btn-primary">View Product</a>
+                        {{if ne .ProductLeft.Stock 0}}
                         <a href="/addToCart/{{.ProductLeft.ID}}" class="btn btn-success">Add to Cart</a>
+                        {{end}}
                     </div>
                 </div>
                 {{end}}
@@ -77,11 +79,13 @@
                         <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
                         {{else}}
                         <h6 class="card-title">${{.ProductMiddle.Price}}</h6>
-                        {{end}}                        
+                        {{end}}
                         <h6 class="card-title">Stock: {{.ProductMiddle.Stock}}</h6>
                         <p class="card-text">{{.ProductMiddle.ShortDesc}}</p>
                         <a href="/viewProduct/{{.ProductMiddle.ID}}" class="btn btn-primary">View Product</a>
+                        {{if ne .ProductMiddle.Stock 0}}
                         <a href="/addToCart/{{.ProductMiddle.ID}}" class="btn btn-success">Add to Cart</a>
+                        {{end}}
                     </div>
                 </div>
                 {{end}}
@@ -97,11 +101,13 @@
                         <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
                         {{else}}
                         <h6 class="card-title">${{.ProductRight.Price}}</h6>
-                        {{end}}                        
+                        {{end}}
                         <h6 class="card-title">Stock: {{.ProductRight.Stock}}</h6>
                         <p class="card-text">{{.ProductRight.ShortDesc}}</p>
                         <a href="/viewProduct/{{.ProductRight.ID}}" class="btn btn-primary">View Product</a>
+                        {{if ne .ProductRight.Stock 0}}
                         <a href="/addToCart/{{.ProductRight.ID}}" class="btn btn-success">Add to Cart</a>
+                        {{end}}
                     </div>
                 </div>
                 {{end}}

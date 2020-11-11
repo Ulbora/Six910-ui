@@ -490,13 +490,19 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 				//ccotres.OrderID = odrRes.Order.ID
 				h.Log.Debug("comccotres.OrderID after create: ", comccotres.OrderID)
 
+				var pm PaymentMethod
+				var ccopc CheckoutPage
+
+				// go func ----
 				pgw := h.API.GetPaymentGateway(comccotres.PaymentGatewayID, hd)
 				sp := h.API.GetStorePlugin(pgw.StorePluginsID, hd)
-				var pm PaymentMethod
 				pm.Name = sp.PluginName
 				pm.PaymentGateway = pgw
+				//----
 
+				// go func ----
 				sm := h.API.GetShippingMethod(comccotres.ShippingMethodID, hd)
+				//-----
 
 				var trans sdbi.OrderTransaction
 				trans.Gwid = pgw.ID
@@ -512,7 +518,6 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 				tres := h.API.AddOrderTransaction(&trans, hd)
 				h.Log.Debug("transaction res: ", *tres)
 
-				var ccopc CheckoutPage
 				// if strings.Contains(strings.ToLower(pm.Name), "paypal") {
 				// 	h.Log.Debug("Using PayPay Gateway")
 				// 	ccop.PayPalPayment = true
@@ -535,7 +540,7 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 				ccopc.PageBody = csspg
 
 				ml := h.MenuService.GetMenuList()
-				//h.getCartTotal(cocccs, ml, hd)
+				h.getCartTotal(cocod, ml, hd)
 				ccopc.MenuList = ml
 
 				h.Log.Debug("MenuList", *ccopc.MenuList)
@@ -576,10 +581,15 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 				var wg sync.WaitGroup
 				for _, ci := range *ecc.Items {
 					wg.Add(1)
-					go func(id int64, pid int64, cid int64, header *six910api.Headers) {
+					go func(id int64, pid int64, cid int64, qty int64, header *six910api.Headers) {
 						defer wg.Done()
+						prd := h.API.GetProductByID(pid, header)
+						prd.Stock -= qty
+						h.Log.Debug("product after -=: ", *prd)
+						upres := h.API.UpdateProductQuantity(prd, header)
+						h.Log.Debug("update product after -=: ", *upres)
 						h.API.DeleteCartItem(id, pid, cid, header)
-					}(ci.ID, ci.ProductID, ci.CartID, hd)
+					}(ci.ID, ci.ProductID, ci.CartID, ci.Quantity, hd)
 				}
 				wg.Wait()
 				ecc.CartView = nil

@@ -254,6 +254,11 @@ func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *Cust
 	odr.Taxes = cart.Taxes
 	odr.Total = cart.Total
 	odr.Username = cart.CustomerAccount.User.Username
+	odr.ShippingMethodID = cart.ShippingMethodID
+	sm := m.API.GetShippingMethod(cart.ShippingMethodID, hd)
+	if sm != nil {
+		odr.ShippingMethodName = sm.Name
+	}
 
 	ores := m.API.AddOrder(&odr, hd)
 	m.Log.Debug("ores in completeOrder:", *ores)
@@ -262,7 +267,7 @@ func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *Cust
 		rtn.Order = &odr
 		rtn.Cart = cart.Cart
 		rtn.CustomerAccount = cart.CustomerAccount
-		oisuc, oires := m.processOrderItems(cart.Items, ores.ID, hd)
+		oisuc, oires := m.processOrderItems(cart.CartView.Items, ores.ID, hd)
 		rtn.Items = oires
 		if oisuc && cart.Comment != "" {
 			var ocmt sdbi.OrderComment
@@ -281,7 +286,7 @@ func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *Cust
 	return &rtn
 }
 
-func (m *Six910Manager) processOrderItems(ois *[]sdbi.CartItem, orderID int64, hd *api.Headers) (bool, *[]sdbi.OrderItem) {
+func (m *Six910Manager) processOrderItems(ois *[]*CartViewItem, orderID int64, hd *api.Headers) (bool, *[]sdbi.OrderItem) {
 	m.Log.Debug("in processOrderItems")
 	m.Log.Debug("ois in processOrderItems:", ois)
 	var rtn = true
@@ -289,11 +294,15 @@ func (m *Six910Manager) processOrderItems(ois *[]sdbi.CartItem, orderID int64, h
 	var wg sync.WaitGroup
 	oiresults := make(chan *OrderItemResults, len(*ois))
 	for _, ci := range *ois {
+		//----- to do: add price total and image attributes to order item.--------------------------
 		wg.Add(1)
 		var oi sdbi.OrderItem
 		oi.OrderID = orderID
 		oi.ProductID = ci.ProductID
 		oi.Quantity = ci.Quantity
+		oi.Price = ci.Price
+		oi.Total = ci.Total
+		oi.Image = ci.Image
 		//make call to product to get rest of details
 		prod := m.API.GetProductByID(ci.ProductID, hd)
 		if prod.Stock == 0 {
