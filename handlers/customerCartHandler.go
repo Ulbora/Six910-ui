@@ -490,33 +490,53 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 				//ccotres.OrderID = odrRes.Order.ID
 				h.Log.Debug("comccotres.OrderID after create: ", comccotres.OrderID)
 
-				var pm PaymentMethod
 				var ccopc CheckoutPage
+				var wg1 sync.WaitGroup
 
-				// go func ----
-				pgw := h.API.GetPaymentGateway(comccotres.PaymentGatewayID, hd)
-				sp := h.API.GetStorePlugin(pgw.StorePluginsID, hd)
-				pm.Name = sp.PluginName
-				pm.PaymentGateway = pgw
+				wg1.Add(1)
+				go func(smid int64, header *six910api.Headers) {
+					defer wg1.Done()
+					ccopc.ShippingMethod = h.API.GetShippingMethod(smid, header)
+				}(comccotres.ShippingMethodID, hd)
+
+				wg1.Add(1)
+				go func(baid int64, cid int64, header *six910api.Headers) {
+					defer wg1.Done()
+					ccopc.BillingAddress = h.API.GetAddress(baid, cid, header)
+				}(comccotres.BillingAddressID, comccotres.Cart.CustomerID, hd)
+
+				wg1.Add(1)
+				go func(said int64, cid int64, header *six910api.Headers) {
+					defer wg1.Done()
+					ccopc.ShippingAddress = h.API.GetAddress(said, cid, header)
+				}(comccotres.ShippingAddressID, comccotres.Cart.CustomerID, hd)
+
+				wg1.Add(1)
+				go func(pgwid int64, oid int64, tcode string, amount float64, header *six910api.Headers) {
+					defer wg1.Done()
+					pgw := h.API.GetPaymentGateway(pgwid, header)
+					sp := h.API.GetStorePlugin(pgw.StorePluginsID, header)
+					var pm PaymentMethod
+					pm.Name = sp.PluginName
+					pm.PaymentGateway = pgw
+					ccopc.PaymentMethod = &pm
+					var trans sdbi.OrderTransaction
+					trans.Gwid = pgw.ID
+					trans.Method = sp.PluginName
+					trans.OrderID = oid
+					trans.DateEntered = time.Now()
+					trans.ReferenceNumber = tcode
+					trans.Amount = amount
+					trans.ResponseCode = "200"
+					trans.ResponseMessage = "success"
+					trans.Success = true
+					trans.TransactionID = tcode
+					trans.Type = sp.PluginName
+					tres := h.API.AddOrderTransaction(&trans, header)
+					h.Log.Debug("transaction res: ", *tres)
+				}(comccotres.PaymentGatewayID, odrRes.Order.ID, transactionCode, odrRes.Order.Total, hd)
+
 				//----
-
-				// go func ----
-				sm := h.API.GetShippingMethod(comccotres.ShippingMethodID, hd)
-				//-----
-
-				var trans sdbi.OrderTransaction
-				trans.Gwid = pgw.ID
-				trans.Method = sp.PluginName
-				trans.OrderID = odrRes.Order.ID
-				trans.DateEntered = time.Now()
-				trans.ReferenceNumber = transactionCode
-				trans.ResponseCode = "200"
-				trans.ResponseMessage = "success"
-				trans.Success = true
-				trans.TransactionID = transactionCode
-				trans.Type = sp.PluginName
-				tres := h.API.AddOrderTransaction(&trans, hd)
-				h.Log.Debug("transaction res: ", *tres)
 
 				// if strings.Contains(strings.ToLower(pm.Name), "paypal") {
 				// 	h.Log.Debug("Using PayPay Gateway")
@@ -525,10 +545,10 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 				ccopc.OrderNumber = odrRes.Order.OrderNumber
 				ccopc.OrderInfo = h.CompanyName
 				ccopc.CustomerCart = comccotres
-				ccopc.PaymentMethod = &pm
-				ccopc.ShippingMethod = sm
-				ccopc.BillingAddress = h.API.GetAddress(comccotres.BillingAddressID, comccotres.Cart.CustomerID, hd)
-				ccopc.ShippingAddress = h.API.GetAddress(comccotres.ShippingAddressID, comccotres.Cart.CustomerID, hd)
+				// ccopc.PaymentMethod = &pm
+				//ccopc.ShippingMethod = sm
+				//ccopc.BillingAddress = h.API.GetAddress(comccotres.BillingAddressID, comccotres.Cart.CustomerID, hd)
+				//ccopc.ShippingAddress = h.API.GetAddress(comccotres.ShippingAddressID, comccotres.Cart.CustomerID, hd)
 				ccopc.Subtotal = fmt.Sprintf("%.2f", comccotres.Subtotal)
 				ccopc.ShippingHandling = fmt.Sprintf("%.2f", comccotres.ShippingHandling)
 				ccopc.InsuranceCost = fmt.Sprintf("%.2f", comccotres.InsuranceCost)
@@ -576,6 +596,8 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 					buyerSendSuc := h.MailSender.SendMail(&buyerMail)
 					h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
 				}
+
+				wg1.Wait()
 
 				ecc := h.getCustomerCart(cocod)
 				var wg sync.WaitGroup

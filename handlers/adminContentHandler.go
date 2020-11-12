@@ -152,6 +152,7 @@ func (h *Six910Handler) StoreAdminDeleteContent(w http.ResponseWriter, r *http.R
 			vars := mux.Vars(r)
 			name := vars["name"]
 
+			//------- add code to test that page in not a required page------------------
 			res := h.ContentService.DeleteContent(name)
 			h.Log.Debug("content delete in content delete: ", *res)
 

@@ -183,7 +183,7 @@ func (m *Six910Manager) CalculateCartTotals(cart *CustomerCart, hd *api.Headers)
 			cart.InsuranceCost = 0
 		}
 		sad := m.API.GetAddress(cart.ShippingAddressID, cart.Cart.CustomerID, hd)
-		m.Log.Debug("sad:", sad)
+		m.Log.Debug("sad:", *sad)
 		trs := m.API.GetTaxRate(sad.Country, sad.State, hd)
 		m.Log.Debug("trs:", trs)
 		m.Log.Debug("trs len:", len(*trs))
