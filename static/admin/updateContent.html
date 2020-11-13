@@ -15,7 +15,7 @@
                 <h4 class="text-center">Page</h4>
                 <form method="POST" action="/admin/updateContent">
                     <input name="name" type="hidden" id="name" value="{{.Content.Name}}">
-                    <textarea id="content-area" name="content" required>{{.Content.Text}}</textarea>
+                    <textarea id="content-area" name="content" >{{.Content.Text}}</textarea>
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input name="namedisp" type="text" class="form-control" id="namedisp" value="{{.Content.Name}}">

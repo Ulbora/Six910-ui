@@ -389,6 +389,7 @@ const (
 	//customer pages
 	customerLoginPage                = "login.html"
 	customerIndexPage                = "index.html"
+	customerContentPage              = "customerContent.html"
 	customerProductListPage          = "productList.html"
 	customerProductByCatPage         = "productsByCategory.html"
 	customerProductsSearchListPage   = "productsSearch.html"
@@ -421,9 +422,8 @@ const (
 	shoppingCartContent        = "shoppingCart"
 	shoppingCartContent2       = "shoppingCart2"
 	shoppingCartContent3       = "shoppingCartContinue"
-
-	orderListContent = "orderList"
-	orderContent     = "order"
+	orderListContent           = "orderList"
+	orderContent               = "order"
 
 	usernameForAddedNotes = "System Admin"
 

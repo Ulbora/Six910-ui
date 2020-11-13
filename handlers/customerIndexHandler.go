@@ -135,8 +135,13 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 		h.getCartTotal(cis, ml, hd)
 		cipage.MenuList = ml
 		h.Log.Debug("MenuList", *cipage.MenuList)
-		_, cont := h.ContentService.GetContent("home")
-		cipage.Content = cont
+		cisuc, cont := h.ContentService.GetContent(indexContent)
+		if cisuc {
+			cipage.Content = cont
+		} else {
+			var ct conts.Content
+			cipage.Content = &ct
+		}
 
 		h.Log.Debug("cipage: ", cipage)
 		h.Templates.ExecuteTemplate(w, customerIndexPage, &cipage)

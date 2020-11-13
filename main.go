@@ -325,6 +325,7 @@ func main() {
 
 	//site pages
 	router.HandleFunc("/", h.Index).Methods("GET")
+	router.HandleFunc("/pages/{name}", h.ViewContent).Methods("GET")
 	router.HandleFunc("/customerLoginPage", h.CustomerLoginPage).Methods("GET")
 	router.HandleFunc("/customerLogin", h.CustomerLogin).Methods("POST")
 	router.HandleFunc("/register", h.CreateCustomerAccountPage).Methods("GET")

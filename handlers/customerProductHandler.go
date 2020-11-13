@@ -53,6 +53,9 @@ func (h *Six910Handler) ViewProductList(w http.ResponseWriter, r *http.Request) 
 		cplpage.ProductList = ppl
 		if cisuc {
 			cplpage.Content = cicont
+		} else {
+			var ct conts.Content
+			cplpage.Content = &ct
 		}
 		h.Log.Debug("cplpage: ", cplpage)
 		h.Templates.ExecuteTemplate(w, customerProductListPage, &cplpage)

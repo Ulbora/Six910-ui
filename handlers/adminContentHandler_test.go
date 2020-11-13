@@ -9,10 +9,13 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
+	//carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	sr "github.com/Ulbora/Six910-ui/contentsrv"
+	//csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	isrv "github.com/Ulbora/Six910-ui/imgsrv"
 	ds "github.com/Ulbora/json-datastore"
 	"github.com/gorilla/mux"
+	//"github.com/gorilla/sessions"
 )
 
 func TestSix910Handler_StoreAdminAddContentPage(t *testing.T) {
@@ -628,6 +631,116 @@ func TestSix910Handler_StoreAdminDeleteContentLogin(t *testing.T) {
 	fmt.Println("code: ", w.Code)
 
 	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_isDeleteAllowed(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	ds := sh.isDeleteAllowed("test")
+	if !ds {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_isDeleteAllowed2(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	ds := sh.isDeleteAllowed(indexContent)
+	if ds {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_isDeleteAllowed3(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	ds := sh.isDeleteAllowed(productListContent)
+	if ds {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_isDeleteAllowed4(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	ds := sh.isDeleteAllowed(productCategoryListContent)
+	if ds {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_isDeleteAllowed5(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	ds := sh.isDeleteAllowed(productContent)
+	if ds {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_isDeleteAllowed6(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	ds := sh.isDeleteAllowed(shoppingCartContent)
+	if ds {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_isDeleteAllowed7(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	ds := sh.isDeleteAllowed(shoppingCartContent2)
+	if ds {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_isDeleteAllowed8(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	ds := sh.isDeleteAllowed(shoppingCartContent3)
+	if ds {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_isDeleteAllowed9(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	ds := sh.isDeleteAllowed(orderListContent)
+	if ds {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_isDeleteAllowed10(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	ds := sh.isDeleteAllowed(orderContent)
+	if ds {
 		t.Fail()
 	}
 }

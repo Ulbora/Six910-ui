@@ -274,4 +274,7 @@ type Handler interface {
 	//orders
 	ViewCustomerOrder(w http.ResponseWriter, r *http.Request)
 	ViewCustomerOrderList(w http.ResponseWriter, r *http.Request)
+
+	//content
+	ViewContent(w http.ResponseWriter, r *http.Request)
 }

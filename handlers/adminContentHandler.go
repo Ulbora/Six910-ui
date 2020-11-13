@@ -153,8 +153,11 @@ func (h *Six910Handler) StoreAdminDeleteContent(w http.ResponseWriter, r *http.R
 			name := vars["name"]
 
 			//------- add code to test that page in not a required page------------------
-			res := h.ContentService.DeleteContent(name)
-			h.Log.Debug("content delete in content delete: ", *res)
+			isAllowed := h.isDeleteAllowed(name)
+			if isAllowed {
+				res := h.ContentService.DeleteContent(name)
+				h.Log.Debug("content delete in content delete: ", *res)
+			}
 
 			http.Redirect(w, r, adminContentList, http.StatusFound)
 		} else {
@@ -222,4 +225,31 @@ func (h *Six910Handler) processContent(r *http.Request) *sr.Content {
 	}
 
 	return &ct
+}
+
+func (h *Six910Handler) isDeleteAllowed(name string) bool {
+	var rtn = true
+
+	switch name {
+	case indexContent:
+		rtn = false
+	case productListContent:
+		rtn = false
+	case productCategoryListContent:
+		rtn = false
+	case productContent:
+		rtn = false
+	case shoppingCartContent:
+		rtn = false
+	case shoppingCartContent2:
+		rtn = false
+	case shoppingCartContent3:
+		rtn = false
+	case orderListContent:
+		rtn = false
+	case orderContent:
+		rtn = false
+	}
+
+	return rtn
 }
