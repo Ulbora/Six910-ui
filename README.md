@@ -15,6 +15,10 @@ This project is intended to be the storefront UI that works with Six910 REST imp
 2. Templates can either be written in Golang templating or use a JavaScript framework like Angular or React.
 3. REST services will be used to expose all cart functionality.
 
+## Admin Dashboard
+
+![](./six910-ul-admin-dashboard.png)
+
 ## Template Designer
 There will also be a template designer to make desiging templates much easier than it currently is with most hosted shopping cart solutions.
 
