@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"time"
 	//"html/template"
 	"net/http"
 	//"strconv"
@@ -13,6 +14,7 @@ import (
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	stsrv "github.com/Ulbora/Six910-ui/statesrv"
+	six910api "github.com/Ulbora/Six910API-Go"
 )
 
 /*
@@ -81,8 +83,32 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 		//var pagebdy PageBody
 		// pagebdy.Background = "background: grey !important;"
 		// pagebdy.Color = "" //"color: white;"
-
 		hd := h.getHeader(cis)
+
+		origin := r.Header.Get("Origin")
+		host := r.Host
+		h.Log.Debug("X-Forwarded-For :" + r.Header.Get("X-FORWARDED-FOR"))
+		//h.Log.Debug("headers", headers)
+		//h.Log.Debug("request", *r)
+		h.Log.Debug("origin", origin)
+		h.Log.Debug("host", host)
+		var v sdbi.Visitor
+		v.Origin = r.Header.Get("Origin")
+		v.Host = r.Host
+		v.IPAddress = r.Header.Get("X-FORWARDED-FOR")
+		today := time.Now()
+		//ptwo := today.Add(2 * time.Hour)
+		lastHit := h.getLastHit(cis, w, r)
+		h.Log.Debug("lastHit", lastHit)
+		ptwo := lastHit.Add(2 * time.Hour)
+		if today.After(ptwo) {
+			h.Log.Debug("add new hit")
+			h.setLastHit(cis, w, r)
+			go func(vis *sdbi.Visitor, header *six910api.Headers) {
+				h.API.AddVisit(vis, header)
+			}(&v, hd)
+		}
+
 		ppl := h.API.GetProductsByPromoted(0, 100, hd)
 		h.Log.Debug("promoted products", *ppl)
 
@@ -142,6 +168,8 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 			var ct conts.Content
 			cipage.Content = &ct
 		}
+		//h.ContentService.HitCheck()
+		//headers := r.Header
 
 		h.Log.Debug("cipage: ", cipage)
 		h.Templates.ExecuteTemplate(w, customerIndexPage, &cipage)

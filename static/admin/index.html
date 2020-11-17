@@ -3,9 +3,18 @@
 {{template "head"}}
 
 
-<body>
+<body onload="loadVisitors({{.VisitorData}}); loadSales({{.SalesData}});">
     {{template "navbar"}}
-    Test Page
+    <div class="container">
+        <h3 class="text-center mt-4">Six910 Admin Dashboard</h3>
+
+        <div id="visitor_chart_div" style="width: 100%;" ></div>
+
+        <div id="sales_chart_div" style="width: 100%;"></div>
+    </div>
+
+
+
 </body>
 
 </html>

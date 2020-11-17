@@ -278,3 +278,12 @@ type Handler interface {
 	//content
 	ViewContent(w http.ResponseWriter, r *http.Request)
 }
+
+//dash
+//orders
+// sales
+//visitors
+//sales chart by month
+//hit chart by day
+//customers
+//repeat customers

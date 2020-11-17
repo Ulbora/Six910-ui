@@ -7,6 +7,7 @@ import (
 	"encoding/gob"
 	"encoding/json"
 	"io/ioutil"
+	"time"
 
 	"html/template"
 	"net/http"
@@ -384,6 +385,22 @@ func (h *Six910Handler) storeCustomerCart(cc *m.CustomerCart, s *sessions.Sessio
 	h.Log.Debug("serr", serr)
 	if serr == nil {
 		rtn = true
+	}
+	return rtn
+}
+
+func (h *Six910Handler) setLastHit(s *sessions.Session, w http.ResponseWriter, r *http.Request) {
+	s.Values["lastHitTime"] = time.Now().UnixNano() / int64(time.Millisecond)
+	serr := s.Save(r, w)
+	h.Log.Debug("serr in setLastHit", serr)
+}
+func (h *Six910Handler) getLastHit(s *sessions.Session, w http.ResponseWriter, r *http.Request) time.Time {
+	var rtn time.Time
+	hv := s.Values["lastHitTime"]
+	h.Log.Debug("hv", hv)
+	if hv != nil {
+		mill := hv.(int64)
+		rtn = time.Unix(0, mill*int64(time.Millisecond))
 	}
 	return rtn
 }

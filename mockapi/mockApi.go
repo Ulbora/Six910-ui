@@ -56,12 +56,15 @@ type MockAPI struct {
 	MockUpdateProductResp         *api.Response
 	MockUpdateProductQuantityResp *api.Response
 	MockProductList               *[]sdbi.Product
+	MockProductIDList             *[]int64
 	MockDeleteProductResp         *api.Response
 
 	MockAddOrderResp    *api.ResponseID
 	MockUpdateOrderResp *api.Response
 	MockOrder           *sdbi.Order
 	MockOrderList       *[]sdbi.Order
+	MockOrderCountData  *[]sdbi.OrderCountData
+	MockOrderSalesData  *[]sdbi.OrderSalesData
 
 	MockAddOrderItemResp *api.ResponseID
 	MockOrderItemList    *[]sdbi.OrderItem
@@ -186,6 +189,9 @@ type MockAPI struct {
 
 	MockOrderTransactionRes  *api.ResponseID
 	MockOrderTransactionList *[]sdbi.OrderTransaction
+
+	MockAddVisitResp *api.Response
+	MockVisitorData  *[]sdbi.VisitorData
 }
 
 //GetNew GetNew
@@ -587,6 +593,16 @@ func (a *MockAPI) GetStoreOrderListByStatus(status string, headers *api.Headers)
 	return a.MockOrderList
 }
 
+//GetOrderCountData GetOrderCountData
+func (a *MockAPI) GetOrderCountData(headers *api.Headers) *[]sdbi.OrderCountData {
+	return a.MockOrderCountData
+}
+
+//GetOrderSalesData GetOrderSalesData
+func (a *MockAPI) GetOrderSalesData(headers *api.Headers) *[]sdbi.OrderSalesData {
+	return a.MockOrderSalesData
+}
+
 //DeleteOrder DeleteOrder
 func (a *MockAPI) DeleteOrder(id int64, headers *api.Headers) *api.Response {
 	return nil
@@ -742,6 +758,16 @@ func (a *MockAPI) GetProductsByCaterory(catID int64, start int64, end int64, hea
 //GetProductList GetProductList
 func (a *MockAPI) GetProductList(start int64, end int64, headers *api.Headers) *[]sdbi.Product {
 	return a.MockProductList
+}
+
+//GetProductIDList GetProductIDList
+func (a *MockAPI) GetProductIDList(headers *api.Headers) *[]int64 {
+	return a.MockProductIDList
+}
+
+//GetProductIDListByCategories GetProductIDListByCategories
+func (a *MockAPI) GetProductIDListByCategories(idReq *api.ProdIDReq, headers *api.Headers) *[]int64 {
+	return a.MockProductIDList
 }
 
 //DeleteProduct DeleteProduct
@@ -1078,4 +1104,14 @@ func (a *MockAPI) GetZoneZipListByInclusion(incID int64, headers *api.Headers) *
 //DeleteZoneZip DeleteZoneZip
 func (a *MockAPI) DeleteZoneZip(id int64, incID int64, exID int64, headers *api.Headers) *api.Response {
 	return a.MockDeleteZoneZipResp
+}
+
+//AddVisit AddVisit
+func (a *MockAPI) AddVisit(v *sdbi.Visitor, headers *api.Headers) *api.Response {
+	return a.MockAddVisitResp
+}
+
+//GetVisitorData GetVisitorData
+func (a *MockAPI) GetVisitorData(headers *api.Headers) *[]sdbi.VisitorData {
+	return a.MockVisitorData
 }
