@@ -121,6 +121,9 @@ type Six910Handler struct {
 	Six910SiteURL string
 
 	CompanyName string
+
+	SiteMapDomain string
+	SiteMapDate   time.Time
 }
 
 //HeaderData HeaderData
@@ -145,6 +148,16 @@ type SiteData struct {
 type BasicSiteData struct {
 	Canonical   template.URL
 	Description string
+}
+
+func (h *Six910Handler) getSiteMapDomain() string {
+	var rtn string
+	if h.SiteMapDomain == "" {
+		rtn = "http://localhost:8080"
+	} else {
+		rtn = h.SiteMapDomain
+	}
+	return rtn
 }
 
 func (h *Six910Handler) processProductMetaData(prod *sdbi.Product, r *http.Request) *HeaderData {

@@ -10,9 +10,11 @@ import (
 	lg "github.com/Ulbora/Level_Logger"
 	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
+
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
+
 	ds "github.com/Ulbora/json-datastore"
 	sdbi "github.com/Ulbora/six910-database-interface"
 )
@@ -29,6 +31,8 @@ func TestSix910Handler_Index(t *testing.T) {
 	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
 	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
 	sh.API = &sapi
+	sh.ActiveTemplateLocation = "./testsitemap"
+	sh.ActiveTemplateName = "test"
 
 	//-----------start mocking------------------
 
@@ -58,6 +62,12 @@ func TestSix910Handler_Index(t *testing.T) {
 	plst = append(plst, prod3)
 	plst = append(plst, prod4)
 	sapi.MockProductList = &plst
+
+	var idlst []int64
+	idlst = append(idlst, 5)
+	idlst = append(idlst, 53)
+	idlst = append(idlst, 555)
+	sapi.MockProductIDList = &idlst
 
 	//-----------end mocking --------
 
@@ -154,6 +164,9 @@ func TestSix910Handler_Index2(t *testing.T) {
 	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
 	sh.API = &sapi
 
+	sh.ActiveTemplateLocation = "./testsitemap"
+	sh.ActiveTemplateName = "test"
+
 	//-----------start mocking------------------
 
 	var prod sdbi.Product
@@ -188,6 +201,12 @@ func TestSix910Handler_Index2(t *testing.T) {
 	plst = append(plst, prod4)
 	plst = append(plst, prod5)
 	sapi.MockProductList = &plst
+
+	var idlst []int64
+	idlst = append(idlst, 5)
+	idlst = append(idlst, 53)
+	idlst = append(idlst, 555)
+	sapi.MockProductIDList = &idlst
 
 	//-----------end mocking --------
 
@@ -271,4 +290,35 @@ func TestSix910Handler_Index2(t *testing.T) {
 	if w.Code != 200 {
 		t.Fail()
 	}
+}
+
+func TestSix910Handler_saveSiteMap(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var idlst []int64
+	idlst = append(idlst, 5)
+	idlst = append(idlst, 53)
+	idlst = append(idlst, 55)
+	var path = "./testsitemap"
+	sh.saveSiteMap(&idlst, path)
+
+}
+
+func TestSix910Handler_saveSiteMap2(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	sh.SiteMapDomain = "http://www.six910.com"
+
+	var idlst []int64
+	idlst = append(idlst, 5)
+	idlst = append(idlst, 53)
+	idlst = append(idlst, 55)
+	var path = "./testsitemap"
+	sh.saveSiteMap(&idlst, path)
+
 }

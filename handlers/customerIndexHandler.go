@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"os"
 	"time"
 	//"html/template"
 	"net/http"
@@ -92,6 +93,8 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 		//h.Log.Debug("request", *r)
 		h.Log.Debug("origin", origin)
 		h.Log.Debug("host", host)
+		h.Log.Debug("scheme", r.URL.Scheme)
+		//h.Log.Debug("request", *r)
 		var v sdbi.Visitor
 		v.Origin = r.Header.Get("Origin")
 		v.Host = r.Host
@@ -171,7 +174,34 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 		//h.ContentService.HitCheck()
 		//headers := r.Header
 
+		//site map
+		smtime := h.SiteMapDate
+		h.Log.Debug("smtime: ", smtime)
+		if today.After(smtime) {
+			h.Log.Debug("Saving new Site Map")
+			smtime = today
+			smtime = smtime.Add(720 * time.Hour)
+			h.SiteMapDate = smtime
+			idlst := h.API.GetProductIDList(hd)
+			path := "./static"
+			// h.ActiveTemplateLocation + "/" + h.ActiveTemplateName
+			h.saveSiteMap(idlst, path)
+		}
+
 		h.Log.Debug("cipage: ", cipage)
 		h.Templates.ExecuteTemplate(w, customerIndexPage, &cipage)
 	}
+}
+
+func (h *Six910Handler) saveSiteMap(ids *[]int64, path string) {
+	var vp SiteMapValues
+	vp.Domain = h.getSiteMapDomain()
+	vp.ProductIDList = ids
+	smbs := h.generateSiteMap(&vp)
+	//path := h.ActiveTemplateLocation + "/" + h.ActiveTemplateName
+	f, err := os.Create(path + "/sitemap.xml")
+	h.Log.Debug("os.Create err: ", err)
+	defer f.Close()
+	_, err2 := f.Write(smbs)
+	h.Log.Debug("f.Write err: ", err2)
 }
