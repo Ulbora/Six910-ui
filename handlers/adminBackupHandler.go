@@ -82,10 +82,10 @@ func (h *Six910Handler) AdminUploadBackups(w http.ResponseWriter, r *http.Reques
 
 			if suc {
 				h.LoadTemplate()
-				http.Redirect(w, r, adminBackups, http.StatusFound)
+				http.Redirect(w, r, adminIndex, http.StatusFound)
 			} else {
 				h.Log.Debug("backup upload of " + handler.Filename + " failed")
-				http.Redirect(w, r, adminBackups, http.StatusFound)
+				http.Redirect(w, r, adminIndex, http.StatusFound)
 			}
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)
