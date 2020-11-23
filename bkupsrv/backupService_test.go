@@ -33,7 +33,12 @@ import (
 
 func TestCmsService_DownloadBackups(t *testing.T) {
 	var cs Six910BackupService
+	cs.CarouselStorePath = "./testBackup/carouselStore"
 	cs.ContentStorePath = "./testBackup/contentStore"
+	cs.CountryStorePath = "./testBackup/countryStore"
+	cs.CSSStorePath = "./testBackup/cssStore"
+	cs.MenuStorePath = "./testBackup/menuStore"
+	cs.StateStorePath = "./testBackup/stateStore"
 	cs.TemplateStorePath = "./testBackup/templateStore"
 	cs.ImagePath = "./testBackup/images"
 	cs.TemplateFilePath = "./testBackup/templates"
@@ -75,7 +80,12 @@ func TestCmsService_UploadBackups(t *testing.T) {
 		ioutil.WriteFile("./testBackupZips/uncompress.json", rtn, 0644)
 	}
 	var cs Six910BackupService
+	cs.CarouselStorePath = "./testBackupRestore/carouselStore"
 	cs.ContentStorePath = "./testBackupRestore/contentStore"
+	cs.CountryStorePath = "./testBackupRestore/countryStore"
+	cs.CSSStorePath = "./testBackupRestore/cssStore"
+	cs.MenuStorePath = "./testBackupRestore/menuStore"
+	cs.StateStorePath = "./testBackupRestore/stateStore"
 	cs.TemplateStorePath = "./testBackupRestore/templateStore"
 	cs.ImagePath = "./testBackupRestore/images"
 	cs.TemplateFilePath = "./testBackupRestore/templates"
@@ -87,6 +97,26 @@ func TestCmsService_UploadBackups(t *testing.T) {
 	var tds ds.DataStore
 	tds.Path = "./testBackupRestore/templateStore"
 	cs.TemplateStore = tds.GetNew()
+
+	var crds ds.DataStore
+	crds.Path = "./testBackupRestore/carouselStore"
+	cs.CarouselStore = crds.GetNew()
+
+	var cyds ds.DataStore
+	cyds.Path = "./testBackupRestore/countryStore"
+	cs.CountryStore = cyds.GetNew()
+
+	var cssds ds.DataStore
+	cssds.Path = "./testBackupRestore/cssStore"
+	cs.CSSStore = cssds.GetNew()
+
+	var mds ds.DataStore
+	mds.Path = "./testBackupRestore/menuStore"
+	cs.MenuStore = mds.GetNew()
+
+	var sds ds.DataStore
+	sds.Path = "./testBackupRestore/stateStore"
+	cs.StateStore = sds.GetNew()
 
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel

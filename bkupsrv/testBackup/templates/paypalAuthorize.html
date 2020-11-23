@@ -1,0 +1,48 @@
+{{define "paypalauthorize"}}
+
+  <div id="smart-button-container">
+    <div style="text-align: center;">
+      <div id="paypal-button-container"></div>
+    </div>
+  </div>
+  <script
+    src="https://www.paypal.com/sdk/js?client-id={{.PaymentMethod.PaymentGateway.ClientID}}&intent=authorize&currency=USD"
+    data-sdk-integration-source="button-factory"></script>
+  <script>
+    function initPayPalButton() {
+      paypal.Buttons({
+        style: {
+          shape: 'rect',
+          color: 'gold',
+          layout: 'vertical',
+          label: 'paypal',
+
+        },
+
+        createOrder: function (data, actions) {
+          return actions.order.create({
+            purchase_units: [{ "description": "Order from {{.OrderInfo}}", "amount": { "currency_code": "USD", "value":{{.CustomerCart.Total}}, "breakdown": { "item_total": { "currency_code": "USD", "value": {{.CustomerCart.Subtotal}} }, "shipping": { "currency_code": "USD", "value": {{.CustomerCart.ShippingHandling}} }, "tax_total": { "currency_code": "USD", "value": {{.CustomerCart.Taxes}} }, "insurance": { "currency_code": "USD", "value": {{.CustomerCart.InsuranceCost}} } } } }]
+          });
+        },
+
+        onApprove: function (data, actions) {
+          showSpinner();
+          return actions.order.authorize().then(function(authorization){
+            // console.log("payment details: " + JSON.stringify(details))
+            // alert('Transaction completed by ' + details.payer.name.given_name + '!');
+            var authorizationID = authorization.purchase_units[0]
+          .payments.authorizations[0].id
+
+            window.location.href = "/completeOrder/"+ authorizationID;
+          });
+        },
+
+        onError: function (err) {
+          console.log(err);
+        }
+      }).render('#paypal-button-container');
+    }
+    initPayPalButton();
+  </script>
+
+  {{end}}

@@ -38,7 +38,17 @@ type BackupService interface {
 type Six910BackupService struct {
 	Store             ds.JSONDatastore
 	TemplateStore     ds.JSONDatastore
+	CarouselStore     ds.JSONDatastore
+	CountryStore      ds.JSONDatastore
+	CSSStore          ds.JSONDatastore
+	MenuStore         ds.JSONDatastore
+	StateStore        ds.JSONDatastore
+	CarouselStorePath string
 	ContentStorePath  string
+	CountryStorePath  string
+	CSSStorePath      string
+	MenuStorePath     string
+	StateStorePath    string
 	TemplateStorePath string
 	TemplateFilePath  string
 	TemplateFullPath  string

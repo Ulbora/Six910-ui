@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+{{template "head" .}}
+
+
+<body>
+  {{range .MenuList}}
+  {{if and (eq .Location "top")  (eq .Active true) (eq .Name "navBar")}}
+  {{template "navBar" .}}
+  {{end}}
+  {{end}}
+  <div class="container-fluid">
+    {{.Content.TextHTML}}
+  </div>
+
+
+  <div class="container mt-5 mb-5">
+    <h3 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Shopping Cart</h3>
+    <div class="row mt-5">
+
+      {{if and .CustomerCart .CustomerCart.Items}}
+      <div class="col-6">        
+        <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Cart Items</h4>
+
+        {{range .CustomerCart.CartView.Items}}
+        <div class="card mb-3">
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <a href="/viewProduct/{{.ProductID}}"><img src="{{.Image}}" class="card-img" alt="..."></a>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{.ProductName}}</h5>
+                <p class="card-text">{{.Desc}}.</p>
+                <p class="card-text">
+                <div class="row">
+                  <div class="col-sm">
+                    <!-- <form method="GET" action="/updateCart"> -->
+                      <label for="cost">Quantity</label>
+                      <input disabled name="qty" min="1" max="{{.Stock}}" type="number" class="form-control" id="qty"
+                        value="{{.Quantity}}">
+                      <input name="id" type="hidden" id="id" value="{{.ProductID}}">
+                      <!-- <button type="submit" class="btn btn-primary mt-3">Update</button> -->
+                    <!-- </form>                    -->
+                  </div>
+                  <div class="col-sm">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Price</h5>
+                        <p class="card-text">${{.Price}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Total</h5>
+                        <p class="card-text">${{.Total}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{end}}
+
+
+      </div>
+      <div class="col-6">
+        <div class="alert alert-success text-center" role="alert">
+          Completed Successfully
+        </div>
+        <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Summary</h4>
+        <div class="card bg-light">
+          <div class="card-body">
+            <h3 class="card-title">Order # {{.OrderNumber}}</h3>
+            <hr>
+            <div class="row">
+              <div class="col-6">Subtotal: </div>
+              <div class="col-6 text-right">${{.Subtotal}}</div>
+            </div>
+            <!-- <p class="card-text">Subtotal: ${{.CustomerCart.Subtotal}}</p> -->
+            <div class="row">
+              <div class="col-6">Shipping: </div>
+              <div class="col-6 text-right">${{.ShippingHandling}}</div>
+            </div>
+            <!-- <p class="card-text">ShippingHandling: ${{.CustomerCart.ShippingHandling}}</p> -->
+            <div class="row">
+              <div class="col-6">Insurance: </div>
+              <div class="col-6 text-right">${{.InsuranceCost}}</div>
+            </div>
+            <!-- <p class="card-text">InsuranceCost: ${{.CustomerCart.InsuranceCost}}</p> -->
+            <div class="row">
+              <div class="col-6">Taxes: </div>
+              <div class="col-6 text-right">${{.Taxes}}</div>
+            </div>
+            <!-- <p class="card-text">Taxes: ${{.CustomerCart.Taxes}}</p> -->
+            <div class="row">
+              <div class="col-6">Total: </div>
+              <div class="col-6 text-right">${{.Total}}</div>
+            </div>
+            <!-- <p class="card-text">Total: ${{.CustomerCart.Total}}</p> -->
+          </div>
+        </div>
+        <div class="shadow-none p-3 mb-5 mt-2 bg-light rounded">
+          <!-- <form method="POST" action="/checkoutContinue">    -->
+
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Payment Method </h4>
+            <hr>
+            {{.PaymentMethod.Name}}
+          </div>
+
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Shipping Method </h4>
+            <hr>
+            {{.ShippingMethod.Name}}
+          </div>
+
+
+
+
+
+
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Billing Address</h4>
+            <hr>
+            <p>{{.BillingAddress.Address}}</p>
+            <p>{{.BillingAddress.City}}, {{.BillingAddress.State}} {{.BillingAddress.Zip}}</p>
+            <p>{{.BillingAddress.Country}}</p>
+          </div>
+
+
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Shipping Address</h4>
+            <hr>
+            <p>{{.ShippingAddress.Address}}</p>
+            <p>{{.ShippingAddress.City}}, {{.ShippingAddress.State}} {{.ShippingAddress.Zip}}</p>
+            <p>{{.ShippingAddress.Country}}</p>
+          </div>
+
+          <!-- <div class="alert alert-danger mt-3" role="alert">
+            <a href="/viewCustomerAccount" class="alert-link">Add New Address </a>
+          </div> -->
+
+          
+
+          <!-- payment details: {"create_time":"2020-11-04T21:37:08Z","update_time":"2020-11-04T21:39:21Z","id":"3R887979G3474221J","intent":"CAPTURE","status":"COMPLETED","payer":{"email_address":"sb-o8hkr3654613@personal.example.com","payer_id":"RPBZ22MP66W2S","address":{"country_code":"US"},"name":{"given_name":"John","surname":"Doe"}},"purchase_units":[{"description":"Order # 45666HWT","reference_id":"default","soft_descriptor":"PAYPAL *TESTERTESTE","amount":{"value":"333.50","currency_code":"USD","breakdown":{"item_total":{"value":"253.44","currency_code":"USD"},"shipping":{"value":"12.52","currency_code":"USD"},"handling":{"value":"0.00","currency_code":"USD"},"tax_total":{"value":"67.54","currency_code":"USD"},"insurance":{"value":"0.00","currency_code":"USD"},"shipping_discount":{"value":"0.00","currency_code":"USD"}}},"payee":{"email_address":"six910@ulboralabs.com","merchant_id":"FEYTUT49W5RM6"},"shipping":{"name":{"full_name":"John Doe"},"address":{"address_line_1":"201 HARBORSIDE DR","admin_area_2":"DALLAS","admin_area_1":"GA","postal_code":"30132","country_code":"US"}},"payments":{"captures":[{"status":"COMPLETED","id":"57Y4402035981270P","final_capture":true,"create_time":"2020-11-04T21:39:21Z","update_time":"2020-11-04T21:39:21Z","amount":{"value":"333.50","currency_code":"USD"},"seller_protection":{"status":"ELIGIBLE","dispute_categories":["ITEM_NOT_RECEIVED","UNAUTHORIZED_TRANSACTION"]},"links":[{"href":"https://api.sandbox.paypal.com/v2/payments/captures/57Y4402035981270P","rel":"self","method":"GET","title":"GET"},{"href":"https://api.sandbox.paypal.com/v2/payments/captures/57Y4402035981270P/refund","rel":"refund","method":"POST","title":"POST"},{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3R887979G3474221J","rel":"up","method":"GET","title":"GET"}]}]}}],"links":[{"href":"https://api.sandbox.paypal.com/v2/checkout/orders/3R887979G3474221J","rel":"self","method":"GET","title":"GET"}]} -->
+
+          <!-- <button type="submit" class="btn btn-info mt-5">Checkout</button> -->
+          <!-- <div class="card text-center border-0">
+            <div class="card-body">
+              <a href="/checkout" class="btn btn-success">Checkout</a>
+            </div>
+          </div> -->
+          <!-- </form> -->
+        </div>
+      </div>
+      {{else}}
+      <div class="col">
+        <div class="alert alert-success" role="alert">
+          Shopping Cart is Empty!
+        </div>
+      </div>
+      {{end}}
+
+    </div>
+  </div>
+
+</body>
+
+</html>

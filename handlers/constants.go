@@ -222,6 +222,12 @@ const (
 	adminIncZipZoneListView     = "/admin/includedZipZone"
 	adminIncZipZoneListViewFail = "/admin/zipZoneListView?error=Add Failed"
 
+	//routes templates
+	adminTemplates = "/admin/templates"
+
+	//routes backup
+	adminBackups = "/admin/backups"
+
 	//content
 	adminAddContent     = "/admin/addContent"
 	adminAddContentFail = "/admin/addContent?error=Add Failed"
@@ -304,6 +310,14 @@ const (
 	adminAddCategoryPage  = "addCategory.html"
 	adminEditCategoryPage = "editCategory.html"
 	adminCategoryListPage = "categoryList.html"
+
+	//pages templates
+	adminTemplateUploadPage = "templateUpload.html"
+	adminTemplateList       = "templates.html"
+
+	//backups
+	adminBackupsPage      = "backups.html"
+	adminBackupUploadPage = "backupUpload.html"
 
 	//pages Insurance
 	adminAddInsurancePage  = "addInsurance.html"

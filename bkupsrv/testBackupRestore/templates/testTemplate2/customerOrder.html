@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+{{template "head" .}}
+
+
+<body>
+  {{range .MenuList}}
+  {{if and (eq .Location "top")  (eq .Active true) (eq .Name "navBar")}}
+  {{template "navBar" .}}
+  {{end}}
+  {{end}}
+  <div class="container-fluid">
+    {{.Content.TextHTML}}
+  </div>
+
+
+  <div class="container mt-5 mb-5">
+    <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Order Details</h4>
+    <div class="row mt-5">
+
+
+      <div class="col-6">
+        <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Order Items</h4>
+
+        {{range .Items}}
+        <div class="card mb-3">
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <a href="/viewProduct/{{.ProductID}}"><img src="{{.Image}}" class="card-img" alt="..."></a>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{.ProductName}}</h5>
+                <p class="card-text">{{.ProductShortDesc}}.</p>
+                <p class="card-text">
+                <div class="row">
+                  <div class="col-sm">
+                    <label for="cost">Quantity</label>
+                    <input disabled name="qty" type="number" class="form-control" id="qty" value="{{.Quantity}}">
+
+                    <input name="qty" hidden type="number" class="form-control" id="qty" value="0">
+
+
+                  </div>
+                  <div class="col-sm">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Price</h5>
+                        <p class="card-text">${{.Price}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Total</h5>
+                        <p class="card-text">${{.Total}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{end}}
+
+
+      </div>
+      <div class="col-6">
+        <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Summary</h4>
+        <div class="card bg-light">
+          <div class="card-body">
+            <h3 class="card-title">Order</h3>
+            <hr>
+            <div class="row">
+              <div class="col-6">Subtotal: </div>
+              <div class="col-6 text-right">${{.Order.Subtotal}}</div>
+            </div>
+            <div class="row">
+              <div class="col-6">Shipping: </div>
+              <div class="col-6 text-right">${{.Order.ShippingHandling}}</div>
+            </div>
+            <div class="row">
+              <div class="col-6">Insurance: </div>
+              <div class="col-6 text-right">${{.Order.Insurance}}</div>
+            </div>
+            <div class="row">
+              <div class="col-6">Taxes: </div>
+              <div class="col-6 text-right">${{.Order.Taxes}}</div>
+            </div>
+            <div class="row">
+              <div class="col-6">Total: </div>
+              <div class="col-6 text-right">${{.Order.Total}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="shadow-none p-3 mb-5 mt-2 bg-light rounded">
+
+
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Payment Method </h4>
+            <hr>
+            {{.PaymentMethod}}
+          </div>
+
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Shipping Method </h4>
+            <hr>
+            {{.ShippingMethod}}
+          </div>
+
+
+
+
+
+
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Billing Address</h4>
+            <hr>
+            <p>{{.BillingAddress}}</p>
+          </div>
+
+
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">Shipping Address</h4>
+            <hr>
+            <p>{{.ShippingAddress}}</p>
+          </div>
+
+
+        </div>
+      </div>
+
+    </div>
+
+
+  </div>
+
+</body>
+
+</html>

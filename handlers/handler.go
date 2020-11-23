@@ -229,6 +229,17 @@ type Handler interface {
 	StoreAdminUpdateCarousel(w http.ResponseWriter, r *http.Request)
 	StoreAdminGetCarousel(w http.ResponseWriter, r *http.Request)
 
+	AdminAddTemplatePage(w http.ResponseWriter, r *http.Request)
+	AdminUploadTemplate(w http.ResponseWriter, r *http.Request)
+	AdminTemplateList(w http.ResponseWriter, r *http.Request)
+	AdminActivateTemplate(w http.ResponseWriter, r *http.Request)
+	AdminDeleteTemplate(w http.ResponseWriter, r *http.Request)
+
+	AdminBackupMainPage(w http.ResponseWriter, r *http.Request)
+	AdminBackupUploadPage(w http.ResponseWriter, r *http.Request)
+	AdminUploadBackups(w http.ResponseWriter, r *http.Request)
+	AdminDownloadBackups(w http.ResponseWriter, r *http.Request)
+
 	//abandoned carts --- for later---- requires new rest services to be added
 	// StoreAdminViewCart(w http.ResponseWriter, r *http.Request)
 	// StoreAdminViewCartList(w http.ResponseWriter, r *http.Request)

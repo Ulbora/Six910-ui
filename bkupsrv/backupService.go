@@ -25,6 +25,7 @@ import (
 	"compress/gzip"
 	"compress/zlib"
 	"encoding/json"
+
 	"io"
 	"io/ioutil"
 	"os"
@@ -40,7 +41,12 @@ const (
 
 //BackupFiles BackupFiles
 type BackupFiles struct {
+	CarouselStoreFiles *[]BackupFile
 	ContentStoreFiles  *[]BackupFile
+	CountryStoreFiles  *[]BackupFile
+	CSSStoreFiles      *[]BackupFile
+	MenuStoreFiles     *[]BackupFile
+	StateStoreFiles    *[]BackupFile
 	TemplateStoreFiles *[]BackupFile
 	ImageFiles         *[]BackupFile
 	TemplateFiles      *BackupFile
@@ -65,7 +71,7 @@ func (c *Six910BackupService) UploadBackups(bk *[]byte) bool {
 		io.Copy(&out, r)
 		r.Close()
 		bout := out.Bytes()
-		c.Log.Debug("content file in upload: ", string(bout))
+		//c.Log.Debug("content file in upload: ", string(bout))
 		umerr := json.Unmarshal(bout, &bkfs)
 		c.Log.Debug("BackupFiles file unmarshal err: ", umerr)
 		c.Log.Debug("BackupFiles file unmarshal : ", bkfs)
@@ -76,7 +82,7 @@ func (c *Six910BackupService) UploadBackups(bk *[]byte) bool {
 
 		for _, cf := range *bkfs.ContentStoreFiles {
 			c.Log.Debug("BackupFile content file name: ", c.ContentStorePath+string(filepath.Separator)+cf.Name)
-			c.Log.Debug("BackupFile content file: ", cf)
+			//c.Log.Debug("BackupFile content file: ", cf)
 			werr := ioutil.WriteFile(c.ContentStorePath+string(filepath.Separator)+cf.Name, cf.FileData, 0666)
 			c.Log.Debug("BackupFile content file write err : ", werr)
 		}
@@ -89,12 +95,77 @@ func (c *Six910BackupService) UploadBackups(bk *[]byte) bool {
 
 		for _, cf := range *bkfs.TemplateStoreFiles {
 			c.Log.Debug("BackupFile template file name: ", c.TemplateStorePath+string(filepath.Separator)+cf.Name)
-			c.Log.Debug("BackupFile template file: ", cf)
+			//c.Log.Debug("BackupFile template file: ", cf)
 			werr := ioutil.WriteFile(c.TemplateStorePath+string(filepath.Separator)+cf.Name, cf.FileData, 0666)
 			c.Log.Debug("BackupFile template file write err : ", werr)
 		}
 
 		c.TemplateStore.Reload()
+
+		//carousel store files
+		os.RemoveAll(c.CarouselStorePath)
+		os.Mkdir(c.CarouselStorePath, os.FileMode(0777))
+
+		for _, cf := range *bkfs.CarouselStoreFiles {
+			c.Log.Debug("BackupFile Carousel file name: ", c.CarouselStorePath+string(filepath.Separator)+cf.Name)
+			//c.Log.Debug("BackupFile Carousel file: ", cf)
+			werr := ioutil.WriteFile(c.CarouselStorePath+string(filepath.Separator)+cf.Name, cf.FileData, 0666)
+			c.Log.Debug("BackupFile Carousel file write err : ", werr)
+		}
+
+		c.CarouselStore.Reload()
+
+		// country store files
+		os.RemoveAll(c.CountryStorePath)
+		os.Mkdir(c.CountryStorePath, os.FileMode(0777))
+
+		for _, cf := range *bkfs.CountryStoreFiles {
+			c.Log.Debug("BackupFile country file name: ", c.CountryStorePath+string(filepath.Separator)+cf.Name)
+			//c.Log.Debug("BackupFile country file: ", cf)
+			werr := ioutil.WriteFile(c.CountryStorePath+string(filepath.Separator)+cf.Name, cf.FileData, 0666)
+			c.Log.Debug("BackupFile country file write err : ", werr)
+		}
+
+		c.CountryStore.Reload()
+
+		// css store files
+		os.RemoveAll(c.CSSStorePath)
+		os.Mkdir(c.CSSStorePath, os.FileMode(0777))
+
+		for _, cf := range *bkfs.CSSStoreFiles {
+			c.Log.Debug("BackupFile css file name: ", c.CSSStorePath+string(filepath.Separator)+cf.Name)
+			//c.Log.Debug("BackupFile css file: ", cf)
+			werr := ioutil.WriteFile(c.CSSStorePath+string(filepath.Separator)+cf.Name, cf.FileData, 0666)
+			c.Log.Debug("BackupFile css file write err : ", werr)
+		}
+
+		c.CSSStore.Reload()
+
+		// menu store files
+		os.RemoveAll(c.MenuStorePath)
+		os.Mkdir(c.MenuStorePath, os.FileMode(0777))
+
+		for _, cf := range *bkfs.MenuStoreFiles {
+			c.Log.Debug("BackupFile menu file name: ", c.MenuStorePath+string(filepath.Separator)+cf.Name)
+			//c.Log.Debug("BackupFile menu file: ", cf)
+			werr := ioutil.WriteFile(c.MenuStorePath+string(filepath.Separator)+cf.Name, cf.FileData, 0666)
+			c.Log.Debug("BackupFile menu file write err : ", werr)
+		}
+
+		c.MenuStore.Reload()
+
+		// state store files
+		os.RemoveAll(c.StateStorePath)
+		os.Mkdir(c.StateStorePath, os.FileMode(0777))
+
+		for _, cf := range *bkfs.StateStoreFiles {
+			c.Log.Debug("BackupFile state file name: ", c.StateStorePath+string(filepath.Separator)+cf.Name)
+			//c.Log.Debug("BackupFile state file: ", cf)
+			werr := ioutil.WriteFile(c.StateStorePath+string(filepath.Separator)+cf.Name, cf.FileData, 0666)
+			c.Log.Debug("BackupFile state file write err : ", werr)
+		}
+
+		c.StateStore.Reload()
 
 		// image files
 		os.RemoveAll(c.ImagePath)
@@ -102,7 +173,7 @@ func (c *Six910BackupService) UploadBackups(bk *[]byte) bool {
 
 		for _, cf := range *bkfs.ImageFiles {
 			c.Log.Debug("BackupFile image file name: ", c.ImagePath+string(filepath.Separator)+cf.Name)
-			c.Log.Debug("BackupFile image file: ", cf)
+			//c.Log.Debug("BackupFile image file: ", cf)
 			werr := ioutil.WriteFile(c.ImagePath+string(filepath.Separator)+cf.Name, cf.FileData, 0666)
 			c.Log.Debug("BackupFile image file write err : ", werr)
 		}
@@ -139,7 +210,12 @@ func (c *Six910BackupService) DownloadBackups() (bool, *[]byte) {
 
 	//contentStore
 
+	c.processCarouselFiles(&bkfs)
 	c.processContentFiles(&bkfs)
+	c.processCountryFiles(&bkfs)
+	c.processCSSFiles(&bkfs)
+	c.processMenuFiles(&bkfs)
+	c.processStateFiles(&bkfs)
 	c.processTemplateFiles(&bkfs)
 	c.processImageFiles(&bkfs)
 
@@ -156,6 +232,36 @@ func (c *Six910BackupService) DownloadBackups() (bool, *[]byte) {
 				os.Chdir(c.TemplateFilePath + string(filepath.Separator))
 				c.compress(file.Name(), tw)
 				os.Chdir(cwpath)
+			} else {
+				c.Log.Debug("template file: ", c.TemplateFilePath+string(filepath.Separator)+file.Name())
+				//c.compress(file.Name(), tw)
+				data, oerr := os.Open(c.TemplateFilePath + string(filepath.Separator) + file.Name())
+				c.Log.Debug("oerr: ", oerr)
+				if oerr == nil {
+					info, err := data.Stat()
+					c.Log.Debug("err: ", err)
+					if err == nil {
+						header, err := tar.FileInfoHeader(info, info.Name())
+						c.Log.Debug("err FileInfoHeader: ", err)
+						if err == nil {
+							header.Name = file.Name()
+							err = tw.WriteHeader(header)
+							c.Log.Debug("err tw.WriteHeader: ", err)
+							_, cerr := io.Copy(tw, data)
+							c.Log.Debug("cerr io.Copy: ", cerr)
+						}
+
+					}
+				}
+				//fileData, rerr := ioutil.ReadFile(c.TemplateFilePath + string(filepath.Separator) + file.Name())
+				//c.Log.Debug("template file data: ", fileData)
+				// if rerr == nil {
+				// 	var cbk BackupFile
+				// 	cbk.Name = file.Name()
+				// 	cbk.FilesLocation = c.TemplateFilePath
+				// 	cbk.FileData = fileData
+				// 	//templateStoreFiles = append(TemplateFilePath, cbk)
+				// }
 			}
 		}
 		rtn = true
@@ -168,6 +274,17 @@ func (c *Six910BackupService) DownloadBackups() (bool, *[]byte) {
 	tbkf.FilesLocation = c.TemplateFilePath
 	tbkf.FileData = buf.Bytes()
 	bkfs.TemplateFiles = &tbkf
+
+	// //-----------test
+	// fileToWrite, err := os.OpenFile("./testBackupZips/testtemplates.tar.gz", os.O_CREATE|os.O_RDWR, os.FileMode(777))
+	// fmt.Println("fileToWrite err : ", err)
+	// var buf2 = bytes.NewBuffer(buf.Bytes())
+
+	// //fmt.Println("compress file data: ", buf.Bytes())
+	// _, err2 := io.Copy(fileToWrite, buf2)
+	// fmt.Println("io.copy err : ", err2)
+	// os.Chmod("./testBackupZips/compress.dat", os.FileMode(0666))
+	// //
 
 	c.Log.Debug("backup file: ", bkfs)
 
@@ -232,6 +349,121 @@ func (c *Six910BackupService) processContentFiles(bkfs *BackupFiles) {
 		}
 		//c.Log.Debug("content store file list: ", contStoreFiles)
 		bkfs.ContentStoreFiles = &contStoreFiles
+	}
+}
+
+func (c *Six910BackupService) processCarouselFiles(bkfs *BackupFiles) {
+	var carStoreFiles []BackupFile
+	carfiles, err := ioutil.ReadDir(c.CarouselStorePath)
+	if err == nil {
+		for _, sfile := range carfiles {
+			if !sfile.IsDir() {
+				c.Log.Debug("carousel store file: ", c.CarouselStorePath+string(filepath.Separator)+sfile.Name())
+				fileData, rerr := ioutil.ReadFile(c.CarouselStorePath + string(filepath.Separator) + sfile.Name())
+				//c.Log.Debug("content store file data: ", fileData)
+				if rerr == nil {
+					var cbk BackupFile
+					cbk.Name = sfile.Name()
+					cbk.FilesLocation = c.CarouselStorePath
+					cbk.FileData = fileData
+					carStoreFiles = append(carStoreFiles, cbk)
+				}
+			}
+		}
+		//c.Log.Debug("content store file list: ", contStoreFiles)
+		bkfs.CarouselStoreFiles = &carStoreFiles
+	}
+}
+
+func (c *Six910BackupService) processCountryFiles(bkfs *BackupFiles) {
+	var ctryStoreFiles []BackupFile
+	ctryfiles, err := ioutil.ReadDir(c.CountryStorePath)
+	if err == nil {
+		for _, sfile := range ctryfiles {
+			if !sfile.IsDir() {
+				c.Log.Debug("country store file: ", c.CountryStorePath+string(filepath.Separator)+sfile.Name())
+				fileData, rerr := ioutil.ReadFile(c.CountryStorePath + string(filepath.Separator) + sfile.Name())
+				//c.Log.Debug("content store file data: ", fileData)
+				if rerr == nil {
+					var cbk BackupFile
+					cbk.Name = sfile.Name()
+					cbk.FilesLocation = c.CountryStorePath
+					cbk.FileData = fileData
+					ctryStoreFiles = append(ctryStoreFiles, cbk)
+				}
+			}
+		}
+		//c.Log.Debug("content store file list: ", contStoreFiles)
+		bkfs.CountryStoreFiles = &ctryStoreFiles
+	}
+}
+
+func (c *Six910BackupService) processCSSFiles(bkfs *BackupFiles) {
+	var cssStoreFiles []BackupFile
+	cssfiles, err := ioutil.ReadDir(c.CSSStorePath)
+	if err == nil {
+		for _, sfile := range cssfiles {
+			if !sfile.IsDir() {
+				c.Log.Debug("css store file: ", c.CSSStorePath+string(filepath.Separator)+sfile.Name())
+				fileData, rerr := ioutil.ReadFile(c.CSSStorePath + string(filepath.Separator) + sfile.Name())
+				//c.Log.Debug("content store file data: ", fileData)
+				if rerr == nil {
+					var cbk BackupFile
+					cbk.Name = sfile.Name()
+					cbk.FilesLocation = c.CSSStorePath
+					cbk.FileData = fileData
+					cssStoreFiles = append(cssStoreFiles, cbk)
+				}
+			}
+		}
+		//c.Log.Debug("content store file list: ", contStoreFiles)
+		bkfs.CSSStoreFiles = &cssStoreFiles
+	}
+}
+
+func (c *Six910BackupService) processMenuFiles(bkfs *BackupFiles) {
+	var muStoreFiles []BackupFile
+	mufiles, err := ioutil.ReadDir(c.MenuStorePath)
+	if err == nil {
+		for _, sfile := range mufiles {
+			if !sfile.IsDir() {
+				c.Log.Debug("menu store file: ", c.MenuStorePath+string(filepath.Separator)+sfile.Name())
+				fileData, rerr := ioutil.ReadFile(c.MenuStorePath + string(filepath.Separator) + sfile.Name())
+				//c.Log.Debug("content store file data: ", fileData)
+				if rerr == nil {
+					var cbk BackupFile
+					cbk.Name = sfile.Name()
+					cbk.FilesLocation = c.MenuStorePath
+					cbk.FileData = fileData
+					muStoreFiles = append(muStoreFiles, cbk)
+				}
+			}
+		}
+		//c.Log.Debug("content store file list: ", contStoreFiles)
+		bkfs.MenuStoreFiles = &muStoreFiles
+	}
+}
+
+func (c *Six910BackupService) processStateFiles(bkfs *BackupFiles) {
+	var stStoreFiles []BackupFile
+	stfiles, err := ioutil.ReadDir(c.StateStorePath)
+	if err == nil {
+		for _, sfile := range stfiles {
+			if !sfile.IsDir() {
+				c.Log.Debug("state store file: ", c.StateStorePath+string(filepath.Separator)+sfile.Name())
+				fileData, rerr := ioutil.ReadFile(c.StateStorePath + string(filepath.Separator) + sfile.Name())
+				//c.Log.Debug("content store file data: ", fileData)
+				if rerr == nil {
+					var cbk BackupFile
+					cbk.Name = sfile.Name()
+					cbk.FilesLocation = c.StateStorePath
+					cbk.FileData = fileData
+					stStoreFiles = append(stStoreFiles, cbk)
+				}
+			}
+		}
+		//c.Log.Debug("content store file list: ", contStoreFiles)
+		bkfs.StateStoreFiles = &stStoreFiles
 	}
 }
 

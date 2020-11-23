@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+{{template "head" .}}
+
+<body>
+    {{range .MenuList}}
+    {{if and (eq .Location "top")  (eq .Active true) (eq .Name "navBar")}}
+    {{template "navBar" .}}
+    {{end}}
+    {{end}}
+    <div class="container-sm">
+        <h1 class="mt-3">Customer Account</h1>
+        <ul class="nav nav-tabs mt-2" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#cust" role="tab"
+                    aria-controls="method" aria-selected="true">Customer</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#custadd" role="tab" aria-controls="add"
+                    aria-selected="false">Address List</a>
+            </li>
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="cat-tab" data-toggle="tab" href="#custpw" role="tab" aria-controls="add"
+                    aria-selected="false">Change Password</a>
+            </li>
+        </ul>
+        <form method="POST" action="/updateCustomerAccount">
+            <div class="tab-content" id="myTabContent">
+
+                <div class="tab-pane fade show active" id="cust" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="shadow-none p-3 mb-5 mt-3 bg-white text-dark rounded">
+                        <input hidden name="id" type="text" id="id" value="{{.Customer.ID}}">
+                        <input hidden name="email" type="text" id="email" value="{{.Customer.Email}}">
+                        <div class="form-group">
+                            <label for="email">Email<span class="text-danger"> *</span></label>
+                            <input disabled name="emaildisp" type="email" class="form-control" id="emaildisp"
+                                value="{{.Customer.Email}}">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="firstName">First Name<span class="text-danger"> *</span></label>
+                                <input name="firstName" type="text" class="form-control" id="firstName"
+                                    placeholder="Jenny" value="{{.Customer.FirstName}}" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lastName">Last Name<span class="text-danger"> *</span></label>
+                                <input name="lastName" type="text" class="form-control" id="lastName"
+                                    placeholder="Jones" value="{{.Customer.LastName}}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company</label>
+                            <input name="company" type="text" class="form-control" id="company"
+                                value="{{.Customer.Company}}">
+                        </div>
+
+
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="city">City<span class="text-danger"> *</span></label>
+                                <input name="city" type="text" class="form-control" id="city" value="{{.Customer.City}}"
+                                    required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="state">State<span class="text-danger"> *</span></label>
+                                <select name="state" id="state" class="form-control" value="{{.Customer.State}}"
+                                    required>
+                                    {{range .StateList}}
+                                    {{if eq .Abrv $.Customer.State}}
+                                    <option selected value="{{.Abrv}}">{{.Name}}</option>
+                                    {{else}}
+                                    <option value="{{.Abrv}}">{{.Name}}</option>
+                                    {{end}}
+                                    {{end}}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="zip">Zip<span class="text-danger"> *</span></label>
+                                <input name="zip" type="text" class="form-control" id="zip" value="{{.Customer.Zip}}"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input name="phone" type="tel" class="form-control" id="phone" placeholder="999-867-5309"
+                                value="{{.Customer.Phone}}">
+                        </div>
+
+                       
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                    </div>
+                </div>
+                <div class="tab-pane fade " id="custadd" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="shadow-none p-3  bg-white text-dark rounded">
+                        {{range .AddressList}}
+                        <input hidden name="id_{{.ID}}" type="text" id="id_{{.ID}}" value="{{.ID}}">
+                        <h4 class="mt-4">{{.Type}} Address</h4>
+                        <div class="form-group">
+                            <label for="address_{{.ID}}">Address</label>
+                            <input name="address_{{.ID}}" type="text" class="form-control" id="address_{{.ID}}"
+                                placeholder="1234 Main St" value="{{.Address}}" required>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="city_{{.ID}}">City</label>
+                                <input name="city_{{.ID}}" type="text" class="form-control" id="city_{{.ID}}" value="{{.City}}" required>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="state_{{.ID}}">State</label>
+                                <select name="state_{{.ID}}" id="state_{{.ID}}" class="form-control" required>
+                                    {{ $State := .State }}{{range $.StateList}}
+                                    {{if eq $State .Abrv }}
+                                    <option selected value="{{.Abrv}}">{{.Name}}</option>
+                                    {{else}}
+                                    <option value="{{.Abrv}}">{{.Name}}</option>
+                                    {{end}}
+                                    {{end}}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="zip_{{.ID}}">Zip</label>
+                                <input name="zip_{{.ID}}" type="text" class="form-control" id="zip_{{.ID}}" value="{{.Zip}}" required>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="country_{{.ID}}">Country</label>
+                                <select name="country_{{.ID}}" id="country_{{.ID}}" class="form-control" required>                                    
+                                    {{ $Country := .Country }}{{range $.CountryList}}
+                                    {{if eq $Country .Abrv }}
+                                    <option selected value="{{.Abrv}}">{{.Name}}</option>
+                                    {{else}}
+                                    <option value="{{.Abrv}}">{{.Name}}</option>
+                                    {{end}}                                    
+                                    {{end}}
+                                </select>
+                            </div>                           
+                        </div>
+                        <div class="form-group form-check ml-2">
+                            <input name="delete_{{.ID}}" type="checkbox" class="form-check-input" id="delete_{{.ID}}">
+                            <label class="form-check-label text-danger" for="delete_{{.ID}}">Delete this address</label>
+                        </div>
+                        {{end}}
+                        <h4 class="mt-5">Add New Address</h4>
+                        <div class="form-group">
+                            <label for="newAddress">Address</label>
+                            <input name="newAddress" type="text" class="form-control" id="newAddress"
+                                placeholder="1234 Main St" >
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="newCity">City</label>
+                                <input name="newCity" type="text" class="form-control" id="newCity" >
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="newState">State</label>
+                                <select name="newState" id="newState" class="form-control" >
+                                    <option selected>Choose...</option>
+                                    {{range .StateList}}
+                                    <option value="{{.Abrv}}">{{.Name}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="newZip">Zip</label>
+                                <input name="newZip" type="text" class="form-control" id="newZip" >
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="newCountry">Country</label>
+                                <select name="newCountry" id="newCountry" class="form-control" >
+                                    <option selected>Choose...</option>
+                                    {{range .CountryList}}
+                                    <option value="{{.Abrv}}">{{.Name}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="newType">Type</label>
+                                <select name="newType" id="newType" class="form-control" >                                    
+                                    <option value="Billing" selected>Billing</option>
+                                    <option value="Shipping">Shipping</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade " id="custpw" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="shadow-none p-3 mt-3  bg-white text-dark rounded">                        
+                        <h4 class="mt-2 mb-5">Change Password</h4>
+                        <div class="form-group">
+                            <label for="oldPassword">Old Password</label>
+                            <input name="oldPassword" type="password" class="form-control" id="oldPassword" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input name="password" type="password" class="form-control" id="password" >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password2">Confirm</label>
+                            <input name="password2" type="password" class="form-control" id="password2" >
+                        </div>
+                        <div id="CheckPasswordMatch" class="alert alert-danger" role="alert"
+                            style="visibility: hidden;">
+
+                        </div>
+                      
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

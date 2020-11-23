@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+{{template "head" .}}
+
+
+<body>
+    {{range .MenuList}}
+    {{if and (eq .Location "top")  (eq .Active true) (eq .Name "navBar")}}
+    {{template "navBar" .}}
+    {{end}}
+    {{end}}
+     
+    <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">{{.Content.Title}}</h4>
+    <div class="container mt-5 mb-5">
+        <div class="container-fluid">
+            {{.Content.TextHTML}}
+        </div>   
+    </div>
+
+</body>
+
+</html>

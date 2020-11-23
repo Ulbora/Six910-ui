@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+{{template "head" .}}
+
+
+<body>
+    {{range .MenuList}}
+    {{if and (eq .Location "top")  (eq .Active true) (eq .Name "navBar")}}
+    {{template "navBar" .}}
+    {{end}}
+    {{end}}
+    <div class="container-fluid">
+        {{.Content.TextHTML}}
+    </div>
+    <div class="container-fluid mt-2 navLinks">
+        {{range .CategoryList}}
+        <a href="/productByCategoryList/{{.ID}}/{{.Name}}/0/100">/{{.Name}} </a>
+        {{end}}
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">{{.Product.ShortDesc}}</h4>
+        <div class="row mt-5">
+            <div class="col-sm-8">
+                <img src="{{.Product.Image1}}" class="img-fluid">
+            </div>
+            <div class="col-sm-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        {{if ne .Product.SalePrice 0.0}}
+                        <h5 class="card-title text-danger">On Sale: ${{.Product.SalePrice}}</h5>
+                        {{else}}
+                        <h5 class="card-title">Price: ${{.Product.Price}}</h5>
+                        {{end}}
+                        <h6 class="card-title">Available: {{.Product.Stock}}</h6>
+                        <h6 class="card-title">Sku: {{.Product.Sku}}</h6>
+                        <h6 class="card-title">Manufacturer: </h6>
+                        <h6 class="card-title">{{.Product.Manufacturer}}</h6>
+                        <form method="GET" action="/addProductToCart">
+                            <label for="cost">Quantity</label>
+                            <input name="qty" min="0" max="{{.Product.Stock}}" type="number" class="form-control"
+                                id="qty">
+                            <input name="id" type="hidden" id="id" value="{{.Product.ID}}">
+                            <button type="submit" class="btn btn-primary mt-3">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-5 mb-5">
+        <h4 class="text-center mt-5">Description</h4>
+        <div class="alert alert-success" role="alert">
+            {{.Product.Desc}}
+        </div>
+
+    </div>
+
+    <div class="container mt-5 mb-5">
+        <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Related Products</h4>
+        <div class="row">
+            <div class="col">
+                {{range .ProductListRowList}}
+                <div class="row mt-5 mb-5">
+                    <div class="col-sm">
+                        {{if ne .ProductLeft.Sku ""}}
+                        <div class="card" style="width: 18rem;">
+                            <a href="/viewProduct/{{.ProductLeft.ID}}"> <img src="{{.ProductLeft.Image1}}"
+                                    class="card-img-top"></a>
+                            <div class="card-body">
+                                <h5 class="card-title">Sku: {{.ProductLeft.Sku}}</h5>
+                                {{if ne .ProductLeft.SalePrice 0.0}}
+                                <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
+                                {{else}}
+                                <h6 class="card-title">${{.ProductLeft.Price}}</h6>
+                                {{end}}
+                                <h6 class="card-title">Available: {{.ProductLeft.Stock}}</h6>
+                                <p class="card-text">{{.ProductLeft.ShortDesc}}</p>
+                                <a href="/viewProduct/{{.ProductLeft.ID}}" class="btn btn-primary">View Product</a>
+                                {{if ne .ProductLeft.Stock 0}}
+                                <a href="/addToCart/{{.ProductLeft.ID}}" class="btn btn-success">Add to Cart</a>
+                                {{end}}
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                    <div class="col-sm">
+                        {{if ne .ProductMiddle.Sku ""}}
+                        <div class="card" style="width: 18rem;">
+                            <a href="/viewProduct/{{.ProductMiddle.ID}}"> <img src="{{.ProductMiddle.Image1}}"
+                                    class="card-img-top"></a>
+                            <div class="card-body">
+                                <h5 class="card-title">Sku: {{.ProductMiddle.Sku}}</h5>
+                                {{if ne .ProductMiddle.SalePrice 0.0}}
+                                <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
+                                {{else}}
+                                <h6 class="card-title">${{.ProductMiddle.Price}}</h6>
+                                {{end}}
+                                <h6 class="card-title">Available: {{.ProductMiddle.Stock}}</h6>
+                                <p class="card-text">{{.ProductMiddle.ShortDesc}}</p>
+                                <a href="/viewProduct/{{.ProductMiddle.ID}}" class="btn btn-primary">View Product</a>
+                                {{if ne .ProductMiddle.Stock 0}}
+                                <a href="/addToCart/{{.ProductMiddle.ID}}" class="btn btn-success">Add to Cart</a>
+                                {{end}}
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                    <div class="col-sm">
+                        {{if ne .ProductRight.Sku ""}}
+                        <div class="card" style="width: 18rem;">
+                            <a href="/viewProduct/{{.ProductRight.ID}}"> <img src="{{.ProductRight.Image1}}"
+                                    class="card-img-top"></a>
+                            <div class="card-body">
+                                <h5 class="card-title">Sku: {{.ProductRight.Sku}}</h5>
+                                {{if ne .ProductRight.SalePrice 0.0}}
+                                <h6 class="card-title text-danger">On Sale: ${{.ProductLeft.SalePrice}}</h6>
+                                {{else}}
+                                <h6 class="card-title">${{.ProductRight.Price}}</h6>
+                                {{end}}
+                                <h6 class="card-title">Available: {{.ProductRight.Stock}}</h6>
+                                <p class="card-text">{{.ProductRight.ShortDesc}}</p>
+                                <a href="/viewProduct/{{.ProductRight.ID}}" class="btn btn-primary">View Product</a>
+                                {{if ne .ProductRight.Stock 0}}
+                                <a href="/addToCart/{{.ProductRight.ID}}" class="btn btn-success">Add to Cart</a>
+                                {{end}}
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
+                {{end}}
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

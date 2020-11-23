@@ -124,6 +124,8 @@ type Six910Handler struct {
 
 	SiteMapDomain string
 	SiteMapDate   time.Time
+
+	BackupFileName string
 }
 
 //HeaderData HeaderData

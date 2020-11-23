@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+{{template "head" .}}
+
+
+<body>
+    {{range .MenuList}}
+    {{if and (eq .Location "top")  (eq .Active true) (eq .Name "navBar")}}
+    {{template "navBar" .}}
+    {{end}}
+    {{end}}
+    <div class="container-fluid">
+        {{.Content.TextHTML}}
+    </div>
+    
+
+    <div class="container mt-5 mb-5">
+        <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Orders</h4>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Order Number</th>                               
+                    <th scope="col">Order Date</th>                    
+                    <th scope="col">Total</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .OrderList}}
+                <tr class='clickable-row' data-href='/viewCustomerOrder/{{.ID}}'>
+                    <td>{{.OrderNumber}}</td>                               
+                    <td>{{.OrderDate.Format "Jan 2, 2006"}}</td>                    
+                    <td>${{printf "%.2f" .Total}}</td>
+                    <td>{{.Status}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>     
+
+       
+    </div>   
+
+</body>
+
+</html>

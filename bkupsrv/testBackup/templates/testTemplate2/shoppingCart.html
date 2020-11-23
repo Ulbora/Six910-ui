@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+{{template "head" .}}
+
+
+<body>
+  {{range .MenuList}}
+  {{if and (eq .Location "top")  (eq .Active true) (eq .Name "navBar")}}
+  {{template "navBar" .}}
+  {{end}}
+  {{end}}
+  <div class="container-fluid">
+    {{.Content.TextHTML}}
+  </div>
+
+
+  <div class="container mt-5 mb-5">
+    <h3 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Shopping Cart</h3>
+    <div class="row mt-5">
+      
+      {{if and .CustomerCart .CustomerCart.Items}}
+      <div class="col-8">
+        <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Cart Items</h4>
+
+        {{range .CustomerCart.CartView.Items}}
+        <div class="card mb-3">
+          <div class="row no-gutters">
+            <div class="col-md-4">
+              <a href="/viewProduct/{{.ProductID}}"><img src="{{.Image}}" class="card-img" alt="..."></a>
+            </div>
+            <div class="col-md-8">
+              <div class="card-body">
+                <h5 class="card-title">{{.ProductName}}</h5>
+                <p class="card-text">{{.Desc}}.</p>
+                <p class="card-text">
+                <div class="row">
+                  <div class="col-sm">
+                    <form method="GET" action="/updateCart">
+                      <label for="cost">Quantity</label>
+                      <input name="qty" min="1" max="{{.Stock}}" type="number" class="form-control" id="qty"
+                        value="{{.Quantity}}">
+                      <input name="id" type="hidden" id="id" value="{{.ProductID}}">
+                      <button type="submit" class="btn btn-primary mt-3">Update</button>
+                    </form>
+                    <form method="GET" action="/updateCart">
+                      <input name="qty" hidden type="number" class="form-control" id="qty" value="0">
+                      <input name="id" hidden type="hidden" id="id" value="{{.ProductID}}">
+                      <button type="submit" class="btn btn-danger mt-3">Remove</button>
+                    </form>
+                  </div>
+                  <div class="col-sm">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Price</h5>
+                        <p class="card-text">${{.Price}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                    <div class="card">
+                      <div class="card-body">
+                        <h5 class="card-title">Total</h5>
+                        <p class="card-text">${{.Total}}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        {{end}}
+
+
+      </div>
+      <div class="col-4">
+        <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Summary</h4>
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Order</h5>
+            <p class="card-text">Total: ${{.CustomerCart.CartView.Total}}</p>
+          </div>
+        </div>
+        <div class="card text-center">
+          <div class="card-body">   
+            <a href="/startCheckout" class="btn btn-success">Start Checkout</a>
+          </div>
+        </div>
+      </div>
+      {{else}}
+      <div class="col">
+        <div class="alert alert-success" role="alert">
+          Shopping Cart is Empty!
+        </div>
+      </div>
+      {{end}}
+
+    </div>
+  </div>
+
+</body>
+
+</html>
