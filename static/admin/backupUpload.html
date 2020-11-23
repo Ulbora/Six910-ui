@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+<body>
+    {{template "navbar"}}
+    <div class="container-sm">   
+      <h4 class="text-center mt-4">Restore Your Site</h4>   
+        <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+            <div class="alert alert-danger" role="alert">
+                Danger! Uploading a backup file will overwrite all current content, images, and templates and restore them from the backup file.
+              </div>
+              <div class="alert alert-info" role="alert">
+                This will not affect products, orders or customer information.
+              </div>
+            <form method="POST" action="/admin/uploadBackup" enctype="multipart/form-data">                
+                <div class="form-group">
+                    <label for="image">Backup File</label>
+                    <input name="backupFile" type="file" required class="form-control" id="backupFile">
+                </div>                
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>    
+</body>
+</html>

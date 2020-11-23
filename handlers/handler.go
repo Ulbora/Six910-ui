@@ -47,7 +47,14 @@ type Handler interface {
 	StoreAdminHandleToken(w http.ResponseWriter, r *http.Request)
 	StoreAdminLogout(w http.ResponseWriter, r *http.Request)
 	StoreAdminChangePassword(w http.ResponseWriter, r *http.Request)
+	// StoreAdminChangeNonOAuthPassword(w http.ResponseWriter, r *http.Request)
 	StoreAdminChangeUserPassword(w http.ResponseWriter, r *http.Request)
+	// StoreAdminAdminUserList(w http.ResponseWriter, r *http.Request)
+	// StoreAdminCustomerUserList(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditUserPage(w http.ResponseWriter, r *http.Request)
+	// StoreAdminEditUser(w http.ResponseWriter, r *http.Request)
+	// StoreAdminAddAdminUserPage(w http.ResponseWriter, r *http.Request)
+	// StoreAdminAddAdminUser(w http.ResponseWriter, r *http.Request)
 
 	StoreAdminIndex(w http.ResponseWriter, r *http.Request)
 

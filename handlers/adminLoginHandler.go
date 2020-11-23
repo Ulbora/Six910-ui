@@ -109,14 +109,22 @@ func (h *Six910Handler) StoreAdminChangePassword(w http.ResponseWriter, r *http.
 	s, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
 	if suc {
-		// loggedInAuth := s.Values["loggedIn"]
-		// storeAdminUser := s.Values["storeAdminUser"]
-		// h.Log.Debug("loggedIn in backups: ", loggedInAuth)
-		// if loggedInAuth == true && storeAdminUser == true {
-		if h.isStoreAdminLoggedIn(s) {
-			h.AdminTemplates.ExecuteTemplate(w, adminChangePwPage, nil)
+		if !h.OAuth2Enabled {
+			if h.isStoreAdminLoggedIn(s) {
+				h.AdminTemplates.ExecuteTemplate(w, adminChangeNonOauthPwPage, nil)
+			} else {
+				http.Redirect(w, r, adminLogin, http.StatusFound)
+			}
 		} else {
-			h.authorize(w, r)
+			// loggedInAuth := s.Values["loggedIn"]
+			// storeAdminUser := s.Values["storeAdminUser"]
+			// h.Log.Debug("loggedIn in backups: ", loggedInAuth)
+			// if loggedInAuth == true && storeAdminUser == true {
+			if h.isStoreAdminLoggedIn(s) {
+				h.AdminTemplates.ExecuteTemplate(w, adminChangePwPage, nil)
+			} else {
+				h.authorize(w, r)
+			}
 		}
 	}
 }

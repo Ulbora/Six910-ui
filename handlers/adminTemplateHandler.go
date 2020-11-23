@@ -128,10 +128,11 @@ func (h *Six910Handler) AdminDeleteTemplate(w http.ResponseWriter, r *http.Reque
 			vars := mux.Vars(r)
 			name := vars["name"]
 			suc := h.TemplateService.DeleteTemplate(name)
+			h.Log.Debug("delete template in admin: ", suc)
 			if suc {
 				suc = h.TemplateService.DeleteTemplateFile(name)
+				h.Log.Debug("delete templates files in admin: ", suc)
 			}
-			h.Log.Debug("delete templates in admin: ", suc)
 			http.Redirect(w, r, adminTemplates, http.StatusFound)
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)

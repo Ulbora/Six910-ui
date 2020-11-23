@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+<body>
+  {{template "navbar"}}
+  <div class="container">
+    <h4 class="text-center mt-5">Installed Templates</h4>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Template</th>
+          <th scope="col">Name</th>
+          <th scope="col">Active</th>
+          <th scope="col">Remove</th>          
+        </tr>
+      </thead>
+      <tbody>
+        {{range .}}
+        <tr>
+          <td><img src="{{.ScreenShot}}" alt="..." class="img-thumbnail" style="width:100%;"></td>
+          <td>{{.Name}}</td>
+          {{if .Active}}
+          <td>Active</td>
+          {{else}}
+          <td>
+            <div class="shadow-none p-3 mb-0 mt-0 bg-light rounded">
+              <a class="btn btn-success" href="/admin/activateTemplate/{{.Name}}" role="button">Make Active</a>
+            </div>
+          </td>
+          {{end}}
+          {{if .Active}}
+          <td></td>
+          {{else}}
+          <td>
+            <div class="shadow-none p-3 mb-0 mt-0 bg-light rounded">
+              <a class="btn btn-danger" href="/admin/deleteTemplate/{{.Name}}" role="button">Delete</a>
+            </div>
+            <p class="text-danger">Permanently remove</p>
+          </td>
+          {{end}}
+        </tr>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>

@@ -270,9 +270,10 @@ const (
 	//adminIncZipZoneListViewFail = "/admin/zipZoneListView?error=Add Failed"
 
 	//pages
-	adminloginPage    = "login.html"
-	adminChangePwPage = "changePassword.html"
-	adminIndexPage    = "index.html"
+	adminloginPage            = "login.html"
+	adminChangePwPage         = "changePassword.html"
+	adminChangeNonOauthPwPage = "changeNonOauthPassword.html"
+	adminIndexPage            = "index.html"
 
 	//pages product upload
 	productFileUploadPage   = "productUpload.html"

@@ -323,8 +323,64 @@ func TestSix910Handler_StoreAdminChangePassword(t *testing.T) {
 	}
 }
 
+func TestSix910Handler_StoreAdminChangeOauthPassword(t *testing.T) {
+	var sh Six910Handler
+	sh.OAuth2Enabled = true
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("POST", "https://test.com", nil)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminChangePassword(w, r)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
 func TestSix910Handler_StoreAdminChangePasswordNotLoggedin(t *testing.T) {
 	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("POST", "https://test.com", nil)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	//s.Values["loggedIn"] = true
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminChangePassword(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminChangeOauthPasswordNotLoggedin(t *testing.T) {
+	var sh Six910Handler
+	sh.OAuth2Enabled = true
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l

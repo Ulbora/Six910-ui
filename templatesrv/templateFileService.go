@@ -87,8 +87,9 @@ func (c *Six910TemplateService) ExtractFile(t *TemplateFile) bool {
 func (c *Six910TemplateService) DeleteTemplateFile(namedir string) bool {
 	var rtn = false
 	var tmptDir = c.TemplateFilePath + string(filepath.Separator) + namedir
+	c.Log.Debug("RemoveAll in file : ", tmptDir)
 	err := os.RemoveAll(tmptDir)
-	c.Log.Debug("RemoveAll extractTarGzFile in DeleteTemplateFile: ", err)
+	c.Log.Debug("RemoveAll in DeleteTemplateFile: ", err)
 	if err == nil {
 		rtn = true
 	}

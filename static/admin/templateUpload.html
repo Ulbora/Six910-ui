@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+<body>
+    {{template "navbar"}}
+    <div class="container-sm">   
+      <h4 class="text-center mt-4">Upload New Template</h4>   
+        <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+            <form method="POST" action="/admin/uploadTemplate" enctype="multipart/form-data">                
+                <div class="form-group">
+                    <label for="image">Template File (tar.gz)</label>
+                    <input name="tempFile" type="file" required class="form-control" id="tempFile">
+                </div>                
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+        </div>
+    </div>    
+</body>
+</html>

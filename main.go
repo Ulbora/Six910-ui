@@ -28,6 +28,7 @@ import (
 	"os"
 
 	lg "github.com/Ulbora/Level_Logger"
+	bkupsrv "github.com/Ulbora/Six910-ui/bkupsrv"
 	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	csrv "github.com/Ulbora/Six910-ui/contentsrv"
 	cntrysrv "github.com/Ulbora/Six910-ui/countrysrv"
@@ -222,6 +223,7 @@ func main() {
 	ts.TemplateStore = tds.GetNew()
 	sh.TemplateService = ts.GetNew()
 	sh.ActiveTemplateLocation = "./static/templates"
+	ts.TemplateFilePath = "./static/templates"
 
 	var sms musrv.Six910MenuService
 	sms.Log = &l
@@ -280,6 +282,28 @@ func main() {
 
 	sh.CountryService = cntry.GetNew()
 
+	var bs bkupsrv.Six910BackupService
+	bs.TemplateStorePath = "./data/templateStore"
+	bs.ContentStorePath = "./data/contentStore"
+	bs.CarouselStorePath = "./data/carouselStore"
+	bs.CountryStorePath = "./data/countryStore"
+	bs.CSSStorePath = "./data/cssStore"
+	bs.MenuStorePath = "./data/menuStore"
+	bs.StateStorePath = "./data/stateStore"
+	bs.ImagePath = "./static/img"
+	bs.TemplateFilePath = "./static/templates"
+	bs.Log = &l
+
+	bs.Store = cds.GetNew()
+	bs.TemplateStore = tds.GetNew()
+	bs.CarouselStore = cards.GetNew()
+	bs.CountryStore = cntds.GetNew()
+	bs.CSSStore = csds.GetNew()
+	bs.MenuStore = mds.GetNew()
+	bs.StateStore = sds.GetNew()
+
+	sh.BackupService = bs.GetNew()
+
 	sh.AdminTemplates = template.Must(template.ParseFiles("./static/admin/index.html", "./static/admin/head.html",
 		"./static/admin/login.html", "./static/admin/navbar.html", "./static/admin/productList.html",
 		"./static/admin/subnavs/productNavbar.html", "./static/admin/pagination.html", "./static/admin/productSkuSearch.html",
@@ -304,6 +328,8 @@ func main() {
 		"./static/admin/imageUpload.html", "./static/admin/menuList.html",
 		"./static/admin/editMenu.html", "./static/admin/addMenu.html",
 		"./static/admin/editPageCss.html", "./static/admin/editCarousel.html",
+		"./static/admin/templates.html", "./static/admin/templateUpload.html",
+		"./static/admin/backupUpload.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -491,6 +517,16 @@ func main() {
 
 	router.HandleFunc("/admin/getCarousel/{name}", h.StoreAdminGetCarousel).Methods("GET")
 	router.HandleFunc("/admin/updateCarousel", h.StoreAdminUpdateCarousel).Methods("POST")
+
+	router.HandleFunc("/admin/uploadTemplatePage", h.AdminAddTemplatePage).Methods("GET")
+	router.HandleFunc("/admin/uploadTemplate", h.AdminUploadTemplate).Methods("POST")
+	router.HandleFunc("/admin/activateTemplate/{name}", h.AdminActivateTemplate).Methods("GET")
+	router.HandleFunc("/admin/templates", h.AdminTemplateList).Methods("GET")
+	router.HandleFunc("/admin/deleteTemplate/{name}", h.AdminDeleteTemplate).Methods("GET")
+
+	router.HandleFunc("/admin/uploadBackupPage", h.AdminBackupUploadPage).Methods("GET")
+	router.HandleFunc("/admin/uploadBackup", h.AdminUploadBackups).Methods("POST")
+	router.HandleFunc("/admin/downloadBackup", h.AdminDownloadBackups).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 
