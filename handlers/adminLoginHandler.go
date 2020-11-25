@@ -2,11 +2,9 @@ package handlers
 
 import (
 	"net/http"
-	"strconv"
 
 	b64 "encoding/base64"
 
-	userv "github.com/Ulbora/Six910-ui/usersrv"
 	api "github.com/Ulbora/Six910API-Go"
 	oauth2 "github.com/Ulbora/go-oauth2-client"
 )
@@ -104,89 +102,36 @@ func (h *Six910Handler) StoreAdminLoginNonOAuthUser(w http.ResponseWriter, r *ht
 	}
 }
 
-//StoreAdminChangePassword StoreAdminChangePassword
-func (h *Six910Handler) StoreAdminChangePassword(w http.ResponseWriter, r *http.Request) {
-	s, suc := h.getSession(r)
-	h.Log.Debug("session suc", suc)
-	if suc {
-		if !h.OAuth2Enabled {
-			if h.isStoreAdminLoggedIn(s) {
-				h.AdminTemplates.ExecuteTemplate(w, adminChangeNonOauthPwPage, nil)
-			} else {
-				http.Redirect(w, r, adminLogin, http.StatusFound)
-			}
-		} else {
-			// loggedInAuth := s.Values["loggedIn"]
-			// storeAdminUser := s.Values["storeAdminUser"]
-			// h.Log.Debug("loggedIn in backups: ", loggedInAuth)
-			// if loggedInAuth == true && storeAdminUser == true {
-			if h.isStoreAdminLoggedIn(s) {
-				h.AdminTemplates.ExecuteTemplate(w, adminChangePwPage, nil)
-			} else {
-				h.authorize(w, r)
-			}
-		}
-	}
-}
-
-//StoreAdminChangeUserPassword StoreAdminChangeUserPassword
-func (h *Six910Handler) StoreAdminChangeUserPassword(w http.ResponseWriter, r *http.Request) {
-	s, suc := h.getSession(r)
-	if suc {
-		loggedIn := s.Values["userLoggenIn"]
-		storeAdminUser := s.Values["storeAdminUser"]
-		token := h.token
-		h.Log.Debug("user update pw Logged in: ", loggedIn)
-
-		if loggedIn == nil || loggedIn.(bool) == false || storeAdminUser.(bool) == false || token == nil {
-			h.authorize(w, r)
-		} else {
-			var uu userv.UserPW
-			clientID := r.FormValue("clientId")
-			h.Log.Debug("user update pw client: ", clientID)
-			clientIDD, _ := strconv.ParseInt(clientID, 10, 0)
-			uu.ClientID = clientIDD
-
-			username := r.FormValue("username")
-			h.Log.Debug("user update pw username: ", username)
-			uu.Username = username
-
-			password := r.FormValue("password")
-			h.Log.Debug("user update pw password: ", password)
-			uu.Password = password
-
-			h.UserService.SetToken(h.token.AccessToken)
-
-			res := h.UserService.UpdateUser(&uu)
-			h.Log.Debug("user update pw res: ", *res)
-			if res.Success {
-				http.Redirect(w, r, adminIndex, http.StatusFound)
-			} else {
-				http.Redirect(w, r, adminChangePassword, http.StatusFound)
-			}
-		}
-	}
-}
-
 //StoreAdminLogout StoreAdminLogout
 func (h *Six910Handler) StoreAdminLogout(w http.ResponseWriter, r *http.Request) {
-	h.token = nil
-	cookie := &http.Cookie{
-		Name:   "Six910-ui",
-		Value:  "",
-		Path:   "/",
-		MaxAge: -1,
+	lodus, suc := h.getSession(r)
+	h.Log.Debug("session suc in logout edit", suc)
+	if suc {
+		if h.isStoreAdminLoggedIn(lodus) {
+			h.token = nil
+			lodus.Values["loggedIn"] = false
+			serr := lodus.Save(r, w)
+			h.Log.Debug("serr", serr)
+			http.Redirect(w, r, "/admin", http.StatusFound)
+		}
 	}
-	http.SetCookie(w, cookie)
 
-	cookie2 := &http.Cookie{
-		Name:   "Six910",
-		Value:  "",
-		Path:   "/",
-		MaxAge: -1,
-	}
-	http.SetCookie(w, cookie2)
-	http.Redirect(w, r, "/", http.StatusFound)
+	// cookie := &http.Cookie{
+	// 	Name:   "Six910-ui",
+	// 	Value:  "",
+	// 	Path:   "/",
+	// 	MaxAge: -1,
+	// }
+	// http.SetCookie(w, cookie)
+
+	// cookie2 := &http.Cookie{
+	// 	Name:   "Six910",
+	// 	Value:  "",
+	// 	Path:   "/",
+	// 	MaxAge: -1,
+	// }
+	// http.SetCookie(w, cookie2)
+	// http.Redirect(w, r, "/", http.StatusFound)
 }
 
 //StoreAdminHandleToken StoreAdminHandleToken

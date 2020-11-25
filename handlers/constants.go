@@ -26,6 +26,12 @@ const (
 	adminLoginFailedURL = "/admin/login?error=Login Failed"
 	adminChangePassword = "/admin/changePassword"
 
+	//routes users
+	addAdminUser     = "/admin/addAdminUser"
+	addAdminUserFail = "/admin/addAdminUser?error=Add Failed"
+	adminEditUser    = "/admin/editUser"
+	adminUserList    = "/admin/adminUserList"
+
 	//routes product upload
 	adminProdUploadView = "/admin/productUploadView"
 	adminProdUpload     = "/admin/productUpload"
@@ -274,6 +280,12 @@ const (
 	adminChangePwPage         = "changePassword.html"
 	adminChangeNonOauthPwPage = "changeNonOauthPassword.html"
 	adminIndexPage            = "index.html"
+
+	//users
+	adminUserListPage    = "adminUserList.html"
+	customerUserListPage = "customerUserList.html"
+	adminEditUserPage    = "editUser.html"
+	addAdminUserPage     = "addAdminUser.html"
 
 	//pages product upload
 	productFileUploadPage   = "productUpload.html"

@@ -329,7 +329,9 @@ func main() {
 		"./static/admin/editMenu.html", "./static/admin/addMenu.html",
 		"./static/admin/editPageCss.html", "./static/admin/editCarousel.html",
 		"./static/admin/templates.html", "./static/admin/templateUpload.html",
-		"./static/admin/backupUpload.html",
+		"./static/admin/backupUpload.html", "./static/admin/addAdminUser.html",
+		"./static/admin/adminUserList.html", "./static/admin/editUser.html",
+		"./static/admin/customerUserList.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -392,6 +394,14 @@ func main() {
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")
 	router.HandleFunc("/admin/login", h.StoreAdminLogin).Methods("GET")
 	router.HandleFunc("/admin/loginNonOAuth", h.StoreAdminLoginNonOAuthUser).Methods("POST")
+	router.HandleFunc("/admin/logout", h.StoreAdminLogout).Methods("GET")
+
+	router.HandleFunc("/admin/addAdminUserPage", h.StoreAdminAddAdminUserPage).Methods("GET")
+	router.HandleFunc("/admin/addAdminUser", h.StoreAdminAddAdminUser).Methods("POST")
+	router.HandleFunc("/admin/adminUserList", h.StoreAdminAdminUserList).Methods("GET")
+	router.HandleFunc("/admin/getUser/{username}/{role}", h.StoreAdminEditUserPage).Methods("GET")
+	router.HandleFunc("/admin/updateUser", h.StoreAdminEditUser).Methods("POST")
+	//router.HandleFunc("/admin/customerUserList", h.StoreAdminCustomerUserList).Methods("GET")
 
 	router.HandleFunc("/admin/getStore", h.StoreAdminEditStorePage).Methods("GET")
 	router.HandleFunc("/admin/updateStore", h.StoreAdminEditStore).Methods("POST")

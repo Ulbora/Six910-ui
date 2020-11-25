@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+<body>
+    {{template "navbar"}}
+    <div class="container">
+        <h4 class="text-center mt-4">Customer Users</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="user-tab" data-toggle="tab" href="#userlist" role="tab"
+                    aria-controls="shipmeth" aria-selected="true">Users</a>
+            </li>
+           
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="userlist" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Username</th> 
+                                <th scope="col">Customer ID</th>     
+                                <th scope="col">Role</th>                                 
+                                <th scope="col">Enabled</th>                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .}}
+                            <tr class='clickable-row' data-href='/admin/getUser/{{.Username}}/{{.Role}}'>
+                                <td>{{.Username}}</td>  
+                                <td>{{.CustomerID}}</td>  
+                                <td>{{.Role}}</td>  
+                                <td>{{.Enabled}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>                   
+                </div>
+            </div>            
+        </div>
+
+    </div>
+</body>
+
+</html>

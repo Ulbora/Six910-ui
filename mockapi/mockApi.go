@@ -26,9 +26,12 @@ import (
 
 //MockAPI MockAPI
 type MockAPI struct {
-	MockUser               *api.UserResponse
-	MockAddCustomerUserRes *api.Response
-	MockUpdateUserResp     *api.Response
+	MockUser                *api.UserResponse
+	MockAddCustomerUserRes  *api.Response
+	MockUpdateUserResp      *api.Response
+	MockAdminUpdateUserResp *api.Response
+	MockUserList            *[]api.UserResponse
+	MockAddAdminUserResp    *api.Response
 
 	MockCart        *sdbi.Cart
 	MockAddCartResp *api.ResponseID
@@ -1076,12 +1079,22 @@ func (a *MockAPI) GetUser(u *api.User, headers *api.Headers) *api.UserResponse {
 
 //GetAdminUsers GetAdminUsers
 func (a *MockAPI) GetAdminUsers(headers *api.Headers) *[]api.UserResponse {
-	return nil
+	return a.MockUserList
 }
 
 //GetCustomerUsers GetCustomerUsers
 func (a *MockAPI) GetCustomerUsers(headers *api.Headers) *[]api.UserResponse {
-	return nil
+	return a.MockUserList
+}
+
+//AddAdminUser AddAdminUser
+func (a *MockAPI) AddAdminUser(u *api.User, headers *api.Headers) *api.Response {
+	return a.MockAddAdminUserResp
+}
+
+//AdminUpdateUser AdminUpdateUser
+func (a *MockAPI) AdminUpdateUser(u *api.User, headers *api.Headers) *api.Response {
+	return a.MockAdminUpdateUserResp
 }
 
 //zip code zone

@@ -184,3 +184,23 @@ function drawSalesChart(dataval) {
   var loadSales = function(data){
     google.charts.setOnLoadCallback(drawSalesChart(data));
   }
+
+
+function checkPasswordMatch() {
+    var password = $("#password").val();
+    var confirmPassword = $("#password2").val();
+    if (password != confirmPassword) {       
+        document.getElementById("CheckPasswordMatch").style.visibility = "visible";
+        $("#CheckPasswordMatch").html("Passwords does not match!");
+    }
+    else {
+        document.getElementById("CheckPasswordMatch").style.visibility = "hidden";
+    }
+}
+
+$(document).ready(function () {
+    $("#password").keyup(checkPasswordMatch);
+});
+$(document).ready(function () {
+    $("#password2").keyup(checkPasswordMatch);
+});

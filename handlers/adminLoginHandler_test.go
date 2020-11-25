@@ -10,7 +10,7 @@ import (
 
 	lg "github.com/Ulbora/Level_Logger"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
-	userv "github.com/Ulbora/Six910-ui/usersrv"
+
 	api "github.com/Ulbora/Six910API-Go"
 	oauth2 "github.com/Ulbora/go-oauth2-client"
 )
@@ -140,6 +140,9 @@ func TestSix910Handler_StoreAdminHandleToken(t *testing.T) {
 
 func TestSix910Handler_HandleLogout(t *testing.T) {
 	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
 	//h.TokenMap = make(map[string]*oauth2.Token)
 
 	// var mTkn oauth2.Token
@@ -150,15 +153,16 @@ func TestSix910Handler_HandleLogout(t *testing.T) {
 
 	// h.AuthToken = &mockAcTkn
 
-	var l lg.Logger
-	l.LogLevel = lg.AllLevel
-	sh.Log = &l
+	//var l lg.Logger
+	//l.LogLevel = lg.AllLevel
+	//sh.Log = &l
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
 	s, suc := sh.getSession(r)
 	fmt.Println("suc: ", suc)
 
 	s.Values["accessTokenKey"] = "123"
-
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
 	w := httptest.NewRecorder()
 	s.Save(r, w)
 	h := sh.GetNew()
@@ -292,223 +296,6 @@ func TestSix910Handler_StoreAdminLoginNonOAuthUserBadSession(t *testing.T) {
 	fmt.Println("code: ", w.Code)
 
 	if w.Code != 500 {
-		t.Fail()
-	}
-}
-
-func TestSix910Handler_StoreAdminChangePassword(t *testing.T) {
-	var sh Six910Handler
-	var l lg.Logger
-	l.LogLevel = lg.AllLevel
-	sh.Log = &l
-	var cc ClientCreds
-	cc.AuthCodeState = "123"
-	sh.ClientCreds = &cc
-	sh.ClientCreds.AuthCodeClient = "1"
-	sh.OauthHost = "test.com"
-	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
-
-	r, _ := http.NewRequest("POST", "https://test.com", nil)
-	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
-	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
-	s.Values["storeAdminUser"] = true
-	s.Save(r, w)
-	h := sh.GetNew()
-	h.StoreAdminChangePassword(w, r)
-
-	if w.Code != 200 {
-		t.Fail()
-	}
-}
-
-func TestSix910Handler_StoreAdminChangeOauthPassword(t *testing.T) {
-	var sh Six910Handler
-	sh.OAuth2Enabled = true
-	var l lg.Logger
-	l.LogLevel = lg.AllLevel
-	sh.Log = &l
-	var cc ClientCreds
-	cc.AuthCodeState = "123"
-	sh.ClientCreds = &cc
-	sh.ClientCreds.AuthCodeClient = "1"
-	sh.OauthHost = "test.com"
-	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
-
-	r, _ := http.NewRequest("POST", "https://test.com", nil)
-	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
-	fmt.Println("suc: ", suc)
-	s.Values["loggedIn"] = true
-	s.Values["storeAdminUser"] = true
-	s.Save(r, w)
-	h := sh.GetNew()
-	h.StoreAdminChangePassword(w, r)
-
-	if w.Code != 200 {
-		t.Fail()
-	}
-}
-
-func TestSix910Handler_StoreAdminChangePasswordNotLoggedin(t *testing.T) {
-	var sh Six910Handler
-	var l lg.Logger
-	l.LogLevel = lg.AllLevel
-	sh.Log = &l
-	var cc ClientCreds
-	cc.AuthCodeState = "123"
-	sh.ClientCreds = &cc
-	sh.ClientCreds.AuthCodeClient = "1"
-	sh.OauthHost = "test.com"
-	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
-
-	r, _ := http.NewRequest("POST", "https://test.com", nil)
-	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
-	fmt.Println("suc: ", suc)
-	//s.Values["loggedIn"] = true
-	s.Save(r, w)
-	h := sh.GetNew()
-	h.StoreAdminChangePassword(w, r)
-	fmt.Println("code: ", w.Code)
-
-	if w.Code != 302 {
-		t.Fail()
-	}
-}
-
-func TestSix910Handler_StoreAdminChangeOauthPasswordNotLoggedin(t *testing.T) {
-	var sh Six910Handler
-	sh.OAuth2Enabled = true
-	var l lg.Logger
-	l.LogLevel = lg.AllLevel
-	sh.Log = &l
-	var cc ClientCreds
-	cc.AuthCodeState = "123"
-	sh.ClientCreds = &cc
-	sh.ClientCreds.AuthCodeClient = "1"
-	sh.OauthHost = "test.com"
-	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
-
-	r, _ := http.NewRequest("POST", "https://test.com", nil)
-	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
-	fmt.Println("suc: ", suc)
-	//s.Values["loggedIn"] = true
-	s.Save(r, w)
-	h := sh.GetNew()
-	h.StoreAdminChangePassword(w, r)
-	fmt.Println("code: ", w.Code)
-
-	if w.Code != 302 {
-		t.Fail()
-	}
-}
-
-func TestSix910Handler_StoreAdminChangeUserPassword(t *testing.T) {
-	var sh Six910Handler
-	var mockUserService userv.MockOauth2UserService
-	var ures userv.UserResponse
-	ures.Success = true
-
-	mockUserService.MockUpdateUserResponse = &ures
-	sh.UserService = &mockUserService
-	var l lg.Logger
-	l.LogLevel = lg.AllLevel
-	sh.Log = &l
-	var cc ClientCreds
-	cc.AuthCodeState = "123"
-	sh.ClientCreds = &cc
-	sh.ClientCreds.AuthCodeClient = "1"
-
-	var mTkn oauth2.Token
-	mTkn.AccessToken = "45ffffff"
-
-	sh.token = &mTkn
-	r, _ := http.NewRequest("POST", "https://test.com", nil)
-	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
-	fmt.Println("suc: ", suc)
-	s.Values["userLoggenIn"] = true
-	s.Values["storeAdminUser"] = true
-	s.Save(r, w)
-	h := sh.GetNew()
-	h.StoreAdminChangeUserPassword(w, r)
-	fmt.Println("code: ", w.Code)
-
-	if w.Code != 302 {
-		t.Fail()
-	}
-}
-
-func TestSix910Handler_StoreAdminChangeUserPasswordNotLoggedIn(t *testing.T) {
-	var sh Six910Handler
-	var mockUserService userv.MockOauth2UserService
-	var ures userv.UserResponse
-	ures.Success = true
-
-	mockUserService.MockUpdateUserResponse = &ures
-	sh.UserService = &mockUserService
-	var l lg.Logger
-	l.LogLevel = lg.AllLevel
-	sh.Log = &l
-	var cc ClientCreds
-	cc.AuthCodeState = "123"
-	sh.ClientCreds = &cc
-	sh.ClientCreds.AuthCodeClient = "1"
-
-	var mTkn oauth2.Token
-	mTkn.AccessToken = "45ffffff"
-
-	sh.token = &mTkn
-	r, _ := http.NewRequest("POST", "https://test.com", nil)
-	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
-	fmt.Println("suc: ", suc)
-	//s.Values["userLoggenIn"] = true
-	s.Save(r, w)
-	h := sh.GetNew()
-	h.StoreAdminChangeUserPassword(w, r)
-	fmt.Println("code: ", w.Code)
-
-	if w.Code != 302 {
-		t.Fail()
-	}
-}
-
-func TestSix910Handler_StoreAdminChangeUserPasswordUpdateFail(t *testing.T) {
-	var sh Six910Handler
-	var mockUserService userv.MockOauth2UserService
-	var ures userv.UserResponse
-	//ures.Success = true
-
-	mockUserService.MockUpdateUserResponse = &ures
-	sh.UserService = &mockUserService
-	var l lg.Logger
-	l.LogLevel = lg.AllLevel
-	sh.Log = &l
-	var cc ClientCreds
-	cc.AuthCodeState = "123"
-	sh.ClientCreds = &cc
-	sh.ClientCreds.AuthCodeClient = "1"
-
-	var mTkn oauth2.Token
-	mTkn.AccessToken = "45ffffff"
-
-	sh.token = &mTkn
-	r, _ := http.NewRequest("POST", "https://test.com", nil)
-	w := httptest.NewRecorder()
-	s, suc := sh.getSession(r)
-	fmt.Println("suc: ", suc)
-	s.Values["userLoggenIn"] = true
-	s.Values["storeAdminUser"] = true
-	s.Save(r, w)
-	h := sh.GetNew()
-	h.StoreAdminChangeUserPassword(w, r)
-	fmt.Println("code: ", w.Code)
-
-	if w.Code != 302 {
 		t.Fail()
 	}
 }
