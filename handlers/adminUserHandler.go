@@ -183,7 +183,7 @@ func (h *Six910Handler) StoreAdminEditUserPage(w http.ResponseWriter, r *http.Re
 //StoreAdminEditUser StoreAdminEditUser
 func (h *Six910Handler) StoreAdminEditUser(w http.ResponseWriter, r *http.Request) {
 	edus, suc := h.getSession(r)
-	h.Log.Debug("session suc in dist edit", suc)
+	h.Log.Debug("session suc in user edit", suc)
 	if suc {
 		if h.isStoreAdminLoggedIn(edus) {
 			edd := h.processUser(r)

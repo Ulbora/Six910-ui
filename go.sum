@@ -34,6 +34,8 @@ github.com/Ulbora/Six910API-Go v1.0.17 h1:EuuTbqS3N/CCZYnSDNxInhQ58t1/PgqnZB1Xmh
 github.com/Ulbora/Six910API-Go v1.0.17/go.mod h1:DCmtCf2Z9Fp3elbXo2v8GnzBjB00wUO5EL5+LDzTyrk=
 github.com/Ulbora/Six910API-Go v1.0.18 h1:KEaCzynfWgJD+OsESp7WYpkB99K4MAwKN6YO+MOwgOk=
 github.com/Ulbora/Six910API-Go v1.0.18/go.mod h1:DCmtCf2Z9Fp3elbXo2v8GnzBjB00wUO5EL5+LDzTyrk=
+github.com/Ulbora/Six910API-Go v1.0.19 h1:fV04nrMeSIpHm/ZgouG835PS/Q2E8WO+MOFcdWkzoc0=
+github.com/Ulbora/Six910API-Go v1.0.19/go.mod h1:aViQf3uoMRgo7Q+8PHLR1OekFHgr0k/m6NUBx9OV5bc=
 github.com/Ulbora/go-mail-sender v1.0.0 h1:lfVK66JRIPSZCkeTO3/0fnnygVeVF+5ena47I2pj5Fo=
 github.com/Ulbora/go-mail-sender v1.0.0/go.mod h1:uI61omDxYerT9GWLIOIk7Y2wq9esh09UK2LkdCAuTkU=
 github.com/Ulbora/go-oauth2-client v1.0.2 h1:+71Vgof2hT6w0kgwMROk6kt6C3ueQBsU9ehRXpqH1Sk=
@@ -70,6 +72,8 @@ github.com/Ulbora/six910-database-interface v1.0.34 h1:BK0I1xKqLyAliqTjnk/mbni6x
 github.com/Ulbora/six910-database-interface v1.0.34/go.mod h1:OGqZQ5ETgqxsHB636qmivSR36NzQxhV4T+ATsIUJSLM=
 github.com/Ulbora/six910-database-interface v1.0.35 h1:VnThn51n2hHpCwnUD2r3GBXPGNBKeURf15HHjFXkOdA=
 github.com/Ulbora/six910-database-interface v1.0.35/go.mod h1:OGqZQ5ETgqxsHB636qmivSR36NzQxhV4T+ATsIUJSLM=
+github.com/Ulbora/six910-database-interface v1.0.37 h1:QmLF7xsqU8DVos97zA8tE8UHoVbtPfmt645jKXTrEx8=
+github.com/Ulbora/six910-database-interface v1.0.37/go.mod h1:OGqZQ5ETgqxsHB636qmivSR36NzQxhV4T+ATsIUJSLM=
 github.com/Ulbora/ulboracms v2.1.6+incompatible h1:onJwZ8uhQSz1TKMW3/fAXin5E3TTocXf6Y7rfwf7oXQ=
 github.com/gorilla/mux v1.7.4 h1:VuZ8uybHlWmqV03+zRzdwKL4tUnIp1MAQtp1mIFE1bc=
 github.com/gorilla/mux v1.7.4/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=

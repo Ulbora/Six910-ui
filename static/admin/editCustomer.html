@@ -21,6 +21,11 @@
                     aria-selected="false">Addresses</a>
             </li>
 
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" id="u-tab" data-toggle="tab" href="#cusUsers" role="tab" aria-controls="add"
+                    aria-selected="false">Users</a>
+            </li>
+
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="cusedit" role="tabpanel" aria-labelledby="home-tab">
@@ -127,6 +132,27 @@
                                 <td>{{.State}}</td>
                                 <td>{{.Zip}}</td>
                                 <td>{{.Country}}</td>
+                            </tr>
+                            {{end}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="tab-pane fade show " id="cusUsers" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Username</th>
+                                <th scope="col">Enabled</th>                               
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{range .Users}}
+                            <tr class='clickable-row' data-href='/admin/getUser/{{.Username}}/{{.Role}}'>
+                                <td>{{.Username}}</td>
+                                <td>{{.Enabled}}</td>                                
                             </tr>
                             {{end}}
                         </tbody>

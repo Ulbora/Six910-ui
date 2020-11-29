@@ -37,6 +37,7 @@ type CusPage struct {
 	User         *api.UserResponse
 	CustomerList *[]sdbi.Customer
 	AddressList  *[]sdbi.Address
+	Users        *[]api.UserResponse
 	Pagination   *Pagination
 	HasCustomer  bool
 }
@@ -73,6 +74,14 @@ func (h *Six910Handler) StoreAdminEditCustomerPage(w http.ResponseWriter, r *htt
 				adds := h.API.GetAddressList(id, header)
 				h.Log.Debug("customer  in edit", adds)
 				ceparm.AddressList = adds
+			}(cID, hd)
+
+			wg.Add(1)
+			go func(cid int64, header *six910api.Headers) {
+				defer wg.Done()
+				users := h.API.GetUsersByCustomer(cid, header)
+				h.Log.Debug("customer users in edit", users)
+				ceparm.Users = users
 			}(cID, hd)
 
 			wg.Wait()

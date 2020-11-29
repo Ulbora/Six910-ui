@@ -1087,6 +1087,11 @@ func (a *MockAPI) GetCustomerUsers(headers *api.Headers) *[]api.UserResponse {
 	return a.MockUserList
 }
 
+//GetUsersByCustomer GetUsersByCustomer
+func (a *MockAPI) GetUsersByCustomer(cid int64, headers *api.Headers) *[]api.UserResponse {
+	return a.MockUserList
+}
+
 //AddAdminUser AddAdminUser
 func (a *MockAPI) AddAdminUser(u *api.User, headers *api.Headers) *api.Response {
 	return a.MockAddAdminUserResp

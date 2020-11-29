@@ -29,7 +29,7 @@ const (
 	//routes users
 	addAdminUser     = "/admin/addAdminUser"
 	addAdminUserFail = "/admin/addAdminUser?error=Add Failed"
-	adminEditUser    = "/admin/editUser"
+	adminEditUser    = "/admin/getUser"
 	adminUserList    = "/admin/adminUserList"
 
 	//routes product upload
