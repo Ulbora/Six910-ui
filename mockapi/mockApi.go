@@ -33,6 +33,8 @@ type MockAPI struct {
 	MockUserList            *[]api.UserResponse
 	MockAddAdminUserResp    *api.Response
 
+	MockCustomerPasswordResp *api.CustomerPasswordResponse
+
 	MockCart        *sdbi.Cart
 	MockAddCartResp *api.ResponseID
 
@@ -1100,6 +1102,11 @@ func (a *MockAPI) AddAdminUser(u *api.User, headers *api.Headers) *api.Response 
 //AdminUpdateUser AdminUpdateUser
 func (a *MockAPI) AdminUpdateUser(u *api.User, headers *api.Headers) *api.Response {
 	return a.MockAdminUpdateUserResp
+}
+
+//ResetCustomerUserPassword ResetCustomerUserPassword
+func (a *MockAPI) ResetCustomerUserPassword(u *api.User, headers *api.Headers) *api.CustomerPasswordResponse {
+	return a.MockCustomerPasswordResp
 }
 
 //zip code zone

@@ -14,6 +14,7 @@ import (
 	m "github.com/Ulbora/Six910-ui/managers"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
+	ml "github.com/Ulbora/go-mail-sender"
 	ds "github.com/Ulbora/json-datastore"
 	sdbi "github.com/Ulbora/six910-database-interface"
 )
@@ -802,6 +803,139 @@ func TestSix910Handler_CustomerLogout(t *testing.T) {
 	h := sh.GetNew()
 	h.CustomerLogout(w, r)
 	fmt.Println("code: ", w.Code)
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_CustomerResetPasswordPage(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+	sh.API = &sapi
+
+	//-----------start mocking------------------
+
+	var prod sdbi.Product
+	prod.ID = 2
+	prod.Desc = "test"
+
+	var plst []sdbi.Product
+	plst = append(plst, prod)
+	sapi.MockProductList = &plst
+
+	//-----------end mocking --------
+
+	var c conts.CmsService
+	var ds ds.DataStore
+	ds.Path = "../contentsrv/testFiles"
+	//ds.Delete("books1")
+	c.Log = &l
+	c.Store = ds.GetNew()
+
+	var ct conts.Content
+	ct.Name = "index"
+	ct.Author = "ken"
+	ct.MetaAuthorName = "ken"
+	ct.MetaDesc = "shopping cart index"
+	ct.Text = "some book text"
+	ct.Title = "the best book ever"
+	ct.Visible = true
+	res := c.AddContent(&ct)
+	fmt.Println("content save: ", res)
+
+	sh.ContentService = c.GetNew()
+
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	sh.ClientCreds.AuthCodeClient = "1"
+	sh.OauthHost = "test.com"
+
+	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	r, _ := http.NewRequest("POST", "https://test.com", nil)
+	w := httptest.NewRecorder()
+	s, suc := sh.getUserSession(r)
+	fmt.Println("suc: ", suc)
+	//s.Values["loggedIn"] = true
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.CustomerResetPasswordPage(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_CustomerResetPassword(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var mss ml.MockSecureSender
+	mss.MockSuccess = true
+	sh.MailSender = mss.GetNew()
+	sh.MailSenderAddress = "test@test.com"
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	//-----------start mocking------------------
+	var user api.UserResponse
+	user.Username = "tester123"
+	user.Role = customerRole
+	user.Enabled = true
+
+	sapi.MockUser = &user
+
+	var ur api.CustomerPasswordResponse
+	ur.Success = true
+	ur.Username = "tester123"
+	ur.Password = "123"
+	sapi.MockCustomerPasswordResp = &ur
+
+	var crt sdbi.Cart
+	crt.ID = 4
+	sapi.MockCart = &crt
+
+	sh.API = &sapi
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "/test", strings.NewReader("username=tester123"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	//r.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	h := sh.GetNew()
+	h.CustomerResetPassword(w, r)
+	fmt.Println("code: ", w.Code)
+
 	if w.Code != 302 {
 		t.Fail()
 	}

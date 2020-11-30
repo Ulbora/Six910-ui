@@ -431,6 +431,7 @@ const (
 	customerInfoPage                 = "createInfo.html"
 	customerOrderPage                = "customerOrder.html"
 	customerOrderListPage            = "customerOrderList.html"
+	customerResetPasswordPage        = "resetPassword.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"

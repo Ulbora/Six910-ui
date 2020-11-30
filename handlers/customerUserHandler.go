@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
 	m "github.com/Ulbora/Six910-ui/managers"
 	api "github.com/Ulbora/Six910API-Go"
+	mll "github.com/Ulbora/go-mail-sender"
 )
 
 /*
@@ -216,4 +218,48 @@ func (h *Six910Handler) CustomerLogout(w http.ResponseWriter, r *http.Request) {
 	// }
 	// http.SetCookie(w, ccookie2)
 	http.Redirect(w, r, "/", http.StatusFound)
+}
+
+//CustomerResetPasswordPage CustomerResetPasswordPage
+func (h *Six910Handler) CustomerResetPasswordPage(w http.ResponseWriter, r *http.Request) {
+	rpclinss, suc := h.getUserSession(r)
+	h.Log.Debug("session suc", rpclinss)
+	if suc {
+		h.Templates.ExecuteTemplate(w, customerResetPasswordPage, nil)
+	}
+}
+
+//CustomerResetPassword CustomerResetPassword
+func (h *Six910Handler) CustomerResetPassword(w http.ResponseWriter, r *http.Request) {
+	rpwpuvss, suc := h.getUserSession(r)
+	h.Log.Debug("session suc", rpwpuvss)
+	if suc {
+
+		cusername := r.FormValue("username")
+
+		hd := h.getHeader(rpwpuvss)
+
+		h.Log.Debug("username", cusername)
+
+		var u api.User
+		u.Username = cusername
+
+		upr := h.API.ResetCustomerUserPassword(&u, hd)
+
+		h.Log.Debug("upr: ", *upr)
+		if upr.Success && h.MailSenderAddress != "" {
+			var buyerMail mll.Mailer
+			buyerMail.Subject = fmt.Sprintf(h.MailSubjectPasswordReset)
+			buyerMail.Body = fmt.Sprintf(h.MailBodyPasswordReset, upr.Password)
+			buyerMail.Recipients = []string{upr.Username}
+			buyerMail.SenderAddress = h.MailSenderAddress
+
+			buyerSendSuc := h.MailSender.SendMail(&buyerMail)
+			h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
+
+		}
+
+		http.Redirect(w, r, customerIndexView, http.StatusFound)
+
+	}
 }

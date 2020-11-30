@@ -111,6 +111,9 @@ type Six910Handler struct {
 	MailSubjectOrderShipped string
 	MailBodyOrderShipped    string
 
+	MailSubjectPasswordReset string
+	MailBodyPasswordReset    string
+
 	ImagePath     string
 	ThumbnailPath string
 

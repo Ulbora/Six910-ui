@@ -291,6 +291,9 @@ type Handler interface {
 	CustomerChangePassword(w http.ResponseWriter, r *http.Request)
 	CustomerLogout(w http.ResponseWriter, r *http.Request)
 
+	CustomerResetPasswordPage(w http.ResponseWriter, r *http.Request)
+	CustomerResetPassword(w http.ResponseWriter, r *http.Request)
+
 	//orders
 	ViewCustomerOrder(w http.ResponseWriter, r *http.Request)
 	ViewCustomerOrderList(w http.ResponseWriter, r *http.Request)
