@@ -250,12 +250,13 @@ func (h *Six910Handler) CustomerResetPassword(w http.ResponseWriter, r *http.Req
 		if upr.Success && h.MailSenderAddress != "" {
 			var buyerMail mll.Mailer
 			buyerMail.Subject = fmt.Sprintf(h.MailSubjectPasswordReset)
-			buyerMail.Body = fmt.Sprintf(h.MailBodyPasswordReset, upr.Password)
+			buyerMail.Body = fmt.Sprintf(h.MailBodyPasswordReset, h.Six910SiteURL, upr.Password)
 			buyerMail.Recipients = []string{upr.Username}
 			buyerMail.SenderAddress = h.MailSenderAddress
 
 			buyerSendSuc := h.MailSender.SendMail(&buyerMail)
-			h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
+			h.Log.Debug("reset pw sendSuc to buyer: ", buyerSendSuc)
+			h.Log.Debug("reset pw from: ", h.MailSenderAddress)
 
 		}
 

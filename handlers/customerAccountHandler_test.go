@@ -884,11 +884,19 @@ func TestSix910Handler_UpdateCustomerAccount(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(r)
 	fmt.Println("suc: ", suc)
+
 	var cccs m.CustomerCart
+	var cct sdbi.Cart
+	cct.ID = 1
+	cccs.Cart = &cct
+	var ca m.CustomerAccount
+	cccs.CustomerAccount = &ca
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
-	s.Values["customerCart"] = &cccs
+	b, _ := json.Marshal(cccs)
+	bb := sh.compressObj(b)
+	s.Values["customerCart"] = bb
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.UpdateCustomerAccount(w, r)

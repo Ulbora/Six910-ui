@@ -308,6 +308,11 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 				}
 			}
 			if success {
+				cc := h.getCustomerCart(ccuuuss)
+				addLst := h.API.GetAddressList(ufcus.ID, hd)
+				cc.CustomerAccount.Addresses = addLst
+				h.storeCustomerCart(cc, ccuuuss, w, r)
+
 				http.Redirect(w, r, customerIndexView, http.StatusFound)
 			} else {
 				if userUpdateFail {

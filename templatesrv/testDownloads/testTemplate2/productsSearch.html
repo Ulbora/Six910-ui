@@ -45,7 +45,7 @@
                                 <h6 class="card-title">Available: {{.ProductLeft.Stock}}</h6>
                                 <p class="card-text">{{.ProductLeft.ShortDesc}}</p>
                                 <a href="/viewProduct/{{.ProductLeft.ID}}" class="btn btn-primary">View Product</a>
-                                {{if ne .ProductLeft.Stock 0}}
+                                {{if le .ProductLeft.Stock 0}}
                                 <a href="/addToCart/{{.ProductLeft.ID}}" class="btn btn-success">Add to Cart</a>
                                 {{end}}
                             </div>
@@ -67,7 +67,7 @@
                                 <h6 class="card-title">Available: {{.ProductMiddle.Stock}}</h6>
                                 <p class="card-text">{{.ProductMiddle.ShortDesc}}</p>
                                 <a href="/viewProduct/{{.ProductMiddle.ID}}" class="btn btn-primary">View Product</a>
-                                {{if ne .ProductMiddle.Stock 0}}
+                                {{if le .ProductMiddle.Stock 0}}
                                 <a href="/addToCart/{{.ProductMiddle.ID}}" class="btn btn-success">Add to Cart</a>
                                 {{end}}
                             </div>
@@ -89,7 +89,7 @@
                                 <h6 class="card-title">Available: {{.ProductRight.Stock}}</h6>
                                 <p class="card-text">{{.ProductRight.ShortDesc}}</p>
                                 <a href="/viewProduct/{{.ProductRight.ID}}" class="btn btn-primary">View Product</a>
-                                {{if ne .ProductRight.Stock 0}}
+                                {{if le .ProductRight.Stock 0}}
                                 <a href="/addToCart/{{.ProductRight.ID}}" class="btn btn-success">Add to Cart</a>
                                 {{end}}
                             </div>

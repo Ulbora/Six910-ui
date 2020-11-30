@@ -898,6 +898,7 @@ func TestSix910Manager_completeOrder(t *testing.T) {
 	ccart.Subtotal = 52.20
 	ccart.Taxes = 2.00
 	ccart.Total = 54.20
+	ccart.BillMeLater = true
 
 	m := sm.GetNew()
 	res := m.CheckOut(&ccart, &head)

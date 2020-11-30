@@ -63,6 +63,7 @@ func (h *Six910Handler) AdminUploadTemplate(w http.ResponseWriter, r *http.Reque
 
 			suc := h.TemplateService.AddTemplateFile(tname, handler.Filename, data)
 			var tasus bool
+			h.Log.Debug("AddTemplateFile: ", suc)
 			if suc {
 				var tmp tmpsrv.Template
 				tmp.Name = tname

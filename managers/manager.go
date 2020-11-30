@@ -32,6 +32,8 @@ const (
 	shippingAddressType = "Shipping"
 
 	orderStatusProcessing = "processing"
+
+	orderStatusNotPaid = "Not Paid"
 )
 
 //Product Product
@@ -132,6 +134,7 @@ type CustomerCart struct {
 	BillingAddressID  int64
 	ShippingAddressID int64
 	OrderID           int64
+	BillMeLater       bool
 }
 
 //CustomerOrder CustomerOrder

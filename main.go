@@ -70,6 +70,9 @@ func main() {
 	var mailSubjectOrderShipped string
 	var mailBodyOrderShipped string
 
+	var mailSubjectPasswordReset string
+	var mailBodyPasswordReset string
+
 	var companyName string
 	var six910CartSite string
 
@@ -163,6 +166,19 @@ func main() {
 			"Click the link in this email to see the tracking information."
 	}
 
+	if os.Getenv("MAIL_SUBJECT_PASSWORD_RESET") != "" {
+		mailSubjectPasswordReset = os.Getenv("MAIL_SUBJECT_PASSWORD_RESET")
+	} else {
+		mailSubjectPasswordReset = "Password Reset"
+	}
+
+	if os.Getenv("MAIL_BODY_PASSWORD_RESET") != "" {
+		mailBodyPasswordReset = os.Getenv("MAIL_BODY_PASSWORD_RESET")
+	} else {
+		mailBodyPasswordReset = "Password reset for %s. " +
+			"New Password: %s "
+	}
+
 	//------------order email messages-----------------------------------------------
 
 	if os.Getenv("COMPANY_NAME") != "" {
@@ -173,7 +189,10 @@ func main() {
 
 	if os.Getenv("SIX910_CART_SITE") != "" {
 		six910CartSite = os.Getenv("SIX910_CART_SITE")
+	} else {
+		six910CartSite = "Six910 Shopping Cart"
 	}
+
 	if os.Getenv("SCHEME_DEFAULT") != "" {
 		schemeDefault = os.Getenv("SCHEME_DEFAULT")
 	} else {
@@ -211,6 +230,9 @@ func main() {
 	sh.MailBodyOrderProcessing = mailBodyOrderProcessing
 	sh.MailSubjectOrderShipped = mailSubjectOrderShipped
 	sh.MailBodyOrderShipped = mailBodyOrderShipped
+
+	sh.MailSubjectPasswordReset = mailSubjectPasswordReset
+	sh.MailBodyPasswordReset = mailBodyPasswordReset
 
 	sh.ImagePath = "./static/images"
 	sh.ThumbnailPath = "./static/thumbnail"
@@ -358,6 +380,8 @@ func main() {
 	router.HandleFunc("/customerLogin", h.CustomerLogin).Methods("POST")
 	router.HandleFunc("/register", h.CreateCustomerAccountPage).Methods("GET")
 	router.HandleFunc("/customerLogout", h.CustomerLogout).Methods("GET")
+	router.HandleFunc("/customerResetPasswordPage", h.CustomerResetPasswordPage).Methods("GET")
+	router.HandleFunc("/customerResetPassword", h.CustomerResetPassword).Methods("POST")
 
 	router.HandleFunc("/viewProduct/{id}", h.ViewProduct).Methods("GET")
 	router.HandleFunc("/productByCategoryList/{catId}/{catName}/{start}/{end}", h.ViewProductByCatList).Methods("GET")

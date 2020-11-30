@@ -78,6 +78,7 @@ type CheckoutPage struct {
 	OrderInfo              string
 	PayPalAuthorizePayment bool
 	PayPalPayment          bool
+	BillMeLaterPayment     bool
 	OrderNumber            string
 
 	HeaderData *HeaderData
@@ -431,6 +432,9 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			} else if strings.Contains(strings.ToLower(pm.Name), "paypal") {
 				h.Log.Debug("Using PayPay Regualr Gateway")
 				ccop.PayPalPayment = true
+			} else if strings.Contains(strings.ToLower(pm.Name), "bill me later") {
+				h.Log.Debug("Using Bill Me Later Gateway")
+				ccop.BillMeLaterPayment = true
 			}
 			ccop.OrderInfo = h.CompanyName
 			ccop.CustomerCart = ccotres
@@ -483,6 +487,10 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 
 			hd := h.getHeader(cocod)
 			comccotres := h.getCustomerCart(cocod)
+			if transactionCode == "billMeLaterTransaction" {
+				comccotres.BillMeLater = true
+			}
+
 			h.Log.Debug("comccotres: ", *comccotres.CustomerAccount)
 			if comccotres.Items != nil {
 				odrRes := h.Manager.CheckOut(comccotres, hd)

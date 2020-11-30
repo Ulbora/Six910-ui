@@ -249,7 +249,11 @@ func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *Cust
 	odr.ShippingAddress = sadd.Address + ", " + sadd.City + " " + sadd.State + " " + sadd.Zip
 	odr.ShippingAddressID = sadd.ID
 	odr.ShippingHandling = cart.ShippingHandling
-	odr.Status = orderStatusProcessing
+	if cart.BillMeLater {
+		odr.Status = orderStatusNotPaid
+	} else {
+		odr.Status = orderStatusProcessing
+	}
 	odr.Subtotal = cart.Subtotal
 	odr.Taxes = cart.Taxes
 	odr.Total = cart.Total
