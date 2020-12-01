@@ -6,7 +6,7 @@ require (
 	github.com/Ulbora/FileReader v1.0.0
 	github.com/Ulbora/GoProxy v1.0.1
 	github.com/Ulbora/Level_Logger v1.0.2
-	github.com/Ulbora/Six910API-Go v1.0.20
+	github.com/Ulbora/Six910API-Go v1.0.21
 	github.com/Ulbora/go-mail-sender v1.0.0
 	github.com/Ulbora/go-oauth2-client v1.0.2
 	github.com/Ulbora/go-sessions v1.0.2

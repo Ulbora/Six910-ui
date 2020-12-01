@@ -220,6 +220,7 @@ func main() {
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l
+	sapi.SetLogger(&l)
 	sh.MailSender = &ms
 	sh.MailSenderAddress = mailSenderAddress
 	sh.MailSubject = mailSubject
@@ -562,7 +563,11 @@ func main() {
 	router.HandleFunc("/admin/uploadBackup", h.AdminUploadBackups).Methods("POST")
 	router.HandleFunc("/admin/downloadBackup", h.AdminDownloadBackups).Methods("GET")
 
+	router.HandleFunc("/rs/loglevel", h.SetLogLevel).Methods("POST")
+
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
+
+	l.LogLevel = lg.OffLevel
 
 	http.ListenAndServe(":8080", router)
 }

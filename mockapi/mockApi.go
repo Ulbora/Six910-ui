@@ -2,6 +2,7 @@ package mockapi
 
 import (
 	px "github.com/Ulbora/GoProxy"
+	lg "github.com/Ulbora/Level_Logger"
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 )
@@ -1139,4 +1140,9 @@ func (a *MockAPI) AddVisit(v *sdbi.Visitor, headers *api.Headers) *api.Response 
 //GetVisitorData GetVisitorData
 func (a *MockAPI) GetVisitorData(headers *api.Headers) *[]sdbi.VisitorData {
 	return a.MockVisitorData
+}
+
+//SetLogger SetLogger
+func (a *MockAPI) SetLogger(l *lg.Logger) {
+
 }

@@ -300,6 +300,9 @@ type Handler interface {
 
 	//content
 	ViewContent(w http.ResponseWriter, r *http.Request)
+
+	//logging
+	SetLogLevel(w http.ResponseWriter, r *http.Request)
 }
 
 //dash

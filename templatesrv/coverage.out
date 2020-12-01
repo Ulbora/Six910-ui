@@ -18,9 +18,9 @@ github.com/Ulbora/Six910-ui/templatesrv/templateFileService.go:60.11,63.25 3 1
 github.com/Ulbora/Six910-ui/templatesrv/templateFileService.go:66.8,69.69 4 1
 github.com/Ulbora/Six910-ui/templatesrv/templateFileService.go:63.25,64.14 1 1
 github.com/Ulbora/Six910-ui/templatesrv/templateFileService.go:76.21,78.7 1 1
-github.com/Ulbora/Six910-ui/templatesrv/templateFileService.go:87.73,92.16 5 1
-github.com/Ulbora/Six910-ui/templatesrv/templateFileService.go:95.2,95.12 1 1
-github.com/Ulbora/Six910-ui/templatesrv/templateFileService.go:92.16,94.3 1 1
+github.com/Ulbora/Six910-ui/templatesrv/templateFileService.go:87.73,93.16 6 1
+github.com/Ulbora/Six910-ui/templatesrv/templateFileService.go:96.2,96.12 1 1
+github.com/Ulbora/Six910-ui/templatesrv/templateFileService.go:93.16,95.3 1 1
 github.com/Ulbora/Six910-ui/templatesrv/templateService.go:39.109,54.2 10 1
 github.com/Ulbora/Six910-ui/templatesrv/templateService.go:57.65,60.34 3 1
 github.com/Ulbora/Six910-ui/templatesrv/templateService.go:69.2,69.12 1 1

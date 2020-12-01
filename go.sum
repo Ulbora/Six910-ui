@@ -38,6 +38,8 @@ github.com/Ulbora/Six910API-Go v1.0.19 h1:fV04nrMeSIpHm/ZgouG835PS/Q2E8WO+MOFcdW
 github.com/Ulbora/Six910API-Go v1.0.19/go.mod h1:aViQf3uoMRgo7Q+8PHLR1OekFHgr0k/m6NUBx9OV5bc=
 github.com/Ulbora/Six910API-Go v1.0.20 h1:vcRcW220Zhwu1TDf4OepyqGOlg0MkEJeutlSqlcTMMs=
 github.com/Ulbora/Six910API-Go v1.0.20/go.mod h1:aViQf3uoMRgo7Q+8PHLR1OekFHgr0k/m6NUBx9OV5bc=
+github.com/Ulbora/Six910API-Go v1.0.21 h1:IwF5Sk7NyjWtx2DWmY6+WhehjKkV80B87jzouwXP2H4=
+github.com/Ulbora/Six910API-Go v1.0.21/go.mod h1:aViQf3uoMRgo7Q+8PHLR1OekFHgr0k/m6NUBx9OV5bc=
 github.com/Ulbora/go-mail-sender v1.0.0 h1:lfVK66JRIPSZCkeTO3/0fnnygVeVF+5ena47I2pj5Fo=
 github.com/Ulbora/go-mail-sender v1.0.0/go.mod h1:uI61omDxYerT9GWLIOIk7Y2wq9esh09UK2LkdCAuTkU=
 github.com/Ulbora/go-oauth2-client v1.0.2 h1:+71Vgof2hT6w0kgwMROk6kt6C3ueQBsU9ehRXpqH1Sk=
