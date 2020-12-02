@@ -257,7 +257,7 @@ func (h *Six910Handler) getSession(r *http.Request) (*sessions.Session, bool) {
 	var srtn *sessions.Session
 	if h.Store == nil {
 		h.Session.Name = "Six910-ui"
-		h.Session.MaxAge = 3600
+		h.Session.MaxAge = 3000
 		h.Store = h.Session.InitSessionStore()
 		h.Log.Debug("h.Store : ", h.Store)
 		//errors without this
@@ -353,6 +353,7 @@ func (h *Six910Handler) getHeader(s *sessions.Session) *api.Headers {
 		hd.Set("Authorization", "Basic "+sEnccl)
 	} else {
 		hd.Set("Authorization", "Bearer "+h.token.AccessToken)
+		hd.Set("clientId", h.ClientCreds.AuthCodeClient)
 	}
 	return &hd
 }
@@ -361,8 +362,10 @@ func (h *Six910Handler) isStoreAdminLoggedIn(s *sessions.Session) bool {
 	var rtn bool
 	loggedInAuthpa := s.Values["loggedIn"]
 	storeAdminUserpa := s.Values["storeAdminUser"]
-	h.Log.Debug("loggedIn in backups: ", loggedInAuthpa)
-	if loggedInAuthpa == true && storeAdminUserpa == true {
+	h.Log.Debug("loggedIn in: ", loggedInAuthpa)
+	if !h.OAuth2Enabled && loggedInAuthpa == true && storeAdminUserpa == true {
+		rtn = true
+	} else if loggedInAuthpa == true && storeAdminUserpa == true && h.token != nil {
 		rtn = true
 	}
 	return rtn

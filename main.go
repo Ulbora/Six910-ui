@@ -41,6 +41,7 @@ import (
 	tmpsrv "github.com/Ulbora/Six910-ui/templatesrv"
 	api "github.com/Ulbora/Six910API-Go"
 	ml "github.com/Ulbora/go-mail-sender"
+	oauth2 "github.com/Ulbora/go-oauth2-client"
 	ds "github.com/Ulbora/json-datastore"
 	"github.com/gorilla/mux"
 )
@@ -75,6 +76,36 @@ func main() {
 
 	var companyName string
 	var six910CartSite string
+
+	var oauth2Enabled bool
+	var oauth2Client string
+	var oauth2Secret string
+	var oauth2State string
+	var oauthHost string
+
+	if os.Getenv("SIX910_CART_OAUTH2_ENABLED") == "true" {
+		oauth2Enabled = true
+	}
+
+	if os.Getenv("SIX910_CART_OAUTH2_CLIENT") != "" {
+		oauth2Client = os.Getenv("SIX910_CART_OAUTH2_CLIENT")
+	}
+
+	if os.Getenv("SIX910_CART_OAUTH2_SECRET") != "" {
+		oauth2Secret = os.Getenv("SIX910_CART_OAUTH2_SECRET")
+	}
+
+	if os.Getenv("SIX910_CART_OAUTH2_STATE") != "" {
+		oauth2State = os.Getenv("SIX910_CART_OAUTH2_STATE")
+	} else {
+		oauth2State = "5554123544"
+	}
+
+	if os.Getenv("SIX910_CART_OAUTH2_HOST") != "" {
+		oauthHost = os.Getenv("SIX910_CART_OAUTH2_HOST")
+	} else {
+		oauthHost = "http://localhost:3000"
+	}
 
 	if os.Getenv("API_URL") != "" {
 		apiURL = os.Getenv("API_URL")
@@ -224,6 +255,23 @@ func main() {
 	sh.MailSender = &ms
 	sh.MailSenderAddress = mailSenderAddress
 	sh.MailSubject = mailSubject
+
+	//if oauth2 turned on do this
+	if oauth2Enabled {
+		l.Debug("Oauth2 enabled")
+		sh.OAuth2Enabled = true
+		sh.OauthHost = oauthHost
+		var ocred hand.ClientCreds
+		ocred.AuthCodeClient = oauth2Client
+		ocred.AuthCodeSecret = oauth2Secret
+		ocred.AuthCodeState = oauth2State
+		sh.ClientCreds = &ocred
+		var act oauth2.AuthCodeToken
+		sh.Auth = &act
+
+		l.Debug("Oauth2 client: ", oauth2Client)
+		l.Debug("sh.Auth: ", sh.Auth)
+	}
 
 	sh.MailSubjectOrderReceived = mailSubjectOrderReceived
 	sh.MailBodyOrderReceived = mailBodyOrderReceived
@@ -565,9 +613,11 @@ func main() {
 
 	router.HandleFunc("/rs/loglevel", h.SetLogLevel).Methods("POST")
 
+	router.HandleFunc("/tokenHandler", h.StoreAdminHandleToken).Methods("GET")
+
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 
-	l.LogLevel = lg.OffLevel
+	//l.LogLevel = lg.OffLevel
 
 	http.ListenAndServe(":8080", router)
 }

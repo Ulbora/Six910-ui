@@ -36,6 +36,7 @@ func (h *Six910Handler) StoreAdminLogin(w http.ResponseWriter, r *http.Request) 
 		h.Log.Debug("in login----")
 		h.AdminTemplates.ExecuteTemplate(w, adminloginPage, &lge)
 	} else {
+		h.Log.Debug("calling authorize")
 		h.authorize(w, r)
 	}
 }
@@ -142,6 +143,7 @@ func (h *Six910Handler) StoreAdminHandleToken(w http.ResponseWriter, r *http.Req
 	h.Log.Debug("handle token")
 	if state == h.ClientCreds.AuthCodeState {
 
+		h.Log.Error("h.Auth:", h.Auth)
 		h.Auth.SetOauthHost(h.OauthHost)
 		h.Auth.SetClientID(h.ClientCreds.AuthCodeClient)
 		h.Auth.SetSecret(h.ClientCreds.AuthCodeSecret)
@@ -160,15 +162,15 @@ func (h *Six910Handler) StoreAdminHandleToken(w http.ResponseWriter, r *http.Req
 
 			s, suc := h.getSession(r)
 			if suc {
-				h.Log.Debug("userLoggenIn : ", true)
-				s.Values["userLoggenIn"] = true
+				h.Log.Debug("loggedIn : ", true)
+				s.Values["loggedIn"] = true
 				s.Values["storeAdminUser"] = true
 
 				h.token = resp
 
 				err := s.Save(r, w)
 				h.Log.Debug(err)
-				http.Redirect(w, r, "/clients", http.StatusFound)
+				http.Redirect(w, r, "/admin", http.StatusFound)
 			}
 		}
 	}

@@ -576,6 +576,8 @@ func TestSix910Handler_StoreAdminUploadProductFileOauth(t *testing.T) {
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l
 	sh.OAuth2Enabled = true
+	var ocred ClientCreds
+	sh.ClientCreds = &ocred
 
 	var mTkn oauth2.Token
 	mTkn.AccessToken = "45ffffff"

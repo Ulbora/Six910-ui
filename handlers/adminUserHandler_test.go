@@ -50,6 +50,11 @@ func TestSix910Handler_StoreAdminChangeOauthPassword(t *testing.T) {
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l
+
+	var mTkn oauth2.Token
+	mTkn.AccessToken = "45ffffff"
+	sh.token = &mTkn
+
 	var cc ClientCreds
 	cc.AuthCodeState = "123"
 	sh.ClientCreds = &cc
