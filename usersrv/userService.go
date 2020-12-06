@@ -130,20 +130,20 @@ type UserService interface {
 //AddUser AddUser
 func (u *Oauth2UserService) AddUser(user User) *UserResponse {
 	var rtn = new(UserResponse)
-	var upURL = u.UserHost + "/rs/user/add"
+	var apURL = u.UserHost + "/rs/user/add"
 	aJSON, err := json.Marshal(user)
 	u.Log.Debug("add new user err: ", err)
 	if err == nil {
-		req, rErr := http.NewRequest("POST", upURL, bytes.NewBuffer(aJSON))
+		areq, rErr := http.NewRequest("POST", apURL, bytes.NewBuffer(aJSON))
 		u.Log.Debug("add user req err: ", rErr)
 		if rErr == nil {
-			req.Header.Set("Content-Type", "application/json")
-			req.Header.Set("Authorization", "Bearer "+u.Token)
-			req.Header.Set("appId", u.StoreName)
-			req.Header.Set("role", storeAdmin)
-			req.Header.Set("clientId", u.ClientID)
+			areq.Header.Set("Content-Type", "application/json")
+			areq.Header.Set("Authorization", "Bearer "+u.Token)
+			areq.Header.Set("appId", u.StoreName)
+			areq.Header.Set("role", storeAdmin)
+			areq.Header.Set("clientId", u.ClientID)
 			//req.Header.Set("apiKey", u.APIKey)
-			_, code := u.Proxy.Do(req, &rtn)
+			_, code := u.Proxy.Do(areq, &rtn)
 			rtn.Code = code
 		}
 	}
