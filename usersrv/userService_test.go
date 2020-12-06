@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
 	"testing"
 
 	px "github.com/Ulbora/GoProxy"
@@ -35,6 +36,34 @@ import (
 var UID = "bob123456789"
 var CLID = "555589999999922222"
 var CLIDINT int64 = 555589999999922222
+
+func TestUserService_AddUser(t *testing.T) {
+	var c Oauth2UserService
+	var l lg.Logger
+	c.Log = &l
+	var p px.MockGoProxy
+	p.MockDoSuccess1 = true
+	var ress http.Response
+	ress.Body = ioutil.NopCloser(bytes.NewBufferString(`{"success":true, "id": 2}`))
+	p.MockResp = &ress
+	p.MockRespCode = 200
+	c.Proxy = p.GetNewProxy()
+	fmt.Println("c.Proxy in test: ", c.Proxy)
+	c.ClientID = "10"
+	c.UserHost = "http://localhost:3001"
+	//c.Token = tempToken
+	var user User
+	user.Username = UID
+	user.ClientID = CLIDINT
+	user.Password = "bobbby"
+
+	res := c.AddUser(user)
+	fmt.Print("res: ")
+	fmt.Println(res)
+	if res.Success != true {
+		t.Fail()
+	}
+}
 
 func TestUserService_UpdateUserPassword(t *testing.T) {
 	var c Oauth2UserService
@@ -210,4 +239,29 @@ func TestOauth2UserService_SetToken(t *testing.T) {
 	var c Oauth2UserService
 	c.SetToken("rrr")
 
+}
+
+func TestOauth2UserService_GetAdminUserList(t *testing.T) {
+	var c Oauth2UserService
+	var l lg.Logger
+	c.Log = &l
+	var p px.MockGoProxy
+	p.MockDoSuccess1 = true
+	var ress http.Response
+	ress.Body = ioutil.NopCloser(bytes.NewBufferString(`[{"username":"bob123456789", "enabled": true}]`))
+	p.MockResp = &ress
+	p.MockRespCode = 200
+	c.Proxy = p.GetNewProxy()
+	fmt.Println("c.Proxy in test: ", c.Proxy)
+	c.ClientID = "10"
+	c.UserHost = "http://localhost:3001"
+	//c.Token = tempToken
+	s := c.GetNew()
+
+	res, code := s.GetAdminUserList(CLID)
+	fmt.Print("res: ")
+	fmt.Println(res)
+	if (*res)[0].Username != UID || (*res)[0].Enabled == false || code != 200 {
+		t.Fail()
+	}
 }

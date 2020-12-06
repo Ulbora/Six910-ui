@@ -28,7 +28,7 @@ const (
 
 	//routes users
 	addAdminUser     = "/admin/addAdminUser"
-	addAdminUserFail = "/admin/addAdminUser?error=Add Failed"
+	addAdminUserFail = "/admin/addAdminUserPage?error=Add Failed"
 	adminEditUser    = "/admin/getUser"
 	adminUserList    = "/admin/adminUserList"
 
@@ -71,7 +71,7 @@ const (
 	adminEditCustomerView         = "/admin/editCustomerView"
 	adminEditCustomerViewFail     = "/admin/editCustomerView?error=Update Failed"
 	adminEditCustomer             = "/admin/editCustomer"
-	adminCustomerListView         = "/admin/customerList"
+	adminCustomerListView         = "/admin/customerList/0/100"
 	adminCustomerListViewFail     = "/admin/customerList?error=Update Failed"
 	adminEditCustomerUserView     = "/admin/editCustomerUserView"
 	adminEditCustomerUserViewFail = "/admin/editCustomerUserView?error=Update Failed"
@@ -282,10 +282,12 @@ const (
 	adminIndexPage            = "index.html"
 
 	//users
-	adminUserListPage    = "adminUserList.html"
-	customerUserListPage = "customerUserList.html"
-	adminEditUserPage    = "editUser.html"
-	addAdminUserPage     = "addAdminUser.html"
+	adminUserListPage       = "adminUserList.html"
+	oauthAdminUserListPage  = "oauthAdminUserList.html"
+	customerUserListPage    = "customerUserList.html"
+	adminEditUserPage       = "editUser.html"
+	adminEditOAuth2UserPage = "editOAuth2User.html"
+	addAdminUserPage        = "addAdminUser.html"
 
 	//pages product upload
 	productFileUploadPage   = "productUpload.html"

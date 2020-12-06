@@ -52,6 +52,7 @@ type UserPW struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	ClientID int64  `json:"clientId"`
+	Enabled  bool   `json:"enabled"`
 }
 
 //GetType type
@@ -81,6 +82,10 @@ type UserInfo struct {
 	ClientID     int64  `json:"clientId"`
 }
 
+const (
+	storeAdmin = "StoreAdmin"
+)
+
 //GetType type
 func (u *UserInfo) GetType() string {
 	return "INFO"
@@ -106,17 +111,43 @@ type Oauth2UserService struct {
 	//APIKey   string
 	//UserID string
 	//Hashed string
-	Host     string
-	UserHost string
-	Proxy    px.Proxy
-	Log      *lg.Logger
+	Host      string
+	UserHost  string
+	Proxy     px.Proxy
+	Log       *lg.Logger
+	StoreName string
 }
 
 //UserService UserService
 type UserService interface {
+	AddUser(user User) *UserResponse
 	UpdateUser(user UpdateUser) *UserResponse
 	GetUser(username string, clientID string) (*User, int)
+	GetAdminUserList(clientID string) (*[]User, int)
 	SetToken(token string)
+}
+
+//AddUser AddUser
+func (u *Oauth2UserService) AddUser(user User) *UserResponse {
+	var rtn = new(UserResponse)
+	var upURL = u.UserHost + "/rs/user/add"
+	aJSON, err := json.Marshal(user)
+	u.Log.Debug("add new user err: ", err)
+	if err == nil {
+		req, rErr := http.NewRequest("POST", upURL, bytes.NewBuffer(aJSON))
+		u.Log.Debug("add user req err: ", rErr)
+		if rErr == nil {
+			req.Header.Set("Content-Type", "application/json")
+			req.Header.Set("Authorization", "Bearer "+u.Token)
+			req.Header.Set("appId", u.StoreName)
+			req.Header.Set("role", storeAdmin)
+			req.Header.Set("clientId", u.ClientID)
+			//req.Header.Set("apiKey", u.APIKey)
+			_, code := u.Proxy.Do(req, &rtn)
+			rtn.Code = code
+		}
+	}
+	return rtn
 }
 
 //UpdateUser update
@@ -124,13 +155,15 @@ func (u *Oauth2UserService) UpdateUser(user UpdateUser) *UserResponse {
 	var rtn = new(UserResponse)
 	var upURL = u.UserHost + "/rs/user/update"
 	aJSON, err := json.Marshal(user)
-	u.Log.Debug("update user: ", err)
+	u.Log.Debug("update user err: ", err)
 	if err == nil {
 		req, rErr := http.NewRequest("PUT", upURL, bytes.NewBuffer(aJSON))
-		u.Log.Debug("update user req: ", rErr)
+		u.Log.Debug("update user req err: ", rErr)
 		if rErr == nil {
 			req.Header.Set("Content-Type", "application/json")
 			req.Header.Set("Authorization", "Bearer "+u.Token)
+			req.Header.Set("appId", u.StoreName)
+			req.Header.Set("role", storeAdmin)
 			req.Header.Set("clientId", u.ClientID)
 			//req.Header.Set("apiKey", u.APIKey)
 			_, code := u.Proxy.Do(req, &rtn)
@@ -148,12 +181,33 @@ func (u *Oauth2UserService) GetUser(username string, clientID string) (*User, in
 	req, rErr := http.NewRequest("GET", gURL, nil)
 	u.Log.Debug("get user req: ", rErr)
 	if rErr == nil {
+		req.Header.Set("appId", u.StoreName)
+		req.Header.Set("role", storeAdmin)
 		req.Header.Set("clientId", u.ClientID)
 		req.Header.Set("Authorization", "Bearer "+u.Token)
 		//req.Header.Set("apiKey", u.APIKey)
 		_, code = u.Proxy.Do(req, &rtn)
 	}
 	return rtn, code
+}
+
+//GetAdminUserList GetAdminUserList
+func (u *Oauth2UserService) GetAdminUserList(clientID string) (*[]User, int) {
+	var rtn []User
+	var code int
+	var gURL = u.UserHost + "/rs/user/search/" + clientID
+	req, rErr := http.NewRequest("GET", gURL, nil)
+	u.Log.Debug("get user list req: ", rErr)
+	if rErr == nil {
+		req.Header.Set("appId", u.StoreName)
+		req.Header.Set("role", storeAdmin)
+		req.Header.Set("clientId", u.ClientID)
+		req.Header.Set("Authorization", "Bearer "+u.Token)
+		//req.Header.Set("apiKey", u.APIKey)
+		_, code = u.Proxy.Do(req, &rtn)
+	}
+
+	return &rtn, code
 }
 
 //SetToken SetToken

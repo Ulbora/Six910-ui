@@ -1,17 +1,21 @@
 package handlers
 
 import (
+	"bytes"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
 
+	px "github.com/Ulbora/GoProxy"
 	lg "github.com/Ulbora/Level_Logger"
 	m "github.com/Ulbora/Six910-ui/managers"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	userv "github.com/Ulbora/Six910-ui/usersrv"
+	usrv "github.com/Ulbora/Six910-ui/usersrv"
 	api "github.com/Ulbora/Six910API-Go"
 	oauth2 "github.com/Ulbora/go-oauth2-client"
 	"github.com/gorilla/mux"
@@ -353,6 +357,83 @@ func TestSix910Handler_StoreAdminAdminUserListAuth(t *testing.T) {
 	}
 }
 
+func TestSix910Handler_StoreAdminAdminUserListOauth(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	sh.OAuth2Enabled = true
+
+	var p px.MockGoProxy
+	p.MockDoSuccess1 = true
+	var ress http.Response
+	ress.Body = ioutil.NopCloser(bytes.NewBufferString(`[{"username":"tester", "clientId": 2}]`))
+	p.MockResp = &ress
+	p.MockRespCode = 200
+	var oa2us usrv.Oauth2UserService
+	oa2us.ClientID = "44"
+	oa2us.UserHost = "http://test"
+	oa2us.Log = &l
+	oa2us.Proxy = p.GetNewProxy()
+	sh.UserService = &oa2us
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	var mTkn oauth2.Token
+	mTkn.AccessToken = "45ffffff"
+	sh.token = &mTkn
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var usr api.UserResponse
+	usr.Enabled = true
+	usr.Role = storeAdmin
+	usr.StoreID = 5
+	usr.Username = "testAdmin"
+
+	var flst []api.UserResponse
+	flst = append(flst, usr)
+	sapi.MockUserList = &flst
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("sku=tester123&name=tester"))
+	vars := map[string]string{
+		"start": "0",
+		"end":   "100",
+	}
+	r = mux.SetURLVars(r, vars)
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminAdminUserList(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 200 {
+		t.Fail()
+	}
+}
+
 func TestSix910Handler_StoreAdminCustomerUserList(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
@@ -497,6 +578,25 @@ func TestSix910Handler_StoreAdminEditUserPage(t *testing.T) {
 
 	sapi.MockUser = &usr
 
+	var p px.MockGoProxy
+	p.MockDoSuccess1 = true
+	var ress http.Response
+	ress.Body = ioutil.NopCloser(bytes.NewBufferString(`[{"username":"tester", "clientId": 2}]`))
+	p.MockResp = &ress
+	p.MockRespCode = 200
+	var oa2us usrv.Oauth2UserService
+	oa2us.ClientID = "44"
+	oa2us.UserHost = "http://test"
+	oa2us.Log = &l
+	oa2us.Proxy = p.GetNewProxy()
+	sh.UserService = &oa2us
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	var mTkn oauth2.Token
+	mTkn.AccessToken = "45ffffff"
+	sh.token = &mTkn
+
 	// var flst []api.UserResponse
 	// flst = append(flst, usr)
 	// sapi.MockUserList = &flst
@@ -561,6 +661,25 @@ func TestSix910Handler_StoreAdminEditUserPage2(t *testing.T) {
 	// var flst []api.UserResponse
 	// flst = append(flst, usr)
 	// sapi.MockUserList = &flst
+
+	var p px.MockGoProxy
+	p.MockDoSuccess1 = true
+	var ress http.Response
+	ress.Body = ioutil.NopCloser(bytes.NewBufferString(`[{"username":"tester", "clientId": 2}]`))
+	p.MockResp = &ress
+	p.MockRespCode = 200
+	var oa2us usrv.Oauth2UserService
+	oa2us.ClientID = "44"
+	oa2us.UserHost = "http://test"
+	oa2us.Log = &l
+	oa2us.Proxy = p.GetNewProxy()
+	sh.UserService = &oa2us
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	var mTkn oauth2.Token
+	mTkn.AccessToken = "45ffffff"
+	sh.token = &mTkn
 
 	//-----------end mocking --------
 
@@ -790,6 +909,77 @@ func TestSix910Handler_StoreAdminAddAdminUser(t *testing.T) {
 	// var flst []api.UserResponse
 	// flst = append(flst, usr)
 	// sapi.MockUserList = &flst
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("username=tester123&password=tester&enabled=true"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminAddAdminUser(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
+func TestSix910Handler_StoreAdminAddAdminUser2(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	sh.OAuth2Enabled = true
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var res api.Response
+	res.Success = true
+	sapi.MockAddAdminUserResp = &res
+
+	// var flst []api.UserResponse
+	// flst = append(flst, usr)
+	// sapi.MockUserList = &flst
+
+	var p px.MockGoProxy
+	p.MockDoSuccess1 = true
+	var ress http.Response
+	ress.Body = ioutil.NopCloser(bytes.NewBufferString(`[{"username":"tester", "clientId": 2}]`))
+	p.MockResp = &ress
+	p.MockRespCode = 200
+	var oa2us usrv.Oauth2UserService
+	oa2us.ClientID = "44"
+	oa2us.UserHost = "http://test"
+	oa2us.Log = &l
+	oa2us.Proxy = p.GetNewProxy()
+	sh.UserService = &oa2us
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	var mTkn oauth2.Token
+	mTkn.AccessToken = "45ffffff"
+	sh.token = &mTkn
 
 	//-----------end mocking --------
 
@@ -1050,6 +1240,25 @@ func TestSix910Handler_StoreAdminEditUser2(t *testing.T) {
 	// var flst []api.UserResponse
 	// flst = append(flst, usr)
 	// sapi.MockUserList = &flst
+
+	var p px.MockGoProxy
+	p.MockDoSuccess1 = true
+	var ress http.Response
+	ress.Body = ioutil.NopCloser(bytes.NewBufferString(`[{"username":"tester", "clientId": 2}]`))
+	p.MockResp = &ress
+	p.MockRespCode = 200
+	var oa2us usrv.Oauth2UserService
+	oa2us.ClientID = "44"
+	oa2us.UserHost = "http://test"
+	oa2us.Log = &l
+	oa2us.Proxy = p.GetNewProxy()
+	sh.UserService = &oa2us
+	var cc ClientCreds
+	cc.AuthCodeState = "123"
+	sh.ClientCreds = &cc
+	// var mTkn oauth2.Token
+	// mTkn.AccessToken = "45ffffff"
+	// sh.token = &mTkn
 
 	//-----------end mocking --------
 

@@ -232,7 +232,11 @@ func (h *Six910Handler) processCustomer(r *http.Request) *sdbi.Customer {
 	c.ID, _ = strconv.ParseInt(id, 10, 64)
 	c.Email = r.FormValue("email")
 	resetPw := r.FormValue("resetPassword")
-	c.ResetPassword, _ = strconv.ParseBool(resetPw)
+	h.Log.Debug("Customer resetPw", resetPw)
+	if resetPw == "on" {
+		c.ResetPassword = true
+	}
+	//c.ResetPassword, _ = strconv.ParseBool(resetPw)
 	c.FirstName = r.FormValue("firstName")
 	c.LastName = r.FormValue("lastName")
 	c.Company = r.FormValue("company")

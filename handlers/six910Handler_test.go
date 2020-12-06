@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 
 	"net/http"
@@ -124,6 +126,30 @@ func TestSix910Handler_processMetaData2(t *testing.T) {
 	sitedata := sh.processMetaData("/test/test", "some category", r)
 	fmt.Println("sitedate:", sitedata)
 	if sitedata.Title == "" {
+		t.Fail()
+	}
+}
+
+type testObj struct {
+	Valid bool   `json:"valid"`
+	Code  string `json:"code"`
+}
+
+func TestSix910Handler_ProcessBodyBad(t *testing.T) {
+	var oh Six910Handler
+	var l lg.Logger
+	oh.Log = &l
+	var robj testObj
+	robj.Valid = true
+	robj.Code = "3"
+	// var res http.Response
+	// res.Body = ioutil.NopCloser(bytes.NewBufferString(`{"valid":true, "code":"1"}`))
+	var sURL = "http://localhost/test"
+	aJSON, _ := json.Marshal(robj)
+	r, _ := http.NewRequest("POST", sURL, bytes.NewBuffer(aJSON))
+	var obj testObj
+	suc, _ := oh.ProcessBody(r, nil)
+	if suc || obj.Valid != false || obj.Code != "" {
 		t.Fail()
 	}
 }

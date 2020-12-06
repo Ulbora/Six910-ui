@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+
+
+
+<body>
+    {{template "navbar"}}
+    <div class="container">
+        <h4 class="text-center mt-4">Update Admin User</h4>
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" id="prod-tab" data-toggle="tab" href="#distedit" role="tab"
+                    aria-controls="distributors" aria-selected="true">User</a>
+            </li>
+
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="distedit" role="tabpanel" aria-labelledby="home-tab">
+                <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
+                    <form method="POST" action="/admin/updateUser">
+                        <input hidden name="username" type="text" class="form-control" id="username"
+                            value="{{.Username}}">
+                        
+                        
+                        <div class="form-group">
+                            <label for="usernamedist">Username</label>
+                            <input disabled name="usernamedist" type="text" class="form-control" id="usernamedist"
+                                value="{{.Username}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="roledist">Role</label>
+                            <input disabled name="roledist" type="text" class="form-control" id="roledist"
+                                value="StoreAdmin">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input disabled name="email" type="text" class="form-control" id="email"
+                                value="{{.EmailAddress}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="fname">First Name</label>
+                            <input disabled name="fname" type="text" class="form-control" id="fname"
+                                value="{{.FirstName}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="fname">Last Name</label>
+                            <input disabled name="lname" type="text" class="form-control" id="lname"
+                                value="{{.LastName}}">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input name="password" type="password" class="form-control" id="password">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password2">Confirm</label>
+                            <input name="password2" type="password" class="form-control" id="password2">
+                        </div>
+                        <div id="CheckPasswordMatch" class="alert alert-danger" role="alert"
+                            style="visibility: hidden;">
+
+                        </div>
+                        <div class="form-group">
+                            <div class="form-check form-check-inline">
+                                <input disabled name="enabled" class="form-check-input" type="checkbox" id="enabled" {{if .Enabled}} checked {{end}}>
+                                <label class="form-check-label" for="enabled">Enabled</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

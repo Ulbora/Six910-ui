@@ -27,6 +27,7 @@ import (
 	"net/http"
 	"os"
 
+	px "github.com/Ulbora/GoProxy"
 	lg "github.com/Ulbora/Level_Logger"
 	bkupsrv "github.com/Ulbora/Six910-ui/bkupsrv"
 	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
@@ -39,6 +40,7 @@ import (
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	stsrv "github.com/Ulbora/Six910-ui/statesrv"
 	tmpsrv "github.com/Ulbora/Six910-ui/templatesrv"
+	usrv "github.com/Ulbora/Six910-ui/usersrv"
 	api "github.com/Ulbora/Six910API-Go"
 	ml "github.com/Ulbora/go-mail-sender"
 	oauth2 "github.com/Ulbora/go-oauth2-client"
@@ -82,6 +84,7 @@ func main() {
 	var oauth2Secret string
 	var oauth2State string
 	var oauthHost string
+	var oauth2UserURL string
 
 	if os.Getenv("SIX910_CART_OAUTH2_ENABLED") == "true" {
 		oauth2Enabled = true
@@ -111,6 +114,12 @@ func main() {
 		apiURL = os.Getenv("API_URL")
 	} else {
 		apiURL = "http://localhost:3002"
+	}
+
+	if os.Getenv("OAUTH2_USER_URL") != "" {
+		oauth2UserURL = os.Getenv("OAUTH2_USER_URL")
+	} else {
+		oauth2UserURL = "http://localhost:3001"
 	}
 
 	if os.Getenv("STORE_NAME") != "" {
@@ -269,6 +278,15 @@ func main() {
 		var act oauth2.AuthCodeToken
 		sh.Auth = &act
 
+		var pxy px.GoProxy
+		var oa2us usrv.Oauth2UserService
+		oa2us.ClientID = oauth2Client
+		oa2us.UserHost = oauth2UserURL
+		oa2us.Log = &l
+		oa2us.Proxy = pxy.GetNewProxy()
+		oa2us.StoreName = sh.StoreName
+		sh.UserService = &oa2us
+
 		l.Debug("Oauth2 client: ", oauth2Client)
 		l.Debug("sh.Auth: ", sh.Auth)
 	}
@@ -402,7 +420,8 @@ func main() {
 		"./static/admin/templates.html", "./static/admin/templateUpload.html",
 		"./static/admin/backupUpload.html", "./static/admin/addAdminUser.html",
 		"./static/admin/adminUserList.html", "./static/admin/editUser.html",
-		"./static/admin/customerUserList.html",
+		"./static/admin/customerUserList.html", "./static/admin/oauthAdminUserList.html",
+		"./static/admin/editOAuth2User.html",
 		// "./static/admin/footer.html", "./static/admin/navbar.html", "./static/admin/contentNavbar.html",
 	// "./static/admin/addContent.html", "./static/admin/images.html", "./static/admin/templates.html",
 	// "./static/admin/updateContent.html", "./static/admin/mailServer.html", "./static/admin/templateUpload.html",
@@ -472,7 +491,7 @@ func main() {
 	router.HandleFunc("/admin/addAdminUserPage", h.StoreAdminAddAdminUserPage).Methods("GET")
 	router.HandleFunc("/admin/addAdminUser", h.StoreAdminAddAdminUser).Methods("POST")
 	router.HandleFunc("/admin/adminUserList", h.StoreAdminAdminUserList).Methods("GET")
-	router.HandleFunc("/admin/getUser/{username}/{role}", h.StoreAdminEditUserPage).Methods("GET")
+	router.HandleFunc("/admin/getUser/{username}", h.StoreAdminEditUserPage).Methods("GET")
 	router.HandleFunc("/admin/updateUser", h.StoreAdminEditUser).Methods("POST")
 	//router.HandleFunc("/admin/customerUserList", h.StoreAdminCustomerUserList).Methods("GET")
 

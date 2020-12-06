@@ -96,16 +96,33 @@ func (h *Six910Handler) StoreAdminAddAdminUserPage(w http.ResponseWriter, r *htt
 //StoreAdminAddAdminUser StoreAdminAddAdminUser
 func (h *Six910Handler) StoreAdminAddAdminUser(w http.ResponseWriter, r *http.Request) {
 	aauss, suc := h.getSession(r)
-	h.Log.Debug("session suc in user edit view", suc)
+	h.Log.Debug("session suc in user add user", suc)
 	if suc {
 		if h.isStoreAdminLoggedIn(aauss) {
-			au := h.processUser(r)
-			au.Role = storeAdmin
+
 			var suc bool
 			if !h.OAuth2Enabled {
+				au := h.processUser(r)
+				au.Role = storeAdmin
 				hd := h.getHeader(aauss)
 				res := h.API.AddAdminUser(au, hd)
 				suc = res.Success
+			} else {
+				h.UserService.SetToken(h.token.AccessToken)
+				//usrs, _ := h.UserService.GetUser(username, h.ClientCreds.AuthCodeClient)
+				var user userv.User
+				user.Username = r.FormValue("username")
+				user.Password = r.FormValue("password")
+				user.ClientID, _ = strconv.ParseInt(h.ClientCreds.AuthCodeClient, 10, 0)
+				user.Enabled = true
+				user.RoleID = 1
+				user.FirstName = r.FormValue("username")    //r.FormValue("fname")
+				user.LastName = r.FormValue("username")     //r.FormValue("lname")
+				user.EmailAddress = r.FormValue("username") //r.FormValue("email")
+				h.Log.Debug("add oauth user:", user)
+				oures := h.UserService.AddUser(user)
+				suc = oures.Success
+				h.Log.Debug("add oauth user suc:", suc)
 			}
 			if suc {
 				http.Redirect(w, r, adminUserList, http.StatusFound)
@@ -129,8 +146,12 @@ func (h *Six910Handler) StoreAdminAdminUserList(w http.ResponseWriter, r *http.R
 				usl := h.API.GetAdminUsers(hd)
 				h.Log.Debug("Admin User  in list", usl)
 				h.AdminTemplates.ExecuteTemplate(w, adminUserListPage, &usl)
+			} else {
+				h.UserService.SetToken(h.token.AccessToken)
+				usrs, _ := h.UserService.GetAdminUserList(h.ClientCreds.AuthCodeClient)
+				h.Log.Debug("OAuth2 Admin User  in list", *usrs)
+				h.AdminTemplates.ExecuteTemplate(w, oauthAdminUserListPage, &usrs)
 			}
-
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
@@ -161,9 +182,9 @@ func (h *Six910Handler) StoreAdminEditUserPage(w http.ResponseWriter, r *http.Re
 		if h.isStoreAdminLoggedIn(euss) {
 			edvars := mux.Vars(r)
 			usernm := edvars["username"]
-			role := edvars["role"]
+			//role := edvars["role"]
 			var useOauth bool
-			if role == storeAdmin && h.OAuth2Enabled {
+			if h.OAuth2Enabled {
 				useOauth = true
 			}
 			if !useOauth {
@@ -172,8 +193,12 @@ func (h *Six910Handler) StoreAdminEditUserPage(w http.ResponseWriter, r *http.Re
 				us.Username = usernm
 				user := h.API.GetUser(&us, hd)
 				h.AdminTemplates.ExecuteTemplate(w, adminEditUserPage, &user)
+			} else {
+				h.UserService.SetToken(h.token.AccessToken)
+				usrs, _ := h.UserService.GetUser(usernm, h.ClientCreds.AuthCodeClient)
+				h.Log.Debug("OAuth2 Admin User ", *usrs)
+				h.AdminTemplates.ExecuteTemplate(w, adminEditOAuth2UserPage, &usrs)
 			}
-
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)
 		}
@@ -186,30 +211,43 @@ func (h *Six910Handler) StoreAdminEditUser(w http.ResponseWriter, r *http.Reques
 	h.Log.Debug("session suc in user edit", suc)
 	if suc {
 		if h.isStoreAdminLoggedIn(edus) {
-			edd := h.processUser(r)
+			username := r.FormValue("username")
 			var useOauth bool
-			if edd.Role == storeAdmin && h.OAuth2Enabled {
+			if h.OAuth2Enabled {
 				useOauth = true
 			}
 			var suc bool
 			if !useOauth {
+				edd := h.processUser(r)
 				h.Log.Debug("User update", *edd)
 				hd := h.getHeader(edus)
 				//add new update for admin use------------------------------
 				res := h.API.AdminUpdateUser(edd, hd)
+				h.Log.Debug("User update resp", *res)
+				h.Log.Debug("edd", *edd)
+				h.Log.Debug("edus.Values username", edus.Values["username"])
 				suc = res.Success
-				if res.Success && edd.Username == edus.Values["username"].(string) && edd.Password != "" {
+				if res.Success && edus.Values["username"] != nil && edd.Username == edus.Values["username"].(string) && edd.Password != "" {
 					edus.Values["password"] = edd.Password
 					serr := edus.Save(r, w)
 					h.Log.Debug("serr", serr)
 				}
-				h.Log.Debug("User update resp", *res)
+			} else {
+				h.UserService.SetToken(h.token.AccessToken)
+				//usrs, _ := h.UserService.GetUser(username, h.ClientCreds.AuthCodeClient)
+				var user userv.UserPW
+				user.Password = r.FormValue("password")
+				user.Username = username
+				user.ClientID, _ = strconv.ParseInt(h.ClientCreds.AuthCodeClient, 10, 0)
+				user.Enabled = true
+				oures := h.UserService.UpdateUser(&user)
+				suc = oures.Success
+				h.Log.Debug("update oauth user suc:", suc)
 			}
-
 			if suc {
 				http.Redirect(w, r, adminIndex, http.StatusFound)
 			} else {
-				http.Redirect(w, r, adminEditUser+"/"+edd.Username+"/"+edd.Role, http.StatusFound)
+				http.Redirect(w, r, adminEditUser+"/"+username, http.StatusFound)
 			}
 		} else {
 			http.Redirect(w, r, adminLogin, http.StatusFound)

@@ -38,9 +38,16 @@ type MockOauth2UserService struct {
 	Proxy    px.Proxy
 	Log      *lg.Logger
 
+	MockAddUserResponse    *UserResponse
 	MockUpdateUserResponse *UserResponse
 	MockUser               *User
+	MockUserList           *[]User
 	MockUserCode           int
+}
+
+//AddUser AddUser
+func (u *MockOauth2UserService) AddUser(user User) *UserResponse {
+	return u.MockAddUserResponse
 }
 
 //UpdateUser UpdateUser
@@ -51,6 +58,11 @@ func (u *MockOauth2UserService) UpdateUser(user UpdateUser) *UserResponse {
 //GetUser GetUser
 func (u *MockOauth2UserService) GetUser(username string, clientID string) (*User, int) {
 	return u.MockUser, u.MockUserCode
+}
+
+//GetAdminUserList GetAdminUserList
+func (u *MockOauth2UserService) GetAdminUserList(clientID string) (*[]User, int) {
+	return u.MockUserList, u.MockUserCode
 }
 
 //SetToken SetToken
