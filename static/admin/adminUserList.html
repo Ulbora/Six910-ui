@@ -27,7 +27,7 @@
                         </thead>
                         <tbody>
                             {{range .}}
-                            <tr class='clickable-row' data-href='/admin/getUser/{{.Username}}'>
+                            <tr class='clickable-row' data-href='/admin/getUser/{{.Username}}/{Role}'>
                                 <td>{{.Username}}</td>  
                                 <td>{{.Enabled}}</td>
                             </tr>

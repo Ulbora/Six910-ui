@@ -300,6 +300,7 @@ func (m *Six910Manager) parseExistingProduct(ep *sdbi.Product, up *Product) *sdb
 	if up.Width != 0 {
 		rtn.Width = up.Width
 	}
+	rtn.Stock = up.Stock
 
 	return rtn
 }

@@ -595,7 +595,7 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 					var buyerMail mll.Mailer
 					buyerMail.Subject = fmt.Sprintf(h.MailSubjectOrderProcessing, h.CompanyName, odrRes.Order.OrderNumber)
 					odridstr := strconv.FormatInt(odrRes.Order.ID, 10)
-					var olnk = "<a href='/viewOrder/'" + odridstr + ">" + odrRes.Order.OrderNumber + "</a>"
+					var olnk = "<a href='/viewCustomerOrder/" + odridstr + ">" + odrRes.Order.OrderNumber + "</a>"
 					buyerMail.Body = fmt.Sprintf(h.MailBodyOrderProcessing, odrRes.Order.CustomerName, olnk)
 					//buystr := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
 					buyerMail.Recipients = []string{comccotres.CustomerAccount.User.Username}

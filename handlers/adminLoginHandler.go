@@ -53,6 +53,7 @@ func (h *Six910Handler) StoreAdminLoginNonOAuthUser(w http.ResponseWriter, r *ht
 
 		var hd api.Headers
 		hd.Set("Authorization", "Basic "+sEnccl)
+		hd.Set("clientId", "none")
 		//head.Set("Authorization", "Basic YWRtaW46YWRtaW4=")
 
 		h.Log.Debug("username", username)

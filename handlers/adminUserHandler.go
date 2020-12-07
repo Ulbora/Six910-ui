@@ -182,9 +182,9 @@ func (h *Six910Handler) StoreAdminEditUserPage(w http.ResponseWriter, r *http.Re
 		if h.isStoreAdminLoggedIn(euss) {
 			edvars := mux.Vars(r)
 			usernm := edvars["username"]
-			//role := edvars["role"]
+			role := edvars["role"]
 			var useOauth bool
-			if h.OAuth2Enabled {
+			if h.OAuth2Enabled && role != customerRole {
 				useOauth = true
 			}
 			if !useOauth {
@@ -212,6 +212,8 @@ func (h *Six910Handler) StoreAdminEditUser(w http.ResponseWriter, r *http.Reques
 	if suc {
 		if h.isStoreAdminLoggedIn(edus) {
 			username := r.FormValue("username")
+			frole := r.FormValue("role")
+			h.Log.Debug("User role", frole)
 			var useOauth bool
 			if h.OAuth2Enabled {
 				useOauth = true
@@ -245,7 +247,11 @@ func (h *Six910Handler) StoreAdminEditUser(w http.ResponseWriter, r *http.Reques
 				h.Log.Debug("update oauth user suc:", suc)
 			}
 			if suc {
-				http.Redirect(w, r, adminIndex, http.StatusFound)
+				if frole == customerRole {
+					http.Redirect(w, r, adminCustomerListView, http.StatusFound)
+				} else {
+					http.Redirect(w, r, adminUserList, http.StatusFound)
+				}
 			} else {
 				http.Redirect(w, r, adminEditUser+"/"+username, http.StatusFound)
 			}

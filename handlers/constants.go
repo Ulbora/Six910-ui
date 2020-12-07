@@ -458,4 +458,6 @@ const (
 	usernameForAddedNotes = "System Admin"
 
 	mailMessageUploadComplete = "Product file upload completed with a product upload count of: "
+
+	orderStatusShipped = "Shipped"
 )

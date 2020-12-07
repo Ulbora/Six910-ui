@@ -1,11 +1,13 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"sync"
 
 	six910api "github.com/Ulbora/Six910API-Go"
+	mll "github.com/Ulbora/go-mail-sender"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
@@ -151,6 +153,20 @@ func (h *Six910Handler) StoreAdminEditOrder(w http.ResponseWriter, r *http.Reque
 			if found {
 				cres := h.API.AddOrderComments(eocom, hd)
 				h.Log.Debug("order comment add resp", *cres)
+			}
+			if h.MailSenderAddress != "" && eop.Status == orderStatusShipped {
+
+				var buyerMail mll.Mailer
+				buyerMail.Subject = fmt.Sprintf(h.MailSubjectOrderShipped, h.CompanyName, eop.OrderNumber)
+				odridstr := strconv.FormatInt(eop.ID, 10)
+				var olnk = "<a href='" + h.Six910SiteURL + "/viewCustomerOrder/" + odridstr + ">" + eop.OrderNumber + "</a>"
+				buyerMail.Body = fmt.Sprintf(h.MailBodyOrderShipped, eop.CustomerName, olnk)
+				//buystr := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
+				buyerMail.Recipients = []string{eop.Username}
+				buyerMail.SenderAddress = h.MailSenderAddress
+
+				buyerSendSuc := h.MailSender.SendMail(&buyerMail)
+				h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
 			}
 			h.Log.Debug("order update resp", *res)
 			if res.Success {

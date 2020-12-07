@@ -227,10 +227,10 @@ func main() {
 		companyName = "Six910 Shopping Cart"
 	}
 
-	if os.Getenv("SIX910_CART_SITE") != "" {
-		six910CartSite = os.Getenv("SIX910_CART_SITE")
+	if os.Getenv("SIX910_CART_SITE_URL") != "" {
+		six910CartSite = os.Getenv("SIX910_CART_SITE_URL")
 	} else {
-		six910CartSite = "Six910 Shopping Cart"
+		six910CartSite = "http://localhost:8080"
 	}
 
 	if os.Getenv("SCHEME_DEFAULT") != "" {
@@ -491,7 +491,7 @@ func main() {
 	router.HandleFunc("/admin/addAdminUserPage", h.StoreAdminAddAdminUserPage).Methods("GET")
 	router.HandleFunc("/admin/addAdminUser", h.StoreAdminAddAdminUser).Methods("POST")
 	router.HandleFunc("/admin/adminUserList", h.StoreAdminAdminUserList).Methods("GET")
-	router.HandleFunc("/admin/getUser/{username}", h.StoreAdminEditUserPage).Methods("GET")
+	router.HandleFunc("/admin/getUser/{username}/{role}", h.StoreAdminEditUserPage).Methods("GET")
 	router.HandleFunc("/admin/updateUser", h.StoreAdminEditUser).Methods("POST")
 	//router.HandleFunc("/admin/customerUserList", h.StoreAdminCustomerUserList).Methods("GET")
 

@@ -12,6 +12,7 @@ import (
 	m "github.com/Ulbora/Six910-ui/managers"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
+	ml "github.com/Ulbora/go-mail-sender"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
@@ -148,6 +149,12 @@ func TestSix910Handler_StoreAdminEditOrder(t *testing.T) {
 	sh.Manager = man.GetNew()
 	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
 
+	var mss ml.MockSecureSender
+	mss.MockSuccess = true
+	sh.MailSender = mss.GetNew()
+
+	sh.MailSenderAddress = "test@test.com"
+
 	//-----------start mocking------------------
 
 	var pr api.Response
@@ -161,7 +168,7 @@ func TestSix910Handler_StoreAdminEditOrder(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=5&status=shipped&subTotal=10.25&newComment=test"))
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=5&status=Shipped&subTotal=10.25&newComment=test"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)

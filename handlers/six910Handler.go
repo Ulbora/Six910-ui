@@ -342,6 +342,7 @@ func (h *Six910Handler) getUserSession(r *http.Request) (*sessions.Session, bool
 func (h *Six910Handler) getHeader(s *sessions.Session) *api.Headers {
 	var hd api.Headers
 	storeCustomerUserpa := s.Values["customerUser"]
+	h.Log.Debug("storeCustomerUserpa: ", storeCustomerUserpa)
 	if !h.OAuth2Enabled || storeCustomerUserpa == true {
 		var sEnccl string
 		username := s.Values["username"]
@@ -351,6 +352,9 @@ func (h *Six910Handler) getHeader(s *sessions.Session) *api.Headers {
 		}
 		h.Log.Debug("sEnc: ", sEnccl)
 		hd.Set("Authorization", "Basic "+sEnccl)
+		if storeCustomerUserpa != true {
+			hd.Set("clientId", "none")
+		}
 	} else {
 		hd.Set("Authorization", "Bearer "+h.token.AccessToken)
 		hd.Set("clientId", h.ClientCreds.AuthCodeClient)
