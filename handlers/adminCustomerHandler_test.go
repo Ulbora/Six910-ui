@@ -148,7 +148,7 @@ func TestSix910Handler_StoreAdminEditCustomer(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("PUT", "https://test.com", strings.NewReader("id=3&firstName=tester123&resetPassword=true"))
+	r, _ := http.NewRequest("PUT", "https://test.com", strings.NewReader("id=3&firstName=tester123&resetPassword=on"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)

@@ -1280,3 +1280,54 @@ func TestSix910Handler_StoreAdminEditUser2(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestSix910Handler_StoreAdminEditUser3(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	//-----------start mocking------------------
+
+	var res api.Response
+	res.Success = true
+	sapi.MockAdminUpdateUserResp = &res
+
+	// var flst []api.UserResponse
+	// flst = append(flst, usr)
+	// sapi.MockUserList = &flst
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("username=tester123&password=tester&enabled=on&role=admin"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester123"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminEditUser(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
