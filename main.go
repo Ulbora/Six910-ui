@@ -265,6 +265,11 @@ func main() {
 	sh.MailSenderAddress = mailSenderAddress
 	sh.MailSubject = mailSubject
 
+	l.Debug("SIX910_CART_OAUTH2_ENABLED", os.Getenv("SIX910_CART_OAUTH2_ENABLED"))
+	l.Debug("SIX910_CART_OAUTH2_CLIENT", os.Getenv("SIX910_CART_OAUTH2_CLIENT"))
+
+	l.Debug("oauth2Enabled", oauth2Enabled)
+
 	//if oauth2 turned on do this
 	if oauth2Enabled {
 		l.Debug("Oauth2 enabled")
