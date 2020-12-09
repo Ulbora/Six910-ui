@@ -265,14 +265,14 @@ func main() {
 	sh.MailSenderAddress = mailSenderAddress
 	sh.MailSubject = mailSubject
 
-	l.Debug("SIX910_CART_OAUTH2_ENABLED", os.Getenv("SIX910_CART_OAUTH2_ENABLED"))
-	l.Debug("SIX910_CART_OAUTH2_CLIENT", os.Getenv("SIX910_CART_OAUTH2_CLIENT"))
+	sh.Log.Debug("SIX910_CART_OAUTH2_ENABLED", os.Getenv("SIX910_CART_OAUTH2_ENABLED"))
+	sh.Log.Debug("SIX910_CART_OAUTH2_CLIENT", os.Getenv("SIX910_CART_OAUTH2_CLIENT"))
 
-	l.Debug("oauth2Enabled", oauth2Enabled)
+	sh.Log.Debug("oauth2Enabled", oauth2Enabled)
 
 	//if oauth2 turned on do this
 	if oauth2Enabled {
-		l.Debug("Oauth2 enabled")
+		sh.Log.Debug("Oauth2 enabled")
 		sh.OAuth2Enabled = true
 		sh.OauthHost = oauthHost
 		var ocred hand.ClientCreds
@@ -292,8 +292,8 @@ func main() {
 		oa2us.StoreName = sh.StoreName
 		sh.UserService = &oa2us
 
-		l.Debug("Oauth2 client: ", oauth2Client)
-		l.Debug("sh.Auth: ", sh.Auth)
+		sh.Log.Debug("Oauth2 client: ", oauth2Client)
+		sh.Log.Debug("sh.Auth: ", sh.Auth)
 	}
 
 	sh.MailSubjectOrderReceived = mailSubjectOrderReceived
