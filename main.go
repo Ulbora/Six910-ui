@@ -253,6 +253,7 @@ func main() {
 	var sh hand.Six910Handler
 	sh.SchemeDefault = schemeDefault
 	sh.Six910SiteURL = six910CartSite
+	sh.SiteMapDomain = six910CartSite
 	sh.CompanyName = companyName
 	sh.LocalDomain = localDomain
 	sh.StoreName = storeName
