@@ -138,7 +138,7 @@ func TestSix910Handler_Index(t *testing.T) {
 
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -277,7 +277,7 @@ func TestSix910Handler_Index2(t *testing.T) {
 
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	sh.setLastHit(s, w, r)

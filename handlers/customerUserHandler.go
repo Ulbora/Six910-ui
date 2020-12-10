@@ -30,7 +30,7 @@ import (
 
 //CustomerLoginPage CustomerLoginPage
 func (h *Six910Handler) CustomerLoginPage(w http.ResponseWriter, r *http.Request) {
-	clinss, suc := h.getUserSession(r)
+	clinss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", clinss)
 	if suc {
 		pageErr := r.URL.Query().Get("error")
@@ -42,7 +42,7 @@ func (h *Six910Handler) CustomerLoginPage(w http.ResponseWriter, r *http.Request
 
 //CustomerLogin CustomerLogin
 func (h *Six910Handler) CustomerLogin(w http.ResponseWriter, r *http.Request) {
-	slin, suc := h.getUserSession(r)
+	slin, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		cusername := r.FormValue("username")
@@ -123,7 +123,7 @@ func (h *Six910Handler) CustomerLogin(w http.ResponseWriter, r *http.Request) {
 
 //CustomerChangePasswordPage CustomerChangePasswordPage
 func (h *Six910Handler) CustomerChangePasswordPage(w http.ResponseWriter, r *http.Request) {
-	ccpwpuvss, suc := h.getUserSession(r)
+	ccpwpuvss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", ccpwpuvss)
 	if suc {
 		if h.isStoreCustomerLoggedIn(ccpwpuvss) {
@@ -147,7 +147,7 @@ func (h *Six910Handler) CustomerChangePasswordPage(w http.ResponseWriter, r *htt
 
 //CustomerChangePassword CustomerChangePassword
 func (h *Six910Handler) CustomerChangePassword(w http.ResponseWriter, r *http.Request) {
-	ccpwuvss, suc := h.getUserSession(r)
+	ccpwuvss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", ccpwuvss)
 	if suc {
 		if h.isStoreCustomerLoggedIn(ccpwuvss) {
@@ -186,7 +186,7 @@ func (h *Six910Handler) CustomerChangePassword(w http.ResponseWriter, r *http.Re
 
 //CustomerLogout CustomerLogout
 func (h *Six910Handler) CustomerLogout(w http.ResponseWriter, r *http.Request) {
-	cloutss, suc := h.getUserSession(r)
+	cloutss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", cloutss)
 	if suc {
 		if h.isStoreCustomerLoggedIn(cloutss) {
@@ -222,7 +222,7 @@ func (h *Six910Handler) CustomerLogout(w http.ResponseWriter, r *http.Request) {
 
 //CustomerResetPasswordPage CustomerResetPasswordPage
 func (h *Six910Handler) CustomerResetPasswordPage(w http.ResponseWriter, r *http.Request) {
-	rpclinss, suc := h.getUserSession(r)
+	rpclinss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", rpclinss)
 	if suc {
 		h.Templates.ExecuteTemplate(w, customerResetPasswordPage, nil)
@@ -231,7 +231,7 @@ func (h *Six910Handler) CustomerResetPasswordPage(w http.ResponseWriter, r *http
 
 //CustomerResetPassword CustomerResetPassword
 func (h *Six910Handler) CustomerResetPassword(w http.ResponseWriter, r *http.Request) {
-	rpwpuvss, suc := h.getUserSession(r)
+	rpwpuvss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", rpwpuvss)
 	if suc {
 

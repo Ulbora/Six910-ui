@@ -295,7 +295,7 @@ func (h *Six910Handler) getSession(r *http.Request) (*sessions.Session, bool) {
 	return srtn, suc
 }
 
-func (h *Six910Handler) getUserSession(r *http.Request) (*sessions.Session, bool) {
+func (h *Six910Handler) getUserSession(w http.ResponseWriter, r *http.Request) (*sessions.Session, bool) {
 	//fmt.Println("getSession--------------------------------------------------")
 	var suc bool
 	var srtn *sessions.Session
@@ -333,6 +333,9 @@ func (h *Six910Handler) getUserSession(r *http.Request) (*sessions.Session, bool
 		if err == nil {
 			suc = true
 			srtn = s
+			srtn.Values["customerUser"] = true
+			serr := srtn.Save(r, w)
+			h.Log.Debug("serr", serr)
 		}
 	}
 	//fmt.Println("exit getSession--------------------------------------------------")

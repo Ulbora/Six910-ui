@@ -30,7 +30,7 @@ import (
 
 //CreateCustomerAccountPage CreateCustomerAccountPage
 func (h *Six910Handler) CreateCustomerAccountPage(w http.ResponseWriter, r *http.Request) {
-	ccuss, suc := h.getUserSession(r)
+	ccuss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", ccuss)
 	if suc {
 		pageErr := r.URL.Query().Get("error")
@@ -49,7 +49,7 @@ func (h *Six910Handler) CreateCustomerAccountPage(w http.ResponseWriter, r *http
 
 //CreateCustomerAccount CreateCustomerAccount
 func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Request) {
-	crcuss, suc := h.getUserSession(r)
+	crcuss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", crcuss)
 	if suc {
 		hd := h.getHeader(crcuss)
@@ -160,7 +160,7 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 
 //UpdateCustomerAccountPage UpdateCustomerAccountPage
 func (h *Six910Handler) UpdateCustomerAccountPage(w http.ResponseWriter, r *http.Request) {
-	ccuuss, suc := h.getUserSession(r)
+	ccuuss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", ccuuss)
 	if suc {
 		if h.isStoreCustomerLoggedIn(ccuuss) {
@@ -198,7 +198,7 @@ func (h *Six910Handler) UpdateCustomerAccountPage(w http.ResponseWriter, r *http
 
 //UpdateCustomerAccount UpdateCustomerAccount
 func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Request) {
-	ccuuuss, suc := h.getUserSession(r)
+	ccuuuss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", ccuuuss)
 	if suc {
 		if h.isStoreCustomerLoggedIn(ccuuuss) {
@@ -333,7 +333,7 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 
 //CustomerAddAddressPage CustomerAddAddressPage
 func (h *Six910Handler) CustomerAddAddressPage(w http.ResponseWriter, r *http.Request) {
-	acauss, suc := h.getUserSession(r)
+	acauss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", acauss)
 	if suc {
 		if h.isStoreCustomerLoggedIn(acauss) {
@@ -355,7 +355,7 @@ func (h *Six910Handler) CustomerAddAddressPage(w http.ResponseWriter, r *http.Re
 
 //CustomerAddAddress CustomerAddAddress
 func (h *Six910Handler) CustomerAddAddress(w http.ResponseWriter, r *http.Request) {
-	caaass, suc := h.getUserSession(r)
+	caaass, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", caaass)
 	if suc {
 		if h.isStoreCustomerLoggedIn(caaass) {
@@ -399,7 +399,7 @@ func (h *Six910Handler) CustomerAddAddress(w http.ResponseWriter, r *http.Reques
 
 //DeleteCustomerAddress DeleteCustomerAddress
 func (h *Six910Handler) DeleteCustomerAddress(w http.ResponseWriter, r *http.Request) {
-	cdaass, suc := h.getUserSession(r)
+	cdaass, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", cdaass)
 	if suc {
 		if h.isStoreCustomerLoggedIn(cdaass) {

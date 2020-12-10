@@ -197,7 +197,8 @@ func (u *Oauth2UserService) GetAdminUserList(clientID string) (*[]User, int) {
 	var code int
 	var gURL = u.UserHost + "/rs/user/search/" + clientID
 	req, rErr := http.NewRequest("GET", gURL, nil)
-	u.Log.Debug("get user list req: ", rErr)
+	u.Log.Debug("get user list url: ", gURL)
+	u.Log.Debug("get user list req err: ", rErr)
 	if rErr == nil {
 		req.Header.Set("appId", u.StoreName)
 		req.Header.Set("role", storeAdmin)
@@ -205,6 +206,7 @@ func (u *Oauth2UserService) GetAdminUserList(clientID string) (*[]User, int) {
 		req.Header.Set("Authorization", "Bearer "+u.Token)
 		//req.Header.Set("apiKey", u.APIKey)
 		_, code = u.Proxy.Do(req, &rtn)
+		u.Log.Debug("GetAdminUserList: ", code)
 	}
 
 	return &rtn, code

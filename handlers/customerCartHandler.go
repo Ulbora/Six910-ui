@@ -102,7 +102,7 @@ type CartPage struct {
 
 //AddProductToCart AddProductToCart
 func (h *Six910Handler) AddProductToCart(w http.ResponseWriter, r *http.Request) {
-	cpls, suc := h.getUserSession(r)
+	cpls, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		var cppid int64
@@ -157,7 +157,7 @@ func (h *Six910Handler) AddProductToCart(w http.ResponseWriter, r *http.Request)
 
 //ViewCart ViewCart
 func (h *Six910Handler) ViewCart(w http.ResponseWriter, r *http.Request) {
-	ccvs, suc := h.getUserSession(r)
+	ccvs, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		var cv *m.CartView
@@ -207,7 +207,7 @@ func (h *Six910Handler) ViewCart(w http.ResponseWriter, r *http.Request) {
 
 //UpdateProductToCart UpdateProductToCart
 func (h *Six910Handler) UpdateProductToCart(w http.ResponseWriter, r *http.Request) {
-	ucpls, suc := h.getUserSession(r)
+	ucpls, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 
@@ -252,7 +252,7 @@ func (h *Six910Handler) UpdateProductToCart(w http.ResponseWriter, r *http.Reque
 
 //CheckOutView CheckOutView
 func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
-	cocvs, suc := h.getUserSession(r)
+	cocvs, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		if h.isStoreCustomerLoggedIn(cocvs) {
@@ -373,7 +373,7 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 	//5. ShippingAddressID
 
 	//tax calc: country, state, zipstart zipend, %, prod category, inc handling, inc shipping, tax type(sales, vat)
-	cocccs, suc := h.getUserSession(r)
+	cocccs, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		if h.isStoreCustomerLoggedIn(cocccs) {
@@ -475,7 +475,7 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 
 //CheckOutComplateOrder CheckOutComplateOrder
 func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Request) {
-	cocod, suc := h.getUserSession(r)
+	cocod, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		if h.isStoreCustomerLoggedIn(cocod) {

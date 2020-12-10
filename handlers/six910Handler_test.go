@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net/http/httptest"
 
 	"net/http"
 
@@ -32,7 +33,8 @@ func TestSix910Handler_getUserSession(t *testing.T) {
 	l.LogLevel = lg.AllLevel
 	h.Log = &l
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
-	ses, suc := h.getUserSession(r)
+	w := httptest.NewRecorder()
+	ses, suc := h.getUserSession(w, r)
 	if ses == nil || !suc {
 		t.Fail()
 	}

@@ -122,7 +122,7 @@ func TestSix910Handler_CreateCustomerAccountPage(t *testing.T) {
 
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -245,7 +245,7 @@ func TestSix910Handler_CreateCustomerAccount(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	var cct sdbi.Cart
@@ -378,7 +378,7 @@ func TestSix910Handler_CreateCustomerAccountFail(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
@@ -505,7 +505,7 @@ func TestSix910Handler_CreateCustomerAccountExisting(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["loggedIn"] = true
@@ -648,7 +648,7 @@ func TestSix910Handler_UpdateCustomerAccountPage(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -746,7 +746,7 @@ func TestSix910Handler_UpdateCustomerAccountPageLogin(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
@@ -882,7 +882,7 @@ func TestSix910Handler_UpdateCustomerAccount(t *testing.T) {
 		"password=tester&oldPassword=oldtester&newAddress=345"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 
 	var cccs m.CustomerCart
@@ -1032,7 +1032,7 @@ func TestSix910Handler_UpdateCustomerAccount2(t *testing.T) {
 		"password=tester&oldPassword=oldtester&delete_1=on"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["userLoggenIn"] = true
@@ -1170,7 +1170,7 @@ func TestSix910Handler_UpdateCustomerAccount3(t *testing.T) {
 		"password=tester&oldPassword=oldtester"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["userLoggenIn"] = true
@@ -1308,7 +1308,7 @@ func TestSix910Handler_UpdateCustomerAccount4(t *testing.T) {
 		"password=tester&oldPassword=oldtester&newAddress=345"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["userLoggenIn"] = true
@@ -1433,7 +1433,7 @@ func TestSix910Handler_UpdateCustomerAccountLogin(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	//s.Values["loggedIn"] = true
@@ -1559,7 +1559,7 @@ func TestSix910Handler_UpdateCustomerAccountFail(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["userLoggenIn"] = true
@@ -1654,7 +1654,7 @@ func TestSix910Handler_CustomerAddAddressPage(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -1748,7 +1748,7 @@ func TestSix910Handler_CustomerAddAddressPageLogin(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
@@ -1872,7 +1872,7 @@ func TestSix910Handler_CustomerAddAddress(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["userLoggenIn"] = true
@@ -1999,7 +1999,7 @@ func TestSix910Handler_CustomerAddAddressLogin(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	//s.Values["loggedIn"] = true
@@ -2125,7 +2125,7 @@ func TestSix910Handler_CustomerAddAddressFail(t *testing.T) {
 		"billCountry=55&shipAddress=444&shipCity=444&shipState=dfg&shipZip=234&shipCountry=55"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	var cccs m.CustomerCart
 	s.Values["userLoggenIn"] = true
@@ -2220,7 +2220,7 @@ func TestSix910Handler_DeleteCustomerAddress(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -2313,7 +2313,7 @@ func TestSix910Handler_DeleteCustomerAddressLogin(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
@@ -2406,7 +2406,7 @@ func TestSix910Handler_DeleteCustomerAddressFail(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true

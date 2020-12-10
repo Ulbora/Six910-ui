@@ -19,8 +19,8 @@ github.com/Ulbora/Six910-ui/usersrv/userService.go:162.18,171.4 7 1
 github.com/Ulbora/Six910-ui/usersrv/userService.go:177.84,183.17 6 1
 github.com/Ulbora/Six910-ui/usersrv/userService.go:191.2,191.18 1 1
 github.com/Ulbora/Six910-ui/usersrv/userService.go:183.17,190.3 5 1
-github.com/Ulbora/Six910-ui/usersrv/userService.go:195.78,201.17 6 1
-github.com/Ulbora/Six910-ui/usersrv/userService.go:210.2,210.19 1 1
-github.com/Ulbora/Six910-ui/usersrv/userService.go:201.17,208.3 5 1
-github.com/Ulbora/Six910-ui/usersrv/userService.go:214.52,216.2 1 1
-github.com/Ulbora/Six910-ui/usersrv/userService.go:219.50,221.2 1 1
+github.com/Ulbora/Six910-ui/usersrv/userService.go:195.78,202.17 7 1
+github.com/Ulbora/Six910-ui/usersrv/userService.go:212.2,212.19 1 1
+github.com/Ulbora/Six910-ui/usersrv/userService.go:202.17,210.3 6 1
+github.com/Ulbora/Six910-ui/usersrv/userService.go:216.52,218.2 1 1
+github.com/Ulbora/Six910-ui/usersrv/userService.go:221.50,223.2 1 1

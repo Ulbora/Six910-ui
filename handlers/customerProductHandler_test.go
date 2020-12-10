@@ -78,7 +78,7 @@ func TestSix910Handler_ViewProductList(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -150,7 +150,7 @@ func TestSix910Handler_ViewProductList2(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -271,7 +271,7 @@ func TestSix910Handler_SearchProductList(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -399,7 +399,7 @@ func TestSix910Handler_SearchProductList2(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -522,7 +522,7 @@ func TestSix910Handler_SearchProductByManufacturerList(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -651,7 +651,7 @@ func TestSix910Handler_SearchProductByManufacturerList2(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -788,7 +788,7 @@ func TestSix910Handler_ViewProduct(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -931,7 +931,7 @@ func TestSix910Handler_ViewProduct2(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -1047,7 +1047,7 @@ func TestSix910Handler_ViewProductByCatList(t *testing.T) {
 
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -1169,7 +1169,7 @@ func TestSix910Handler_ViewProductByCatList2(t *testing.T) {
 
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -1285,7 +1285,7 @@ func TestSix910Handler_ViewProductByCatAndManufacturerList(t *testing.T) {
 
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)
@@ -1407,7 +1407,7 @@ func TestSix910Handler_ViewProductByCatAndManufacturerList2(t *testing.T) {
 
 	r, _ := http.NewRequest("POST", "https://test.com", nil)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Save(r, w)

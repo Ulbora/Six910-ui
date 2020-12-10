@@ -155,7 +155,7 @@ func TestSix910Handler_AddProductToCart(t *testing.T) {
 	cusa.Customer = &cus
 	cccs.CustomerAccount = &cusa
 
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -314,7 +314,7 @@ func TestSix910Handler_AddProductToCart2(t *testing.T) {
 	cccs.CustomerAccount = &cusa
 
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
@@ -441,7 +441,7 @@ func TestSix910Handler_ViewCart(t *testing.T) {
 	}
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
@@ -590,7 +590,7 @@ func TestSix910Handler_ViewCartCartSession(t *testing.T) {
 	cccs.CustomerAccount = &cusa
 
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
@@ -710,7 +710,7 @@ func TestSix910Handler_UpdateProductToCart(t *testing.T) {
 
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -830,7 +830,7 @@ func TestSix910Handler_UpdateProductToCartFail(t *testing.T) {
 
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
@@ -999,7 +999,7 @@ func TestSix910Handler_CheckOutView(t *testing.T) {
 
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -1164,7 +1164,7 @@ func TestSix910Handler_CheckOutView2(t *testing.T) {
 
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -1329,7 +1329,7 @@ func TestSix910Handler_CheckOutView3(t *testing.T) {
 
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -1448,7 +1448,7 @@ func TestSix910Handler_CheckOutViewLogin(t *testing.T) {
 
 	r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["loggedIn"] = true
 	s.Values["customerUser"] = true
@@ -1642,7 +1642,7 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 
 	//r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -1839,7 +1839,7 @@ func TestSix910Handler_CheckOutContinue2(t *testing.T) {
 
 	//r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -2035,7 +2035,7 @@ func TestSix910Handler_CheckOutContinue3(t *testing.T) {
 
 	//r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -2392,7 +2392,7 @@ func TestSix910Handler_CheckOutComplateOrder(t *testing.T) {
 
 	//r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -2616,7 +2616,7 @@ func TestSix910Handler_CheckOutComplateOrder2(t *testing.T) {
 
 	//r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -2829,7 +2829,7 @@ func TestSix910Handler_CheckOutComplateOrder3(t *testing.T) {
 
 	//r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
@@ -3032,7 +3032,7 @@ func TestSix910Handler_CheckOutComplateOrderLogin(t *testing.T) {
 
 	//r = mux.SetURLVars(r, vars)
 	w := httptest.NewRecorder()
-	s, suc := sh.getUserSession(r)
+	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
 	//s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true

@@ -26,7 +26,7 @@ import (
 
 //ViewContent ViewContent
 func (h *Six910Handler) ViewContent(w http.ResponseWriter, r *http.Request) {
-	ccis, suc := h.getUserSession(r)
+	ccis, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		vars := mux.Vars(r)

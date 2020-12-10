@@ -64,7 +64,7 @@ type CustomerOrderItem struct {
 
 //ViewCustomerOrder ViewCustomerOrder
 func (h *Six910Handler) ViewCustomerOrder(w http.ResponseWriter, r *http.Request) {
-	vorps, suc := h.getUserSession(r)
+	vorps, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		if h.isStoreCustomerLoggedIn(vorps) {
@@ -137,7 +137,7 @@ func (h *Six910Handler) ViewCustomerOrder(w http.ResponseWriter, r *http.Request
 
 //ViewCustomerOrderList ViewCustomerOrderList
 func (h *Six910Handler) ViewCustomerOrderList(w http.ResponseWriter, r *http.Request) {
-	vorrls, suc := h.getUserSession(r)
+	vorrls, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		if h.isStoreCustomerLoggedIn(vorrls) {

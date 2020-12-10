@@ -31,7 +31,7 @@ import (
 
 //ViewProductList ViewProductList
 func (h *Six910Handler) ViewProductList(w http.ResponseWriter, r *http.Request) {
-	cpls, suc := h.getUserSession(r)
+	cpls, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		cplvars := mux.Vars(r)
@@ -64,7 +64,7 @@ func (h *Six910Handler) ViewProductList(w http.ResponseWriter, r *http.Request) 
 
 //ViewProductByCatList ViewProductByCatList
 func (h *Six910Handler) ViewProductByCatList(w http.ResponseWriter, r *http.Request) {
-	cpls, suc := h.getUserSession(r)
+	cpls, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		cplvars := mux.Vars(r)
@@ -154,7 +154,7 @@ func (h *Six910Handler) ViewProductByCatList(w http.ResponseWriter, r *http.Requ
 
 //ViewProductByCatAndManufacturerList ViewProductByCatAndManufacturerList
 func (h *Six910Handler) ViewProductByCatAndManufacturerList(w http.ResponseWriter, r *http.Request) {
-	mcpls, suc := h.getUserSession(r)
+	mcpls, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		mcplvars := mux.Vars(r)
@@ -246,7 +246,7 @@ func (h *Six910Handler) ViewProductByCatAndManufacturerList(w http.ResponseWrite
 
 //SearchProductList SearchProductList
 func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request) {
-	cspls, suc := h.getUserSession(r)
+	cspls, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		//var pagebdy PageBody
@@ -345,7 +345,7 @@ func (h *Six910Handler) SearchProductList(w http.ResponseWriter, r *http.Request
 
 //SearchProductByManufacturerList SearchProductByManufacturerList
 func (h *Six910Handler) SearchProductByManufacturerList(w http.ResponseWriter, r *http.Request) {
-	mcspls, suc := h.getUserSession(r)
+	mcspls, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 
@@ -446,7 +446,7 @@ func (h *Six910Handler) SearchProductByManufacturerList(w http.ResponseWriter, r
 
 //ViewProduct ViewProduct
 func (h *Six910Handler) ViewProduct(w http.ResponseWriter, r *http.Request) {
-	cvps, suc := h.getUserSession(r)
+	cvps, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
 	if suc {
 		cvpvars := mux.Vars(r)
