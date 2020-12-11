@@ -199,6 +199,7 @@ func (h *Six910Handler) saveSiteMap(ids *[]int64, path string) {
 	vp.ProductIDList = ids
 	smbs := h.generateSiteMap(&vp)
 	//path := h.ActiveTemplateLocation + "/" + h.ActiveTemplateName
+	h.Log.Debug("writting site map file : ", path+"/sitemap.xml")
 	f, err := os.Create(path + "/sitemap.xml")
 	h.Log.Debug("os.Create err: ", err)
 	defer f.Close()

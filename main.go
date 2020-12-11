@@ -636,13 +636,16 @@ func main() {
 	router.HandleFunc("/admin/uploadBackup", h.AdminUploadBackups).Methods("POST")
 	router.HandleFunc("/admin/downloadBackup", h.AdminDownloadBackups).Methods("GET")
 
+	//site map
+	router.HandleFunc("/admin/generateSiteMap", h.GenerateSiteMap).Methods("GET")
+
 	router.HandleFunc("/rs/loglevel", h.SetLogLevel).Methods("POST")
 
 	router.HandleFunc("/tokenHandler", h.StoreAdminHandleToken).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 
-	//l.LogLevel = lg.OffLevel
+	l.LogLevel = lg.OffLevel
 
 	http.ListenAndServe(":8080", router)
 }

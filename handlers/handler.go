@@ -303,6 +303,8 @@ type Handler interface {
 
 	//logging
 	SetLogLevel(w http.ResponseWriter, r *http.Request)
+
+	GenerateSiteMap(w http.ResponseWriter, r *http.Request)
 }
 
 //dash
