@@ -321,7 +321,7 @@ func (m *Six910Manager) processProductCategory(val string, p *Product, hd *api.H
 	m.Log.Debug("category: ", val)
 	catList := strings.Split(val, "/")
 	m.Log.Debug("catList: ", catList)
-	if len(catList) > 1 {
+	if len(catList) > 0 {
 		p.CategoryID = m.createCategory(&catList, hd)
 		if p.CategoryID == 0 {
 			found = false
@@ -335,7 +335,7 @@ func (m *Six910Manager) processProductCategory(val string, p *Product, hd *api.H
 func (m *Six910Manager) createCategory(catList *[]string, hd *api.Headers) int64 {
 	//time.Sleep(100 * time.Millisecond)
 	var catID int64
-	m.Log.Debug("catList: ", catList)
+	m.Log.Debug("catList in createCategory: ", catList)
 	var catList2 []string
 	for _, c := range *catList {
 		if c != "" {
