@@ -254,6 +254,7 @@ func main() {
 	sh.SchemeDefault = schemeDefault
 	sh.Six910SiteURL = six910CartSite
 	sh.SiteMapDomain = six910CartSite
+
 	sh.CompanyName = companyName
 	sh.LocalDomain = localDomain
 	sh.StoreName = storeName
@@ -265,6 +266,8 @@ func main() {
 	sh.MailSender = &ms
 	sh.MailSenderAddress = mailSenderAddress
 	sh.MailSubject = mailSubject
+
+	sh.Log.Debug("SiteMapDomain URL: ", sh.SiteMapDomain)
 
 	sh.Log.Debug("SIX910_CART_OAUTH2_ENABLED", os.Getenv("SIX910_CART_OAUTH2_ENABLED"))
 	sh.Log.Debug("SIX910_CART_OAUTH2_CLIENT", os.Getenv("SIX910_CART_OAUTH2_CLIENT"))

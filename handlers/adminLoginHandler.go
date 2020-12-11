@@ -144,7 +144,7 @@ func (h *Six910Handler) StoreAdminHandleToken(w http.ResponseWriter, r *http.Req
 	h.Log.Debug("handle token")
 	if state == h.ClientCreds.AuthCodeState {
 
-		h.Log.Error("h.Auth:", h.Auth)
+		h.Log.Debug("h.Auth:", h.Auth)
 		h.Auth.SetOauthHost(h.OauthHost)
 		h.Auth.SetClientID(h.ClientCreds.AuthCodeClient)
 		h.Auth.SetSecret(h.ClientCreds.AuthCodeSecret)
