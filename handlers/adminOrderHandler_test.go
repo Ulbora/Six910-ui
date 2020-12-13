@@ -187,6 +187,64 @@ func TestSix910Handler_StoreAdminEditOrder(t *testing.T) {
 	}
 }
 
+func TestSix910Handler_StoreAdminEditOrder2(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	var mss ml.MockSecureSender
+	mss.MockSuccess = true
+	sh.MailSender = mss.GetNew()
+
+	sh.MailSenderAddress = "test@test.com"
+
+	//-----------start mocking------------------
+
+	var pr api.Response
+	pr.Success = true
+	sapi.MockUpdateOrderResp = &pr
+
+	var oc api.ResponseID
+	oc.Success = true
+	oc.ID = 4
+	sapi.MockAddCommentResp = &oc
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("id=5&status=Canceled&subTotal=10.25&newComment=test"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminEditOrder(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+}
+
 func TestSix910Handler_StoreAdminEditOrderLogin(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger

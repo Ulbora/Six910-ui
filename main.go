@@ -73,6 +73,9 @@ func main() {
 	var mailSubjectOrderShipped string
 	var mailBodyOrderShipped string
 
+	var mailSubjectOrderCanceled string
+	var mailBodyOrderCanceled string
+
 	var mailSubjectPasswordReset string
 	var mailBodyPasswordReset string
 
@@ -206,6 +209,19 @@ func main() {
 			"Click the link in this email to see the tracking information."
 	}
 
+	if os.Getenv("MAIL_SUBJECT_ORDER_CANCELED") != "" {
+		mailSubjectOrderCanceled = os.Getenv("MAIL_SUBJECT_ORDER_CANCELED")
+	} else {
+		mailSubjectOrderCanceled = "%s order # %s has been canceled"
+	}
+
+	if os.Getenv("MAIL_BODY_ORDER_CANCELED") != "" {
+		mailBodyOrderCanceled = os.Getenv("MAIL_BODY_ORDER_CANCELED")
+	} else {
+		mailBodyOrderCanceled = "%s order # %s has been canceled. " +
+			"Click the link in this email to see the tracking information."
+	}
+
 	if os.Getenv("MAIL_SUBJECT_PASSWORD_RESET") != "" {
 		mailSubjectPasswordReset = os.Getenv("MAIL_SUBJECT_PASSWORD_RESET")
 	} else {
@@ -306,6 +322,8 @@ func main() {
 	sh.MailBodyOrderProcessing = mailBodyOrderProcessing
 	sh.MailSubjectOrderShipped = mailSubjectOrderShipped
 	sh.MailBodyOrderShipped = mailBodyOrderShipped
+	sh.MailSubjectOrderCanceled = mailSubjectOrderCanceled
+	sh.MailBodyOrderCanceled = mailBodyOrderCanceled
 
 	sh.MailSubjectPasswordReset = mailSubjectPasswordReset
 	sh.MailBodyPasswordReset = mailBodyPasswordReset

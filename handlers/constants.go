@@ -460,4 +460,6 @@ const (
 	mailMessageUploadComplete = "Product file upload completed with a product upload count of: "
 
 	orderStatusShipped = "Shipped"
+
+	orderStatusCanceled = "Canceled"
 )

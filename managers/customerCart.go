@@ -315,6 +315,7 @@ func (m *Six910Manager) processOrderItems(ois *[]*CartViewItem, orderID int64, h
 		oi.Dropship = prod.Dropship
 		oi.ProductName = prod.Name
 		oi.ProductShortDesc = prod.ShortDesc
+		m.Log.Debug("order item before insert :", oi)
 		go func(ioi *sdbi.OrderItem, ihd *api.Headers, reslt chan *OrderItemResults) {
 			m.Log.Debug("in goroutine :", ioi.ProductID)
 			defer wg.Done()

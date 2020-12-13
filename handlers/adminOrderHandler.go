@@ -155,7 +155,6 @@ func (h *Six910Handler) StoreAdminEditOrder(w http.ResponseWriter, r *http.Reque
 				h.Log.Debug("order comment add resp", *cres)
 			}
 			if h.MailSenderAddress != "" && eop.Status == orderStatusShipped {
-
 				var buyerMail mll.Mailer
 				buyerMail.Subject = fmt.Sprintf(h.MailSubjectOrderShipped, h.CompanyName, eop.OrderNumber)
 				odridstr := strconv.FormatInt(eop.ID, 10)
@@ -168,6 +167,21 @@ func (h *Six910Handler) StoreAdminEditOrder(w http.ResponseWriter, r *http.Reque
 				buyerSendSuc := h.MailSender.SendMail(&buyerMail)
 				h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
 			}
+
+			if h.MailSenderAddress != "" && eop.Status == orderStatusCanceled {
+				var cbuyerMail mll.Mailer
+				cbuyerMail.Subject = fmt.Sprintf(h.MailSubjectOrderCanceled, h.CompanyName, eop.OrderNumber)
+				odridstr := strconv.FormatInt(eop.ID, 10)
+				var olnk = "<a href='" + h.Six910SiteURL + "/viewCustomerOrder/" + odridstr + ">" + eop.OrderNumber + "</a>"
+				cbuyerMail.Body = fmt.Sprintf(h.MailBodyOrderCanceled, eop.CustomerName, olnk)
+				//buystr := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
+				cbuyerMail.Recipients = []string{eop.Username}
+				cbuyerMail.SenderAddress = h.MailSenderAddress
+
+				buyerSendSuc := h.MailSender.SendMail(&cbuyerMail)
+				h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
+			}
+
 			h.Log.Debug("order update resp", *res)
 			if res.Success {
 				http.Redirect(w, r, adminOrderListView, http.StatusFound)
