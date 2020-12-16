@@ -7,6 +7,7 @@ import (
 	"encoding/gob"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"time"
 
@@ -137,9 +138,10 @@ type Six910Handler struct {
 
 //HeaderData HeaderData
 type HeaderData struct {
-	Title         string
-	SiteData      *SiteData
-	BasicSiteData *BasicSiteData
+	Title           string
+	SiteData        *SiteData
+	RichResultsData *RichResultsData
+	BasicSiteData   *BasicSiteData
 }
 
 //SiteData SiteData
@@ -151,6 +153,18 @@ type SiteData struct {
 	OgTitle     string
 	OgURL       template.URL
 	Description string
+}
+
+//RichResultsData RichResultsData
+type RichResultsData struct {
+	Type     string
+	Sku      string
+	Name     string
+	Desc     string
+	Image    template.URL
+	Brand    string
+	Price    string
+	Currency string
 }
 
 //BasicSiteData BasicSiteData
@@ -215,8 +229,28 @@ func (h *Six910Handler) processProductMetaData(prod *sdbi.Product, r *http.Reque
 		sd.Description = prod.Desc
 	}
 	rtn.SiteData = &sd
+	rtn.RichResultsData = h.processRichResultsData(prod, serverHost)
 
 	return &rtn
+}
+
+func (h *Six910Handler) processRichResultsData(prod *sdbi.Product, serverHost string) *RichResultsData {
+	var rsd RichResultsData
+	rsd.Type = "Product"
+	rsd.Sku = prod.Sku
+	rsd.Name = prod.Name
+	rsd.Desc = prod.ShortDesc
+	rsd.Brand = prod.Manufacturer
+	rsd.Image = template.URL(serverHost + prod.Image1)
+	rsd.Price = fmt.Sprintf("%.2f", prod.Price)
+	cur := prod.Currency
+	if cur == "" {
+		rsd.Currency = "USA"
+	} else {
+		rsd.Currency = prod.Currency
+	}
+
+	return &rsd
 }
 
 func (h *Six910Handler) processMetaData(url string, name string, r *http.Request) *HeaderData {

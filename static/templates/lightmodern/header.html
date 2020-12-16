@@ -25,7 +25,13 @@
           "@type": "{{.HeaderData.SiteData.OgType}}",
           "name": "{{.HeaderData.SiteData.OgTitle}}",
           "image": "{{.HeaderData.SiteData.OgImage}}",
-          "description":"{{.HeaderData.SiteData.Description}}"
+          "description":"{{.HeaderData.SiteData.Description}}",
+          "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "price": {{.HeaderData.RichResultsData.Price}},
+            "priceCurrency": "USD"
+          }
         }
       </script>
     {{end}}

@@ -86,6 +86,34 @@ func TestSix910Handler_processProductMetaData2(t *testing.T) {
 	}
 }
 
+func TestSix910Handler_processProductMetaData3(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+	sh.CompanyName = "Six910"
+	sh.Six910SiteURL = "http://six910.com"
+
+	var prod sdbi.Product
+	prod.ID = 1234
+	prod.Sku = "sku1234"
+	prod.Name = "somename"
+	prod.Image1 = "/someimage/img.png"
+	prod.ShortDesc = "16g161gf6156gf1d6f5g16d5f1g56df1g65df16g5df65g1d6f5g16d5fg165df1"
+	prod.Desc = "165165ds1d56fs6dd1df651ds65f1d6s5f16d5sf65ds165ds6d5sf6"
+	prod.Currency = "USA"
+	prod.Price = 12.30
+	prod.Manufacturer = "ford"
+
+	r, _ := http.NewRequest("POST", "/test.com", nil)
+
+	sitedata := sh.processProductMetaData(&prod, r)
+	fmt.Println("sitedate:", *sitedata.RichResultsData)
+	if sitedata.Title == "" {
+		t.Fail()
+	}
+}
+
 func TestSix910Handler_processMetaData(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
