@@ -18,6 +18,16 @@
       <link rel="canonical" href="{{.HeaderData.SiteData.Canonical}}" />  
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <meta name="Description" content="{{.HeaderData.SiteData.Description}}" />
+
+      <script type="application/ld+json">
+        {
+          "@context": "http://schema.org/",
+          "@type": "{{.HeaderData.SiteData.OgType}}",
+          "name": "{{.HeaderData.SiteData.OgTitle}}",
+          "image": "{{.HeaderData.SiteData.OgImage}}",
+          "description":"{{.HeaderData.SiteData.Description}}"
+        }
+      </script>
     {{end}}
   
     {{if .HeaderData.BasicSiteData}}
