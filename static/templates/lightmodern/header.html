@@ -22,10 +22,16 @@
       <script type="application/ld+json">
         {
           "@context": "http://schema.org/",
-          "@type": "{{.HeaderData.SiteData.OgType}}",
-          "name": "{{.HeaderData.SiteData.OgTitle}}",
-          "image": "{{.HeaderData.SiteData.OgImage}}",
-          "description":"{{.HeaderData.SiteData.Description}}",
+          "@type": "{{.HeaderData.RichResultsData.Type}}",
+          "name": "{{.HeaderData.RichResultsData.Name}}",
+          "sku": "{{.HeaderData.RichResultsData.Sku}}",
+          "mpn": "{{.HeaderData.RichResultsData.Mpn}}",
+          "brand": {
+            "@type": "Brand",
+            "name": "{{.HeaderData.RichResultsData.Brand}}"
+          },          
+          "image": "{{.HeaderData.RichResultsData.Image}}",
+          "description":"{{.HeaderData.RichResultsData.Desc}}",
           "offers": {
             "@type": "Offer",
             "availability": "https://schema.org/InStock",
