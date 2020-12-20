@@ -24,6 +24,12 @@
           "@context": "http://schema.org/",
           "@type": "{{.HeaderData.RichResultsData.Type}}",
           "name": "{{.HeaderData.RichResultsData.Name}}",
+          "sku": "{{.HeaderData.RichResultsData.Sku}}",
+          "mpn": "{{.HeaderData.RichResultsData.Mpn}}",
+          "brand": {
+            "@type": "Brand",
+            "name": "{{.HeaderData.RichResultsData.Brand}}"
+          },          
           "image": "{{.HeaderData.RichResultsData.Image}}",
           "description":"{{.HeaderData.RichResultsData.Desc}}",
           "offers": {
