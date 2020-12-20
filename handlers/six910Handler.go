@@ -161,7 +161,7 @@ type RichResultsData struct {
 	Sku      string
 	Name     string
 	Desc     string
-	Image    template.URL
+	Image    template.JS
 	Brand    string
 	Price    string
 	Currency string
@@ -241,7 +241,13 @@ func (h *Six910Handler) processRichResultsData(prod *sdbi.Product, serverHost st
 	rsd.Name = prod.Name
 	rsd.Desc = prod.ShortDesc
 	rsd.Brand = prod.Manufacturer
-	rsd.Image = template.URL(serverHost + prod.Image1)
+	if strings.Contains(prod.Image1, "http") {
+		rsd.Image = template.JS(prod.Image1)
+	} else if h.Six910SiteURL != "" {
+		rsd.Image = template.JS(h.Six910SiteURL + prod.Image1)
+	} else {
+		rsd.Image = template.JS(serverHost + prod.Image1)
+	}
 	rsd.Price = fmt.Sprintf("%.2f", prod.Price)
 	cur := prod.Currency
 	if cur == "" {
