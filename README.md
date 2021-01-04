@@ -11,14 +11,14 @@ https://hub.docker.com/r/ulboralabs/six910-ui
 
 
 ### Project Status
-Six-9-10 has released and currently running on multiple sites.
+Six910 has released and currently running on multiple sites.
 
 ### The Speeding Fast Shopping Cart
 An open source ecommerce platform server for building online shopping cart systems; written in golang. This is the user's storefront and admin panel.
 
-This project is the storefront UI that works with Six-9-10 REST implementation of a hosted ecommerce solution. 
+This project is the storefront UI that works with Six910 REST implementation of a hosted ecommerce solution. 
 
-1. Users of Six-9-10 UI, together with Six-9-10 are able to customize templates just like other hosted solutions.
+1. Users of Six910 UI, together with Six910 are able to customize templates just like other hosted solutions.
 2. Templates can either be written in Golang templating or use a JavaScript framework like Angular or React.
 3. REST services expose all cart functionality.
 
