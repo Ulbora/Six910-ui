@@ -30,6 +30,7 @@ import (
 	tmpsrv "github.com/Ulbora/Six910-ui/templatesrv"
 	users "github.com/Ulbora/Six910-ui/usersrv"
 	api "github.com/Ulbora/Six910API-Go"
+	btc "github.com/Ulbora/Six910BTCPayServerPlugin"
 	ml "github.com/Ulbora/go-mail-sender"
 	oauth2 "github.com/Ulbora/go-oauth2-client"
 	gs "github.com/Ulbora/go-sessions"
@@ -65,6 +66,8 @@ type Six910Handler struct {
 	Log     *lg.Logger
 	Manager m.Manager
 	API     api.API
+
+	BTCPlugin btc.Plugin
 
 	Session        gs.GoSession
 	UserSession    gs.GoSession

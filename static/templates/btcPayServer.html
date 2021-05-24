@@ -1,0 +1,8 @@
+{{define "BTCPayServer"}}
+
+<!-- <a href="/completeOrder/billMeLaterTransaction" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Place Order</a> -->
+<a href="/completeBTCPayTransaction/{{.CustomerCart.Total}}/{{.CustomerCart.Subtotal}}}/{{.CustomerCart.Taxes}}}"
+    class="btn btn-success btn-lg active" role="button" aria-pressed="true">Place
+    Order</a>
+
+{{end}}

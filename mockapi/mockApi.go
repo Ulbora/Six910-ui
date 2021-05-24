@@ -682,6 +682,11 @@ func (a *MockAPI) GetPaymentGateway(id int64, headers *api.Headers) *sdbi.Paymen
 	return a.MockPaymentGateway
 }
 
+//GetPaymentGatewayByName GetPaymentGatewayByName
+func (a *MockAPI) GetPaymentGatewayByName(name string, headers *api.Headers) *sdbi.PaymentGateway {
+	return a.MockPaymentGateway
+}
+
 //GetPaymentGateways GetPaymentGateways
 func (a *MockAPI) GetPaymentGateways(headers *api.Headers) *[]sdbi.PaymentGateway {
 	return a.MockPaymentGatewayList

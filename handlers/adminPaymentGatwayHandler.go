@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	six910api "github.com/Ulbora/Six910API-Go"
+	mll "github.com/Ulbora/go-mail-sender"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
@@ -72,8 +73,37 @@ func (h *Six910Handler) StoreAdminAddPaymentGateway(w http.ResponseWriter, r *ht
 			}
 			var suc bool
 			if !found {
+				//if pgw is BtcPayServer then
+				spi := h.API.GetStorePlugin(apg.StorePluginsID, hd)
+				h.Log.Debug("spi", *spi)
+				if spi.PluginName == "BTCPayServer" {
+					apg.Name = spi.PluginName
+					bpay := h.BTCPlugin.NewPairConnect(apg.CheckoutURL)
+					apg.ClientID = bpay.ClientID
+					apg.ClientKey = bpay.PrivateKey
+					apg.Token = bpay.Token
+					apg.PostOrderURL = h.Six910SiteURL + "/completeOrder/"
+					h.Log.Debug("pgw add resp", *bpay)
+					//var bpic btc.PayPlugin
+					//sent mail to store email
+					if h.MailSenderAddress != "" {
+						var adminMail mll.Mailer
+						adminMail.Body = "Activate your BTCPay Server Token here: " + bpay.PairingURL
+						adminMail.Subject = "Activation Link"
+						str := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
+						adminMail.Recipients = []string{str.Email}
+						adminMail.SenderAddress = h.MailSenderAddress
+						h.MailSender.SendMail(&adminMail)
+					}
+				}
 				prres := h.API.AddPaymentGateway(apg, hd)
 				h.Log.Debug("pgw add resp", *prres)
+				//done------------Need to add a new field in payment gateway table for TOKEN--------------------
+				//done------------there is no place to store the token from btspay server
+				//add call to btcserver plugin to create new
+				//instance that contains a btcclient and
+				//inject in h.BtcPayPlugin
+				//plugin should have New(pg *PaymentGateway), CreateInvoice and maybe more
 				suc = prres.Success
 			} else {
 				suc = true
@@ -109,7 +139,7 @@ func (h *Six910Handler) StoreAdminEditPaymentGatewayPage(w http.ResponseWriter, 
 			go func(id int64, header *six910api.Headers) {
 				defer wg.Done()
 				dgp.PaymentGatway = h.API.GetPaymentGateway(id, header)
-				h.Log.Debug("dgp.PaymentGatway", dgp.PaymentGatway)
+				h.Log.Debug("dgp.PaymentGatway", *dgp.PaymentGatway)
 			}(pgID, hd)
 
 			wg.Add(1)
@@ -229,6 +259,7 @@ func (h *Six910Handler) processPgw(r *http.Request) *sdbi.PaymentGateway {
 	p.ClientKey = r.FormValue("clientKey")
 	p.LogoURL = r.FormValue("logoUrl")
 	p.PostOrderURL = r.FormValue("postOrderUrl")
+	p.Token = r.FormValue("token")
 	storePID := r.FormValue("storePluginId")
 	p.StorePluginsID, _ = strconv.ParseInt(storePID, 10, 64)
 

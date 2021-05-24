@@ -79,6 +79,7 @@ type CheckoutPage struct {
 	PayPalAuthorizePayment bool
 	PayPalPayment          bool
 	BillMeLaterPayment     bool
+	BTCPayServerPayment    bool
 	OrderNumber            string
 
 	HeaderData *HeaderData
@@ -423,6 +424,7 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 
 			h.Log.Debug("ccotres: ", ccotres)
 			h.Log.Debug("acres: ", acres)
+			h.Log.Debug("pgw: ", *pgw)
 
 			// var wg sync.WaitGroup
 			var ccop CheckoutPage
@@ -435,6 +437,9 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			} else if strings.Contains(strings.ToLower(pm.Name), "bill me later") {
 				h.Log.Debug("Using Bill Me Later Gateway")
 				ccop.BillMeLaterPayment = true
+			} else if strings.Contains(strings.ToLower(pgw.Name), "btcpayserver") {
+				h.Log.Debug("Using BTCPayServer Gateway")
+				ccop.BTCPayServerPayment = true
 			}
 			ccop.OrderInfo = h.CompanyName
 			ccop.CustomerCart = ccotres

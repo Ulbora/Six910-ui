@@ -42,6 +42,7 @@ import (
 	tmpsrv "github.com/Ulbora/Six910-ui/templatesrv"
 	usrv "github.com/Ulbora/Six910-ui/usersrv"
 	api "github.com/Ulbora/Six910API-Go"
+	btc "github.com/Ulbora/Six910BTCPayServerPlugin"
 	ml "github.com/Ulbora/go-mail-sender"
 	oauth2 "github.com/Ulbora/go-oauth2-client"
 	ds "github.com/Ulbora/json-datastore"
@@ -283,6 +284,10 @@ func main() {
 	sh.MailSenderAddress = mailSenderAddress
 	sh.MailSubject = mailSubject
 
+	//BTCPay Plugin
+	var ppi btc.PayPlugin
+	sh.BTCPlugin = ppi.New()
+
 	sh.Log.Debug("SiteMapDomain URL: ", sh.SiteMapDomain)
 
 	sh.Log.Debug("SIX910_CART_OAUTH2_ENABLED", os.Getenv("SIX910_CART_OAUTH2_ENABLED"))
@@ -460,6 +465,9 @@ func main() {
 	man.API = &sapi
 	man.Log = &l
 	sh.Manager = man.GetNew()
+
+	//check to see if bts pay server in installed
+	//if so: sh.BTCPlugin = ppi.NewClient(Bts from api)
 
 	sh.LoadTemplate()
 

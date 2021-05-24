@@ -7,7 +7,7 @@
 <body>
     {{template "navbar"}}
     <div class="container">
-       
+
         <h4 class="text-center mt-4">Edit Payment Gateway Page</h4>
 
         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -27,16 +27,17 @@
                 <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
                     <form method="POST" action="/admin/updatePaymentGateway">
                         <input name="id" type="hidden" id="id" value="{{.PaymentGatway.ID}}">
-                        <input name="storePluginId" type="hidden" id="storePluginId" value="{{.PaymentGatway.StorePluginsID}}">
-                        
+                        <input name="storePluginId" type="hidden" id="storePluginId"
+                            value="{{.PaymentGatway.StorePluginsID}}">
+
                         <div class="form-group">
                             <label for="catIds">Name</label>
-                            <select name="storePluginIddis" disabled id="storePluginIddis" class="custom-select custom-select-lg mb-3"
-                                data-selected-text-format="count">
+                            <select name="storePluginIddis" disabled id="storePluginIddis"
+                                class="custom-select custom-select-lg mb-3" data-selected-text-format="count">
                                 {{ $PinID := .PaymentGatway.StorePluginsID }} {{range $.StorePluginPgwList}}
                                 {{if eq $PinID .ID }}
                                 <option value="{{.ID}}" selected>{{.PluginName}}</option>
-                                {{else}}                               
+                                {{else}}
                                 <option value="{{.ID}}">{{.PluginName}}</option>
                                 {{end}}{{end}}
                             </select>
@@ -44,7 +45,8 @@
 
                         <div class="form-group">
                             <label for="checkoutUrl">Checkout Url</label>
-                            <input name="checkoutUrl" type="text" class="form-control" id="checkoutUrl" value="{{.PaymentGatway.CheckoutURL}}">
+                            <input name="checkoutUrl" type="text" class="form-control" id="checkoutUrl"
+                                value="{{.PaymentGatway.CheckoutURL}}">
                         </div>
 
                         <div class="form-group">
@@ -53,7 +55,7 @@
                                 value="{{.PaymentGatway.ClientID}}">
                         </div>
 
-                        
+
                         <div class="form-group">
                             <label for="clientKey">Client Key</label>
                             <input name="clientKey" type="text" class="form-control" id="clientKey"
@@ -73,14 +75,22 @@
                                 value="{{.PaymentGatway.PostOrderURL}}">
                         </div>
 
-                       
+
+                        <div class="form-group">
+                            <label for="token">Token</label>
+                            <input name="token" type="text" class="form-control" id="token"
+                                value="{{.PaymentGatway.Token}}">
+                        </div>
+
+
                         <button type="submit" class="btn btn-primary mt-3">Submit</button>
                     </form>
                 </div>
             </div>
             <div class="tab-pane fade show " id="deletePgw" role="tabpanel" aria-labelledby="home-tab">
                 <div class="shadow-none p-3 mb-5 mt-5 bg-light rounded">
-                    <a class="btn btn-primary" href="/admin/deletePaymentGateway/{{.PaymentGatway.ID}}" role="button">Delete
+                    <a class="btn btn-primary" href="/admin/deletePaymentGateway/{{.PaymentGatway.ID}}"
+                        role="button">Delete
                         Payment Gateway</a>
                 </div>
             </div>

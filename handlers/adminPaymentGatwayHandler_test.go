@@ -8,10 +8,13 @@ import (
 	"strings"
 	"testing"
 
+	cl "github.com/Ulbora/BTCPayClient"
 	lg "github.com/Ulbora/Level_Logger"
 	m "github.com/Ulbora/Six910-ui/managers"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
+	btc "github.com/Ulbora/Six910BTCPayServerPlugin"
+	ml "github.com/Ulbora/go-mail-sender"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 )
@@ -130,6 +133,12 @@ func TestSix910Handler_StoreAdminAddPaymentGateway(t *testing.T) {
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l
 
+	var mss ml.MockSecureSender
+	mss.MockSuccess = true
+	sh.MailSender = mss.GetNew()
+
+	sh.MailSenderAddress = "test@test.com"
+
 	var sapi mapi.MockAPI
 	sapi.SetStoreID(59)
 
@@ -142,6 +151,107 @@ func TestSix910Handler_StoreAdminAddPaymentGateway(t *testing.T) {
 	sh.API = &sapi
 	man.Log = &l
 	sh.Manager = man.GetNew()
+	var ppi btc.PayPlugin
+
+	//mock--------------------
+	var mc btc.MockBTCPayClient
+	mc.MockClientID = "eeeddd"
+	var tknr cl.TokenResponse
+	var tkn cl.TokenData
+	tkn.Token = "1123aaa"
+	tkn.ParingCode = "pa111"
+	tknr.Data = []cl.TokenData{tkn}
+	mc.MockTokenResponse = &tknr
+	mc.MockPairingCodeURL = "http://test.com/pair/123"
+	ppi.SetClient(mc.New())
+	//mock----end
+
+	sh.BTCPlugin = ppi.New()
+
+	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
+
+	var str sdbi.Store
+	str.ID = 5
+	sapi.MockStore = &str
+
+	//-----------start mocking------------------
+
+	var pr api.ResponseID
+	pr.Success = true
+	pr.ID = 5
+	sapi.MockAddPaymentGatewayResp = &pr
+
+	var pw sdbi.PaymentGateway
+	pw.ID = 4
+	pw.StorePluginsID = 7
+
+	var pwlst []sdbi.PaymentGateway
+	pwlst = append(pwlst, pw)
+	sapi.MockPaymentGatewayList = &pwlst
+
+	var spi sdbi.StorePlugins
+	spi.ID = 6
+	spi.IsPGW = true
+	spi.PluginName = "BTCPayServer"
+	sapi.MockStorePlugin = &spi
+
+	//-----------end mocking --------
+
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("checkoutUrl=https://testnet.demo.btcpayserver.org&clientId=125&storePluginId=6"))
+	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+	w := httptest.NewRecorder()
+	s, suc := sh.getSession(r)
+	fmt.Println("suc: ", suc)
+	s.Values["loggedIn"] = true
+	s.Values["storeAdminUser"] = true
+	s.Values["username"] = "tester"
+	s.Values["password"] = "tester"
+	s.Save(r, w)
+	h := sh.GetNew()
+	h.StoreAdminAddPaymentGateway(w, r)
+	fmt.Println("code: ", w.Code)
+
+	if w.Code != 302 {
+		t.Fail()
+	}
+	// t.Fail()
+}
+
+func TestSix910Handler_StoreAdminAddPaymentGatewayExisting(t *testing.T) {
+	var sh Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	sh.Log = &l
+
+	var sapi mapi.MockAPI
+	sapi.SetStoreID(59)
+
+	sapi.SetRestURL("http://localhost:3002")
+	sapi.SetStore("defaultLocalStore", "defaultLocalStore.mydomain.com")
+	sapi.SetAPIKey("GDG651GFD66FD16151sss651f651ff65555ddfhjklyy5")
+
+	var man m.Six910Manager
+	man.API = &sapi
+	sh.API = &sapi
+	man.Log = &l
+	sh.Manager = man.GetNew()
+	var ppi btc.PayPlugin
+
+	//mock--------------------
+	var mc btc.MockBTCPayClient
+	mc.MockClientID = "eeeddd"
+	var tknr cl.TokenResponse
+	var tkn cl.TokenData
+	tkn.Token = "1123aaa"
+	tkn.ParingCode = "pa111"
+	tknr.Data = []cl.TokenData{tkn}
+	mc.MockTokenResponse = &tknr
+	mc.MockPairingCodeURL = "http://test.com/pair/123"
+	ppi.SetClient(mc.New())
+	//mock----end
+
+	sh.BTCPlugin = ppi.New()
+
 	sh.AdminTemplates = template.Must(template.ParseFiles("testHtmls/test.html"))
 
 	//-----------start mocking------------------
@@ -159,9 +269,15 @@ func TestSix910Handler_StoreAdminAddPaymentGateway(t *testing.T) {
 	pwlst = append(pwlst, pw)
 	sapi.MockPaymentGatewayList = &pwlst
 
+	var spi sdbi.StorePlugins
+	spi.ID = 6
+	spi.IsPGW = true
+	spi.PluginName = "BTCPayServer"
+	sapi.MockStorePlugin = &spi
+
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("checkoutUrl=tester&clientId=125&storePluginId=7"))
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("checkoutUrl=https://testnet.demo.btcpayserver.org&clientId=125&storePluginId=7"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)
@@ -178,6 +294,7 @@ func TestSix910Handler_StoreAdminAddPaymentGateway(t *testing.T) {
 	if w.Code != 302 {
 		t.Fail()
 	}
+	// t.Fail()
 }
 
 func TestSix910Handler_StoreAdminAddPaymentGatewayLogin(t *testing.T) {
@@ -270,6 +387,12 @@ func TestSix910Handler_StoreAdminAddPaymentGatewayFail(t *testing.T) {
 	var pwlst []sdbi.PaymentGateway
 	pwlst = append(pwlst, pw)
 	sapi.MockPaymentGatewayList = &pwlst
+
+	var spi sdbi.StorePlugins
+	spi.ID = 6
+	spi.IsPGW = true
+	spi.PluginName = "test"
+	sapi.MockStorePlugin = &spi
 
 	//-----------end mocking --------
 
