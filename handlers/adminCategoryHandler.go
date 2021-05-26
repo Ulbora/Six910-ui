@@ -150,7 +150,7 @@ func (h *Six910Handler) StoreAdminViewCategoryList(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				cats := h.API.GetCategoryList(hd)
+				cats := h.API.GetCategoryList(header)
 				h.Log.Debug("cat list in list", cats)
 				cpg.CategoryList = cats
 			}(hd)

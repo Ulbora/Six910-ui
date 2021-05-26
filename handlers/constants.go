@@ -462,4 +462,6 @@ const (
 	orderStatusShipped = "Shipped"
 
 	orderStatusCanceled = "Canceled"
+
+	btcPayServer = "BTCPayServer"
 )

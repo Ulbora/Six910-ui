@@ -17,6 +17,8 @@
                     aria-controls="item" aria-selected="true">Order {{.Order.OrderNumber}}</a>
             </li>
 
+
+
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="cat-tab" data-toggle="tab" href="#orderItem" role="tab" aria-controls="item"
                     aria-selected="false">Order Items</a>
@@ -49,6 +51,16 @@
                             <input name="orderNumber" type="text" class="form-control" id="orderNumber"
                                 value="{{.Order.OrderNumber}}">
                         </div>
+
+
+                        {{range .TransactionList}}
+                            <div class="form-group">
+                                <label for="transNumber">Transaction ID</label>
+                                <input name="transNumber" disabled type="text" class="form-control" id="transNumber"
+                                value="{{.TransactionID}}">
+                            </div>
+           
+                        {{end}}
 
                         <input name="usernameForNotes" type="hidden" id="usernameForNotes"
                             value="{{.UserNameForNotes}}">
@@ -135,10 +147,12 @@
                                 value="{{.Order.ShippingMethodName}}">
                         </div>
 
+
+
                         <div class="form-group">
                             <div class="form-check form-check-inline">
-                                <input name="pickup" class="form-check-input" type="checkbox" id="pickup"
-                                    {{if .Order.Pickup}} checked {{end}}>
+                                <input name="pickup" class="form-check-input" type="checkbox" id="pickup" 
+                                {{if .Order.Pickup}} checked {{end}}>
                                 <label class="form-check-label" for="pickup">Pickup</label>
                             </div>
                         </div>

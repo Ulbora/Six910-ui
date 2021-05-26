@@ -89,6 +89,7 @@ func main() {
 	var oauth2State string
 	var oauthHost string
 	var oauth2UserURL string
+	var btcPayCurrency string
 
 	if os.Getenv("SIX910_CART_OAUTH2_ENABLED") == "true" {
 		oauth2Enabled = true
@@ -284,9 +285,15 @@ func main() {
 	sh.MailSenderAddress = mailSenderAddress
 	sh.MailSubject = mailSubject
 
+	if os.Getenv("BTC_PAY_CURRENCY") != "" {
+		btcPayCurrency = os.Getenv("BTC_PAY_CURRENCY")
+	} else {
+		btcPayCurrency = "USD"
+	}
 	//BTCPay Plugin
 	var ppi btc.PayPlugin
 	sh.BTCPlugin = ppi.New()
+	sh.BTCPayCurrency = btcPayCurrency
 
 	sh.Log.Debug("SiteMapDomain URL: ", sh.SiteMapDomain)
 
@@ -505,6 +512,8 @@ func main() {
 
 	router.HandleFunc("/completeOrder/{transactionCode}", h.CheckOutComplateOrder).Methods("GET")
 
+	router.HandleFunc("/completeBTCPayTransaction/{total}/{tax}/{firstName}/{lastName}/{email}", h.CompleteBTCPayTransaction).Methods("GET")
+
 	router.HandleFunc("/checkoutContinue", h.CheckOutContinue).Methods("POST")
 
 	router.HandleFunc("/createCustomerAccount", h.CreateCustomerAccount).Methods("POST")
@@ -675,6 +684,7 @@ func main() {
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 
 	l.LogLevel = lg.OffLevel
+	sh.BTCPlugin.SetLogLevel(lg.OffLevel)
 
 	http.ListenAndServe(":8080", router)
 }

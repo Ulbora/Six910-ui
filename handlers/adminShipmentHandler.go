@@ -94,27 +94,29 @@ func (h *Six910Handler) StoreAdminAddShipment(w http.ResponseWriter, r *http.Req
 		if h.isStoreAdminLoggedIn(as) {
 			sh := h.processShipment(r)
 			h.Log.Debug("shipment in add", *sh)
-			hd := h.getHeader(as)
-			shres := h.API.AddShipment(sh, hd)
+			hd1 := h.getHeader(as)
+			shres := h.API.AddShipment(sh, hd1)
 			h.Log.Debug("shipment add resp", *shres)
 			var success = true
 			if shres.Success {
-				oil := h.API.GetOrderItemList(sh.OrderID, hd)
+				hd2 := h.getHeader(as)
+				oil := h.API.GetOrderItemList(sh.OrderID, hd2)
 				var oichan = make(chan *api.ResponseID, len(*oil))
 				var wg sync.WaitGroup
 				for i := range *oil {
 					wg.Add(1)
-					go func(oi *sdbi.OrderItem, header *six910api.Headers, ch chan *api.ResponseID) {
+					go func(oi *sdbi.OrderItem, ch chan *api.ResponseID) {
 						defer wg.Done()
+						hd := h.getHeader(as)
 						h.Log.Debug("order item in goroutine", *oi)
 						var si sdbi.ShipmentItem
 						si.OrderItemID = oi.ID
 						si.Quantity = oi.Quantity
 						si.ShipmentID = shres.ID
 						h.Log.Debug("shipment item in goroutine", si)
-						ires := h.API.AddShipmentItem(&si, header)
+						ires := h.API.AddShipmentItem(&si, hd)
 						ch <- ires
-					}(&(*oil)[i], hd, oichan)
+					}(&(*oil)[i], oichan)
 				}
 				wg.Wait()
 				close(oichan)

@@ -12,12 +12,15 @@ import (
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
+	pi "github.com/Ulbora/Six910BTCPayServerPlugin"
 )
 
 func TestCmsHandler_SetLogLevel(t *testing.T) {
 	var oh Six910Handler
 	var logger lg.Logger
 	oh.Log = &logger
+	var pii pi.PayPlugin
+	oh.BTCPlugin = pii.New()
 
 	h := oh.GetNew()
 	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"logLevel":"debug"}`))
@@ -28,6 +31,7 @@ func TestCmsHandler_SetLogLevel(t *testing.T) {
 	r.Header.Set("Content-Type", "application/json")
 	r.Header.Set("Logging_KEY", "45sdbb2345")
 	w := httptest.NewRecorder()
+
 	h.SetLogLevel(w, r)
 	resp := w.Result()
 	body, _ := ioutil.ReadAll(resp.Body)
@@ -71,6 +75,9 @@ func TestCmsHandler_SetInfoLogLevel(t *testing.T) {
 	var logger lg.Logger
 	oh.Log = &logger
 
+	var pii pi.PayPlugin
+	oh.BTCPlugin = pii.New()
+
 	h := oh.GetNew()
 	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"logLevel":"info"}`))
 	//aJSON, _ := json.Marshal(robj)
@@ -97,6 +104,9 @@ func TestCmsHandler_SetAllLogLevel(t *testing.T) {
 	var logger lg.Logger
 	oh.Log = &logger
 
+	var pii pi.PayPlugin
+	oh.BTCPlugin = pii.New()
+
 	h := oh.GetNew()
 	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"logLevel":"all"}`))
 	//aJSON, _ := json.Marshal(robj)
@@ -122,6 +132,9 @@ func TestCmsHandler_SetOffLogLevel(t *testing.T) {
 	var oh Six910Handler
 	var logger lg.Logger
 	oh.Log = &logger
+
+	var pii pi.PayPlugin
+	oh.BTCPlugin = pii.New()
 
 	h := oh.GetNew()
 	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"logLevel":"off"}`))
@@ -150,6 +163,9 @@ func TestCmsHandler_SetOffLogLevelLogKey(t *testing.T) {
 	var logger lg.Logger
 	oh.Log = &logger
 
+	var pii pi.PayPlugin
+	oh.BTCPlugin = pii.New()
+
 	h := oh.GetNew()
 	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"logLevel":"off"}`))
 	//aJSON, _ := json.Marshal(robj)
@@ -177,6 +193,9 @@ func TestCmsHandler_SetOffLogLevelLogWrongKey(t *testing.T) {
 	var oh Six910Handler
 	var logger lg.Logger
 	oh.Log = &logger
+
+	var pii pi.PayPlugin
+	oh.BTCPlugin = pii.New()
 
 	h := oh.GetNew()
 	aJSON := ioutil.NopCloser(bytes.NewBufferString(`{"logLevel":"off"}`))

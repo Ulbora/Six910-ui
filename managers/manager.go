@@ -135,6 +135,7 @@ type CustomerCart struct {
 	ShippingAddressID int64
 	OrderID           int64
 	BillMeLater       bool
+	InProgress        bool
 }
 
 //CustomerOrder CustomerOrder

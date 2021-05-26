@@ -11,7 +11,6 @@ import (
 
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
-	six910api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
 
@@ -263,32 +262,41 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 			h.Log.Debug("Customer Account: ", cocc.CustomerAccount)
 			cop.CustomerCart = cocc
 			var wg sync.WaitGroup
-			hd := h.getHeader(cocvs)
+			// hd := h.getHeader(cocvs)
 			cid := h.getCustomerID(cocvs)
 			h.Log.Debug("Customer ID: ", cid)
 			wg.Add(1)
-			go func(header *six910api.Headers) {
+			go func() {
 				defer wg.Done()
 				var mplist []PaymentMethod
-				pgs := h.API.GetPaymentGateways(header)
+				hd1 := h.getHeader(cocvs)
+				pgs := h.API.GetPaymentGateways(hd1)
 				h.Log.Debug("Payment Gateways: ", *pgs)
 				for i := range *pgs {
+					hd := h.getHeader(cocvs)
 					var pg = (*pgs)[i]
-					sp := h.API.GetStorePlugin(pg.StorePluginsID, header)
+					sp := h.API.GetStorePlugin(pg.StorePluginsID, hd)
 					var pm PaymentMethod
-					pm.Name = sp.PluginName
+					if sp.PluginName == "BTCPayServer" {
+						pm.Name = "BitCoin"
+					} else {
+						pm.Name = sp.PluginName
+					}
+
 					pm.PaymentGateway = &pg
 					mplist = append(mplist, pm)
 				}
 				cop.PaymentMethodList = &mplist
-			}(hd)
+			}()
 
 			wg.Add(1)
-			go func(header *six910api.Headers) {
+			go func() {
 				defer wg.Done()
-				slst := h.API.GetShippingMethodList(header)
+				hd1 := h.getHeader(cocvs)
+				slst := h.API.GetShippingMethodList(hd1)
 				var smlst []ShippingMethod
 				for _, sm := range *slst {
+					hd := h.getHeader(cocvs)
 					var nsm ShippingMethod
 					nsm.ID = sm.ID
 					nsm.Cost = sm.Cost
@@ -298,16 +306,17 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 					smlst = append(smlst, nsm)
 				}
 				cop.ShippingMethodList = &smlst
-			}(hd)
+			}()
 
 			wg.Add(1)
-			go func(header *six910api.Headers) {
+			go func() {
 				defer wg.Done()
-				cop.InsuranceList = h.API.GetInsuranceList(header)
+				hd := h.getHeader(cocvs)
+				cop.InsuranceList = h.API.GetInsuranceList(hd)
 				if len(*cop.InsuranceList) > 0 {
 					cop.ShowInsurance = true
 				}
-			}(hd)
+			}()
 
 			wg.Add(1)
 			// go func(cart *m.CustomerCart, header *six910api.Headers) {
@@ -322,17 +331,18 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 			// 	}
 			// }(cocc, hd)
 
-			go func(cusId int64, header *six910api.Headers) {
+			go func(cusId int64) {
 				defer wg.Done()
 				//if cart.CustomerAccount != nil && cart.CustomerAccount.Customer != nil {
 
 				if cusId != 0 {
-					cop.CustomerAddressList = h.API.GetAddressList(cusId, header)
+					hd := h.getHeader(cocvs)
+					cop.CustomerAddressList = h.API.GetAddressList(cusId, hd)
 					if len(*cop.CustomerAddressList) > 0 {
 						cop.ShowAddressList = true
 					}
 				}
-			}(cid, hd)
+			}(cid)
 
 			wg.Wait()
 
@@ -341,6 +351,7 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 			cop.PageBody = csspg
 
 			ml := h.MenuService.GetMenuList()
+			hd := h.getHeader(cocvs)
 			h.getCartTotal(cocvs, ml, hd)
 			cop.MenuList = ml
 
@@ -414,7 +425,11 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			pgw := h.API.GetPaymentGateway(pgwid, hd)
 			sp := h.API.GetStorePlugin(pgw.StorePluginsID, hd)
 			var pm PaymentMethod
-			pm.Name = sp.PluginName
+			if sp.PluginName == "BTCPayServer" {
+				pm.Name = "BitCoin"
+			} else {
+				pm.Name = sp.PluginName
+			}
 			pm.PaymentGateway = pgw
 			pm.CheckoutURL = template.URL(pgw.CheckoutURL)
 
@@ -490,15 +505,19 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 			// appqtystr := appvars["quantity"]
 			//cartID, _ = strconv.ParseInt(cartIdstr, 10, 64)
 
-			hd := h.getHeader(cocod)
+			hd1 := h.getHeader(cocod)
 			comccotres := h.getCustomerCart(cocod)
 			if transactionCode == "billMeLaterTransaction" {
 				comccotres.BillMeLater = true
 			}
 
 			h.Log.Debug("comccotres: ", *comccotres.CustomerAccount)
+			h.Log.Debug("InProgress: ", comccotres.InProgress)
+			// if comccotres.Items != nil && !comccotres.InProgress {
 			if comccotres.Items != nil {
-				odrRes := h.Manager.CheckOut(comccotres, hd)
+				comccotres.InProgress = true
+				h.storeCustomerCart(comccotres, cocod, w, r)
+				odrRes := h.Manager.CheckOut(comccotres, hd1)
 				h.Log.Debug("odrRes after CheckOut: ", *odrRes.Order)
 				//ccotres.OrderID = odrRes.Order.ID
 				h.Log.Debug("comccotres.OrderID after create: ", comccotres.OrderID)
@@ -506,29 +525,37 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 				var ccopc CheckoutPage
 				var wg1 sync.WaitGroup
 
+				//hd2 := h.getHeader(cocod)
 				wg1.Add(1)
-				go func(smid int64, header *six910api.Headers) {
+				go func(smid int64) {
 					defer wg1.Done()
-					ccopc.ShippingMethod = h.API.GetShippingMethod(smid, header)
-				}(comccotres.ShippingMethodID, hd)
+					hd := h.getHeader(cocod)
+					ccopc.ShippingMethod = h.API.GetShippingMethod(smid, hd)
+				}(comccotres.ShippingMethodID)
 
+				// hd3 := h.getHeader(cocod)
 				wg1.Add(1)
-				go func(baid int64, cid int64, header *six910api.Headers) {
+				go func(baid int64, cid int64) {
 					defer wg1.Done()
-					ccopc.BillingAddress = h.API.GetAddress(baid, cid, header)
-				}(comccotres.BillingAddressID, comccotres.Cart.CustomerID, hd)
+					hd := h.getHeader(cocod)
+					ccopc.BillingAddress = h.API.GetAddress(baid, cid, hd)
+				}(comccotres.BillingAddressID, comccotres.Cart.CustomerID)
 
+				// hd4 := h.getHeader(cocod)
 				wg1.Add(1)
-				go func(said int64, cid int64, header *six910api.Headers) {
+				go func(said int64, cid int64) {
 					defer wg1.Done()
-					ccopc.ShippingAddress = h.API.GetAddress(said, cid, header)
-				}(comccotres.ShippingAddressID, comccotres.Cart.CustomerID, hd)
+					hd := h.getHeader(cocod)
+					ccopc.ShippingAddress = h.API.GetAddress(said, cid, hd)
+				}(comccotres.ShippingAddressID, comccotres.Cart.CustomerID)
 
+				// hd5 := h.getHeader(cocod)
 				wg1.Add(1)
-				go func(pgwid int64, oid int64, tcode string, amount float64, header *six910api.Headers) {
+				go func(pgwid int64, oid int64, tcode string, amount float64) {
 					defer wg1.Done()
-					pgw := h.API.GetPaymentGateway(pgwid, header)
-					sp := h.API.GetStorePlugin(pgw.StorePluginsID, header)
+					hd := h.getHeader(cocod)
+					pgw := h.API.GetPaymentGateway(pgwid, hd)
+					sp := h.API.GetStorePlugin(pgw.StorePluginsID, hd)
 					var pm PaymentMethod
 					pm.Name = sp.PluginName
 					pm.PaymentGateway = pgw
@@ -545,9 +572,9 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 					trans.Success = true
 					trans.TransactionID = tcode
 					trans.Type = sp.PluginName
-					tres := h.API.AddOrderTransaction(&trans, header)
+					tres := h.API.AddOrderTransaction(&trans, hd)
 					h.Log.Debug("transaction res: ", *tres)
-				}(comccotres.PaymentGatewayID, odrRes.Order.ID, transactionCode, odrRes.Order.Total, hd)
+				}(comccotres.PaymentGatewayID, odrRes.Order.ID, transactionCode, odrRes.Order.Total)
 
 				//----
 
@@ -572,8 +599,9 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 				h.Log.Debug("PageBody: ", *csspg)
 				ccopc.PageBody = csspg
 
+				hd6 := h.getHeader(cocod)
 				ml := h.MenuService.GetMenuList()
-				h.getCartTotal(cocod, ml, hd)
+				h.getCartTotal(cocod, ml, hd6)
 				ccopc.MenuList = ml
 
 				h.Log.Debug("MenuList", *ccopc.MenuList)
@@ -586,16 +614,25 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 					ccopc.Content = &ct
 				}
 
+				// hd7 := h.getHeader(cocod)
+				h.Log.Debug("h.MailSenderAddress: ", h.MailSenderAddress)
 				if h.MailSenderAddress != "" {
+					h.Log.Debug("Sending email: ", h.MailSenderAddress)
 					var sellerMail mll.Mailer
 					sellerMail.Subject = h.MailSubjectOrderReceived
 					sellerMail.Body = fmt.Sprintf(h.MailBodyOrderReceived, odrRes.Order.OrderNumber, odrRes.Order.CustomerName)
+					h.Log.Debug("Getting store: ")
+					hd := h.getHeader(cocod)
 					str := h.API.GetStore(h.StoreName, h.LocalDomain, hd)
+					h.Log.Debug("Got store: ", str)
 					sellerMail.Recipients = []string{str.Email}
 					sellerMail.SenderAddress = h.MailSenderAddress
 
-					sellerSendSuc := h.MailSender.SendMail(&sellerMail)
-					h.Log.Debug("sendSuc  to seller: ", sellerSendSuc)
+					h.Log.Debug("befor send mail  to seller: ")
+					go func(sm *mll.Mailer) {
+						sellerSendSuc := h.MailSender.SendMail(sm)
+						h.Log.Debug("sendSuc  to seller: ", sellerSendSuc)
+					}(&sellerMail)
 
 					var buyerMail mll.Mailer
 					buyerMail.Subject = fmt.Sprintf(h.MailSubjectOrderProcessing, h.CompanyName, odrRes.Order.OrderNumber)
@@ -606,25 +643,31 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 					buyerMail.Recipients = []string{comccotres.CustomerAccount.User.Username}
 					buyerMail.SenderAddress = h.MailSenderAddress
 
-					buyerSendSuc := h.MailSender.SendMail(&buyerMail)
-					h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
+					go func(sm *mll.Mailer) {
+						buyerSendSuc := h.MailSender.SendMail(sm)
+						h.Log.Debug("sendSuc to buyer: ", buyerSendSuc)
+					}(&buyerMail)
+
 				}
 
+				h.Log.Debug("before wg1: ")
 				wg1.Wait()
 
 				ecc := h.getCustomerCart(cocod)
 				var wg sync.WaitGroup
 				for _, ci := range *ecc.Items {
+					// hd8 := h.getHeader(cocod)
 					wg.Add(1)
-					go func(id int64, pid int64, cid int64, qty int64, header *six910api.Headers) {
+					go func(id int64, pid int64, cid int64, qty int64) {
 						defer wg.Done()
-						prd := h.API.GetProductByID(pid, header)
+						hd := h.getHeader(cocod)
+						prd := h.API.GetProductByID(pid, hd)
 						prd.Stock -= qty
 						h.Log.Debug("product after -=: ", *prd)
-						upres := h.API.UpdateProductQuantity(prd, header)
+						upres := h.API.UpdateProductQuantity(prd, hd)
 						h.Log.Debug("update product after -=: ", *upres)
-						h.API.DeleteCartItem(id, pid, cid, header)
-					}(ci.ID, ci.ProductID, ci.CartID, ci.Quantity, hd)
+						h.API.DeleteCartItem(id, pid, cid, hd)
+					}(ci.ID, ci.ProductID, ci.CartID, ci.Quantity)
 				}
 				wg.Wait()
 				ecc.CartView = nil

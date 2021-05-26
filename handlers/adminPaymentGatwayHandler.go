@@ -76,7 +76,7 @@ func (h *Six910Handler) StoreAdminAddPaymentGateway(w http.ResponseWriter, r *ht
 				//if pgw is BtcPayServer then
 				spi := h.API.GetStorePlugin(apg.StorePluginsID, hd)
 				h.Log.Debug("spi", *spi)
-				if spi.PluginName == "BTCPayServer" {
+				if spi.PluginName == btcPayServer {
 					apg.Name = spi.PluginName
 					bpay := h.BTCPlugin.NewPairConnect(apg.CheckoutURL)
 					apg.ClientID = bpay.ClientID

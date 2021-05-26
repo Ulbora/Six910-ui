@@ -5,7 +5,7 @@
 
 <body>
   {{range .MenuList}}
-  {{if and (eq .Location "top")  (eq .Active true) (eq .Name "navBar")}}
+  {{if and (eq .Location "top") (eq .Active true) (eq .Name "navBar")}}
   {{template "navBar" .}}
   {{end}}
   {{end}}
@@ -19,7 +19,7 @@
     <div class="row mt-5">
 
       {{if and .CustomerCart .CustomerCart.Items}}
-      <div class="col-6">
+      <div class="col-5">
         <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Cart Items</h4>
 
         {{range .CustomerCart.CartView.Items}}
@@ -74,7 +74,7 @@
 
 
       </div>
-      <div class="col-6">
+      <div class="col-7">
         <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Summary</h4>
         <div class="card bg-light">
           <div class="card-body">
@@ -155,7 +155,7 @@
           </div>
 
           {{if eq .PayPalPayment true}}
-          <div class="card text-center border-0">            
+          <div class="card text-center border-0">
             <div class="card-body">
               {{template "paypal" .}}
             </div>
@@ -163,7 +163,7 @@
           {{end}}
 
           {{if eq .PayPalAuthorizePayment true}}
-          <div class="card text-center border-0">            
+          <div class="card text-center border-0">
             <div class="card-body">
               {{template "paypalauthorize" .}}
             </div>
@@ -171,9 +171,17 @@
           {{end}}
 
           {{if eq .BillMeLaterPayment true}}
-          <div class="card text-center border-0">            
+          <div class="card text-center border-0">
             <div class="card-body">
               {{template "billMeLater" .}}
+            </div>
+          </div>
+          {{end}}
+
+          {{if eq .BTCPayServerPayment true}}
+          <div class="card text-center border-0">
+            <div class="card-body">
+              {{template "BTCPayServer" .}}
             </div>
           </div>
           {{end}}

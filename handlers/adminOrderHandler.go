@@ -54,6 +54,7 @@ type OrderPage struct {
 	Notes            *[]sdbi.OrderComment
 	OrderItemList    *[]OrderItem
 	Orders           *[]sdbi.Order
+	TransactionList  *[]sdbi.OrderTransaction
 	Status           string
 	OrderStatusList  []string
 	UserNameForNotes string
@@ -86,6 +87,7 @@ func (h *Six910Handler) StoreAdminEditOrderPage(w http.ResponseWriter, r *http.R
 				eoparm.Order = odr
 			}(oID, hd)
 
+			hd2 := h.getHeader(s)
 			oItemList := h.API.GetOrderItemList(oID, hd)
 			var oichan = make(chan OrderItem, len(*oItemList))
 			for i := range *oItemList {
@@ -110,16 +112,26 @@ func (h *Six910Handler) StoreAdminEditOrderPage(w http.ResponseWriter, r *http.R
 					noi.SalePrice = prod.SalePrice
 					ch <- noi
 
-				}((*oItemList)[i], oichan, hd)
+				}((*oItemList)[i], oichan, hd2)
 			}
 
+			hd3 := h.getHeader(s)
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				notes := h.API.GetOrderCommentList(oID, hd)
+				notes := h.API.GetOrderCommentList(oid, header)
 				h.Log.Debug("notes in edit", notes)
 				eoparm.Notes = notes
-			}(oID, hd)
+			}(oID, hd3)
+
+			hd4 := h.getHeader(s)
+			wg.Add(1)
+			go func(oid int64, header *six910api.Headers) {
+				defer wg.Done()
+				tlist := h.API.GetOrderTransactionList(oid, header)
+				h.Log.Debug("trans list", tlist)
+				eoparm.TransactionList = tlist
+			}(oID, hd4)
 
 			wg.Wait()
 

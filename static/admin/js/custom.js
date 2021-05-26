@@ -66,15 +66,22 @@ $(document).ready(function () {
 });
 
 
+// $(document).ready(function () {
+//     $("#image").load(function () {
+//         //alert( $(this).val());
+//         var imageName = $(this).val();
+//         document.getElementById("imageImg").src = imageName;
+//     });
+// });
+
+
 $(document).ready(function () {
-    $("#image").load(function () {
+    $("#image").on('load', function () {
         //alert( $(this).val());
         var imageName = $(this).val();
         document.getElementById("imageImg").src = imageName;
     });
 });
-
-
 
 $(document).ready(function () {
     $("#logo").keyup(function () {
@@ -87,8 +94,8 @@ $(document).ready(function () {
 
 
 // Callback that creates and populates a data table,
-  // instantiates the pie chart, passes in the data and
-  // draws it.
+// instantiates the pie chart, passes in the data and
+// draws it.
 //   function drawVisitorChart() {
 
 //     // Create the data table.
@@ -122,19 +129,21 @@ function drawVisitorChart(dataval) {
     data.addRows(dataval);
 
     // Set chart options
-    var options = {'title':'Visitor Count by Day',
-                   'width':500,
-                   'height':400};
+    var options = {
+        'title': 'Visitor Count by Day',
+        'width': 500,
+        'height': 400
+    };
 
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.ColumnChart(document.getElementById('visitor_chart_div'));
     chart.draw(data, options);
-  }
+}
 
 
 // Callback that creates and populates a data table,
-  // instantiates the pie chart, passes in the data and
-  // draws it.
+// instantiates the pie chart, passes in the data and
+// draws it.
 //   function drawSalesChart() {
 
 //     // Create the data table.
@@ -168,28 +177,30 @@ function drawSalesChart(dataval) {
     data.addRows(dataval);
 
     // Set chart options
-    var options = {'title':'Sales by Day',
-                   'width':500,
-                   'height':400};
+    var options = {
+        'title': 'Sales by Day',
+        'width': 500,
+        'height': 400
+    };
 
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.ColumnChart(document.getElementById('sales_chart_div'));
     chart.draw(data, options);
-  }
+}
 
-  var loadVisitors = function(data){
+var loadVisitors = function (data) {
     google.charts.setOnLoadCallback(drawVisitorChart(data));
-  }
+}
 
-  var loadSales = function(data){
+var loadSales = function (data) {
     google.charts.setOnLoadCallback(drawSalesChart(data));
-  }
+}
 
 
 function checkPasswordMatch() {
     var password = $("#password").val();
     var confirmPassword = $("#password2").val();
-    if (password != confirmPassword) {       
+    if (password != confirmPassword) {
         document.getElementById("CheckPasswordMatch").style.visibility = "visible";
         $("#CheckPasswordMatch").html("Passwords does not match!");
     }

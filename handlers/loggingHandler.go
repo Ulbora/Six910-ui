@@ -61,18 +61,22 @@ func (h *Six910Handler) SetLogLevel(w http.ResponseWriter, r *http.Request) {
 				switch strings.ToUpper(lv.Level) {
 				case debugLevel:
 					h.Log.LogLevel = lg.DebugLevel
+					h.BTCPlugin.SetLogLevel(lg.DebugLevel)
 					logRes.Success = true
 					logRes.LogLevel = debugLevel
 				case infoLevel:
 					h.Log.LogLevel = lg.InfoLevel
+					h.BTCPlugin.SetLogLevel(lg.InfoLevel)
 					logRes.Success = true
 					logRes.LogLevel = infoLevel
 				case allLevel:
 					h.Log.LogLevel = lg.AllLevel
+					h.BTCPlugin.SetLogLevel(lg.AllLevel)
 					logRes.Success = true
 					logRes.LogLevel = allLevel
 				case offLevel:
 					h.Log.LogLevel = lg.OffLevel
+					h.BTCPlugin.SetLogLevel(lg.OffLevel)
 					logRes.Success = true
 					logRes.LogLevel = offLevel
 				}

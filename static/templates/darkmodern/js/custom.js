@@ -66,13 +66,23 @@ $(document).ready(function () {
 });
 
 
+// $(document).ready(function () {
+//     $("#image").load(function () {
+//         //alert( $(this).val());
+//         var imageName = $(this).val();
+//         document.getElementById("imageImg").src = imageName;
+//     });
+// });
+
+
 $(document).ready(function () {
-    $("#image").load(function () {
+    $("#image").on('load', function () {
         //alert( $(this).val());
         var imageName = $(this).val();
         document.getElementById("imageImg").src = imageName;
     });
 });
+
 
 
 
@@ -87,7 +97,7 @@ $(document).ready(function () {
 function checkPasswordMatch() {
     var password = $("#password").val();
     var confirmPassword = $("#password2").val();
-    if (password != confirmPassword) {       
+    if (password != confirmPassword) {
         document.getElementById("CheckPasswordMatch").style.visibility = "visible";
         $("#CheckPasswordMatch").html("Passwords does not match!");
     }
@@ -103,6 +113,6 @@ $(document).ready(function () {
     $("#password2").keyup(checkPasswordMatch);
 });
 
-var showSpinner = function(){
+var showSpinner = function () {
     document.getElementById("spinner").style.display = "block";
 }

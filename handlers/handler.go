@@ -50,6 +50,7 @@ type Handler interface {
 	StoreAdminChangePassword(w http.ResponseWriter, r *http.Request)
 	//OAuth Password by admin
 	StoreAdminChangeUserPassword(w http.ResponseWriter, r *http.Request)
+	CompleteBTCPayTransaction(w http.ResponseWriter, r *http.Request)
 
 	StoreAdminAdminUserList(w http.ResponseWriter, r *http.Request)
 	StoreAdminCustomerUserList(w http.ResponseWriter, r *http.Request)

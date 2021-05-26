@@ -41,6 +41,8 @@ github.com/Ulbora/BTCPayClient v1.0.0 h1:hQByHlGBPmST3mQRJUXKhd8vUjxvJuLz5IMxWnA
 github.com/Ulbora/BTCPayClient v1.0.0/go.mod h1:9+M6EUN5UQJs0nUvk8E2b7yJ5a/XJzLkiOLdC5xTHDU=
 github.com/Ulbora/BTCPayClient v1.0.1 h1:f2BQ3ShK132a4/2ji0Tq1NU9PiQkensp519ghBE9Jz4=
 github.com/Ulbora/BTCPayClient v1.0.1/go.mod h1:9+M6EUN5UQJs0nUvk8E2b7yJ5a/XJzLkiOLdC5xTHDU=
+github.com/Ulbora/BTCPayClient v1.0.2 h1:QeiS9kzOlqyptKudLuIU89gCyx9jv5jxeiY31/gcqqQ=
+github.com/Ulbora/BTCPayClient v1.0.2/go.mod h1:9+M6EUN5UQJs0nUvk8E2b7yJ5a/XJzLkiOLdC5xTHDU=
 github.com/Ulbora/FileReader v1.0.0 h1:J7fbnlxfvXbhpHm0S196UQ40lQnZ2BqXZ0AamJ6gTKQ=
 github.com/Ulbora/FileReader v1.0.0/go.mod h1:UZLF1zWmBmQ2MNGN7L7TyyQP7Y/IlOqheGYqV2Km6s0=
 github.com/Ulbora/GoProxy v1.0.1 h1:7gFPaJdXDV3tFDSWYxpQx7SQmNKcZPrv4SMwxa+vFhA=
@@ -89,6 +91,16 @@ github.com/Ulbora/Six910BTCPayServerPlugin v1.0.0 h1:TRUGgYAWFm6dWCGQArv3ZW3kEyc
 github.com/Ulbora/Six910BTCPayServerPlugin v1.0.0/go.mod h1:dY7hpHbxLJwTBUBPri9jac7yJEi5kczbNEk9hS5Uhcs=
 github.com/Ulbora/Six910BTCPayServerPlugin v1.0.1 h1:Td0WFqb2+bsQgQIpBl4ahnTJ98Z2ZZrMGieBDjWUS9Q=
 github.com/Ulbora/Six910BTCPayServerPlugin v1.0.1/go.mod h1:lcgV13x9+eRxTmSJidRe2OrIoEWY8POFqx0UGTOHyfc=
+github.com/Ulbora/Six910BTCPayServerPlugin v1.0.2 h1:hmJXD/qAT9fI4VZy/CPml284u8lib+0iT6ea0uF2w+E=
+github.com/Ulbora/Six910BTCPayServerPlugin v1.0.2/go.mod h1:TF4fh0enVO8gNnbQBNx1MFnVusgYiJ/XVyccO7HYJfs=
+github.com/Ulbora/Six910BTCPayServerPlugin v1.0.3 h1:YUrASb8bnkbvDjmHv6srm7UrddmK/l8er3dj5OT/Y5o=
+github.com/Ulbora/Six910BTCPayServerPlugin v1.0.3/go.mod h1:TF4fh0enVO8gNnbQBNx1MFnVusgYiJ/XVyccO7HYJfs=
+github.com/Ulbora/Six910BTCPayServerPlugin v1.0.4 h1:xEH2Z84g+0SfAkKE6TuuyiXJLy+RJow23zDS+GVMlAw=
+github.com/Ulbora/Six910BTCPayServerPlugin v1.0.4/go.mod h1:TF4fh0enVO8gNnbQBNx1MFnVusgYiJ/XVyccO7HYJfs=
+github.com/Ulbora/Six910BTCPayServerPlugin v1.0.5 h1:Lgzqv9c3mqwSanfidlaCZWJIDQGNeX04IahP8pW7xmo=
+github.com/Ulbora/Six910BTCPayServerPlugin v1.0.5/go.mod h1:kZh255vSLhNS8CyPZ0L3q++GkerfDUnWywDNfws4E2A=
+github.com/Ulbora/Six910BTCPayServerPlugin v1.0.6 h1:UXPW/b54DzJQ9Mx/WjsmVRgfz2HYnqra1GtgirXDqGc=
+github.com/Ulbora/Six910BTCPayServerPlugin v1.0.6/go.mod h1:kZh255vSLhNS8CyPZ0L3q++GkerfDUnWywDNfws4E2A=
 github.com/Ulbora/go-mail-sender v1.0.0 h1:lfVK66JRIPSZCkeTO3/0fnnygVeVF+5ena47I2pj5Fo=
 github.com/Ulbora/go-mail-sender v1.0.0/go.mod h1:uI61omDxYerT9GWLIOIk7Y2wq9esh09UK2LkdCAuTkU=
 github.com/Ulbora/go-oauth2-client v1.0.2 h1:+71Vgof2hT6w0kgwMROk6kt6C3ueQBsU9ehRXpqH1Sk=

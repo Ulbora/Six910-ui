@@ -58,6 +58,7 @@ func (h *Six910Handler) LoadTemplate() {
 		h.ActiveTemplateLocation+"/paypal.html",
 		h.ActiveTemplateLocation+"/paypalAuthorize.html",
 		h.ActiveTemplateLocation+"/billMeLater.html",
+		h.ActiveTemplateLocation+"/btcPayServer.html",
 	)
 
 	//h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/footer.html", h.ActiveTemplateLocation+"/"+h.ActiveTemplateName+"/navbar.html",

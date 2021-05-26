@@ -97,7 +97,7 @@ func (h *Six910Handler) StoreAdminEditTaxRatePage(w http.ResponseWriter, r *http
 			wg.Add(1)
 			go func(ct string, st string, id int64, header *six910api.Headers) {
 				defer wg.Done()
-				trlst := h.API.GetTaxRate(ct, st, hd)
+				trlst := h.API.GetTaxRate(ct, st, header)
 				for i := range *trlst {
 					if (*trlst)[i].ID == id {
 						trp.TaxRate = &(*trlst)[i]

@@ -166,7 +166,6 @@ github.com/Ulbora/Six910-ui/managers/productUploadManager.go:365.4,367.34 3 1
 github.com/Ulbora/Six910-ui/managers/productUploadManager.go:362.22,364.5 1 1
 github.com/Ulbora/Six910-ui/managers/productUploadManager.go:367.34,370.5 2 1
 github.com/Ulbora/Six910-ui/managers/productUploadManager.go:375.16,377.3 1 1
-github.com/Ulbora/Six910-ui/managers/six910Manager.go:38.42,40.2 1 1
 github.com/Ulbora/Six910-ui/managers/customerAccount.go:27.111,32.33 5 1
 github.com/Ulbora/Six910-ui/managers/customerAccount.go:37.2,37.17 1 1
 github.com/Ulbora/Six910-ui/managers/customerAccount.go:32.33,34.3 1 1
@@ -293,6 +292,7 @@ github.com/Ulbora/Six910-ui/managers/customerOrder.go:27.101,38.2 10 1
 github.com/Ulbora/Six910-ui/managers/customerOrder.go:41.92,46.21 5 1
 github.com/Ulbora/Six910-ui/managers/customerOrder.go:59.2,59.13 1 1
 github.com/Ulbora/Six910-ui/managers/customerOrder.go:46.21,58.3 11 1
+github.com/Ulbora/Six910-ui/managers/six910Manager.go:38.42,40.2 1 1
 github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:28.89,41.76 8 1
 github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:48.2,49.18 2 1
 github.com/Ulbora/Six910-ui/managers/storeAdminUser.go:41.76,47.3 5 1

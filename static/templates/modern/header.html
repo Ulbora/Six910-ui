@@ -2,24 +2,24 @@
 
 <head>
 
-  
+
   <!-- Six910 Shopping Cart Template. www.six910.com -->
 
   <meta charset="UTF-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   {{if .HeaderData}}
-    <title>{{.HeaderData.Title}}</title>
-    {{if .HeaderData.SiteData}}      
-      <meta property="og:image" content="{{.HeaderData.SiteData.OgImage}}">
-      <meta property="og:type" content="{{.HeaderData.SiteData.OgType}}">
-      <meta property="og:site_name" content="{{.HeaderData.SiteData.OgSiteName}}">
-      <meta property="og:title" content="{{.HeaderData.SiteData.OgTitle}}">
-      <meta property="og:url" content="{{.HeaderData.SiteData.OgURL}}">
-      <link rel="canonical" href="{{.HeaderData.SiteData.Canonical}}" />  
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <meta name="Description" content="{{.HeaderData.SiteData.Description}}" />
+  <title>{{.HeaderData.Title}}</title>
+  {{if .HeaderData.SiteData}}
+  <meta property="og:image" content="{{.HeaderData.SiteData.OgImage}}">
+  <meta property="og:type" content="{{.HeaderData.SiteData.OgType}}">
+  <meta property="og:site_name" content="{{.HeaderData.SiteData.OgSiteName}}">
+  <meta property="og:title" content="{{.HeaderData.SiteData.OgTitle}}">
+  <meta property="og:url" content="{{.HeaderData.SiteData.OgURL}}">
+  <link rel="canonical" href="{{.HeaderData.SiteData.Canonical}}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="Description" content="{{.HeaderData.SiteData.Description}}" />
 
-      <script type="application/ld+json">
+  <script type="application/ld+json">
         {
           "@context": "http://schema.org/",
           "@type": "{{.HeaderData.RichResultsData.Type}}",
@@ -40,16 +40,16 @@
           }
         }
       </script>
-    {{end}}
-  
-    {{if .HeaderData.BasicSiteData}}
-      <link rel="canonical" href="{{.HeaderData.BasicSiteData.Canonical}}" />  
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <meta name="Description" content="{{.HeaderData.BasicSiteData.Description}}" />
-    {{end}}
-  {{else}}  
-    <title>Six910-UI</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  {{end}}
+
+  {{if .HeaderData.BasicSiteData}}
+  <link rel="canonical" href="{{.HeaderData.BasicSiteData.Canonical}}" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="Description" content="{{.HeaderData.BasicSiteData.Description}}" />
+  {{end}}
+  {{else}}
+  <title>Six910-UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   {{end}}
 
 

@@ -67,7 +67,8 @@ type Six910Handler struct {
 	Manager m.Manager
 	API     api.API
 
-	BTCPlugin btc.Plugin
+	BTCPlugin      btc.Plugin
+	BTCPayCurrency string
 
 	Session        gs.GoSession
 	UserSession    gs.GoSession
