@@ -6,6 +6,12 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Six910-ui&metric=alert_status)](https://sonarcloud.io/dashboard?id=Six910-ui)
 <!-- [![Go Report Card](https://goreportcard.com/badge/github.com/Ulbora/Six910-ui)](https://goreportcard.com/report/github.com/Ulbora/Six910-ui) -->
 
+
+
+## Bitcoin payments
+Six910 now has a bitcoin payment module built on open source BTCPay Server. BTCPay Server is a self-hosted, open-source cryptocurrency payment processor. It's secure, private, censorship-resistant and free.
+
+
 ## Docker
 https://hub.docker.com/r/ulboralabs/six910-ui
 
