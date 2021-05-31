@@ -1,4 +1,4 @@
-![](./six910.png)
+![](./Six910Cart-trans-blue.png)
 
 # Six-9-10 UI
 
