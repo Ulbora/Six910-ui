@@ -3,12 +3,14 @@ package handlers
 import (
 	"os"
 	"time"
+
 	//"html/template"
 	"net/http"
 	//"strconv"
 
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	sdbi "github.com/Ulbora/six910-database-interface"
+
 	//"github.com/gorilla/mux"
 	carsrv "github.com/Ulbora/Six910-ui/carouselsrv"
 	cntrysrv "github.com/Ulbora/Six910-ui/countrysrv"
@@ -197,7 +199,8 @@ func (h *Six910Handler) saveSiteMap(ids *[]int64, path string) {
 	var vp SiteMapValues
 	vp.Domain = h.getSiteMapDomain()
 	vp.ProductIDList = ids
-	smbs := h.generateSiteMap(&vp)
+	today := time.Now()
+	smbs := h.generateSiteMap(today, &vp)
 	//path := h.ActiveTemplateLocation + "/" + h.ActiveTemplateName
 	h.Log.Debug("writting site map file : ", path+"/sitemap.xml")
 	f, err := os.Create(path + "/sitemap.xml")

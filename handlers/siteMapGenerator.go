@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/xml"
 	"time"
+
 	//"net/http"
 	"strconv"
 	//m "github.com/Ulbora/Six910-ui/managers"
@@ -49,15 +50,24 @@ type SiteMapURL struct {
 	Priority     string   `xml:"priority"`
 }
 
-func (h *Six910Handler) generateSiteMap(v *SiteMapValues) []byte {
+func (h *Six910Handler) generateSiteMap(today time.Time, v *SiteMapValues) []byte {
 	var sm SiteMap
 	sm.Xmlns = "http://www.google.com/schemas/sitemap/0.9"
 	var ulst []SiteMapURL
-	today := time.Now()
+	//today := time.Now()
 	m := today.Month()
 	d := today.Day()
 	y := today.Year()
-	lastMod := strconv.Itoa(y) + "-" + strconv.Itoa(int(m)) + "-" + strconv.Itoa(d)
+	mstr := strconv.Itoa(int(m))
+	if len(mstr) == 1 {
+		mstr = "0" + mstr
+	}
+	dstr := strconv.Itoa(d)
+	if len(dstr) == 1 {
+		dstr = "0" + dstr
+	}
+	ystr := strconv.Itoa(y)
+	lastMod := ystr + "-" + mstr + "-" + dstr
 
 	var u SiteMapURL
 	u.Loc = v.Domain
