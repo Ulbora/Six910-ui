@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 	"strconv"
+	"strings"
 	"sync"
 
 	six910api "github.com/Ulbora/Six910API-Go"
@@ -98,6 +100,7 @@ func (h *Six910Handler) StoreAdminAddPaymentGateway(w http.ResponseWriter, r *ht
 				}
 				prres := h.API.AddPaymentGateway(apg, hd)
 				h.Log.Debug("pgw add resp", *prres)
+				log.Println("pgw add resp", *prres)
 				//done------------Need to add a new field in payment gateway table for TOKEN--------------------
 				//done------------there is no place to store the token from btspay server
 				//add call to btcserver plugin to create new
@@ -262,6 +265,10 @@ func (h *Six910Handler) processPgw(r *http.Request) *sdbi.PaymentGateway {
 	p.Token = r.FormValue("token")
 	storePID := r.FormValue("storePluginId")
 	p.StorePluginsID, _ = strconv.ParseInt(storePID, 10, 64)
+
+	if len(p.CheckoutURL) > 3 && strings.LastIndex(p.CheckoutURL, "/") == len(p.CheckoutURL)-1 {
+		p.CheckoutURL = p.CheckoutURL[0 : len(p.CheckoutURL)-1]
+	}
 
 	return &p
 }

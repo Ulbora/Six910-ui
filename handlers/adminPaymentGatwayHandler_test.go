@@ -197,7 +197,7 @@ func TestSix910Handler_StoreAdminAddPaymentGateway(t *testing.T) {
 
 	//-----------end mocking --------
 
-	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("checkoutUrl=https://testnet.demo.btcpayserver.org&clientId=125&storePluginId=6"))
+	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("checkoutUrl=https://testnet.demo.btcpayserver.org/&clientId=125&storePluginId=6"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	w := httptest.NewRecorder()
 	s, suc := sh.getSession(r)

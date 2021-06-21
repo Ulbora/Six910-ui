@@ -44,6 +44,7 @@ func (h *Six910Handler) CompleteBTCPayTransaction(w http.ResponseWriter, r *http
 			hd := h.getHeader(cocodbc)
 			pg := h.API.GetPaymentGatewayByName(btcPayServer, hd)
 			h.checkBTCPayPlugin(pg)
+			h.Log.Debug("btc token", h.BTCPlugin.GetToken())
 			// if !h.BTCPlugin.IsPluginLoaded() {
 			// 	var btc pi.BTCPay
 			// 	btc.ClientID = pg.ClientID
@@ -82,6 +83,7 @@ func (h *Six910Handler) CompleteBTCPayTransaction(w http.ResponseWriter, r *http
 
 func (h *Six910Handler) checkBTCPayPlugin(pg *sdbi.PaymentGateway) {
 	if !h.BTCPlugin.IsPluginLoaded() {
+		h.Log.Debug("checkBTCPayPlugin : false")
 		var btc pi.BTCPay
 		btc.ClientID = pg.ClientID
 		btc.Host = pg.CheckoutURL
