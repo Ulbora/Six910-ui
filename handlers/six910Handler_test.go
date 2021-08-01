@@ -40,6 +40,27 @@ func TestSix910Handler_getUserSession(t *testing.T) {
 	}
 }
 
+func TestSix910Handler_getExpiredUserSession(t *testing.T) {
+	var h Six910Handler
+	var l lg.Logger
+	l.LogLevel = lg.AllLevel
+	h.Log = &l
+	h.UserSession.Name = "Six910-ui-user"
+	h.UserSession.MaxAge = 0
+	h.UserStore = h.UserSession.InitSessionStore()
+	h.UserSession.Name = ""
+
+	h.Log.Debug("h.UserStore : ", h.UserStore)
+	//errors without this
+	// gob.Register(&m.CustomerCart{})
+	r, _ := http.NewRequest("POST", "https://test.com", nil)
+	w := httptest.NewRecorder()
+	ses, suc := h.getUserSession(w, r)
+	if ses == nil || !suc {
+		t.Fail()
+	}
+}
+
 func TestSix910Handler_processProductMetaData(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger

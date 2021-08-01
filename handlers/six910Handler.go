@@ -351,11 +351,7 @@ func (h *Six910Handler) getUserSession(w http.ResponseWriter, r *http.Request) (
 	if h.UserStore == nil {
 		h.UserSession.Name = "Six910-ui-user"
 		h.UserSession.MaxAge = 36000000
-		h.UserStore = h.UserSession.InitSessionStore()
-		h.Log.Debug("h.UserStore : ", h.UserStore)
-		//errors without this
-		gob.Register(&m.CustomerCart{})
-		//-------gob.Register(&AuthorizeRequestInfo{})
+		h.createUserSession()
 	}
 	if r != nil {
 		// fmt.Println("secure in getSession", h.Session.Secure)
@@ -366,13 +362,22 @@ func (h *Six910Handler) getUserSession(w http.ResponseWriter, r *http.Request) (
 		//h.Session.HTTPOnly = true
 
 		//h.Session.InitSessionStore()
+		//fmt.Println("h.UserSession.Name: ", h.UserSession.Name)
+
 		s, err := h.UserStore.Get(r, h.UserSession.Name)
+
+		//fmt.Println("session s: ", s)
+
 		//s, err := store.Get(r, "temp-name")
 		//s, err := store.Get(r, "goauth2")
-
-		loggedInAuth := s.Values["userLoggenIn"]
-		//userAuth := s.Values["user"]
-		h.Log.Debug("userLoggenIn: ", loggedInAuth)
+		if s != nil {
+			loggedInAuth := s.Values["userLoggenIn"]
+			//userAuth := s.Values["user"]
+			h.Log.Debug("userLoggenIn: ", loggedInAuth)
+		}
+		// loggedInAuth := s.Values["userLoggenIn"]
+		// //userAuth := s.Values["user"]
+		// h.Log.Debug("userLoggenIn: ", loggedInAuth)
 		//h.Log.Debug("user: ", userAuth)
 
 		//larii := s.Values["authReqInfo"]
@@ -385,10 +390,29 @@ func (h *Six910Handler) getUserSession(w http.ResponseWriter, r *http.Request) (
 			srtn.Values["customerUser"] = true
 			serr := srtn.Save(r, w)
 			h.Log.Debug("serr", serr)
+		} else {
+			h.UserStore = nil
+			h.UserSession.Name = "Six910-ui-user"
+			h.UserSession.MaxAge = 36000000
+			h.createUserSession()
+			s, _ := h.UserStore.Get(r, h.UserSession.Name)
+			suc = true
+			srtn = s
+			srtn.Values["customerUser"] = true
+			serr := srtn.Save(r, w)
+			h.Log.Debug("serr", serr)
 		}
 	}
 	//fmt.Println("exit getSession--------------------------------------------------")
 	return srtn, suc
+}
+
+func (h *Six910Handler) createUserSession() {
+	h.UserStore = h.UserSession.InitSessionStore()
+	h.Log.Debug("h.UserStore : ", h.UserStore)
+	//errors without this
+	gob.Register(&m.CustomerCart{})
+	//-------gob.Register(&AuthorizeRequestInfo{})
 }
 
 func (h *Six910Handler) getHeader(s *sessions.Session) *api.Headers {

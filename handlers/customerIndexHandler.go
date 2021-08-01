@@ -81,6 +81,8 @@ type CustomerPage struct {
 //Index Index
 func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 	cis, suc := h.getUserSession(w, r)
+	//fmt.Println("session cis: ", cis)
+
 	h.Log.Debug("session suc", suc)
 	if suc {
 		//var pagebdy PageBody
