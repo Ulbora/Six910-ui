@@ -876,9 +876,18 @@ func TestSix910Manager_completeOrder(t *testing.T) {
 	a2.State = "FL"
 	a2.Type = "Billing"
 
+	var a3 sdbi.Address
+	a3.Address = "907 Whitehead St"
+	a3.City = "Key West"
+	a3.Country = "CR"
+	a3.County = "Monroe"
+	a3.State = "FL"
+	a3.Type = "FFL"
+
 	var alst []sdbi.Address
 	alst = append(alst, a1)
 	alst = append(alst, a2)
+	alst = append(alst, a3)
 
 	var ca CustomerAccount
 	ca.Customer = &cus

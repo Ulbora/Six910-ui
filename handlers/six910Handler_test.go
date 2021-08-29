@@ -4,14 +4,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"net/http/httptest"
-
 	"net/http"
-
+	"net/http/httptest"
 	"testing"
 
 	lg "github.com/Ulbora/Level_Logger"
-
 	sdbi "github.com/Ulbora/six910-database-interface"
 )
 

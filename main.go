@@ -34,6 +34,7 @@ import (
 	csrv "github.com/Ulbora/Six910-ui/contentsrv"
 	cntrysrv "github.com/Ulbora/Six910-ui/countrysrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
+	fflsrv "github.com/Ulbora/Six910-ui/findfflsrv"
 	hand "github.com/Ulbora/Six910-ui/handlers"
 	isrv "github.com/Ulbora/Six910-ui/imgsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
@@ -90,6 +91,9 @@ func main() {
 	var oauthHost string
 	var oauth2UserURL string
 	var btcPayCurrency string
+
+	var fflHost string
+	var fflKey string
 
 	if os.Getenv("SIX910_CART_OAUTH2_ENABLED") == "true" {
 		oauth2Enabled = true
@@ -257,6 +261,16 @@ func main() {
 		schemeDefault = "http://"
 	}
 
+	if os.Getenv("FIND_FFL_HOST") != "" {
+		fflHost = os.Getenv("FIND_FFL_HOST")
+	} else {
+		fflHost = "http://api.findfflbyzip.com"
+	}
+
+	if os.Getenv("FIND_FFL_API_KEY") != "" {
+		fflKey = os.Getenv("FIND_FFL_API_KEY")
+	}
+
 	var sapi api.Six910API
 	sapi.SetAPIKey(apiKey)
 	sapi.SetRestURL(apiURL)
@@ -422,6 +436,13 @@ func main() {
 	bs.TemplateFilePath = "./static/templates"
 	bs.Log = &l
 
+	var ffls fflsrv.Six910FFLService
+	ffls.Log = &l
+	ffls.Host = fflHost
+	ffls.APIKey = fflKey
+
+	sh.FFLService = ffls.New()
+
 	bs.Store = cds.GetNew()
 	bs.TemplateStore = tds.GetNew()
 	bs.CarouselStore = cards.GetNew()
@@ -525,6 +546,14 @@ func main() {
 	router.HandleFunc("/customerOrderList", h.ViewCustomerOrderList).Methods("GET")
 
 	router.HandleFunc("/viewCustomerOrder/{id}", h.ViewCustomerOrder).Methods("GET")
+
+	router.HandleFunc("/findFFLZipPage", h.FindFFLZipPage).Methods("GET")
+
+	router.HandleFunc("/findFFLZip", h.FindFFLZip).Methods("POST")
+
+	router.HandleFunc("/findFFLById/{id}", h.FindFFLID).Methods("GET")
+
+	router.HandleFunc("/addFFL/{id}", h.AddFFL).Methods("GET")
 
 	//admin pages
 	router.HandleFunc("/admin", h.StoreAdminIndex).Methods("GET")

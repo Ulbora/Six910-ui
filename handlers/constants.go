@@ -271,6 +271,7 @@ const (
 	customerInfoViewFail    = "/customerInfo?error=Add Failed"
 	customerOrderView       = "/customerOrder"
 	customerOrderListView   = "/customerOrderList"
+	startCheckout           = "/startCheckout"
 	//adminDeleteZipZoneRegion    = "/admin/deleteZipZone"
 	//adminIncZipZoneListView     = "/admin/includedZipZone"
 	//adminIncZipZoneListViewFail = "/admin/zipZoneListView?error=Add Failed"
@@ -434,6 +435,9 @@ const (
 	customerOrderPage                = "customerOrder.html"
 	customerOrderListPage            = "customerOrderList.html"
 	customerResetPasswordPage        = "resetPassword.html"
+
+	fflSearchPage = "fflSearch.html"
+	fflPage       = "fflPage.html"
 
 	authCodeState = "ghh66555h"
 	storeAdmin    = "StoreAdmin"

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  {{template "head" .}}
+
+
+<body>
+  {{range .MenuList}}
+  {{if and (eq .Location "top") (eq .Active true) (eq .Name "navBar")}}
+  {{template "navBar" .}}
+  {{end}}
+  {{end}}
+  <div class="container-fluid">
+    {{.Content.TextHTML}}
+  </div>
+  <div class="container mt-5 mb-5">
+    <h3 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Find FFL</h3>
+    {{if eq .ListFound false}}
+    <div class="row mt-5">
+      <div class="col-4">
+      </div>
+      <div class="col-4">
+      <form method="POST" action="/findFFLZip">
+        <label for="cost">Zip Code</label>
+        <input name="zip" type="text" class="form-control" id="zip"
+          value="{{.Zip}}">     
+        <button type="submit" class="btn btn-primary mt-3">Search</button>
+      </form>
+      </div>
+      <div class="col-4">
+      </div>    
+    </div>
+    {{else}}
+    <div class="row mt-5">
+      <div class="col-1">
+      </div>
+      <div class="col-4">
+      <form method="POST" action="/findFFLZip">
+        <label for="cost">Zip Code</label>
+        <input name="zip" type="text" class="form-control" id="zip"
+          value="{{.Zip}}">     
+        <button type="submit" class="btn btn-primary mt-3">Search</button>
+      </form>
+      </div>
+      <div class="col-7">
+      </div>    
+    </div>
+    {{end}}
+    {{if eq .ListFound true}}
+    <div class="row mt-5 mb-5">
+      <div class="col-1">
+      </div>
+      <div class="col-10">
+        <div class="alert alert-info" role="alert">
+          Click One to Add
+        </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>              
+              <th scope="col">FFL</th>
+              <th scope="col">Address</th>              
+            </tr>
+          </thead>
+          <tbody>
+              {{range .FFLList}}
+                <tr class='clickable-row' data-href='/findFFLById/{{.Key}}'>  
+                  {{if ne .BusName ""}}  
+                  <td>{{.BusName}}</td>
+                  {{else}}
+                  <td>{{.LicName}}</td>
+                  {{end}}  
+                  <td>{{.PremiseAddress}}</td>             
+                </tr>
+              {{end}}
+          </tbody>
+        </table>
+      </div>
+      <div class="col-1">
+      </div>    
+    </div>
+    {{else}}
+    <div class="row mt-5">
+      <div class="col-4">
+      </div>
+      <div class="col-4">
+        <div class="alert alert-danger mt-5" role="alert">
+          No FFL Found
+        </div>
+      </div>
+      <div class="col-4">
+      </div>  
+    </div>  
+    {{end}}
+  </div>
+  
+  
+</body>
+</html>

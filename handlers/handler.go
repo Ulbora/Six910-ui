@@ -306,6 +306,14 @@ type Handler interface {
 	SetLogLevel(w http.ResponseWriter, r *http.Request)
 
 	GenerateSiteMap(w http.ResponseWriter, r *http.Request)
+
+	FindFFLZipPage(w http.ResponseWriter, r *http.Request)
+
+	FindFFLZip(w http.ResponseWriter, r *http.Request)
+
+	FindFFLID(w http.ResponseWriter, r *http.Request)
+
+	AddFFL(w http.ResponseWriter, r *http.Request)
 }
 
 //dash

@@ -30,6 +30,7 @@ const (
 
 	billingAddressType  = "Billing"
 	shippingAddressType = "Shipping"
+	fflAddressType      = "FFL"
 
 	orderStatusProcessing = "processing"
 
@@ -133,6 +134,7 @@ type CustomerCart struct {
 	InsuranceID       int64
 	BillingAddressID  int64
 	ShippingAddressID int64
+	FFLAddressID      int64
 	OrderID           int64
 	BillMeLater       bool
 	InProgress        bool
@@ -156,14 +158,16 @@ type OrderItemResults struct {
 
 //CartViewItem CartViewItem
 type CartViewItem struct {
-	ProductID   int64
-	ProductName string
-	Desc        string
-	Image       string
-	Quantity    int64
-	Stock       int64
-	Price       float64
-	Total       float64
+	ProductID             int64
+	ProductName           string
+	Desc                  string
+	Image                 string
+	Quantity              int64
+	Stock                 int64
+	Price                 float64
+	Total                 float64
+	SpecialProcessing     bool
+	SpecialProcessingType string
 }
 
 //CartView CartView

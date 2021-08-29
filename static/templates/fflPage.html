@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    {{template "head" .}}
+
+<body>
+    {{range .MenuList}}
+    {{if and (eq .Location "top") (eq .Active true) (eq .Name "navBar")}}
+    {{template "navBar" .}}
+    {{end}}
+    {{end}}
+    <div class="container-fluid">
+      {{.Content.TextHTML}}
+    </div>
+    <div class="container mt-5 mb-5">
+      <h3 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Find FFL</h3>    
+    <div class="row mt-5">
+      <div class="col-4">
+      </div>
+      <div class="col-4">
+      <form method="POST" action="/findFFLZip">
+        <label for="cost">Zip Code</label>
+        <input name="zip" type="text" class="form-control" id="zip"
+          value="{{.Zip}}">     
+        <button type="submit" class="btn btn-primary mt-3">Search</button>
+      </form>
+      </div>
+      <div class="col-4">
+      </div>    
+    </div>
+    <div class="row mt-5">
+      <div class="col-2">
+      </div>
+      <div class="col-8">
+        <table class="table table-hover">         
+          <tbody>
+                <tr> 
+                  <td class="font-weight-bold">FFL Name: </td> 
+                  {{if ne .FFL.BusName ""}}  
+                  <td>{{.FFL.BusName}}</td>
+                  {{else}}
+                  <td>{{.FFL.LicName}}</td>
+                  {{end}}  
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">FFL Lic #: </td> 
+                  <td>{{.FFL.Lic}}</td>
+                </tr>
+                <tr>
+                  <td class="font-weight-bold">Expires: </td> 
+                  <td>{{.FFL.ExpDate}}</td> 
+                </tr> 
+                <tr>
+                  <td class="font-weight-bold">FFL Address: </td> 
+                  <td>{{.FFL.PremiseAddress}}</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a class="btn btn-primary" href="/addFFL/{{.FFL.Key}}" role="button">Use This FFL</a>                    
+                  </td>
+                </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-2">
+      </div>
+
+    </div>
+    </div>
+
+    </div>
+</body>
+</html>

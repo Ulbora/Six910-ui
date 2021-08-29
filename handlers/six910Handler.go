@@ -22,6 +22,7 @@ import (
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	cntrysrv "github.com/Ulbora/Six910-ui/countrysrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
+	fflsrv "github.com/Ulbora/Six910-ui/findfflsrv"
 	imgs "github.com/Ulbora/Six910-ui/imgsrv"
 	mails "github.com/Ulbora/Six910-ui/mailsrv"
 	m "github.com/Ulbora/Six910-ui/managers"
@@ -89,6 +90,7 @@ type Six910Handler struct {
 	CarouselService carsrv.CarouselService
 	StateService    stsrv.StateService
 	CountryService  cntrysrv.CountryService
+	FFLService      fflsrv.FFLService
 
 	OauthHost     string
 	UserHost      string
@@ -539,7 +541,8 @@ func (h *Six910Handler) decompressObj(s []byte) []byte {
 	return data
 }
 
-func (h *Six910Handler) getCartTotal(s *sessions.Session, ml *[]musrv.Menu, hd *api.Headers) {
+func (h *Six910Handler) getCartTotal(s *sessions.Session, ml *[]musrv.Menu, hd *api.Headers) bool {
+	var fflRtn bool
 	var rtn int64
 	var isLoggedIn = h.isStoreCustomerLoggedIn(s)
 	h.Log.Debug("isLoggedIn in carttotal: ", isLoggedIn)
@@ -550,6 +553,9 @@ func (h *Six910Handler) getCartTotal(s *sessions.Session, ml *[]musrv.Menu, hd *
 		cv := h.Manager.ViewCart(cc, hd)
 		for _, itm := range *cv.Items {
 			rtn += itm.Quantity
+			if itm.SpecialProcessing && itm.SpecialProcessingType == "FFL" {
+				fflRtn = true
+			}
 		}
 		for i := range *ml {
 			if (*ml)[i].Name == "navBar" && (*ml)[i].Location == "top" {
@@ -557,6 +563,7 @@ func (h *Six910Handler) getCartTotal(s *sessions.Session, ml *[]musrv.Menu, hd *
 				(*ml)[i].LoggedIn = isLoggedIn
 			}
 		}
+
 	} else if cc != nil {
 		for i := range *ml {
 			if (*ml)[i].Name == "navBar" && (*ml)[i].Location == "top" {
@@ -564,6 +571,7 @@ func (h *Six910Handler) getCartTotal(s *sessions.Session, ml *[]musrv.Menu, hd *
 			}
 		}
 	}
+	return fflRtn
 }
 
 //CheckContent CheckContent

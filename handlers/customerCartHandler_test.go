@@ -482,6 +482,8 @@ func TestSix910Handler_ViewCartCartSession(t *testing.T) {
 	pd.SalePrice = 28.95
 	pd.ShortDesc = "test one"
 	pd.Thumbnail = "/test/"
+	pd.SpecialProcessing = true
+	pd.SpecialProcessingType = "FFL"
 	sapi.MockProduct = &pd
 
 	var crtres api.ResponseID
@@ -607,6 +609,7 @@ func TestSix910Handler_ViewCartCartSession(t *testing.T) {
 	if w.Code != 200 {
 		t.Fail()
 	}
+	// t.Fail()
 }
 
 func TestSix910Handler_UpdateProductToCart(t *testing.T) {
@@ -873,6 +876,8 @@ func TestSix910Handler_CheckOutView(t *testing.T) {
 	var prod sdbi.Product
 	prod.ID = 2
 	prod.Desc = "test"
+	prod.SpecialProcessing = true
+	prod.SpecialProcessingType = "FFL"
 	sapi.MockProduct = &prod
 
 	var pg sdbi.PaymentGateway
@@ -910,6 +915,10 @@ func TestSix910Handler_CheckOutView(t *testing.T) {
 	cadd.ID = 3
 	var caddlst []sdbi.Address
 	caddlst = append(caddlst, cadd)
+	var ffladd sdbi.Address
+	ffladd.ID = 4
+	ffladd.Type = "FFL"
+	caddlst = append(caddlst, ffladd)
 	sapi.MockAddressList1 = &caddlst
 
 	//-----------end mocking --------
@@ -1016,6 +1025,7 @@ func TestSix910Handler_CheckOutView(t *testing.T) {
 	if w.Code != 200 {
 		t.Fail()
 	}
+	// t.Fail()
 }
 
 func TestSix910Handler_CheckOutView2(t *testing.T) {
@@ -1756,7 +1766,7 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
 
 	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("paymentGatewayID=9&"+
-		"shippingMethodID=22&insuranceID=2&billingAddressID=23&shippingAddressID=2"))
+		"shippingMethodID=22&insuranceID=2&billingAddressID=23&shippingAddressID=2,&shippingAddressID=4"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	// vars := map[string]string{
 	// 	"PaymentGatewayID":  "9",

@@ -68,6 +68,7 @@ type CheckoutPage struct {
 	CustomerAddressList    *[]sdbi.Address
 	BillingAddress         *sdbi.Address
 	ShippingAddress        *sdbi.Address
+	FFLShippingAddress     *sdbi.Address
 	ShowAddressList        bool
 	Subtotal               string
 	ShippingHandling       string
@@ -80,6 +81,8 @@ type CheckoutPage struct {
 	BillMeLaterPayment     bool
 	BTCPayServerPayment    bool
 	OrderNumber            string
+	NeedFFL                bool
+	FFLSet                 bool
 
 	HeaderData *HeaderData
 }
@@ -341,6 +344,11 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 					if len(*cop.CustomerAddressList) > 0 {
 						cop.ShowAddressList = true
 					}
+					for _, ad := range *cop.CustomerAddressList {
+						if ad.Type == "FFL" {
+							cop.FFLSet = true
+						}
+					}
 				}
 			}(cid)
 
@@ -352,7 +360,7 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 
 			ml := h.MenuService.GetMenuList()
 			hd := h.getHeader(cocvs)
-			h.getCartTotal(cocvs, ml, hd)
+			cop.NeedFFL = h.getCartTotal(cocvs, ml, hd)
 			cop.MenuList = ml
 
 			h.Log.Debug("MenuList", *cop.MenuList)
@@ -366,6 +374,7 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 			}
 
 			h.Log.Debug("CheckoutPage: ", cop)
+			h.Log.Debug("FFL: ", cop.NeedFFL)
 			h.Templates.ExecuteTemplate(w, customerShoppingCartPage2, &cop)
 		} else {
 			http.Redirect(w, r, customerLoginView, http.StatusFound)
@@ -395,12 +404,14 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			insidStr := r.FormValue("insuranceID")
 			baidStr := r.FormValue("billingAddressID")
 			saidStr := r.FormValue("shippingAddressID")
+			fflaidStr := r.FormValue("FFLAddressID")
 
 			pgwid, _ := strconv.ParseInt(pidStr, 10, 64)
 			smid, _ := strconv.ParseInt(smidStr, 10, 64)
 			insid, _ := strconv.ParseInt(insidStr, 10, 64)
 			baid, _ := strconv.ParseInt(baidStr, 10, 64)
 			said, _ := strconv.ParseInt(saidStr, 10, 64)
+			fflaid, _ := strconv.ParseInt(fflaidStr, 10, 64)
 
 			ccoart := h.getCustomerCart(cocccs)
 			ccoart.PaymentGatewayID = pgwid
@@ -408,6 +419,7 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			ccoart.InsuranceID = insid
 			ccoart.BillingAddressID = baid
 			ccoart.ShippingAddressID = said
+			ccoart.FFLAddressID = fflaid
 			h.Log.Debug("ccoart: ", *ccoart)
 			h.Log.Debug("ccoart.InsuranceID: ", ccoart.InsuranceID)
 			h.Log.Debug("ccoart.Items: ", ccoart.Items)
@@ -462,6 +474,7 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			ccop.ShippingMethod = sm
 			ccop.BillingAddress = h.API.GetAddress(baid, ccotres.Cart.CustomerID, hd)
 			ccop.ShippingAddress = h.API.GetAddress(said, ccotres.Cart.CustomerID, hd)
+			ccop.FFLShippingAddress = h.API.GetAddress(fflaid, ccotres.Cart.CustomerID, hd)
 			ccop.Subtotal = fmt.Sprintf("%.2f", ccotres.Subtotal)
 			ccop.ShippingHandling = fmt.Sprintf("%.2f", ccotres.ShippingHandling)
 			ccop.InsuranceCost = fmt.Sprintf("%.2f", ccotres.InsuranceCost)
@@ -548,6 +561,13 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 					hd := h.getHeader(cocod)
 					ccopc.ShippingAddress = h.API.GetAddress(said, cid, hd)
 				}(comccotres.ShippingAddressID, comccotres.Cart.CustomerID)
+
+				wg1.Add(1)
+				go func(fflaid int64, cid int64) {
+					defer wg1.Done()
+					hd := h.getHeader(cocod)
+					ccopc.FFLShippingAddress = h.API.GetAddress(fflaid, cid, hd)
+				}(comccotres.FFLAddressID, comccotres.Cart.CustomerID)
 
 				// hd5 := h.getHeader(cocod)
 				wg1.Add(1)

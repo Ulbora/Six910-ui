@@ -108,6 +108,8 @@ func (m *Six910Manager) ViewCart(cc *CustomerCart, hd *api.Headers) *CartView {
 			cvi.Image = prod.Thumbnail
 			cvi.Stock = prod.Stock
 			cvi.Quantity = cItem.Quantity
+			cvi.SpecialProcessing = prod.SpecialProcessing
+			cvi.SpecialProcessingType = prod.SpecialProcessingType
 			if prod.SalePrice != 0 {
 				cvi.Price = prod.SalePrice
 			} else {
@@ -229,11 +231,14 @@ func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *Cust
 	var rtn CustomerOrder
 	var badd sdbi.Address
 	var sadd sdbi.Address
+	var ffladd sdbi.Address
 	for _, a := range *cart.CustomerAccount.Addresses {
 		if a.Type == billingAddressType {
 			badd = a
 		} else if a.Type == shippingAddressType {
 			sadd = a
+		} else if a.Type == fflAddressType {
+			ffladd = a
 		}
 	}
 	var odr sdbi.Order
@@ -248,6 +253,12 @@ func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *Cust
 	odr.Pickup = cart.Pickup
 	odr.ShippingAddress = sadd.Address + ", " + sadd.City + " " + sadd.State + " " + sadd.Zip
 	odr.ShippingAddressID = sadd.ID
+	odr.FFLShippingAddress = ffladd.Address + ", " + ffladd.City + " " + ffladd.State + " " + ffladd.Zip
+	odr.ShippingAddressID = ffladd.ID
+	odr.FFLName = ffladd.Attr1
+	odr.FFLLic = ffladd.Attr2
+	odr.FFLExpDate = ffladd.Attr3
+	odr.FFLPhone = ffladd.Attr4
 	odr.ShippingHandling = cart.ShippingHandling
 	if cart.BillMeLater {
 		odr.Status = orderStatusNotPaid
