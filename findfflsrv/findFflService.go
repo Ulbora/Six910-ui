@@ -115,7 +115,6 @@ func (f *Six910FFLService) GetFFLList(zip string) (*[]FFLList, int) {
 			f.Log.Debug("GetFFLList code: ", code)
 		}
 	}
-
 	return &rtn, code
 }
 
@@ -126,20 +125,20 @@ func (f *Six910FFLService) GetFFL(key string) (*FFL, int) {
 	var gURL = f.Host + "/rs/findById"
 	var keyObj FFLKey
 	keyObj.Key = key
-	aJSON, err := json.Marshal(keyObj)
+	aJSON, errg := json.Marshal(keyObj)
 	// fmt.Println("err: ", err)
-	f.Log.Debug("find ffl by key err: ", err)
-	if err == nil {
-		req, rErr := http.NewRequest("POST", gURL, bytes.NewBuffer(aJSON))
+	f.Log.Debug("find ffl by key err: ", errg)
+	if errg == nil {
+		reqg, rErrg := http.NewRequest("POST", gURL, bytes.NewBuffer(aJSON))
 		f.Log.Debug("get ffl by id url: ", gURL)
-		f.Log.Debug("get ffl by id req err: ", rErr)
+		f.Log.Debug("get ffl by id req err: ", rErrg)
 		// fmt.Println("url: ", gURL)
 		// fmt.Println("list error: ", rErr)
-		if rErr == nil {
-			req.Header.Set("api-key", f.APIKey)
-			req.Header.Set("Content-Type", "application/json")
+		if rErrg == nil {
+			reqg.Header.Set("api-key", f.APIKey)
+			reqg.Header.Set("Content-Type", "application/json")
 			// var de bool
-			_, code = f.Proxy.Do(req, &rtn)
+			_, code = f.Proxy.Do(reqg, &rtn)
 			// fmt.Println("de: ", de)
 			// fmt.Println("code: ", code)
 			f.Log.Debug("GetFFL code: ", code)
