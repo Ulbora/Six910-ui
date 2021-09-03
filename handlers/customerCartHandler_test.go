@@ -911,10 +911,18 @@ func TestSix910Handler_CheckOutView(t *testing.T) {
 	inslst = append(inslst, ins)
 	sapi.MockInsuranceList = &inslst
 
+	var caddlst []sdbi.Address
+
 	var cadd sdbi.Address
 	cadd.ID = 3
-	var caddlst []sdbi.Address
+	cadd.Type = "Billing"
 	caddlst = append(caddlst, cadd)
+
+	var sadd sdbi.Address
+	sadd.ID = 3
+	sadd.Type = "Shipping"
+	caddlst = append(caddlst, sadd)
+
 	var ffladd sdbi.Address
 	ffladd.ID = 4
 	ffladd.Type = "FFL"
@@ -1766,7 +1774,7 @@ func TestSix910Handler_CheckOutContinue(t *testing.T) {
 	sh.Templates = template.Must(template.ParseFiles("testHtmls/test.html"))
 
 	r, _ := http.NewRequest("POST", "https://test.com", strings.NewReader("paymentGatewayID=9&"+
-		"shippingMethodID=22&insuranceID=2&billingAddressID=23&shippingAddressID=2,&shippingAddressID=4"))
+		"shippingMethodID=22&insuranceID=2&billingAddressID=23&shippingAddressID=2,&shippingAddressID=4&fflAddressID=4"))
 	r.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
 	// vars := map[string]string{
 	// 	"PaymentGatewayID":  "9",
@@ -2759,6 +2767,7 @@ func TestSix910Handler_CheckOutComplateOrder(t *testing.T) {
 	cusa.User = &usr
 	cusa.Addresses = &adlst
 	cccs.CustomerAccount = &cusa
+	cccs.FFLAddressID = 5
 
 	//var itmList []sdbi.CartItem
 	//cccs.Items = &itmList

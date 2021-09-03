@@ -83,6 +83,8 @@ type CheckoutPage struct {
 	OrderNumber            string
 	NeedFFL                bool
 	FFLSet                 bool
+	BillingAddressFound    bool
+	ShippingAddressFound   bool
 
 	HeaderData *HeaderData
 }
@@ -264,6 +266,7 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 			h.Log.Debug("Customer cart: ", *cocc)
 			h.Log.Debug("Customer Account: ", cocc.CustomerAccount)
 			cop.CustomerCart = cocc
+
 			var wg sync.WaitGroup
 			// hd := h.getHeader(cocvs)
 			cid := h.getCustomerID(cocvs)
@@ -347,6 +350,10 @@ func (h *Six910Handler) CheckOutView(w http.ResponseWriter, r *http.Request) {
 					for _, ad := range *cop.CustomerAddressList {
 						if ad.Type == "FFL" {
 							cop.FFLSet = true
+						} else if ad.Type == "Billing" {
+							cop.BillingAddressFound = true
+						} else if ad.Type == "Shipping" {
+							cop.ShippingAddressFound = true
 						}
 					}
 				}
@@ -404,7 +411,7 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			insidStr := r.FormValue("insuranceID")
 			baidStr := r.FormValue("billingAddressID")
 			saidStr := r.FormValue("shippingAddressID")
-			fflaidStr := r.FormValue("FFLAddressID")
+			fflaidStr := r.FormValue("fflAddressID")
 
 			pgwid, _ := strconv.ParseInt(pidStr, 10, 64)
 			smid, _ := strconv.ParseInt(smidStr, 10, 64)
@@ -474,7 +481,11 @@ func (h *Six910Handler) CheckOutContinue(w http.ResponseWriter, r *http.Request)
 			ccop.ShippingMethod = sm
 			ccop.BillingAddress = h.API.GetAddress(baid, ccotres.Cart.CustomerID, hd)
 			ccop.ShippingAddress = h.API.GetAddress(said, ccotres.Cart.CustomerID, hd)
-			ccop.FFLShippingAddress = h.API.GetAddress(fflaid, ccotres.Cart.CustomerID, hd)
+
+			if fflaid > 0 {
+				ccop.FFLShippingAddress = h.API.GetAddress(fflaid, ccotres.Cart.CustomerID, hd)
+				ccop.FFLSet = true
+			}
 			ccop.Subtotal = fmt.Sprintf("%.2f", ccotres.Subtotal)
 			ccop.ShippingHandling = fmt.Sprintf("%.2f", ccotres.ShippingHandling)
 			ccop.InsuranceCost = fmt.Sprintf("%.2f", ccotres.InsuranceCost)
@@ -562,12 +573,16 @@ func (h *Six910Handler) CheckOutComplateOrder(w http.ResponseWriter, r *http.Req
 					ccopc.ShippingAddress = h.API.GetAddress(said, cid, hd)
 				}(comccotres.ShippingAddressID, comccotres.Cart.CustomerID)
 
-				wg1.Add(1)
-				go func(fflaid int64, cid int64) {
-					defer wg1.Done()
-					hd := h.getHeader(cocod)
-					ccopc.FFLShippingAddress = h.API.GetAddress(fflaid, cid, hd)
-				}(comccotres.FFLAddressID, comccotres.Cart.CustomerID)
+				if comccotres.FFLAddressID > 0 {
+					wg1.Add(1)
+					go func(fflaid int64, cid int64) {
+						ccopc.FFLSet = true
+						defer wg1.Done()
+						hd := h.getHeader(cocod)
+						ccopc.FFLShippingAddress = h.API.GetAddress(fflaid, cid, hd)
+
+					}(comccotres.FFLAddressID, comccotres.Cart.CustomerID)
+				}
 
 				// hd5 := h.getHeader(cocod)
 				wg1.Add(1)

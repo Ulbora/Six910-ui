@@ -142,6 +142,17 @@
             <p>{{.ShippingAddress.Country}}</p>
           </div>
 
+
+          {{if eq .FFLSet true}}
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">FFL Address</h4>
+            <hr>
+            <p>{{.FFLShippingAddress.Address}}</p>
+            <p>{{.FFLShippingAddress.City}}, {{.FFLShippingAddress.State}} {{.FFLShippingAddress.Zip}}</p>
+            <p>{{.FFLShippingAddress.Country}}</p>
+          </div>
+          {{end}}
+
           <!-- <div class="alert alert-danger mt-3" role="alert">
             <a href="/viewCustomerAccount" class="alert-link">Add New Address </a>
           </div> -->

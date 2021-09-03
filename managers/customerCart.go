@@ -1,6 +1,7 @@
 package managers
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 	"sync"
@@ -233,12 +234,13 @@ func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *Cust
 	var sadd sdbi.Address
 	var ffladd sdbi.Address
 	for _, a := range *cart.CustomerAccount.Addresses {
-		if a.Type == billingAddressType {
+		if a.Type == billingAddressType && cart.BillingAddressID == a.ID {
 			badd = a
-		} else if a.Type == shippingAddressType {
+		} else if a.Type == shippingAddressType && cart.ShippingAddressID == a.ID {
 			sadd = a
-		} else if a.Type == fflAddressType {
+		} else if a.Type == fflAddressType && cart.FFLAddressID == a.ID {
 			ffladd = a
+			fmt.Println("ffl address:", ffladd)
 		}
 	}
 	var odr sdbi.Order
@@ -253,12 +255,15 @@ func (m *Six910Manager) completeOrder(cart *CustomerCart, hd *api.Headers) *Cust
 	odr.Pickup = cart.Pickup
 	odr.ShippingAddress = sadd.Address + ", " + sadd.City + " " + sadd.State + " " + sadd.Zip
 	odr.ShippingAddressID = sadd.ID
-	odr.FFLShippingAddress = ffladd.Address + ", " + ffladd.City + " " + ffladd.State + " " + ffladd.Zip
-	odr.ShippingAddressID = ffladd.ID
-	odr.FFLName = ffladd.Attr1
-	odr.FFLLic = ffladd.Attr2
-	odr.FFLExpDate = ffladd.Attr3
-	odr.FFLPhone = ffladd.Attr4
+	if cart.FFLAddressID > 0 {
+		odr.FFLShippingAddress = ffladd.Address + ", " + ffladd.City + " " + ffladd.State + " " + ffladd.Zip
+		odr.FFLShippingAddressID = ffladd.ID
+		odr.FFLName = ffladd.Attr1
+		odr.FFLLic = ffladd.Attr2
+		odr.FFLExpDate = ffladd.Attr3
+		odr.FFLPhone = ffladd.Attr4
+	}
+
 	odr.ShippingHandling = cart.ShippingHandling
 	if cart.BillMeLater {
 		odr.Status = orderStatusNotPaid

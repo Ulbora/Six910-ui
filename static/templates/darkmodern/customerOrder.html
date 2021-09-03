@@ -129,6 +129,14 @@
             <p>{{.ShippingAddress}}</p>
           </div>
 
+          {{if eq .FFLSet true}}
+          <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">FFL Address</h4>
+            <hr>
+            <p>{{.FFLAddress}}</p>
+          </div>
+          {{end}}
+
 
         </div>
       </div>

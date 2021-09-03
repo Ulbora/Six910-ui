@@ -877,6 +877,7 @@ func TestSix910Manager_completeOrder(t *testing.T) {
 	a2.Type = "Billing"
 
 	var a3 sdbi.Address
+	a3.ID = 5
 	a3.Address = "907 Whitehead St"
 	a3.City = "Key West"
 	a3.Country = "CR"
@@ -908,6 +909,7 @@ func TestSix910Manager_completeOrder(t *testing.T) {
 	ccart.Taxes = 2.00
 	ccart.Total = 54.20
 	ccart.BillMeLater = true
+	ccart.FFLAddressID = 5
 
 	m := sm.GetNew()
 	res := m.CheckOut(&ccart, &head)

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"sync"
@@ -46,6 +47,8 @@ type OrderViewPage struct {
 	ShippingMethod  string
 	ShippingAddress string
 	BillingAddress  string
+	FFLAddress      string
+	FFLSet          bool
 }
 
 //CustomerOrderItem CustomerOrderItem
@@ -108,6 +111,11 @@ func (h *Six910Handler) ViewCustomerOrder(w http.ResponseWriter, r *http.Request
 			ovpage.ShippingMethod = ovpage.Order.ShippingMethodName
 			ovpage.BillingAddress = ovpage.Order.BillingAddress
 			ovpage.ShippingAddress = ovpage.Order.ShippingAddress
+			fmt.Println("len ffl: ", len(ovpage.Order.FFLShippingAddress))
+			fmt.Println("ffl: ", ovpage.Order.FFLShippingAddress)
+			if ovpage.Order.FFLName != "" {
+				ovpage.FFLSet = true
+			}
 
 			_, csspg := h.CSSService.GetPageCSS("pageCss")
 			h.Log.Debug("PageBody: ", *csspg)
