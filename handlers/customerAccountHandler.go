@@ -270,7 +270,7 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 							if !dares.Success {
 								delSuc = false
 							}
-						} else {
+						} else if a.Type != "FFL" {
 							a.Address = r.FormValue("address_" + idstr)
 							a.City = r.FormValue("city_" + idstr)
 							a.State = r.FormValue("state_" + idstr)

@@ -141,6 +141,35 @@
                                 value="{{.Order.ShippingAddress}}">
                         </div>
 
+                        {{if ne .Order.FFLShippingAddressID 0}}
+                        <div class="form-group bg-warning text-dark p-3">
+                            
+                            <input name="FFLShippingAddressID"  type="hidden" class="form-control" id="FFLShippingAddressID"
+                            value="{{.Order.FFLShippingAddressID}}">
+
+                            <label for="FFLName">FFL Name</label>
+                            <input name="FFLName" type="text" class="form-control" id="FFLName"
+                                value="{{.Order.FFLName}}">
+
+                            <label for="FFLLic">FFL Lic #</label>
+                            <input name="FFLLic"  type="text" class="form-control" id="FFLLic"
+                                value="{{.Order.FFLLic}}">
+
+                            <label for="FFLExpDate">Lic Expires</label>
+                            <input name="FFLExpDate"  type="text" class="form-control" id="FFLExpDate"
+                                value="{{.Order.FFLExpDate}}">
+
+                            <label for="FFLPhone">FFL Phone</label>
+                            <input name="FFLPhone"  type="text" class="form-control" id="FFLPhone"
+                                value="{{.Order.FFLPhone}}">
+
+                            <label for="FFLShippingAddress">FFL Address</label>
+                            <input name="FFLShippingAddress"  type="text" class="form-control" id="FFLShippingAddress"
+                                value="{{.Order.FFLShippingAddress}}">
+                        </div>
+
+                        {{end}}
+
                         <div class="form-group">
                             <label for="shippingAddress">Shipping Method</label>
                             <input name="billingMethodName" type="text" class="form-control" id="billingMethodName"

@@ -72,7 +72,7 @@
         <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Summary</h4>
         <div class="card bg-light">
           <div class="card-body">
-            <h3 class="card-title">Order</h3>
+            <h3 class="card-title">Order # {{.Order.OrderNumber}}</h3>
             <hr>
             <div class="row">
               <div class="col-6">Subtotal: </div>
@@ -133,7 +133,9 @@
           <div class="alert alert-info" role="alert">
             <h4 class="alert-heading">FFL Address</h4>
             <hr>
-            <p>{{.FFLAddress}}</p>
+            <p>{{.Order.FFLName}}</p>
+            <p>Lic #:{{.Order.FFLLic}}</p>
+            <p>{{.Order.FFLShippingAddress}}</p>
           </div>
           {{end}}
 

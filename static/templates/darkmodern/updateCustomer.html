@@ -104,53 +104,109 @@
                     
                     <div class="shadow-none p-3  bg-white text-dark rounded">
                         {{range .AddressList}}
-                        <input hidden name="id_{{.ID}}" type="text" id="id_{{.ID}}" value="{{.ID}}">
-                        <h4 class="mt-4">{{.Type}} Address</h4>
-                        <div class="form-group">
-                            <label for="address_{{.ID}}">Address</label>
-                            <input name="address_{{.ID}}" type="text" class="form-control" id="address_{{.ID}}"
-                                placeholder="1234 Main St" value="{{.Address}}" required>
+                            {{if eq .Type "FFL"}}
+                                <h4 class="mt-4">{{.Type}} Address</h4>
+                                <div class="form-group">
+                                    <label for="address_ffl_{{.ID}}">Name</label>
+                                    <input name="name_ffl_{{.ID}}" disabled type="text" class="form-control" id="name_ffl_{{.ID}}"
+                                        placeholder="" value="{{.Attr1}}" >
 
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="city_{{.ID}}">City</label>
-                                <input name="city_{{.ID}}" type="text" class="form-control" id="city_{{.ID}}" value="{{.City}}" required>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="state_{{.ID}}">State</label>
-                                <select name="state_{{.ID}}" id="state_{{.ID}}" class="form-control" required>
-                                    {{ $State := .State }}{{range $.StateList}}
-                                    {{if eq $State .Abrv }}
-                                    <option selected value="{{.Abrv}}">{{.Name}}</option>
-                                    {{else}}
-                                    <option value="{{.Abrv}}">{{.Name}}</option>
-                                    {{end}}
-                                    {{end}}
-                                </select>
-                            </div>
-                            <div class="form-group col-md-2">
-                                <label for="zip_{{.ID}}">Zip</label>
-                                <input name="zip_{{.ID}}" type="text" class="form-control" id="zip_{{.ID}}" value="{{.Zip}}" required>
-                            </div>
+                                </div>
+                                <h4 class="mt-4">{{.Type}} Address</h4>
+                                <div class="form-group">
+                                    <label for="address_ffl_{{.ID}}">Address</label>
+                                    <input name="address_ffl_{{.ID}}" disabled type="text" class="form-control" id="address_ffl_{{.ID}}"
+                                        placeholder="" value="{{.Address}}" >
 
-                            <div class="form-group col-md-4">
-                                <label for="country_{{.ID}}">Country</label>
-                                <select name="country_{{.ID}}" id="country_{{.ID}}" class="form-control" required>                                    
-                                    {{ $Country := .Country }}{{range $.CountryList}}
-                                    {{if eq $Country .Abrv }}
-                                    <option selected value="{{.Abrv}}">{{.Name}}</option>
-                                    {{else}}
-                                    <option value="{{.Abrv}}">{{.Name}}</option>
-                                    {{end}}                                    
-                                    {{end}}
-                                </select>
-                            </div>                           
-                        </div>
-                        <div class="form-group form-check ml-2">
-                            <input name="delete_{{.ID}}" type="checkbox" class="form-check-input" id="delete_{{.ID}}">
-                            <label class="form-check-label text-danger" for="delete_{{.ID}}">Delete this address</label>
-                        </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="city_ffl_{{.ID}}">City</label>
+                                        <input name="city_ffl_{{.ID}}" disabled type="text" class="form-control" id="city_ffl_{{.ID}}" value="{{.City}}" >
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="state_ffl_{{.ID}}">State</label>
+                                        <select name="state_ffl_{{.ID}}" disabled id="state_ffl_{{.ID}}" class="form-control" >
+                                            {{ $State := .State }}{{range $.StateList}}
+                                            {{if eq $State .Abrv }}
+                                            <option selected value="{{.Abrv}}">{{.Name}}</option>
+                                            {{else}}
+                                            <option value="{{.Abrv}}">{{.Name}}</option>
+                                            {{end}}
+                                            {{end}}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="zip_ffl_{{.ID}}">Zip</label>
+                                        <input name="zip_ffl_{{.ID}}" disabled type="text" class="form-control" id="zip_ffl_{{.ID}}" value="{{.Zip}}" >
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label for="country_ffl_{{.ID}}">Country</label>
+                                        <select name="country_ffl_{{.ID}}" disabled id="country_ffl_{{.ID}}" class="form-control" >                                    
+                                            {{ $Country := .Country }}{{range $.CountryList}}
+                                            {{if eq $Country .Abrv }}
+                                            <option selected value="{{.Abrv}}">{{.Name}}</option>
+                                            {{else}}
+                                            <option value="{{.Abrv}}">{{.Name}}</option>
+                                            {{end}}                                    
+                                            {{end}}
+                                        </select>
+                                    </div>                           
+                                </div>
+                                <div class="form-group form-check ml-2">
+                                    <input name="delete_{{.ID}}" type="checkbox" class="form-check-input" id="delete_{{.ID}}">
+                                    <label class="form-check-label text-danger" for="delete_{{.ID}}">Delete this address</label>
+                                </div>
+                            {{else}}
+                                <input hidden name="id_{{.ID}}" type="text" id="id_{{.ID}}" value="{{.ID}}">
+                                <h4 class="mt-4">{{.Type}} Address</h4>
+                                <div class="form-group">
+                                    <label for="address_{{.ID}}">Address</label>
+                                    <input name="address_{{.ID}}" type="text" class="form-control" id="address_{{.ID}}"
+                                        placeholder="1234 Main St" value="{{.Address}}" required>
+
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="city_{{.ID}}">City</label>
+                                        <input name="city_{{.ID}}" type="text" class="form-control" id="city_{{.ID}}" value="{{.City}}" required>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="state_{{.ID}}">State</label>
+                                        <select name="state_{{.ID}}" id="state_{{.ID}}" class="form-control" required>
+                                            {{ $State := .State }}{{range $.StateList}}
+                                            {{if eq $State .Abrv }}
+                                            <option selected value="{{.Abrv}}">{{.Name}}</option>
+                                            {{else}}
+                                            <option value="{{.Abrv}}">{{.Name}}</option>
+                                            {{end}}
+                                            {{end}}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="zip_{{.ID}}">Zip</label>
+                                        <input name="zip_{{.ID}}" type="text" class="form-control" id="zip_{{.ID}}" value="{{.Zip}}" required>
+                                    </div>
+
+                                    <div class="form-group col-md-4">
+                                        <label for="country_{{.ID}}">Country</label>
+                                        <select name="country_{{.ID}}" id="country_{{.ID}}" class="form-control" required>                                    
+                                            {{ $Country := .Country }}{{range $.CountryList}}
+                                            {{if eq $Country .Abrv }}
+                                            <option selected value="{{.Abrv}}">{{.Name}}</option>
+                                            {{else}}
+                                            <option value="{{.Abrv}}">{{.Name}}</option>
+                                            {{end}}                                    
+                                            {{end}}
+                                        </select>
+                                    </div>                           
+                                </div>
+                                <div class="form-group form-check ml-2">
+                                    <input name="delete_{{.ID}}" type="checkbox" class="form-check-input" id="delete_{{.ID}}">
+                                    <label class="form-check-label text-danger" for="delete_{{.ID}}">Delete this address</label>
+                                </div>
+                            {{end}}
                         {{end}}
                         <h4 class="mt-5">Add New Address</h4>
                         <div class="form-group">

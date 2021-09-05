@@ -223,6 +223,12 @@ func (h *Six910Handler) AddFFL(w http.ResponseWriter, r *http.Request) {
 					res := h.API.AddAddress(&nad, hd)
 					success = res.Success
 					h.Log.Debug("add ffl address suc: ", success)
+					if success {
+						cc := h.getCustomerCart(fflses)
+						addLst := h.API.GetAddressList(fflcus.ID, hd)
+						cc.CustomerAccount.Addresses = addLst
+						h.storeCustomerCart(cc, fflses, w, r)
+					}
 				}
 
 				http.Redirect(w, r, startCheckout, http.StatusFound)

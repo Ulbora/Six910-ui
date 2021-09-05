@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -15,6 +16,7 @@ import (
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	csssrv "github.com/Ulbora/Six910-ui/csssrv"
 	fflsrv "github.com/Ulbora/Six910-ui/findfflsrv"
+	man "github.com/Ulbora/Six910-ui/managers"
 	musrv "github.com/Ulbora/Six910-ui/menusrv"
 	mapi "github.com/Ulbora/Six910-ui/mockapi"
 	api "github.com/Ulbora/Six910API-Go"
@@ -1496,11 +1498,21 @@ func TestSix910Handler_AddFFL(t *testing.T) {
 	w := httptest.NewRecorder()
 	s, suc := sh.getUserSession(w, r)
 	fmt.Println("suc: ", suc)
+	var cccs man.CustomerCart
+	var cct sdbi.Cart
+	cct.ID = 1
+	cccs.Cart = &cct
+	var ca man.CustomerAccount
+	cccs.CustomerAccount = &ca
+
 	s.Values["userLoggenIn"] = true
 	s.Values["customerUser"] = true
 	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
 	//s.Values["loggedIn"] = true
+	b, _ := json.Marshal(cccs)
+	bb := sh.compressObj(b)
+	s.Values["customerCart"] = bb
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.AddFFL(w, r)
@@ -1624,6 +1636,17 @@ func TestSix910Handler_AddFFLBadFFLBusName(t *testing.T) {
 	s.Values["customerId"] = int64(55)
 	s.Values["username"] = "tester"
 	//s.Values["loggedIn"] = true
+
+	var cccs man.CustomerCart
+	var cct sdbi.Cart
+	cct.ID = 1
+	cccs.Cart = &cct
+	var ca man.CustomerAccount
+	cccs.CustomerAccount = &ca
+	b, _ := json.Marshal(cccs)
+	bb := sh.compressObj(b)
+	s.Values["customerCart"] = bb
+
 	s.Save(r, w)
 	h := sh.GetNew()
 	h.AddFFL(w, r)

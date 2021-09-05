@@ -271,6 +271,14 @@ func (h *Six910Handler) processOrder(r *http.Request) *sdbi.Order {
 	storeID := r.FormValue("storeId")
 	p.StoreID, _ = strconv.ParseInt(storeID, 10, 64)
 
+	FFLShippingAddressID := r.FormValue("FFLShippingAddressID")
+	p.FFLShippingAddressID, _ = strconv.ParseInt(FFLShippingAddressID, 10, 64)
+	p.FFLName = r.FormValue("FFLName")
+	p.FFLLic = r.FormValue("FFLLic")
+	p.FFLExpDate = r.FormValue("FFLExpDate")
+	p.FFLPhone = r.FormValue("FFLPhone")
+	p.FFLShippingAddress = r.FormValue("FFLShippingAddress")
+
 	return &p
 }
 
