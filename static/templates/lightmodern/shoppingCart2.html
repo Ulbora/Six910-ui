@@ -21,8 +21,8 @@
       {{if and .CustomerCart .CustomerCart.Items}}
       <div class="col-6">
         <h4 class="text-center mt-5" style="{{.PageBody.PageTitle}}">Cart Items</h4>
-
-        {{range .CustomerCart.CartView.Items}}
+        
+        {{range .CustomerCart.CartView.Items}}        
         <div class="card mb-3">
           <div class="row no-gutters">
             <div class="col-md-4">
@@ -31,7 +31,7 @@
             <div class="col-md-8">
               <div class="card-body">
                 <h5 class="card-title">{{.ProductName}}</h5>
-                <p class="card-text">{{.Desc}}.</p>
+                <p class="card-text">{{.Desc}}</p>                
                 <p class="card-text">
                 <div class="row">
                   <div class="col-sm">
@@ -63,12 +63,17 @@
                         <p class="card-text">${{.Total}}</p>
                       </div>
                     </div>
-                  </div>
+                  </div>                  
                 </div>
                 </p>
               </div>
-            </div>
-          </div>
+            </div>            
+          </div>          
+          {{if eq .SpecialProcessingType "FFL"}}
+              <div class="alert alert-danger mt-3" role="alert">
+                FFL Required
+              </div>
+          {{end}}
         </div>
         {{end}}
 
@@ -118,38 +123,76 @@
             {{end}}
 
             {{if eq .ShowAddressList true}}
-            <h5 class="mt-3">Billing Address <span class="text-danger"> *</span></h5>
-            {{range .CustomerAddressList}}
-            {{if eq .Type "Billing"}}
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="billingAddressID" id="billingAddressID" value="{{.ID}}"
-                required>
-              <label class="form-check-label" for="billingAddressID">
-                {{.Address}}
-                {{.City}}
-                {{.State}} {{.Zip}}
-              </label>
-            </div>
-            {{end}}
-            {{end}}
+              <h5 class="mt-3">Billing Address<span class="text-danger"> *</span></h5>
+              {{range .CustomerAddressList}}
+                {{if eq .Type "Billing"}}
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="billingAddressID" id="billingAddressID" value="{{.ID}}"
+                      required>
+                    <label class="form-check-label" for="billingAddressID">
+                      {{.Address}}
+                      {{.City}}
+                      {{.State}} {{.Zip}}
+                    </label>
+                  </div>
+                {{end}}
+              {{end}}
 
-            <h5 class="mt-3">Shipping Address <span class="text-danger"> *</span></h5>
-            {{range .CustomerAddressList}}
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="shippingAddressID" id="shippingAddressID"
-                value="{{.ID}}" required>
-              <label class="form-check-label" for="shippingAddressID">
-                {{.Address}}
-                {{.City}}
-                {{.State}} {{.Zip}}
-              </label>
-            </div>
-            {{end}}
-            <div class="alert alert-danger mt-3" role="alert">
-              <a href="/viewCustomerAccount" class="alert-link">Add New Address </a>
-            </div>
+              <h5 class="mt-3">Shipping Address<span class="text-danger"> *</span></h5>
+              {{range .CustomerAddressList}}
+                {{if eq .Type "Shipping"}}
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="shippingAddressID" id="shippingAddressID"
+                      value="{{.ID}}" required>
+                    <label class="form-check-label" for="shippingAddressID">
+                      {{.Address}}
+                      {{.City}}
+                      {{.State}} {{.Zip}}
+                    </label>
+                  </div>
+                {{end}}
+              {{end}}
+
+              {{if eq .NeedFFL true}}
+                <h5 class="mt-3">FFL Info<span class="text-danger"> *</span></h5>
+                  {{if eq .FFLSet false}}
+                    <div class="alert alert-warning mt-3" role="alert">FFL Needed</div>
+                    <input hidden class="form-check-input" type="radio" name="fflAddressID" id="fflAddressID"
+                    value="" required>
+                  {{end}}
+
+                  {{range .CustomerAddressList}}
+                    {{if eq .Type "FFL"}}
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="fflAddressID" id="fflAddressID" value="{{.ID}}"
+                          required>
+                        <label class="form-check-label" for="fflAddressID">
+                          {{.Attr1}}
+                          Lic# {{.Attr2}}
+                          {{.Address}}
+                          {{.City}}
+                          {{.State}} {{.Zip}}
+                        </label>
+                      </div>
+                    {{end}}
+                  {{end}}
+                  <div class="alert alert-danger mt-3" role="alert">
+                    <a href="/findFFLZipPage" class="alert-link">Choose FFL </a>
+                  </div>  
+              {{end}}
+              <div class="alert alert-danger mt-3" role="alert">
+                <a href="/viewCustomerAccount" class="alert-link">Add New Address </a>
+              </div>  
+              {{if ne .BillingAddressFound true}}    
+                <input hidden class="form-check-input" type="radio" name="billingAddressID" id="billingAddressID"
+                  value="" required>
+              {{end}}
+              {{if ne .ShippingAddressFound true}}    
+                <input hidden class="form-check-input" type="radio" name="shippingAddressID" id="shippingAddressID"
+                value="" required>
+              {{end}}
             {{else}}
-            <h5 class="mt-3">Billing Address <span class="text-danger"> *</span></h5>
+            <h5 class="mt-3">Billing Address<span class="text-danger"> *</span></h5>
             <div class="form-check">
               <input hidden class="form-check-input" type="radio" name="billingAddressID" id="billingAddressID" value=""
                 required>
@@ -160,7 +203,7 @@
               </label>
             </div>
 
-            <h5 class="mt-3">Shipping Address <span class="text-danger"> *</span></h5>
+            <h5 class="mt-3">Shipping Address<span class="text-danger"> *</span></h5>
             <div class="form-check">
               <input hidden class="form-check-input" type="radio" name="shippingAddressID" id="shippingAddressID"
                 value="" required>
