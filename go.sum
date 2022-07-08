@@ -39,14 +39,14 @@ github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAE
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
 github.com/Ulbora/BTCPayClient v1.0.2 h1:QeiS9kzOlqyptKudLuIU89gCyx9jv5jxeiY31/gcqqQ=
 github.com/Ulbora/BTCPayClient v1.0.2/go.mod h1:9+M6EUN5UQJs0nUvk8E2b7yJ5a/XJzLkiOLdC5xTHDU=
+github.com/Ulbora/BTCPayClient v1.0.3 h1:u4MhpM7tQpBl5wq+GsOPq62qbEQkaQoH7kwYrgQoO8I=
+github.com/Ulbora/BTCPayClient v1.0.3/go.mod h1:MU8WcXDaRGntWL1taBvRiJ5lKf4UMcpS6V6tepMR6Ns=
 github.com/Ulbora/FileReader v1.0.0 h1:J7fbnlxfvXbhpHm0S196UQ40lQnZ2BqXZ0AamJ6gTKQ=
 github.com/Ulbora/FileReader v1.0.0/go.mod h1:UZLF1zWmBmQ2MNGN7L7TyyQP7Y/IlOqheGYqV2Km6s0=
 github.com/Ulbora/GoProxy v1.0.1 h1:7gFPaJdXDV3tFDSWYxpQx7SQmNKcZPrv4SMwxa+vFhA=
 github.com/Ulbora/GoProxy v1.0.1/go.mod h1:8qICy+U1tSywRYoy9RdP+Zm6G2nN2K1YcvMupVlkIYI=
 github.com/Ulbora/Level_Logger v1.0.2 h1:uhuNi1oSQ1zSDhuYQS7NEHqtR4lAYPGyW2XGwJZtxmk=
 github.com/Ulbora/Level_Logger v1.0.2/go.mod h1:epRidhkOBJSzCCon816WfFCO9vtai8VCmdI8S/xcTbA=
-github.com/Ulbora/Six910API-Go v1.1.3 h1:27GmOYAFfXEfEGHXk+Nl23orpn0Ejf6bvY+rCorTb/M=
-github.com/Ulbora/Six910API-Go v1.1.3/go.mod h1:lF8tEZka970Q9GdgxV2T+n5wv0a52a36EV23xGNT24I=
 github.com/Ulbora/Six910API-Go v1.1.4 h1:8SRdISylk7pIB3+FiNvUfw8yHpDtIuc+VIV5NChYP/I=
 github.com/Ulbora/Six910API-Go v1.1.4/go.mod h1:ZXTjgsWWjeCEOADDGgNgqm3NmVyE2inZQuF19ErDgAI=
 github.com/Ulbora/Six910BTCPayServerPlugin v1.0.8 h1:GJTuQ574cB2WQ+pnYdCsPE1MWhwg7XXekDsj+fjXrLI=
@@ -59,8 +59,6 @@ github.com/Ulbora/go-sessions v1.0.2 h1:S399x4sW740hvO7n9qjrJM37sSo47KBAJ+7jiT0e
 github.com/Ulbora/go-sessions v1.0.2/go.mod h1:5CXZMqyt5XJDumnxoKqftZH/i3voi9k1UN47fuwxRLs=
 github.com/Ulbora/json-datastore v1.0.5 h1:sWH6mBFXOapi7ZMog1FpPKMHF1p2BNVxk4Ejp9H+cxk=
 github.com/Ulbora/json-datastore v1.0.5/go.mod h1:yMKdmKwHW5m3Wh9bgGHu9crDMNeNI4D0xihWYBdSL38=
-github.com/Ulbora/six910-database-interface v1.1.3 h1:oLkXYxKp5Lznv/6khdAuaRkWCl9qwamZCLBI5IG/ems=
-github.com/Ulbora/six910-database-interface v1.1.3/go.mod h1:xKoESfGA7CV8kFeZwMtwnBAezrBFzTdtrSRaeUn0QBQ=
 github.com/Ulbora/six910-database-interface v1.1.10 h1:hE5mLqIxFzmcmgw8gK57PjZNGd+U404SKe/nA+4RYn4=
 github.com/Ulbora/six910-database-interface v1.1.10/go.mod h1:HHC7AiKhsROflRoKg7gXL+de0ECcpaqgkhhJOtM0pQU=
 github.com/VictoriaMetrics/fastcache v1.5.7/go.mod h1:ptDBkNMQI4RtmVo8VS/XwRY6RoTu1dAWCbrk+6WsEM8=
@@ -450,8 +448,6 @@ golang.org/x/crypto v0.0.0-20200115085410-6d4e4cb37c7d/go.mod h1:LzIPMQfyMNhhGPh
 golang.org/x/crypto v0.0.0-20200510223506-06a226fb4e37/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
 golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9/go.mod h1:LzIPMQfyMNhhGPhUkYOs5KpL4U8rLKemX1yGLhDgUto=
 golang.org/x/crypto v0.0.0-20210513164829-c07d793c2f9a/go.mod h1:P+XmwS30IXTQdn5tA2iutPOUgjI07+tq3H3K9MVA1s8=
-golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 h1:HWj/xjIHfjYU5nVXpTM0s39J9CbLn7Cc5a7IC5rwsMQ=
-golang.org/x/crypto v0.0.0-20210817164053-32db794688a5/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
 golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d h1:sK3txAijHtOK88l68nt020reeT1ZdKLIYetKl95FzVY=
 golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/exp v0.0.0-20180321215751-8460e604b9de/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=

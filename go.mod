@@ -3,7 +3,7 @@ module github.com/Ulbora/Six910-ui
 go 1.18
 
 require (
-	github.com/Ulbora/BTCPayClient v1.0.2
+	github.com/Ulbora/BTCPayClient v1.0.3
 	github.com/Ulbora/FileReader v1.0.0
 	github.com/Ulbora/GoProxy v1.0.1
 	github.com/Ulbora/Level_Logger v1.0.2
