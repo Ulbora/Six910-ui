@@ -791,6 +791,11 @@ func (a *MockAPI) GetProductManufacturerListByProductName(name string, headers *
 	return a.MockManufactureList
 }
 
+//GetProductManufacturerListByProductSearch GetProductManufacturerListByProductSearch
+func (a *MockAPI) GetProductManufacturerListByProductSearch(attr string, headers *api.Headers) *[]string {
+	return a.MockManufactureList
+}
+
 //GetProductByNameAndManufacturerName GetProductByNameAndManufacturerName
 func (a *MockAPI) GetProductByNameAndManufacturerName(manf string, name string,
 	start int64, end int64, headers *api.Headers) *[]sdbi.Product {
@@ -805,6 +810,11 @@ func (a *MockAPI) GetProductManufacturerListByCatID(catID int64, headers *api.He
 //GetProductByCatAndManufacturer GetProductByCatAndManufacturer
 func (a *MockAPI) GetProductByCatAndManufacturer(catID int64, manf string,
 	start int64, end int64, headers *api.Headers) *[]sdbi.Product {
+	return a.MockProductList
+}
+
+//ProductSearch ProductSearch
+func (a *MockAPI) ProductSearch(p *sdbi.ProductSearch, headers *api.Headers) *[]sdbi.Product {
 	return a.MockProductList
 }
 

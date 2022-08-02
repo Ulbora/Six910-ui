@@ -522,6 +522,11 @@ func main() {
 	router.HandleFunc("/searchProductsByName/{search}/{start}/{end}", h.SearchProductList).Methods("GET")
 	router.HandleFunc("/searchProductsByManufacturerAndName/{manf}/{search}/{start}/{end}", h.SearchProductByManufacturerList).Methods("GET")
 
+	router.HandleFunc("/productSearchByDesc", h.ProductSearchByDescAttributes).Methods("POST")
+	router.HandleFunc("/productSearchByDesc/{search}/{start}/{end}", h.ProductSearchByDescAttributes).Methods("GET")
+	///post these attributes {desc1}/{desc1}/size/gender/{start}/{end}
+	//will require change on api to search by multiple desc attributes
+
 	router.HandleFunc("/addProductToCart", h.AddProductToCart).Methods("GET")
 	router.HandleFunc("/addToCart/{prodId}", h.AddProductToCart).Methods("GET")
 

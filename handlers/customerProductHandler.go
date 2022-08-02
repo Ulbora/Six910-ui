@@ -4,6 +4,7 @@ import (
 	"container/list"
 	"net/http"
 	"strconv"
+	"strings"
 
 	conts "github.com/Ulbora/Six910-ui/contentsrv"
 	api "github.com/Ulbora/Six910API-Go"
@@ -441,6 +442,114 @@ func (h *Six910Handler) SearchProductByManufacturerList(w http.ResponseWriter, r
 		h.Log.Debug("plparm.Pagination.Pages:", *mcsplpage.Pagination.Pages)
 		h.Log.Debug("csplpage: ", mcsplpage)
 		h.Templates.ExecuteTemplate(w, customerProductsSearchListPage, &mcsplpage)
+	}
+}
+
+//ProductSearchByDescAttributes ProductSearchByDescAttributes
+func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *http.Request) {
+	cspls, suc := h.getUserSession(w, r)
+	h.Log.Debug("session suc", suc)
+	if suc {
+		//var pagebdy PageBody
+		csrplsearch := r.FormValue("search")
+		var acsplstart int64
+		var acsplend int64
+
+		if csrplsearch == "" {
+			acsplvars := mux.Vars(r)
+			csrplsearch = acsplvars["search"]
+			acsplststr := acsplvars["start"]
+			acsplendstr := acsplvars["end"]
+
+			acsplstart, _ = strconv.ParseInt(acsplststr, 10, 64)
+			acsplend, _ = strconv.ParseInt(acsplendstr, 10, 64)
+		}
+
+		var attrbs = strings.Split(csrplsearch, " ")
+
+		if acsplend == 0 {
+			acsplend = 100
+		}
+		h.Log.Debug("csplsearch: ", csrplsearch)
+		hd := h.getHeader(cspls)
+
+		var psratt sdbi.ProductSearch
+		psratt.DescAttributes = &attrbs
+		psratt.End = acsplend
+
+		sppl := h.API.ProductSearch(&psratt, hd)
+
+		// may need to modify this search too
+
+		smlst := h.API.GetProductManufacturerListByProductSearch(csrplsearch, hd)
+		h.Log.Debug("mlst: ", smlst)
+
+		//make call to get manufact by name of product
+
+		cisuc, cscont := h.ContentService.GetContent(productListContent)
+
+		var acsplpage CustomerPage
+		var turl = "/searchProductsByName/" + csrplsearch + "/0/100"
+		acsplpage.HeaderData = h.processMetaData(turl, csrplsearch, r)
+
+		_, csspg := h.CSSService.GetPageCSS("pageCss")
+		acsplpage.PageBody = csspg
+
+		acsplpage.ProductList = sppl
+		acsplpage.ManufacturerList = smlst
+		if cisuc {
+			acsplpage.Content = cscont
+		} else {
+			var ct conts.Content
+			acsplpage.Content = &ct
+		}
+		acsplpage.SearchName = csrplsearch
+		acsplpage.Manufacturer = ""
+
+		//csplpage.MenuList = h.MenuService.GetMenuList()
+		ml := h.MenuService.GetMenuList()
+		h.getCartTotal(cspls, ml, hd)
+		acsplpage.MenuList = ml
+		h.Log.Debug("MenuList", *acsplpage.MenuList)
+
+		var asprowListc []*ProductRow
+		var sprowc *ProductRow
+		var rc = 1
+		for i, p := range *sppl {
+			if rc == 1 {
+				h.Log.Debug("sku1", p.Sku)
+				sprowc = new(ProductRow)
+				sprowc.ProductLeft = p
+				rc++
+				if i == len(*sppl)-1 {
+					asprowListc = append(asprowListc, sprowc)
+				}
+				continue
+			} else if rc == 2 {
+				h.Log.Debug("sku2", p.Sku)
+				sprowc.ProductMiddle = p
+				rc++
+				if i == len(*sppl)-1 {
+					asprowListc = append(asprowListc, sprowc)
+				}
+				continue
+			} else if rc == 3 {
+				h.Log.Debug("sku3", p.Sku)
+				sprowc.ProductRight = p
+				h.Log.Debug("prow", sprowc)
+				asprowListc = append(asprowListc, sprowc)
+				rc = 1
+			}
+		}
+
+		acsplpage.ProductListRowList = &asprowListc
+
+		h.Log.Debug("prowList", asprowListc)
+		acsplpage.Pagination = h.doPagination(acsplstart, len(*sppl), 100, "/searchProductsByDesc/"+csrplsearch)
+		h.Log.Debug("plparm.Pagination:", *acsplpage.Pagination)
+		h.Log.Debug("plparm.Pagination.Pages:", *acsplpage.Pagination.Pages)
+		h.Log.Debug("csplpage: ", acsplpage)
+		h.Templates.ExecuteTemplate(w, customerProductsSearchListPage, &acsplpage)
 	}
 }
 

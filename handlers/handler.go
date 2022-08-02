@@ -267,6 +267,7 @@ type Handler interface {
 	ViewProductByCatAndManufacturerList(w http.ResponseWriter, r *http.Request)
 	SearchProductList(w http.ResponseWriter, r *http.Request)
 	SearchProductByManufacturerList(w http.ResponseWriter, r *http.Request)
+	ProductSearchByDescAttributes(w http.ResponseWriter, r *http.Request)
 	ViewProduct(w http.ResponseWriter, r *http.Request)
 
 	//cart
