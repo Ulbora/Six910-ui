@@ -160,6 +160,7 @@ func (m *Six910Manager) importProducts(prodList *[]Product, hd *api.Headers) int
 func (m *Six910Manager) parseProduct(p *Product) *sdbi.Product {
 	var rtn sdbi.Product
 	rtn.Color = p.Color
+	rtn.Gender = p.Gender
 	rtn.Cost = p.Cost
 	rtn.Currency = p.Currency
 	rtn.Depth = p.Depth
@@ -207,6 +208,9 @@ func (m *Six910Manager) parseExistingProduct(ep *sdbi.Product, up *Product) *sdb
 	//rtn.ID = ep.ID
 	if up.Color != "" {
 		rtn.Color = up.Color
+	}
+	if up.Gender != "" {
+		rtn.Gender = up.Gender
 	}
 	if up.Cost != 0 {
 		rtn.Cost = up.Cost

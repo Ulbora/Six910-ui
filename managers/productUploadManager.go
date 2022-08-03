@@ -279,6 +279,8 @@ func (m *Six910Manager) processValue(name string, val string, p *Product, hd *ap
 		p.Size = val
 	case "color":
 		p.Color = val
+	case "gender":
+		p.Gender = val
 	case "thumbnail":
 		p.Thumbnail = val
 	case "image1":

@@ -71,6 +71,7 @@ type Product struct {
 	SpecialProcessingType string  `json:"specialProcessingType"`
 	Size                  string  `json:"size"`
 	Color                 string  `json:"color"`
+	Gender                string  `json:"gender"`
 	Thumbnail             string  `json:"thumbnail"`
 	Image1                string  `json:"image1"`
 	Image2                string  `json:"image2"`

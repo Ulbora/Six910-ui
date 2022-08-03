@@ -455,11 +455,24 @@ func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *
 		var acsplstart int64
 		var acsplend int64
 
+		var color string
+		var size string
+		var gender string
+
 		if csrplsearch == "" {
 			acsplvars := mux.Vars(r)
 			csrplsearch = acsplvars["search"]
 			acsplststr := acsplvars["start"]
 			acsplendstr := acsplvars["end"]
+
+			color = acsplvars["color"]
+			size = acsplvars["size"]
+			gender = acsplvars["gender"]
+
+			//add addition params for gender color and size
+			//and do productSearch to temp product list and remove products that
+			//don't meet new parameters like : male size 12, color black
+			//assign new product list to sppl
 
 			acsplstart, _ = strconv.ParseInt(acsplststr, 10, 64)
 			acsplend, _ = strconv.ParseInt(acsplendstr, 10, 64)
@@ -470,26 +483,38 @@ func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *
 		if acsplend == 0 {
 			acsplend = 100
 		}
-		h.Log.Debug("csplsearch: ", csrplsearch)
+		h.Log.Debug("csrplsearch: ", csrplsearch)
 		hd := h.getHeader(cspls)
 
 		var psratt sdbi.ProductSearch
 		psratt.DescAttributes = &attrbs
 		psratt.End = acsplend
 
-		sppl := h.API.ProductSearch(&psratt, hd)
+		var sppl *[]sdbi.Product
+
+		tempsppl := h.API.ProductSearch(&psratt, hd)
+
+		if color != "" || size != "" || gender != "" {
+			// var filProdList []sdbi.Product
+
+			//-----------------------------
+			// add code to eliminate unneeded products
+			//----------------------------
+		} else {
+			sppl = tempsppl
+		}
 
 		// may need to modify this search too
 
 		smlst := h.API.GetProductManufacturerListByProductSearch(csrplsearch, hd)
-		h.Log.Debug("mlst: ", smlst)
+		h.Log.Debug("smlst: ", smlst)
 
 		//make call to get manufact by name of product
 
 		cisuc, cscont := h.ContentService.GetContent(productListContent)
 
 		var acsplpage CustomerPage
-		var turl = "/searchProductsByName/" + csrplsearch + "/0/100"
+		var turl = "/searchProductsByDesc/" + csrplsearch + "/0/100"
 		acsplpage.HeaderData = h.processMetaData(turl, csrplsearch, r)
 
 		_, csspg := h.CSSService.GetPageCSS("pageCss")
@@ -548,7 +573,7 @@ func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *
 		acsplpage.Pagination = h.doPagination(acsplstart, len(*sppl), 100, "/searchProductsByDesc/"+csrplsearch)
 		h.Log.Debug("plparm.Pagination:", *acsplpage.Pagination)
 		h.Log.Debug("plparm.Pagination.Pages:", *acsplpage.Pagination.Pages)
-		h.Log.Debug("csplpage: ", acsplpage)
+		h.Log.Debug("acsplpage: ", acsplpage)
 		h.Templates.ExecuteTemplate(w, customerProductsSearchListPage, &acsplpage)
 	}
 }

@@ -521,6 +521,7 @@ func (h *Six910Handler) processProduct(r *http.Request) *sdbi.Product {
 	p.SpecialProcessingType = specialProcType
 	p.Size = r.FormValue("size")
 	p.Color = r.FormValue("color")
+	p.Gender = r.FormValue("gender")
 	p.Thumbnail = r.FormValue("thumbnail")
 	p.Image1 = r.FormValue("image1")
 	p.Image2 = r.FormValue("image2")
