@@ -64,6 +64,9 @@ type CustomerPage struct {
 	CategoryID         string
 	CategoryName       string
 	SearchName         string
+	Color              string
+	Size               string
+	Gender             string
 	ManufacturerList   *[]string
 	Manufacturer       string
 	PageBody           *csssrv.PageCSS

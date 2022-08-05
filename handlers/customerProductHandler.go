@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"container/list"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -451,13 +452,20 @@ func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *
 	h.Log.Debug("session suc", suc)
 	if suc {
 		//var pagebdy PageBody
-		csrplsearch := r.FormValue("search")
-		var acsplstart int64
-		var acsplend int64
-
 		var color string
 		var size string
 		var gender string
+
+		csrplsearch := r.FormValue("search")
+		color = r.FormValue("color")
+		size = r.FormValue("size")
+		gender = r.FormValue("gender")
+
+		var acsplstart int64
+		var acsplend int64
+
+		fmt.Println("Search: ", csrplsearch)
+		fmt.Println("Gender: ", gender)
 
 		if csrplsearch == "" {
 			acsplvars := mux.Vars(r)
@@ -465,9 +473,9 @@ func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *
 			acsplststr := acsplvars["start"]
 			acsplendstr := acsplvars["end"]
 
-			color = acsplvars["color"]
-			size = acsplvars["size"]
-			gender = acsplvars["gender"]
+			// color = acsplvars["color"]
+			// size = acsplvars["size"]
+			// gender = acsplvars["gender"]
 
 			//add addition params for gender color and size
 			//and do productSearch to temp product list and remove products that
@@ -494,15 +502,9 @@ func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *
 
 		tempsppl := h.API.ProductSearch(&psratt, hd)
 
-		if color != "" || size != "" || gender != "" {
-			// var filProdList []sdbi.Product
+		sppl = h.filterProduct(color, size, gender, tempsppl)
 
-			//-----------------------------
-			// add code to eliminate unneeded products
-			//----------------------------
-		} else {
-			sppl = tempsppl
-		}
+		h.Log.Debug("sppl: ", sppl)
 
 		// may need to modify this search too
 
@@ -529,6 +531,9 @@ func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *
 			acsplpage.Content = &ct
 		}
 		acsplpage.SearchName = csrplsearch
+		acsplpage.Color = color
+		acsplpage.Size = size
+		acsplpage.Gender = gender
 		acsplpage.Manufacturer = ""
 
 		//csplpage.MenuList = h.MenuService.GetMenuList()
@@ -689,4 +694,22 @@ func (h *Six910Handler) getProductCatList(l *list.List, cid int64, hd *api.Heade
 	l.PushFront(pc)
 	return h.getProductCatList(l, pc.ParentCategoryID, hd)
 
+}
+
+func (h *Six910Handler) filterProduct(color string, size string, gender string, plst *[]sdbi.Product) *[]sdbi.Product {
+	var rtn []sdbi.Product
+
+	for _, p := range *plst {
+		if color != "" && strings.ToLower(p.Color) != strings.ToLower(color) {
+			continue
+		}
+		if size != "" && strings.ToLower(p.Size) != strings.ToLower(size) {
+			continue
+		}
+		if gender != "" && strings.ToLower(p.Gender) != strings.ToLower(gender) {
+			continue
+		}
+		rtn = append(rtn, p)
+	}
+	return &rtn
 }

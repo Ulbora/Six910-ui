@@ -297,6 +297,7 @@ func TestSix910Manager_importExistingProducts(t *testing.T) {
 	p1.Height = 2
 	p1.SalePrice = 2
 	p1.Size = "2"
+	p1.Gender = "male"
 	plst = append(plst, p1)
 
 	var p2 Product

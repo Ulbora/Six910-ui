@@ -24,7 +24,94 @@
                     <h5 class="text-center" style="{{.PageBody.PageTitle}}">Manufacturers</h5>
                     {{range .ManufacturerList}}
                     <a href="/searchProductsByManufacturerAndName/{{.}}/{{$.SearchName}}/0/100" class="list-group-item list-group-item-action">{{.}}</a>
-                    {{end}}                   
+                    {{end}}    
+                    <form method="POST" action="/productSearchByDesc" class="form-inline my-2 my-lg-0">
+                        <div class="shadow-none p-3 mb-5 mt-2 bg-light rounded">
+                            <div class="form-group mb-2">                                
+                                <input hidden name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" value="{{.SearchName}}">
+                            </div>
+
+                            <div class="form-row">
+                                <label for="name">Gender</label>                                
+                              </div>                            
+                            <div class="form-row mb-3">                               
+                                <div class="form-group">                                   
+                                    <select name="gender" id="gender" class="custom-select mr-sm-2"> 
+                                        <option value="">None</option> 
+                                        <option value="{{.Gender}}" selected>{{.Gender}}</option>                                        
+                                        <option value="Men">Men</option> 
+                                        <option value="Women">Women</option>   
+                                        <option value="Youth">Youth</option>                                         
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-row">
+                                <label for="name">Color</label>                                
+                              </div>                            
+                            <div class="form-row mb-3">                               
+                                <div class="form-group">                                   
+                                    <select name="color" id="color" class="custom-select mr-sm-2"> 
+                                        <option value="">None</option> 
+                                        <option value="{{.Color}}" selected>{{.Color}}</option>                                        
+                                        <option value="Black">Black</option> 
+                                        <option value="White">White</option>   
+                                        <option value="Red">Red</option>  
+                                        <option value="Tan">Tan</option>    
+                                        <option value="Blue">Blue</option>    
+                                        <option value="Orange">Orange</option>    
+                                        <option value="Yellow">Yellow</option>    
+                                        <option value="Grey">Grey</option>    
+                                        <option value="Gold">Gold</option>    
+                                        <option value="Green">Green</option>                                           
+                                    </select>
+                                </div>
+                            </div>
+                           
+                        
+                            <div class="form-row">
+                                <label for="name">Size</label>                                
+                              </div>                            
+                            <div class="form-row mb-3">                               
+                                <div class="form-group">                                   
+                                    <select name="size" id="size" class="custom-select mr-sm-2"> 
+                                        <option value="">None</option> 
+                                        <option value="{{.Size}}" selected>{{.Size}}</option>  
+                                        <option value="XS">XS</option>                                      
+                                        <option value="Small">Small</option> 
+                                        <option value="Med">Med</option>   
+                                        <option value="Large">Large</option>  
+                                        <option value="XL">XL</option>    
+                                        <option value="2XL">2XL</option>    
+                                        <option value="3XL">3XL</option>    
+                                        <option value="4XL">4XL</option>    
+                                        <option value="5XL">5XL</option>    
+                                        <option value="6XL">6XL</option>    
+                                        <option value="7XL">7XL</option> 
+                                        <option value="6">6</option>    
+                                        <option value="7">7</option>    
+                                        <option value="8">8</option>    
+                                        <option value="9">9</option>  
+                                        <option value="10">10</option> 
+                                        <option value="10 1/2">10 1/2</option> 
+                                        <option value="11">11</option> 
+                                        <option value="11 1/2">1/2</option> 
+                                        <option value="12">12</option> 
+                                        <option value="12 1/2">12 1/2</option> 
+                                        <option value="13">13</option>   
+                                        <option value="14">14</option>   
+                                        <option value="15">15</option>      
+                                        <option value="16">16</option>  
+                                        <option value="17">17</option>                                           
+                                    </select>
+                                </div>
+                            </div>
+                           
+
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </div>
+                    </form>               
                 </div>
             </div>
             <div class="col-sm-10">
