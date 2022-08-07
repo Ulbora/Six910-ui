@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"container/list"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -464,23 +463,14 @@ func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *
 		var acsplstart int64
 		var acsplend int64
 
-		fmt.Println("Search: ", csrplsearch)
-		fmt.Println("Gender: ", gender)
+		//fmt.Println("Search: ", csrplsearch)
+		//fmt.Println("Gender: ", gender)
 
 		if csrplsearch == "" {
 			acsplvars := mux.Vars(r)
 			csrplsearch = acsplvars["search"]
 			acsplststr := acsplvars["start"]
 			acsplendstr := acsplvars["end"]
-
-			// color = acsplvars["color"]
-			// size = acsplvars["size"]
-			// gender = acsplvars["gender"]
-
-			//add addition params for gender color and size
-			//and do productSearch to temp product list and remove products that
-			//don't meet new parameters like : male size 12, color black
-			//assign new product list to sppl
 
 			acsplstart, _ = strconv.ParseInt(acsplststr, 10, 64)
 			acsplend, _ = strconv.ParseInt(acsplendstr, 10, 64)

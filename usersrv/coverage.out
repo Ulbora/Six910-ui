@@ -1,10 +1,4 @@
 mode: set
-github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:49.66,51.2 1 1
-github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:54.75,56.2 1 1
-github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:59.88,61.2 1 1
-github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:64.82,66.2 1 1
-github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:69.56,71.2 1 1
-github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:74.54,76.2 1 1
 github.com/Ulbora/Six910-ui/usersrv/userService.go:59.35,61.2 1 1
 github.com/Ulbora/Six910-ui/usersrv/userService.go:71.36,73.2 1 1
 github.com/Ulbora/Six910-ui/usersrv/userService.go:90.37,92.2 1 1
@@ -24,3 +18,9 @@ github.com/Ulbora/Six910-ui/usersrv/userService.go:212.2,212.19 1 1
 github.com/Ulbora/Six910-ui/usersrv/userService.go:202.17,210.3 6 1
 github.com/Ulbora/Six910-ui/usersrv/userService.go:216.52,218.2 1 1
 github.com/Ulbora/Six910-ui/usersrv/userService.go:221.50,223.2 1 1
+github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:49.66,51.2 1 1
+github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:54.75,56.2 1 1
+github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:59.88,61.2 1 1
+github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:64.82,66.2 1 1
+github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:69.56,71.2 1 1
+github.com/Ulbora/Six910-ui/usersrv/mockUserService.go:74.54,76.2 1 1

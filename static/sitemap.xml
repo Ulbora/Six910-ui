@@ -1,91 +1,91 @@
  <urlset xmlns="http://www.google.com/schemas/sitemap/0.9">
    <url>
      <loc>http://localhost:8080</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>daily</changefreq>
      <priority>1</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/9</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/25688</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/25700</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/25701</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/25702</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/25703</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/25704</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/25705</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/25706</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/25707</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/25708</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/26103</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/26171</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>
    <url>
      <loc>http://localhost:8080/viewProduct/26172</loc>
-     <lastmod>2022-08-04</lastmod>
+     <lastmod>2022-08-07</lastmod>
      <changefreq>weekly</changefreq>
      <priority>0.8</priority>
    </url>

@@ -38,10 +38,25 @@
                                 <div class="form-group">                                   
                                     <select name="gender" id="gender" class="custom-select mr-sm-2"> 
                                         <option value="">None</option> 
-                                        <option value="{{.Gender}}" selected>{{.Gender}}</option>                                        
-                                        <option value="Men">Men</option> 
-                                        <option value="Women">Women</option>   
-                                        <option value="Youth">Youth</option>                                         
+                                        {{if eq .Gender "Men"}}
+                                            <option value="Men" selected>Men</option>
+                                        {{else}}
+                                        <option value="Men">Men</option>
+                                        {{end}}
+                                         
+                                        {{if eq .Gender "Women"}}
+                                            <option value="Women" selected>Women</option>
+                                        {{else}}
+                                        <option value="Women">Women</option>
+                                        {{end}}
+
+                                        {{if eq .Gender "Youth"}}
+                                            <option value="Youth" selected>Youth</option>
+                                        {{else}}
+                                            <option value="Youth">Youth</option>
+                                        {{end}}
+                                          
+                                                                               
                                     </select>
                                 </div>
                             </div>
@@ -54,17 +69,65 @@
                                 <div class="form-group">                                   
                                     <select name="color" id="color" class="custom-select mr-sm-2"> 
                                         <option value="">None</option> 
-                                        <option value="{{.Color}}" selected>{{.Color}}</option>                                        
-                                        <option value="Black">Black</option> 
-                                        <option value="White">White</option>   
-                                        <option value="Red">Red</option>  
-                                        <option value="Tan">Tan</option>    
-                                        <option value="Blue">Blue</option>    
-                                        <option value="Orange">Orange</option>    
-                                        <option value="Yellow">Yellow</option>    
-                                        <option value="Grey">Grey</option>    
-                                        <option value="Gold">Gold</option>    
-                                        <option value="Green">Green</option>                                           
+                                        {{if eq .Color "Black"}}
+                                            <option value="Black" selected>Black</option>
+                                        {{else}}
+                                        <option value="Black">Black</option>
+                                        {{end}}
+
+                                        {{if eq .Color "White"}}
+                                            <option value="White" selected>White</option>
+                                        {{else}}
+                                        <option value="White">White</option>
+                                        {{end}}
+
+                                        {{if eq .Color "Red"}}
+                                            <option value="Red" selected>Red</option>
+                                        {{else}}
+                                        <option value="Red">Red</option>
+                                        {{end}}
+
+                                        {{if eq .Color "Tan"}}
+                                            <option value="Tan" selected>Tan</option>
+                                        {{else}}
+                                        <option value="Tan">Tan</option>
+                                        {{end}}
+
+                                        {{if eq .Color "Blue"}}
+                                            <option value="Blue" selected>Blue</option>
+                                        {{else}}
+                                        <option value="Blue">Blue</option>
+                                        {{end}}
+
+                                        {{if eq .Color "Orange"}}
+                                            <option value="Orange" selected>Orange</option>
+                                        {{else}}
+                                        <option value="Orange">Orange</option>
+                                        {{end}}
+
+                                        {{if eq .Color "Yellow"}}
+                                            <option value="Yellow" selected>Yellow</option>
+                                        {{else}}
+                                        <option value="Yellow">Yellow</option>
+                                        {{end}}
+
+                                        {{if eq .Color "Grey"}}
+                                            <option value="Grey" selected>Grey</option>
+                                        {{else}}
+                                        <option value="Grey">Grey</option>
+                                        {{end}}
+
+                                        {{if eq .Color "Gold"}}
+                                            <option value="Gold" selected>Gold</option>
+                                        {{else}}
+                                        <option value="Gold">Gold</option>
+                                        {{end}}
+
+                                        {{if eq .Color "Green"}}
+                                            <option value="Green" selected>Green</option>
+                                        {{else}}
+                                        <option value="Green">Green</option>
+                                        {{end}}                      
                                     </select>
                                 </div>
                             </div>
@@ -77,37 +140,182 @@
                                 <div class="form-group">                                   
                                     <select name="size" id="size" class="custom-select mr-sm-2"> 
                                         <option value="">None</option> 
-                                        <option value="{{.Size}}" selected>{{.Size}}</option>  
-                                        <option value="XS">XS</option>                                      
-                                        <option value="Small">Small</option> 
-                                        <option value="Med">Med</option>   
-                                        <option value="Large">Large</option>  
-                                        <option value="XL">XL</option>    
-                                        <option value="2XL">2XL</option>    
-                                        <option value="3XL">3XL</option>    
-                                        <option value="4XL">4XL</option>    
-                                        <option value="5XL">5XL</option>    
-                                        <option value="6XL">6XL</option>    
-                                        <option value="7XL">7XL</option> 
-                                        <option value="6">6</option>    
-                                        <option value="7">7</option>    
-                                        <option value="8">8</option>    
-                                        <option value="9">9</option>  
-                                        <option value="10">10</option> 
-                                        <option value="10 1/2">10 1/2</option> 
-                                        <option value="11">11</option> 
-                                        <option value="11 1/2">1/2</option> 
-                                        <option value="12">12</option> 
-                                        <option value="12 1/2">12 1/2</option> 
-                                        <option value="13">13</option>   
-                                        <option value="14">14</option>   
-                                        <option value="15">15</option>      
-                                        <option value="16">16</option>  
-                                        <option value="17">17</option>                                           
+                                        {{if eq .Size "XS"}}
+                                            <option value="XS" selected>XS</option>
+                                        {{else}}
+                                            <option value="XS">XS</option>
+                                        {{end}}
+
+                                        {{if eq .Size "Small"}}
+                                            <option value="Small" selected>Small</option>
+                                        {{else}}
+                                            <option value="Small">Small</option>
+                                        {{end}}
+                                                                         
+                                        {{if eq .Size "Med"}}
+                                            <option value="Med" selected>Med</option>
+                                        {{else}}
+                                            <option value="Med">Med</option>
+                                        {{end}}
+
+                                        {{if eq .Size "Large"}}
+                                            <option value="Large" selected>Large</option>
+                                        {{else}}
+                                            <option value="Large">Large</option>
+                                        {{end}}
+
+                                        {{if eq .Size "XL"}}
+                                            <option value="XL" selected>XL</option>
+                                        {{else}}
+                                            <option value="XL">XL</option>
+                                        {{end}}
+
+                                        {{if eq .Size "2XL"}}
+                                            <option value="2XL" selected>2XL</option>
+                                        {{else}}
+                                            <option value="2XL">2XL</option>
+                                        {{end}}
+
+                                        {{if eq .Size "3XL"}}
+                                            <option value="3XL" selected>3XL</option>
+                                        {{else}}
+                                            <option value="3XL">3XL</option>
+                                        {{end}}
+                                         
+                                           
+                                        {{if eq .Size "4XL"}}
+                                            <option value="4XL" selected>4XL</option>
+                                        {{else}}
+                                            <option value="4XL">4XL</option>
+                                        {{end}}
+                                
+
+                                        {{if eq .Size "5XL"}}
+                                            <option value="5XL" selected>5XL</option>
+                                        {{else}}
+                                            <option value="5XL">5XL</option>
+                                        {{end}}
+                                        
+                                        
+                                        {{if eq .Size "6XL"}}
+                                            <option value="6XL" selected>6XL</option>
+                                        {{else}}
+                                            <option value="6XL">6XL</option>
+                                        {{end}}
+
+
+                                        {{if eq .Size "7XL"}}
+                                            <option value="7XL" selected>7XL</option>
+                                        {{else}}
+                                            <option value="7XL">7XL</option>
+                                        {{end}}
+                                        
+                                        
+                                        {{if eq .Size "6"}}
+                                            <option value="6" selected>6</option>
+                                        {{else}}
+                                            <option value="6">6</option>
+                                        {{end}}
+
+
+                                        {{if eq .Size "7"}}
+                                            <option value="7" selected>7</option>
+                                        {{else}}
+                                            <option value="7">7</option>
+                                        {{end}}
+
+
+                                        {{if eq .Size "8"}}
+                                            <option value="8" selected>8</option>
+                                        {{else}}
+                                            <option value="8">8</option>
+                                        {{end}}
+                                        
+                                        
+                                        {{if eq .Size "9"}}
+                                            <option value="9" selected>9</option>
+                                        {{else}}
+                                            <option value="9">9</option>
+                                        {{end}}
+                                        
+                                        
+                                        {{if eq .Size "10"}}
+                                            <option value="10" selected>10</option>
+                                        {{else}}
+                                            <option value="10">10</option>
+                                        {{end}}
+
+
+                                        {{if eq .Size "10 1/2"}}
+                                            <option value="10 1/2" selected>10 1/2</option>
+                                        {{else}}
+                                            <option value="10 1/2">10 1/2</option>
+                                        {{end}}
+
+
+                                        {{if eq .Size "11"}}
+                                            <option value="11" selected>11</option>
+                                        {{else}}
+                                            <option value="11">11</option>
+                                        {{end}}
+                                        
+                                        
+                                        {{if eq .Size "11 1/2"}}
+                                            <option value="11 1/2" selected>11 1/2</option>
+                                        {{else}}
+                                            <option value="11 1/2">11 1/2</option>
+                                        {{end}}
+
+
+                                        {{if eq .Size "12"}}
+                                            <option value="12" selected>12</option>
+                                        {{else}}
+                                            <option value="12">12</option>
+                                        {{end}}
+
+                                       
+                                        {{if eq .Size "12 1/2"}}
+                                            <option value="12 1/2" selected>12 1/2</option>
+                                        {{else}}
+                                            <option value="12 1/2">12 1/2</option>
+                                        {{end}}
+
+
+                                        {{if eq .Size "13"}}
+                                            <option value="13" selected>13</option>
+                                        {{else}}
+                                            <option value="13">13</option>
+                                        {{end}}
+
+
+                                        {{if eq .Size "14"}}
+                                            <option value="14" selected>14</option>
+                                        {{else}}
+                                            <option value="14">14</option>
+                                        {{end}}
+
+                                        {{if eq .Size "15"}}
+                                            <option value="15" selected>15</option>
+                                        {{else}}
+                                            <option value="15">15</option>
+                                        {{end}}
+
+
+                                        {{if eq .Size "16"}}
+                                            <option value="16" selected>16</option>
+                                        {{else}}
+                                            <option value="16">16</option>
+                                        {{end}}
+                                        
+                                        
+                                        {{if eq .Size "17"}}
+                                            <option value="17" selected>17</option>
+                                        {{else}}
+                                            <option value="17">17</option>
+                                        {{end}}                                  
                                     </select>
                                 </div>
-                            </div>
-                           
+                            </div>                        
 
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                         </div>
