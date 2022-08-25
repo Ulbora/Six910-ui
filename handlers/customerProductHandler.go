@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"container/list"
+	"html/template"
 	"net/http"
 	"strconv"
 	"strings"
@@ -669,6 +670,7 @@ func (h *Six910Handler) ViewProduct(w http.ResponseWriter, r *http.Request) {
 		}
 
 		cplpage.ProductListRowList = &pmsprowListc
+		cplpage.TextHTML = template.HTML(cplpage.Product.Desc)
 
 		h.Log.Debug("cplpage: ", cplpage)
 		h.Templates.ExecuteTemplate(w, customerProductPage, &cplpage)

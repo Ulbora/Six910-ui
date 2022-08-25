@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"html/template"
 	"os"
 	"time"
 
@@ -79,6 +80,7 @@ type CustomerPage struct {
 	//meta data
 	HeaderData *HeaderData
 	Error      string
+	TextHTML   template.HTML
 }
 
 //Index Index
