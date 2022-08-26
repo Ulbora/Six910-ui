@@ -63,6 +63,7 @@
                             <label for="catIds">Parent Category</label>
                             <select name="parentId" id="parentId" class="custom-select custom-select-lg mb-3"
                                 data-selected-text-format="count">
+                                <option value="">None</option>
                                 {{ $CatID := .Category.ParentCategoryID }} {{range $.ParentCategoryList}}
                                 {{if eq $CatID .ID }}
                                 <option value="{{.ID}}" selected>{{.Name}}</option>
