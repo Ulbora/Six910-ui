@@ -1,5 +1,4 @@
 mode: set
-github.com/Ulbora/Six910-ui/csssrv/service.go:43.48,45.2 1 1
 github.com/Ulbora/Six910-ui/csssrv/cssService.go:53.69,57.16 4 1
 github.com/Ulbora/Six910-ui/csssrv/cssService.go:87.2,87.18 1 1
 github.com/Ulbora/Six910-ui/csssrv/cssService.go:57.16,60.17 3 1
@@ -18,3 +17,4 @@ github.com/Ulbora/Six910-ui/csssrv/cssService.go:105.56,108.16 3 1
 github.com/Ulbora/Six910-ui/csssrv/cssService.go:126.2,126.12 1 1
 github.com/Ulbora/Six910-ui/csssrv/cssService.go:108.16,112.17 4 1
 github.com/Ulbora/Six910-ui/csssrv/cssService.go:112.17,124.4 11 1
+github.com/Ulbora/Six910-ui/csssrv/service.go:43.48,45.2 1 1

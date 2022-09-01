@@ -348,10 +348,18 @@ func (m *Six910Manager) createCategory(catList *[]string, hd *api.Headers) int64
 
 	var clist []sdbi.Category
 	for i, c := range catList2 {
-		m.Log.Debug("looking for can: ", c)
+		m.Log.Debug("looking for cat: ", c)
 		var found bool
+		//add code to validate parent cat Id is same on found sub cat
 		for _, fc := range *fcs {
-			if fc.Name == c {
+			if fc.Name == c && i > 0 && fc.ParentCategoryID == clist[i-1].ID {
+				m.Log.Debug("found sub cat: ", c)
+				clist = append(clist, fc)
+				found = true
+				break
+
+			} else if fc.Name == c && i == 0 {
+				m.Log.Debug("found primary cat : ", c)
 				clist = append(clist, fc)
 				found = true
 				break
