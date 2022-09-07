@@ -122,7 +122,7 @@ func (m *Six910Manager) importProducts(prodList *[]Product, hd *api.Headers) int
 					npres.Success = pres.Success
 					prodchan <- &npres
 				}
-			} else if cp.Desc != "" && cp.Name != "" {
+			} else if (cp.Desc != "" && cp.Name != "") || cp.ParentProductID != 0 {
 				np := m.parseProduct(cp)
 				m.Log.Debug("in goroutine parsed product:", *np)
 				pres := m.API.AddProduct(np, header)
