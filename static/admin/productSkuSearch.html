@@ -39,6 +39,16 @@
                 <td>{{.Stock}}</td>
                 <td>{{.Price}}</td>
               </tr>
+              
+                {{range .SubSkuList}}
+                  <tr class='clickable-row' data-href='/admin/getProduct/{{.ID}}'>
+                    <td style="width: 10%"><img class="img-fluid" style="max-width: 50%;" src="{{.Thumbnail}}"></td>
+                    <td>SubSKU: {{.Sku}}</td>
+                    <td>{{.Name}}</td>
+                    <td>{{.Stock}}</td>
+                    <td>{{.Price}}</td>
+                  </tr>
+                {{end}}
               {{end}}             
             </tbody>
           </table> 
