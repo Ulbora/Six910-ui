@@ -58,19 +58,19 @@ func (h *Six910Handler) StoreAdminAddShipmentPage(w http.ResponseWriter, r *http
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				page.Order = h.API.GetOrder(oid, header)
+				page.Order = h.API.GetOrder(oid, header.DeepCopy())
 			}(asOIID, hd)
 
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				page.OrderComments = h.API.GetOrderCommentList(oid, header)
+				page.OrderComments = h.API.GetOrderCommentList(oid, header.DeepCopy())
 			}(asOIID, hd)
 
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				page.OrderItems = h.API.GetOrderItemList(oid, header)
+				page.OrderItems = h.API.GetOrderItemList(oid, header.DeepCopy())
 			}(asOIID, hd)
 
 			wg.Wait()
@@ -106,6 +106,7 @@ func (h *Six910Handler) StoreAdminAddShipment(w http.ResponseWriter, r *http.Req
 				for i := range *oil {
 					wg.Add(1)
 					go func(oi *sdbi.OrderItem, ch chan *api.ResponseID) {
+						//do deep copy here
 						defer wg.Done()
 						hd := h.getHeader(as)
 						h.Log.Debug("order item in goroutine", *oi)
@@ -164,37 +165,37 @@ func (h *Six910Handler) StoreAdminEditShipmentPage(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				esparm.Order = h.API.GetOrder(oid, header)
+				esparm.Order = h.API.GetOrder(oid, header.DeepCopy())
 			}(ship.OrderID, hd)
 
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				esparm.OrderComments = h.API.GetOrderCommentList(oid, header)
+				esparm.OrderComments = h.API.GetOrderCommentList(oid, header.DeepCopy())
 			}(ship.OrderID, hd)
 
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				esparm.OrderItems = h.API.GetOrderItemList(oid, header)
+				esparm.OrderItems = h.API.GetOrderItemList(oid, header.DeepCopy())
 			}(ship.OrderID, hd)
 
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				esparm.Shipments = h.API.GetShipmentList(oid, header)
+				esparm.Shipments = h.API.GetShipmentList(oid, header.DeepCopy())
 			}(ship.OrderID, hd)
 
 			wg.Add(1)
 			go func(spid int64, header *six910api.Headers) {
 				defer wg.Done()
-				esparm.ShipmentBoxes = h.API.GetShipmentBoxList(spid, header)
+				esparm.ShipmentBoxes = h.API.GetShipmentBoxList(spid, header.DeepCopy())
 			}(ship.ID, hd)
 
 			wg.Add(1)
 			go func(spid int64, header *six910api.Headers) {
 				defer wg.Done()
-				esparm.ShipmentItems = h.API.GetShipmentItemList(spid, header)
+				esparm.ShipmentItems = h.API.GetShipmentItemList(spid, header.DeepCopy())
 			}(ship.ID, hd)
 
 			wg.Wait()
@@ -250,25 +251,25 @@ func (h *Six910Handler) StoreAdminViewShipmentList(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				slparm.Order = h.API.GetOrder(oid, header)
+				slparm.Order = h.API.GetOrder(oid, header.DeepCopy())
 			}(foid, hd)
 
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				slparm.OrderComments = h.API.GetOrderCommentList(oid, header)
+				slparm.OrderComments = h.API.GetOrderCommentList(oid, header.DeepCopy())
 			}(foid, hd)
 
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				slparm.OrderItems = h.API.GetOrderItemList(oid, header)
+				slparm.OrderItems = h.API.GetOrderItemList(oid, header.DeepCopy())
 			}(foid, hd)
 
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				slparm.Shipments = h.API.GetShipmentList(oid, header)
+				slparm.Shipments = h.API.GetShipmentList(oid, header.DeepCopy())
 			}(foid, hd)
 
 			wg.Wait()

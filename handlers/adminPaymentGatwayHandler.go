@@ -141,7 +141,7 @@ func (h *Six910Handler) StoreAdminEditPaymentGatewayPage(w http.ResponseWriter, 
 			wg.Add(1)
 			go func(id int64, header *six910api.Headers) {
 				defer wg.Done()
-				dgp.PaymentGatway = h.API.GetPaymentGateway(id, header)
+				dgp.PaymentGatway = h.API.GetPaymentGateway(id, header.DeepCopy())
 				h.Log.Debug("dgp.PaymentGatway", *dgp.PaymentGatway)
 			}(pgID, hd)
 
@@ -149,7 +149,7 @@ func (h *Six910Handler) StoreAdminEditPaymentGatewayPage(w http.ResponseWriter, 
 			go func(header *six910api.Headers) {
 				defer wg.Done()
 				var espipgwlst []sdbi.StorePlugins
-				espigl := h.API.GetStorePluginList(header)
+				espigl := h.API.GetStorePluginList(header.DeepCopy())
 				for i := range *espigl {
 					if (*espigl)[i].IsPGW {
 						espipgwlst = append(espipgwlst, (*espigl)[i])
@@ -204,7 +204,7 @@ func (h *Six910Handler) StoreAdminViewPaymentGatewayList(w http.ResponseWriter, 
 			go func(header *six910api.Headers) {
 				defer wg.Done()
 				var spipgwlst []sdbi.StorePlugins
-				spigl := h.API.GetStorePluginList(header)
+				spigl := h.API.GetStorePluginList(header.DeepCopy())
 				for i := range *spigl {
 					if (*spigl)[i].IsPGW {
 						spipgwlst = append(spipgwlst, (*spigl)[i])
@@ -217,7 +217,7 @@ func (h *Six910Handler) StoreAdminViewPaymentGatewayList(w http.ResponseWriter, 
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				pgl := h.API.GetPaymentGateways(header)
+				pgl := h.API.GetPaymentGateways(header.DeepCopy())
 				h.Log.Debug("pgw  in list", pgl)
 				pgwPage.PaymentGatwayList = pgl
 			}(hd)

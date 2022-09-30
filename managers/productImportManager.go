@@ -111,11 +111,11 @@ func (m *Six910Manager) importProducts(prodList *[]Product, hd *api.Headers) int
 			//m.Log.Debug("in goroutine product.Name:", product.Name)
 			//defer wg.Done()
 			// need to search for product before adding
-			fpd := m.API.GetProductBySku(cp.Sku, cp.DistributorID, header)
+			fpd := m.API.GetProductBySku(cp.Sku, cp.DistributorID, header.DeepCopy())
 			if fpd != nil && fpd.ID != 0 {
 				ep := m.parseExistingProduct(fpd, cp)
 				m.Log.Debug("in goroutine parsed existing product:", *ep)
-				pres := m.API.UpdateProduct(ep, header)
+				pres := m.API.UpdateProduct(ep, header.DeepCopy())
 				m.Log.Debug("in goroutine pres existing:", pres)
 				var npres api.ResponseID
 				if pres.Success {
@@ -125,14 +125,14 @@ func (m *Six910Manager) importProducts(prodList *[]Product, hd *api.Headers) int
 			} else if (cp.Desc != "" && cp.Name != "") || cp.ParentProductID != 0 {
 				np := m.parseProduct(cp)
 				m.Log.Debug("in goroutine parsed product:", *np)
-				pres := m.API.AddProduct(np, header)
+				pres := m.API.AddProduct(np, header.DeepCopy())
 				m.Log.Debug("in goroutine pres:", pres)
 				if pres.Success && pres.ID != 0 {
 					if cp.CategoryID != 0 {
 						var pc sdbi.ProductCategory
 						pc.CategoryID = cp.CategoryID
 						pc.ProductID = pres.ID
-						cres := m.API.AddProductCategory(&pc, header)
+						cres := m.API.AddProductCategory(&pc, header.DeepCopy())
 						pres.Success = cres.Success
 					}
 				}

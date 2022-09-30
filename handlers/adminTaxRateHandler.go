@@ -97,7 +97,7 @@ func (h *Six910Handler) StoreAdminEditTaxRatePage(w http.ResponseWriter, r *http
 			wg.Add(1)
 			go func(ct string, st string, id int64, header *six910api.Headers) {
 				defer wg.Done()
-				trlst := h.API.GetTaxRate(ct, st, header)
+				trlst := h.API.GetTaxRate(ct, st, header.DeepCopy())
 				for i := range *trlst {
 					if (*trlst)[i].ID == id {
 						trp.TaxRate = &(*trlst)[i]
@@ -110,7 +110,7 @@ func (h *Six910Handler) StoreAdminEditTaxRatePage(w http.ResponseWriter, r *http
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				cats := h.API.GetHierarchicalCategoryList(header)
+				cats := h.API.GetHierarchicalCategoryList(header.DeepCopy())
 				h.Log.Debug("cat in tax rate edit", cats)
 				trp.CategoryList = cats
 			}(hd)
@@ -158,7 +158,7 @@ func (h *Six910Handler) StoreAdminViewTaxRateList(w http.ResponseWriter, r *http
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				trl := h.API.GetTaxRateList(header)
+				trl := h.API.GetTaxRateList(header.DeepCopy())
 				h.Log.Debug("tax rate  in list", trl)
 				trp.TaxRateList = trl
 			}(hd)
@@ -166,7 +166,7 @@ func (h *Six910Handler) StoreAdminViewTaxRateList(w http.ResponseWriter, r *http
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				cats := h.API.GetHierarchicalCategoryList(header)
+				cats := h.API.GetHierarchicalCategoryList(header.DeepCopy())
 				h.Log.Debug("cat in tax rate", cats)
 				trp.CategoryList = cats
 			}(hd)

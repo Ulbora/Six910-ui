@@ -99,7 +99,7 @@ func (h *Six910Handler) StoreAdminEditShippingMethodPage(w http.ResponseWriter, 
 			wg.Add(1)
 			go func(id int64, header *six910api.Headers) {
 				defer wg.Done()
-				esm := h.API.GetShippingMethod(id, header)
+				esm := h.API.GetShippingMethod(id, header.DeepCopy())
 				h.Log.Debug("shipping method  in list", esm)
 				esmpage.ShippingMethod = esm
 			}(iID, hd)
@@ -107,7 +107,7 @@ func (h *Six910Handler) StoreAdminEditShippingMethodPage(w http.ResponseWriter, 
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				esrsl := h.API.GetRegionList(header)
+				esrsl := h.API.GetRegionList(header.DeepCopy())
 				h.Log.Debug("shipping region in list", esrsl)
 				esmpage.RegionList = esrsl
 			}(hd)
@@ -115,7 +115,7 @@ func (h *Six910Handler) StoreAdminEditShippingMethodPage(w http.ResponseWriter, 
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				escsl := h.API.GetShippingCarrierList(header)
+				escsl := h.API.GetShippingCarrierList(header.DeepCopy())
 				h.Log.Debug("shipping carrier in list", escsl)
 				esmpage.ShippingCarrierList = escsl
 			}(hd)
@@ -123,7 +123,7 @@ func (h *Six910Handler) StoreAdminEditShippingMethodPage(w http.ResponseWriter, 
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				esisl := h.API.GetInsuranceList(header)
+				esisl := h.API.GetInsuranceList(header.DeepCopy())
 				h.Log.Debug("shipping insurance in list", esisl)
 				esmpage.InsuranceList = esisl
 			}(hd)
@@ -173,7 +173,7 @@ func (h *Six910Handler) StoreAdminViewShippingMethodList(w http.ResponseWriter, 
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				smsl := h.API.GetShippingMethodList(header)
+				smsl := h.API.GetShippingMethodList(header.DeepCopy())
 				h.Log.Debug("shipping method  in list", smsl)
 				smpage.ShippingMethodList = smsl
 			}(hd)
@@ -181,7 +181,7 @@ func (h *Six910Handler) StoreAdminViewShippingMethodList(w http.ResponseWriter, 
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				srsl := h.API.GetRegionList(header)
+				srsl := h.API.GetRegionList(header.DeepCopy())
 				h.Log.Debug("shipping region in list", srsl)
 				smpage.RegionList = srsl
 			}(hd)
@@ -189,7 +189,7 @@ func (h *Six910Handler) StoreAdminViewShippingMethodList(w http.ResponseWriter, 
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				scsl := h.API.GetShippingCarrierList(header)
+				scsl := h.API.GetShippingCarrierList(header.DeepCopy())
 				h.Log.Debug("shipping carrier in list", scsl)
 				smpage.ShippingCarrierList = scsl
 			}(hd)
@@ -197,7 +197,7 @@ func (h *Six910Handler) StoreAdminViewShippingMethodList(w http.ResponseWriter, 
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				sisl := h.API.GetInsuranceList(header)
+				sisl := h.API.GetInsuranceList(header.DeepCopy())
 				h.Log.Debug("shipping insurance in list", sisl)
 				smpage.InsuranceList = sisl
 			}(hd)

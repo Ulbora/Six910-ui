@@ -104,13 +104,13 @@ func (h *Six910Handler) StoreAdminEditSubRegionPage(w http.ResponseWriter, r *ht
 			wg.Add(1)
 			go func(regionID int64, header *six910api.Headers) {
 				defer wg.Done()
-				srp.Region = h.API.GetRegion(regionID, header)
+				srp.Region = h.API.GetRegion(regionID, header.DeepCopy())
 			}(eriID, hd)
 
 			wg.Add(1)
 			go func(subRegionID int64, header *six910api.Headers) {
 				defer wg.Done()
-				srp.SubRegion = h.API.GetSubRegion(subRegionID, header)
+				srp.SubRegion = h.API.GetSubRegion(subRegionID, header.DeepCopy())
 			}(iID, hd)
 
 			wg.Wait()

@@ -60,14 +60,14 @@ func (h *Six910Handler) StoreAdminAddZipZonePage(w http.ResponseWriter, r *http.
 			wg.Add(1)
 			go func(regionID int64, header *six910api.Headers) {
 				defer wg.Done()
-				azzrpg.Region = h.API.GetRegion(regionID, header)
+				azzrpg.Region = h.API.GetRegion(regionID, header.DeepCopy())
 				h.Log.Debug("Done with Region id in add", regionID)
 			}(zzriID, hd)
 
 			wg.Add(1)
 			go func(subRegionID int64, header *six910api.Headers) {
 				defer wg.Done()
-				azzrpg.SubRegion = h.API.GetSubRegion(subRegionID, header)
+				azzrpg.SubRegion = h.API.GetSubRegion(subRegionID, header.DeepCopy())
 				h.Log.Debug("Done with Sub Region id in add", subRegionID)
 			}(zzsriID, hd)
 

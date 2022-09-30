@@ -82,7 +82,7 @@ func (h *Six910Handler) StoreAdminEditOrderPage(w http.ResponseWriter, r *http.R
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				odr := h.API.GetOrder(oid, header)
+				odr := h.API.GetOrder(oid, header.DeepCopy())
 				h.Log.Debug("order in edit", odr)
 				eoparm.Order = odr
 			}(oID, hd)
@@ -92,9 +92,10 @@ func (h *Six910Handler) StoreAdminEditOrderPage(w http.ResponseWriter, r *http.R
 			var oichan = make(chan OrderItem, len(*oItemList))
 			for i := range *oItemList {
 				wg.Add(1)
+				//use deep copy here
 				go func(oi sdbi.OrderItem, ch chan OrderItem, header *six910api.Headers) {
 					defer wg.Done()
-					prod := h.API.GetProductByID(oi.ProductID, header)
+					prod := h.API.GetProductByID(oi.ProductID, header.DeepCopy())
 					h.Log.Debug("prod in edit", prod)
 					var noi OrderItem
 					noi.ID = oi.ID
@@ -119,7 +120,7 @@ func (h *Six910Handler) StoreAdminEditOrderPage(w http.ResponseWriter, r *http.R
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				notes := h.API.GetOrderCommentList(oid, header)
+				notes := h.API.GetOrderCommentList(oid, header.DeepCopy())
 				h.Log.Debug("notes in edit", notes)
 				eoparm.Notes = notes
 			}(oID, hd3)
@@ -128,7 +129,7 @@ func (h *Six910Handler) StoreAdminEditOrderPage(w http.ResponseWriter, r *http.R
 			wg.Add(1)
 			go func(oid int64, header *six910api.Headers) {
 				defer wg.Done()
-				tlist := h.API.GetOrderTransactionList(oid, header)
+				tlist := h.API.GetOrderTransactionList(oid, header.DeepCopy())
 				h.Log.Debug("trans list", tlist)
 				eoparm.TransactionList = tlist
 			}(oID, hd4)

@@ -76,7 +76,7 @@ func (h *Six910Handler) StoreAdminAddProductPage(w http.ResponseWriter, r *http.
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				cats := h.API.GetHierarchicalCategoryList(header)
+				cats := h.API.GetHierarchicalCategoryList(header.DeepCopy())
 				h.Log.Debug("prod  in edit", cats)
 				lge.CategoryList = cats
 			}(hd)
@@ -84,7 +84,7 @@ func (h *Six910Handler) StoreAdminAddProductPage(w http.ResponseWriter, r *http.
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				dist := h.API.GetDistributorList(header)
+				dist := h.API.GetDistributorList(header.DeepCopy())
 				h.Log.Debug("prod  in edit", dist)
 				lge.DistributorList = dist
 			}(hd)
@@ -123,8 +123,9 @@ func (h *Six910Handler) StoreAdminAddProduct(w http.ResponseWriter, r *http.Requ
 				var pc sdbi.ProductCategory
 				pc.CategoryID = c
 				pc.ProductID = prres.ID
+				//use deep copy here
 				go func(pc *sdbi.ProductCategory, header *six910api.Headers) {
-					h.API.AddProductCategory(pc, header)
+					h.API.AddProductCategory(pc, header.DeepCopy())
 				}(&pc, hd)
 			}
 
@@ -160,7 +161,7 @@ func (h *Six910Handler) StoreAdminEditProductPage(w http.ResponseWriter, r *http
 			wg.Add(1)
 			go func(id int64, header *six910api.Headers) {
 				defer wg.Done()
-				prod := h.API.GetProductByID(id, header)
+				prod := h.API.GetProductByID(id, header.DeepCopy())
 				h.Log.Debug("prod  in edit", prod)
 				epparm.Product = prod
 			}(prodID, hd)
@@ -168,7 +169,7 @@ func (h *Six910Handler) StoreAdminEditProductPage(w http.ResponseWriter, r *http
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				cats := h.API.GetHierarchicalCategoryList(header)
+				cats := h.API.GetHierarchicalCategoryList(header.DeepCopy())
 				h.Log.Debug("prod  in edit", cats)
 				epparm.CategoryList = cats
 			}(hd)
@@ -176,7 +177,7 @@ func (h *Six910Handler) StoreAdminEditProductPage(w http.ResponseWriter, r *http
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				dist := h.API.GetDistributorList(header)
+				dist := h.API.GetDistributorList(header.DeepCopy())
 				h.Log.Debug("prod  in edit", dist)
 				epparm.DistributorList = dist
 			}(hd)
@@ -184,7 +185,7 @@ func (h *Six910Handler) StoreAdminEditProductPage(w http.ResponseWriter, r *http
 			wg.Add(1)
 			go func(pid int64, header *six910api.Headers) {
 				defer wg.Done()
-				dist := h.API.GetProductCategoryList(pid, header)
+				dist := h.API.GetProductCategoryList(pid, header.DeepCopy())
 				h.Log.Debug("prod category in edit", dist)
 				epparm.ExistingCats = dist
 			}(prodID, hd)
@@ -235,8 +236,9 @@ func (h *Six910Handler) StoreAdminEditProduct(w http.ResponseWriter, r *http.Req
 					var pc sdbi.ProductCategory
 					pc.CategoryID = c
 					pc.ProductID = epp.ID
+					//use deep copy here
 					go func(pc *sdbi.ProductCategory, header *six910api.Headers) {
-						h.API.DeleteProductCategory(pc, header)
+						h.API.DeleteProductCategory(pc, header.DeepCopy())
 					}(&pc, hd)
 				}
 			}
@@ -256,8 +258,9 @@ func (h *Six910Handler) StoreAdminEditProduct(w http.ResponseWriter, r *http.Req
 					var pc sdbi.ProductCategory
 					pc.CategoryID = c
 					pc.ProductID = epp.ID
+					//use deep copy here
 					go func(pc *sdbi.ProductCategory, header *six910api.Headers) {
-						h.API.AddProductCategory(pc, header)
+						h.API.AddProductCategory(pc, header.DeepCopy())
 					}(&pc, hd)
 				}
 			}

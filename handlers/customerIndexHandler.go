@@ -117,7 +117,7 @@ func (h *Six910Handler) Index(w http.ResponseWriter, r *http.Request) {
 			h.Log.Debug("add new hit")
 			h.setLastHit(cis, w, r)
 			go func(vis *sdbi.Visitor, header *six910api.Headers) {
-				h.API.AddVisit(vis, header)
+				h.API.AddVisit(vis, header.DeepCopy())
 			}(&v, hd)
 		}
 

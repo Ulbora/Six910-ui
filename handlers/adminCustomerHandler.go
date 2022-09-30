@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"strconv"
 
+	"sync"
+
 	api "github.com/Ulbora/Six910API-Go"
 	sdbi "github.com/Ulbora/six910-database-interface"
 	"github.com/gorilla/mux"
-	"sync"
 
 	six910api "github.com/Ulbora/Six910API-Go"
 )
@@ -63,7 +64,7 @@ func (h *Six910Handler) StoreAdminEditCustomerPage(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(id int64, header *six910api.Headers) {
 				defer wg.Done()
-				cust := h.API.GetCustomerID(id, header)
+				cust := h.API.GetCustomerID(id, header.DeepCopy())
 				h.Log.Debug("customer  in edit", cust)
 				ceparm.Customer = cust
 			}(cID, hd)
@@ -71,7 +72,7 @@ func (h *Six910Handler) StoreAdminEditCustomerPage(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(id int64, header *six910api.Headers) {
 				defer wg.Done()
-				adds := h.API.GetAddressList(id, header)
+				adds := h.API.GetAddressList(id, header.DeepCopy())
 				h.Log.Debug("customer  in edit", adds)
 				ceparm.AddressList = adds
 			}(cID, hd)
@@ -79,7 +80,7 @@ func (h *Six910Handler) StoreAdminEditCustomerPage(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(cid int64, header *six910api.Headers) {
 				defer wg.Done()
-				users := h.API.GetUsersByCustomer(cid, header)
+				users := h.API.GetUsersByCustomer(cid, header.DeepCopy())
 				h.Log.Debug("customer users in edit", users)
 				ceparm.Users = users
 			}(cID, hd)

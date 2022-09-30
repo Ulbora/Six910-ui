@@ -95,13 +95,17 @@ func (m *Six910Manager) ViewCart(cc *CustomerCart, hd *api.Headers) *CartView {
 	var rtn CartView
 	var wg sync.WaitGroup
 	var itemchan = make(chan *CartViewItem, len(*cc.Items))
+	// check this out completely, something is wrong with this----------------------
+	//fmt.Println("cc.Items size:", len(*cc.Items))
 	for i := range *cc.Items {
+		// var hd2 api.Headers
+		// hd2 = *hd
 		wg.Add(1)
 		go func(cItem *sdbi.CartItem, ichan chan *CartViewItem, header *api.Headers) {
 			m.Log.Debug("in goroutine :", cItem.ProductID)
 			defer wg.Done()
 			var cvi CartViewItem
-			prod := m.API.GetProductByID(cItem.ProductID, header)
+			prod := m.API.GetProductByID(cItem.ProductID, header.DeepCopy())
 			//m.Log.Debug("in goroutine prod:", *prod)
 			cvi.ProductName = prod.Name
 			cvi.ProductID = prod.ID
@@ -119,6 +123,7 @@ func (m *Six910Manager) ViewCart(cc *CustomerCart, hd *api.Headers) *CartView {
 			cvi.Total = math.Round((cvi.Price*float64(cvi.Quantity))*100) / 100
 			m.Log.Debug("in goroutine cvi.Total:", cvi.Total)
 			ichan <- &cvi
+			// check this out completely, something is wrong with hd maybe need copy----------------------
 		}(&(*cc.Items)[i], itemchan, hd)
 	}
 	wg.Wait()
@@ -335,7 +340,7 @@ func (m *Six910Manager) processOrderItems(ois *[]*CartViewItem, orderID int64, h
 		go func(ioi *sdbi.OrderItem, ihd *api.Headers, reslt chan *OrderItemResults) {
 			m.Log.Debug("in goroutine :", ioi.ProductID)
 			defer wg.Done()
-			oires := m.API.AddOrderItem(ioi, ihd)
+			oires := m.API.AddOrderItem(ioi, ihd.DeepCopy())
 			var oir OrderItemResults
 			ioi.ID = oires.ID
 			oir.OrderItem = ioi

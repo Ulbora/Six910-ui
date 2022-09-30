@@ -95,7 +95,7 @@ func (h *Six910Handler) StoreAdminEditCategoryPage(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				cats := h.API.GetHierarchicalCategoryList(header)
+				cats := h.API.GetHierarchicalCategoryList(header.DeepCopy())
 				h.Log.Debug("parent cat list in list", cats)
 				cgp.ParentCategoryList = cats
 			}(hd)
@@ -103,7 +103,7 @@ func (h *Six910Handler) StoreAdminEditCategoryPage(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(catID int64, header *six910api.Headers) {
 				defer wg.Done()
-				cgp.Category = h.API.GetCategory(catID, header)
+				cgp.Category = h.API.GetCategory(catID, header.DeepCopy())
 			}(cID, hd)
 
 			wg.Wait()
@@ -150,7 +150,7 @@ func (h *Six910Handler) StoreAdminViewCategoryList(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				cats := h.API.GetCategoryList(header)
+				cats := h.API.GetCategoryList(header.DeepCopy())
 				h.Log.Debug("cat list in list", cats)
 				cpg.CategoryList = cats
 			}(hd)
@@ -158,7 +158,7 @@ func (h *Six910Handler) StoreAdminViewCategoryList(w http.ResponseWriter, r *htt
 			wg.Add(1)
 			go func(header *six910api.Headers) {
 				defer wg.Done()
-				cats := h.API.GetHierarchicalCategoryList(header)
+				cats := h.API.GetHierarchicalCategoryList(header.DeepCopy())
 				h.Log.Debug("parent cat list in list", cats)
 				cpg.ParentCategoryList = cats
 			}(hd)
