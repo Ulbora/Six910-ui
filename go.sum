@@ -59,6 +59,8 @@ github.com/Ulbora/Six910BTCPayServerPlugin v1.0.8 h1:GJTuQ574cB2WQ+pnYdCsPE1MWhw
 github.com/Ulbora/Six910BTCPayServerPlugin v1.0.8/go.mod h1:kZh255vSLhNS8CyPZ0L3q++GkerfDUnWywDNfws4E2A=
 github.com/Ulbora/go-mail-sender v1.0.0 h1:lfVK66JRIPSZCkeTO3/0fnnygVeVF+5ena47I2pj5Fo=
 github.com/Ulbora/go-mail-sender v1.0.0/go.mod h1:uI61omDxYerT9GWLIOIk7Y2wq9esh09UK2LkdCAuTkU=
+github.com/Ulbora/go-mail-sender v1.0.1 h1:YMmdNdWCmYEMda+ug6tvIhwDrzB0nKy9b9mnuNcsPxM=
+github.com/Ulbora/go-mail-sender v1.0.1/go.mod h1:K283LFwGgnaMeADgseClFLP62roBTvWSTV62Xrv8Erg=
 github.com/Ulbora/go-oauth2-client v1.0.2 h1:+71Vgof2hT6w0kgwMROk6kt6C3ueQBsU9ehRXpqH1Sk=
 github.com/Ulbora/go-oauth2-client v1.0.2/go.mod h1:lOJvv/6v9HVYO3Lz+ufcjZ0erMvTyTNsqo8cmEzFrjQ=
 github.com/Ulbora/go-sessions v1.0.2 h1:S399x4sW740hvO7n9qjrJM37sSo47KBAJ+7jiT0eiQ0=
@@ -464,6 +466,8 @@ golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa h1:zuSxTR4o9y82ebqCUJYNGJ
 golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be h1:fmw3UbQh+nxngCAHrDCCztao/kbYFnWjoqop8dHx05A=
 golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
+golang.org/x/crypto v0.0.0-20221010152910-d6f0a8c073c2 h1:x8vtB3zMecnlqZIwJNUUpwYKYSqCz5jXbiyv0ZJJZeI=
+golang.org/x/crypto v0.0.0-20221010152910-d6f0a8c073c2/go.mod h1:IxCIyHEi3zRg3s0A5j5BB6A9Jmi73HwBIUl50j+osU4=
 golang.org/x/exp v0.0.0-20180321215751-8460e604b9de/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
 golang.org/x/exp v0.0.0-20180807140117-3d87b88a115f/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=
 golang.org/x/exp v0.0.0-20190121172915-509febef88a4/go.mod h1:CJ0aWSM057203Lf6IL+f9T1iT9GByDxfZKAQTCR3kQA=

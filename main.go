@@ -276,7 +276,7 @@ func main() {
 	sapi.SetRestURL(apiURL)
 	sapi.SetStore(storeName, localDomain)
 
-	var ms ml.SecureSender
+	var ms ml.Office365Sender
 	ms.MailHost = mailHost
 	ms.User = mailUser
 	ms.Password = mailPassword
