@@ -507,7 +507,7 @@ func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *
 		cisuc, cscont := h.ContentService.GetContent(productListContent)
 
 		var acsplpage CustomerPage
-		var turl = "/searchProductsByDesc/" + csrplsearch + "/0/100"
+		var turl = "/productSearchByDesc/" + csrplsearch + "/0/100"
 		acsplpage.HeaderData = h.processMetaData(turl, csrplsearch, r)
 
 		_, csspg := h.CSSService.GetPageCSS("pageCss")
@@ -566,7 +566,7 @@ func (h *Six910Handler) ProductSearchByDescAttributes(w http.ResponseWriter, r *
 		acsplpage.ProductListRowList = &asprowListc
 
 		h.Log.Debug("prowList", asprowListc)
-		acsplpage.Pagination = h.doPagination(acsplstart, len(*sppl), 100, "/searchProductsByDesc/"+csrplsearch)
+		acsplpage.Pagination = h.doPagination(acsplstart, len(*sppl), 100, "/productSearchByDesc/"+csrplsearch)
 		h.Log.Debug("plparm.Pagination:", *acsplpage.Pagination)
 		h.Log.Debug("plparm.Pagination.Pages:", *acsplpage.Pagination.Pages)
 		h.Log.Debug("acsplpage: ", acsplpage)

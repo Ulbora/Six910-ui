@@ -77,7 +77,8 @@ func (h *Six910Handler) doPagination(vpstart int64, recLen int, pageSize int, li
 		strt := (i - 1) * pageSize
 		end := i * pageSize
 
-		pn.Link = "/admin/productList/" + strconv.Itoa(strt) + "/" + strconv.Itoa(end)
+		pn.Link = linkBase + "/" + strconv.Itoa(strt) + "/" + strconv.Itoa(end)
+
 		h.Log.Debug("pn.Link ", pn.Link)
 
 		h.Log.Debug("i ", i)
