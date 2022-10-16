@@ -94,6 +94,7 @@ func main() {
 
 	var fflHost string
 	var fflKey string
+	var office365 string
 
 	if os.Getenv("SIX910_CART_OAUTH2_ENABLED") == "true" {
 		oauth2Enabled = true
@@ -271,16 +272,14 @@ func main() {
 		fflKey = os.Getenv("FIND_FFL_API_KEY")
 	}
 
+	if os.Getenv("USE_OFFICE_365") != "" {
+		office365 = os.Getenv("USE_OFFICE_365")
+	}
+
 	var sapi api.Six910API
 	sapi.SetAPIKey(apiKey)
 	sapi.SetRestURL(apiURL)
 	sapi.SetStore(storeName, localDomain)
-
-	var ms ml.Office365Sender
-	ms.MailHost = mailHost
-	ms.User = mailUser
-	ms.Password = mailPassword
-	ms.Port = mailPort
 
 	var sh hand.Six910Handler
 	sh.SchemeDefault = schemeDefault
@@ -295,7 +294,23 @@ func main() {
 	l.LogLevel = lg.AllLevel
 	sh.Log = &l
 	sapi.SetLogger(&l)
-	sh.MailSender = &ms
+
+	if office365 == "true" {
+		var oms ml.Office365Sender
+		oms.MailHost = mailHost
+		oms.User = mailUser
+		oms.Password = mailPassword
+		oms.Port = mailPort
+		sh.MailSender = &oms
+	} else {
+		var ms ml.SecureSender
+		ms.MailHost = mailHost
+		ms.User = mailUser
+		ms.Password = mailPassword
+		ms.Port = mailPort
+		sh.MailSender = &ms
+	}
+
 	sh.MailSenderAddress = mailSenderAddress
 	sh.MailSubject = mailSubject
 
