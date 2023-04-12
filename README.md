@@ -2,7 +2,7 @@
 
 # Six-9-10 UI
 
-[![Build Status](https://travis-ci.com/Ulbora/Six910-ui.svg?branch=master)](https://travis-ci.com/Ulbora/Six910-ui)
+[![GitHub Actions Build](https://github.com/Ulbora/Six910-ui/actions/workflows/build.yml/badge.svg)](https://github.com/Ulbora/Six910-ui/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Six910-ui&metric=alert_status)](https://sonarcloud.io/dashboard?id=Six910-ui)
 [![Go Report Card](https://goreportcard.com/badge/github.com/Ulbora/Six910-ui)](https://goreportcard.com/report/github.com/Ulbora/Six910-ui)
 

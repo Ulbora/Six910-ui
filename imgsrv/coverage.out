@@ -1,14 +1,14 @@
 mode: set
 github.com/Ulbora/Six910-ui/imgsrv/imageService.go:37.74,45.16 8 1
-github.com/Ulbora/Six910-ui/imgsrv/imageService.go:48.2,48.12 1 1
 github.com/Ulbora/Six910-ui/imgsrv/imageService.go:45.16,47.3 1 1
+github.com/Ulbora/Six910-ui/imgsrv/imageService.go:48.2,48.12 1 1
 github.com/Ulbora/Six910-ui/imgsrv/imageService.go:52.54,55.16 3 1
-github.com/Ulbora/Six910-ui/imgsrv/imageService.go:67.2,67.13 1 1
 github.com/Ulbora/Six910-ui/imgsrv/imageService.go:55.16,56.32 1 1
 github.com/Ulbora/Six910-ui/imgsrv/imageService.go:56.32,57.22 1 1
 github.com/Ulbora/Six910-ui/imgsrv/imageService.go:57.22,64.5 5 1
+github.com/Ulbora/Six910-ui/imgsrv/imageService.go:67.2,67.13 1 1
 github.com/Ulbora/Six910-ui/imgsrv/imageService.go:71.68,73.2 1 1
 github.com/Ulbora/Six910-ui/imgsrv/imageService.go:76.60,83.17 7 1
-github.com/Ulbora/Six910-ui/imgsrv/imageService.go:86.2,86.12 1 1
 github.com/Ulbora/Six910-ui/imgsrv/imageService.go:83.17,85.3 1 1
+github.com/Ulbora/Six910-ui/imgsrv/imageService.go:86.2,86.12 1 1
 github.com/Ulbora/Six910-ui/imgsrv/service.go:44.52,47.2 1 1
