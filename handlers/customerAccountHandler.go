@@ -28,7 +28,7 @@ import (
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//CreateCustomerAccountPage CreateCustomerAccountPage
+// CreateCustomerAccountPage CreateCustomerAccountPage
 func (h *Six910Handler) CreateCustomerAccountPage(w http.ResponseWriter, r *http.Request) {
 	ccuss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", ccuss)
@@ -47,7 +47,7 @@ func (h *Six910Handler) CreateCustomerAccountPage(w http.ResponseWriter, r *http
 	}
 }
 
-//CreateCustomerAccount CreateCustomerAccount
+// CreateCustomerAccount CreateCustomerAccount
 func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Request) {
 	crcuss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", crcuss)
@@ -68,9 +68,11 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 			firstName := r.FormValue("firstName")
 			lastName := r.FormValue("lastName")
 			company := r.FormValue("company")
+			address := r.FormValue("address")
 			city := r.FormValue("city")
 			state := r.FormValue("state")
 			zip := r.FormValue("zip")
+			country := r.FormValue("country")
 			phone := r.FormValue("phone")
 			password := r.FormValue("password")
 
@@ -88,6 +90,15 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 				ba.Country = billCountry
 				ba.Type = billingAddressType
 				adlst = append(adlst, ba)
+			} else {
+				var ba sdbi.Address
+				ba.Address = address
+				ba.City = city
+				ba.State = state
+				ba.Zip = zip
+				ba.Country = country
+				ba.Type = billingAddressType
+				adlst = append(adlst, ba)
 			}
 
 			shipAddress := r.FormValue("shipAddress")
@@ -102,6 +113,15 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 				sa.State = shipState
 				sa.Zip = shipZip
 				sa.Country = shipCountry
+				sa.Type = shippingAddressType
+				adlst = append(adlst, sa)
+			} else {
+				var sa sdbi.Address
+				sa.Address = address
+				sa.City = city
+				sa.State = state
+				sa.Zip = zip
+				sa.Country = country
 				sa.Type = shippingAddressType
 				adlst = append(adlst, sa)
 			}
@@ -158,7 +178,7 @@ func (h *Six910Handler) CreateCustomerAccount(w http.ResponseWriter, r *http.Req
 	}
 }
 
-//UpdateCustomerAccountPage UpdateCustomerAccountPage
+// UpdateCustomerAccountPage UpdateCustomerAccountPage
 func (h *Six910Handler) UpdateCustomerAccountPage(w http.ResponseWriter, r *http.Request) {
 	ccuuss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", ccuuss)
@@ -196,7 +216,7 @@ func (h *Six910Handler) UpdateCustomerAccountPage(w http.ResponseWriter, r *http
 	}
 }
 
-//UpdateCustomerAccount UpdateCustomerAccount
+// UpdateCustomerAccount UpdateCustomerAccount
 func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Request) {
 	ccuuuss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", ccuuuss)
@@ -331,7 +351,7 @@ func (h *Six910Handler) UpdateCustomerAccount(w http.ResponseWriter, r *http.Req
 	}
 }
 
-//CustomerAddAddressPage CustomerAddAddressPage
+// CustomerAddAddressPage CustomerAddAddressPage
 func (h *Six910Handler) CustomerAddAddressPage(w http.ResponseWriter, r *http.Request) {
 	acauss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", acauss)
@@ -353,7 +373,7 @@ func (h *Six910Handler) CustomerAddAddressPage(w http.ResponseWriter, r *http.Re
 	}
 }
 
-//CustomerAddAddress CustomerAddAddress
+// CustomerAddAddress CustomerAddAddress
 func (h *Six910Handler) CustomerAddAddress(w http.ResponseWriter, r *http.Request) {
 	caaass, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", caaass)
@@ -397,7 +417,7 @@ func (h *Six910Handler) CustomerAddAddress(w http.ResponseWriter, r *http.Reques
 	}
 }
 
-//DeleteCustomerAddress DeleteCustomerAddress
+// DeleteCustomerAddress DeleteCustomerAddress
 func (h *Six910Handler) DeleteCustomerAddress(w http.ResponseWriter, r *http.Request) {
 	cdaass, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", cdaass)

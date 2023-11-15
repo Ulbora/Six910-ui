@@ -53,7 +53,10 @@
                             <label for="company">Company</label>
                             <input name="company" type="text" class="form-control" id="company">
                         </div>
-
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input name="address" type="text" class="form-control" id="address" placeholder="1234 Main St" >
+                        </div>
 
 
                         <div class="form-row">
@@ -74,6 +77,17 @@
                                 <label for="zip">Zip<span class="text-danger"> *</span></label>
                                 <input name="zip" type="text" class="form-control" id="zip" required>
                             </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="country">Country</label>
+                                <select name="country" id="country" class="form-control" >
+                                    <option selected>Choose...</option>
+                                    {{range .CountryList}}
+                                    <option value="{{.Abrv}}">{{.Name}}</option>
+                                    {{end}}
+                                </select>
+                            </div>
+
                         </div>
 
                         <div class="form-group">
