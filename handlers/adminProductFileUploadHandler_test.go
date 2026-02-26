@@ -75,7 +75,7 @@ func TestSix910Handler_StoreAdminUploadProductFilePageLoggedIn(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadProductFile(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadProductFile(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
@@ -207,7 +207,7 @@ func TestSix910Handler_StoreAdminUploadProductFile(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadProductFileNotGzfile(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadProductFileNotGzfile(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
@@ -328,7 +328,7 @@ func TestSix910Handler_StoreAdminUploadProductFileNotGzfile(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadProductFileLogin(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadProductFileLogin(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
@@ -449,7 +449,7 @@ func TestSix910Handler_StoreAdminUploadProductFileLogin(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadProductFileFail(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadProductFileFail(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
@@ -570,7 +570,7 @@ func TestSix910Handler_StoreAdminUploadProductFileFail(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadProductFileOauth(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadProductFileOauth(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel

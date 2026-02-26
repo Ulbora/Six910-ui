@@ -1,0 +1,120 @@
+initializing cache
+name:  books22.json
+name2:  books22
+name:  index.json
+name2:  index
+name:  product.json
+name2:  product
+name:  productList.json
+name2:  productList
+name:  shoppingCartContinue2.json
+name2:  shoppingCartContinue2
+2026/02/25 19:45:21 DEBUG:  [content in add:  {books1 the best book ever  ken 2026-02-25 19:45:21.047623196 -0500 EST m=+0.003090508 0001-01-01 00:00:00 +0000 UTC 0 ken a book   c29tZSBib29rIHRleHQ=  false true false false}]
+add suc:  &{true books1 0}
+2026/02/25 19:45:21 DEBUG:  [content in add:  {books1 the best book ever   2026-02-25 19:45:21.048355331 -0500 EST m=+0.003822636 0001-01-01 00:00:00 +0000 UTC 0 ken a book   c29tZSBib29rIHRleHQ=  false false false false}]
+2026/02/25 19:45:21 DEBUG:  [content in update:  {books1 the best book ever ever   0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC 0 ken test stuff a booktest stuff   c29tZSBib29rIHRleHQgdGVzdCBzdHVmZg==  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content in update:  {books1 the best book ever  ken 2026-02-25 19:45:21.047623196 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken a book   c29tZSBib29rIHRleHQ=  false true false false}]
+update suc:  &{true books1 0}
+2026/02/25 19:45:21 DEBUG:  [content in update:  {books11 the best book ever ever   0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC 0 ken test stuff a booktest stuff   c29tZSBib29rIHRleHQgdGVzdCBzdHVmZg==  false false false false}]
+update suc:  &{false  1002}
+get Content suc:  true
+get Content:  &{books1 the best book ever ever   2026-02-25 19:45:21.047623196 -0500 EST 2026-02-25 19:45:21.048679731 -0500 EST 0 ken test stuff a booktest stuff   some book text test stuff some book text test stuff false true true false}
+get Content total hits:  1
+get Content books1 hits:  1
+get Content suc:  true
+get Content:  &{books1 the best book ever ever   2026-02-25 19:45:21.047623196 -0500 EST 2026-02-25 19:45:21.048679731 -0500 EST 0 ken test stuff a booktest stuff   some book text test stuff some book text test stuff false true true false}
+get Content total hits:  2
+get Content books1 hits:  2
+get Content failed success:  false
+get Content failed:  &{    0001-01-01 00:00:00 +0000 UTC 0001-01-01 00:00:00 +0000 UTC 0       false false false false}
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {index the best book ever  ken 2023-11-14 15:59:13.000405575 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   c29tZSBib29rIHRleHQ=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {index the best book ever  ken 2023-11-14 15:59:13.000405575 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {product the best book ever  ken 2023-11-14 15:59:13.017815349 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   c29tZSBib29rIHRleHQ=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {product the best book ever  ken 2023-11-14 15:59:13.017815349 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {productList the best book ever  ken 2023-11-14 15:59:13.00827439 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   c29tZSBib29rIHRleHQ=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {productList the best book ever  ken 2023-11-14 15:59:13.00827439 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {shoppingCartContinue2 the best book ever  ken 2020-11-03 11:31:32.926016847 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   c29tZSBib29rIHRleHQ=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {shoppingCartContinue2 the best book ever  ken 2020-11-03 11:31:32.926016847 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {books1 the best book ever ever   2026-02-25 19:45:21.047623196 -0500 EST 2026-02-25 19:45:21.048679731 -0500 EST 0 ken test stuff a booktest stuff   c29tZSBib29rIHRleHQgdGVzdCBzdHVmZg==  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {books1 the best book ever ever   2026-02-25 19:45:21.047623196 -0500 EST 2026-02-25 19:45:21.048679731 -0500 EST 0 ken test stuff a booktest stuff   some book text test stuff some book text test stuff false true true false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {books22 the best book ever ever   2020-03-23 12:58:49.01992684 -0400 EDT 2020-03-23 12:58:49.020480427 -0400 EDT 0 ken test stuff a booktest stuff   c29tZSBib29rIHRleHQgdGVzdCBzdHVmZg==  false false false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {books22 the best book ever ever   2020-03-23 12:58:49.01992684 -0400 EDT 2020-03-23 12:58:49.020480427 -0400 EDT 0 ken test stuff a booktest stuff   some book text test stuff some book text test stuff false false true false}]
+get Content List:  [{index the best book ever  ken 2023-11-14 15:59:13.000405575 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false} {product the best book ever  ken 2023-11-14 15:59:13.017815349 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false} {productList the best book ever  ken 2023-11-14 15:59:13.00827439 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false} {shoppingCartContinue2 the best book ever  ken 2020-11-03 11:31:32.926016847 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false} {books1 the best book ever ever   2026-02-25 19:45:21.047623196 -0500 EST 2026-02-25 19:45:21.048679731 -0500 EST 0 ken test stuff a booktest stuff   some book text test stuff some book text test stuff false true true false} {books22 the best book ever ever   2020-03-23 12:58:49.01992684 -0400 EDT 2020-03-23 12:58:49.020480427 -0400 EDT 0 ken test stuff a booktest stuff   some book text test stuff some book text test stuff false false true false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {index the best book ever  ken 2023-11-14 15:59:13.000405575 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   c29tZSBib29rIHRleHQ=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {index the best book ever  ken 2023-11-14 15:59:13.000405575 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {product the best book ever  ken 2023-11-14 15:59:13.017815349 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   c29tZSBib29rIHRleHQ=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {product the best book ever  ken 2023-11-14 15:59:13.017815349 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {productList the best book ever  ken 2023-11-14 15:59:13.00827439 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   c29tZSBib29rIHRleHQ=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {productList the best book ever  ken 2023-11-14 15:59:13.00827439 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {shoppingCartContinue2 the best book ever  ken 2020-11-03 11:31:32.926016847 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   c29tZSBib29rIHRleHQ=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {shoppingCartContinue2 the best book ever  ken 2020-11-03 11:31:32.926016847 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {books1 the best book ever ever   2026-02-25 19:45:21.047623196 -0500 EST 2026-02-25 19:45:21.048679731 -0500 EST 0 ken test stuff a booktest stuff   c29tZSBib29rIHRleHQgdGVzdCBzdHVmZg==  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list err2:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [found content item in list before append:  {books1 the best book ever ever   2026-02-25 19:45:21.047623196 -0500 EST 2026-02-25 19:45:21.048679731 -0500 EST 0 ken test stuff a booktest stuff   some book text test stuff some book text test stuff false true true false}]
+2026/02/25 19:45:21 DEBUG:  [found content item in list:  {books22 the best book ever ever   2020-03-23 12:58:49.01992684 -0400 EDT 2020-03-23 12:58:49.020480427 -0400 EDT 0 ken test stuff a booktest stuff   c29tZSBib29rIHRleHQgdGVzdCBzdHVmZg==  false false false false}]
+get Content List:  [{index the best book ever  ken 2023-11-14 15:59:13.000405575 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false} {product the best book ever  ken 2023-11-14 15:59:13.017815349 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false} {productList the best book ever  ken 2023-11-14 15:59:13.00827439 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false} {shoppingCartContinue2 the best book ever  ken 2020-11-03 11:31:32.926016847 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken shopping cart index   some book text some book text false true false false} {books1 the best book ever ever   2026-02-25 19:45:21.047623196 -0500 EST 2026-02-25 19:45:21.048679731 -0500 EST 0 ken test stuff a booktest stuff   some book text test stuff some book text test stuff false true true false}]
+delete Content:  {true books1 0}
+delete Content 2:  {false  0}
+initializing cache
+name:  books22.json
+name2:  books22
+name:  index.json
+name2:  index
+name:  product.json
+name2:  product
+name:  productList.json
+name2:  productList
+name:  shoppingCartContinue2.json
+name2:  shoppingCartContinue2
+2026/02/25 19:45:21 DEBUG:  [content in add:  {books100 the best book ever  ken 2026-02-25 19:45:21.051283738 -0500 EST m=+0.006751035 0001-01-01 00:00:00 +0000 UTC 0 ken a book   c29tZSBib29rIHRleHQ=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [content in add:  {books200 the best book ever  ken 2026-02-25 19:45:21.051383913 -0500 EST m=+0.006851211 0001-01-01 00:00:00 +0000 UTC 0 ken a book   YzI5dFpTQmliMjlySUhSbGVIUT0=  false true false false}]
+add in save hits:  true
+add in save hits2:  true
+2026/02/25 19:45:21 DEBUG:  [in hitCheck c.HitLimit:  4]
+2026/02/25 19:45:21 DEBUG:  [in hitCheck c.HitTotal:  4]
+2026/02/25 19:45:21 DEBUG:  [found content name in content hits loop:  books200]
+2026/02/25 19:45:21 DEBUG:  [found content suc in content hits loop:  true]
+2026/02/25 19:45:21 DEBUG:  [found content suc in content hits loop:  {books200 the best book ever  ken 2026-02-25 19:45:21.051383913 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken a book   c29tZSBib29rIHRleHQ= c29tZSBib29rIHRleHQ= false true false false}]
+2026/02/25 19:45:21 DEBUG:  [content in update:  {books200 the best book ever  ken 2026-02-25 19:45:21.051383913 -0500 EST 0001-01-01 00:00:00 +0000 UTC 1 ken a book   YzI5dFpTQmliMjlySUhSbGVIUT0= c29tZSBib29rIHRleHQ= false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content in update:  {books200 the best book ever  ken 2026-02-25 19:45:21.051383913 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken a book   YzI5dFpTQmliMjlySUhSbGVIUT0=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [update content in content hits loop:  {true books200 0}]
+2026/02/25 19:45:21 DEBUG:  [found content name in content hits loop:  books100]
+2026/02/25 19:45:21 DEBUG:  [found content suc in content hits loop:  true]
+2026/02/25 19:45:21 DEBUG:  [found content suc in content hits loop:  {books100 the best book ever  ken 2026-02-25 19:45:21.051283738 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken a book   some book text some book text false true false false}]
+2026/02/25 19:45:21 DEBUG:  [content in update:  {books100 the best book ever  ken 2026-02-25 19:45:21.051283738 -0500 EST 0001-01-01 00:00:00 +0000 UTC 4 ken a book   c29tZSBib29rIHRleHQ= some book text false true false false}]
+2026/02/25 19:45:21 DEBUG:  [found content in update:  {books100 the best book ever  ken 2026-02-25 19:45:21.051283738 -0500 EST 0001-01-01 00:00:00 +0000 UTC 0 ken a book   c29tZSBib29rIHRleHQ=  false true false false}]
+2026/02/25 19:45:21 DEBUG:  [update content in content hits loop:  {true books100 0}]
+b1:  {books100 the best book ever  ken 2026-02-25 19:45:21.051283738 -0500 EST 2026-02-25 19:45:21.051940861 -0500 EST 4 ken a book   some book text some book text false true true false}
+b1.Hits:  4
+cmsc.HitTotal:  1
+2026/02/25 19:45:21 DEBUG:  [resp in processServiceCall:  0xc0000ee870]
+2026/02/25 19:45:21 DEBUG:  [cErr in processServiceCall:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [resp.Body processServiceCall:  0xc0002b3e90]
+2026/02/25 19:45:21 DEBUG:  [in processResponse ]
+2026/02/25 19:45:21 DEBUG:  [processResponse err:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [leaving processResponse ]
+2026/02/25 19:45:21 DEBUG:  [leaving processServiceCall ]
+2026/02/25 19:45:21 DEBUG:  [CaptchaResponse:  {false 0001-01-01 00:00:00 +0000 UTC  [invalid-input-response] 200}]
+Google ReCaptcha Resp:  &{false 0001-01-01 00:00:00 +0000 UTC  [invalid-input-response] 200}
+2026/02/25 19:45:21 DEBUG:  [CaptchaResponse:  {true 0001-01-01 00:00:00 +0000 UTC  [] 0}]
+Google ReCaptcha Resp:  &{true 0001-01-01 00:00:00 +0000 UTC  [] 0}
+rErr:  <nil>
+2026/02/25 19:45:21 DEBUG:  [resp in processServiceCall:  <nil>]
+2026/02/25 19:45:21 DEBUG:  [cErr in processServiceCall:  Post "": unsupported protocol scheme ""]
+2026/02/25 19:45:21 DEBUG:  [leaving processServiceCall ]
+code:  400
+2026/02/25 19:45:21 DEBUG:  [in processResponse ]
+2026/02/25 19:45:21 DEBUG:  [response = nil in processResponse]
+2026/02/25 19:45:21 DEBUG:  [leaving processResponse ]
+PASS
+ok  	github.com/Ulbora/Six910-ui/contentsrv	1.194s

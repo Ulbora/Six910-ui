@@ -1,0 +1,11 @@
+imgfile:  ./testImages/test.jpg
+ext:  .jpg
+2026/02/25 19:46:09 DEBUG:  [image file name in add:  testImage.jpg]
+2026/02/25 19:46:09 DEBUG:  [image complete file name in add:  ./testUploadImages/testImage.jpg]
+2026/02/25 19:46:09 DEBUG:  [image ImageURL in list:  ../../img/test.jpg]
+2026/02/25 19:46:09 DEBUG:  [image ImageURL in list:  ../../img/test22.jpg]
+2026/02/25 19:46:09 DEBUG:  [image ImageURL in list:  ../../img/testImage.jpg]
+imageList:  [{test.jpg ../../img/test.jpg} {test22.jpg ../../img/test22.jpg} {testImage.jpg ../../img/testImage.jpg}]
+2026/02/25 19:46:09 DEBUG:  [image complete file name in delete:  ./testUploadImages/testImage.jpg]
+PASS
+ok  	github.com/Ulbora/Six910-ui/imgsrv	1.014s

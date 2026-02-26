@@ -28,7 +28,7 @@ import (
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//CustomerLoginPage CustomerLoginPage
+// CustomerLoginPage CustomerLoginPage
 func (h *Six910Handler) CustomerLoginPage(w http.ResponseWriter, r *http.Request) {
 	clinss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", clinss)
@@ -40,7 +40,7 @@ func (h *Six910Handler) CustomerLoginPage(w http.ResponseWriter, r *http.Request
 	}
 }
 
-//CustomerLogin CustomerLogin
+// CustomerLogin CustomerLogin
 func (h *Six910Handler) CustomerLogin(w http.ResponseWriter, r *http.Request) {
 	slin, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", suc)
@@ -121,7 +121,7 @@ func (h *Six910Handler) CustomerLogin(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//CustomerChangePasswordPage CustomerChangePasswordPage
+// CustomerChangePasswordPage CustomerChangePasswordPage
 func (h *Six910Handler) CustomerChangePasswordPage(w http.ResponseWriter, r *http.Request) {
 	ccpwpuvss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", ccpwpuvss)
@@ -145,7 +145,7 @@ func (h *Six910Handler) CustomerChangePasswordPage(w http.ResponseWriter, r *htt
 	}
 }
 
-//CustomerChangePassword CustomerChangePassword
+// CustomerChangePassword CustomerChangePassword
 func (h *Six910Handler) CustomerChangePassword(w http.ResponseWriter, r *http.Request) {
 	ccpwuvss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", ccpwuvss)
@@ -184,7 +184,7 @@ func (h *Six910Handler) CustomerChangePassword(w http.ResponseWriter, r *http.Re
 	}
 }
 
-//CustomerLogout CustomerLogout
+// CustomerLogout CustomerLogout
 func (h *Six910Handler) CustomerLogout(w http.ResponseWriter, r *http.Request) {
 	cloutss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", cloutss)
@@ -220,7 +220,7 @@ func (h *Six910Handler) CustomerLogout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-//CustomerResetPasswordPage CustomerResetPasswordPage
+// CustomerResetPasswordPage CustomerResetPasswordPage
 func (h *Six910Handler) CustomerResetPasswordPage(w http.ResponseWriter, r *http.Request) {
 	rpclinss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", rpclinss)
@@ -229,7 +229,7 @@ func (h *Six910Handler) CustomerResetPasswordPage(w http.ResponseWriter, r *http
 	}
 }
 
-//CustomerResetPassword CustomerResetPassword
+// CustomerResetPassword CustomerResetPassword
 func (h *Six910Handler) CustomerResetPassword(w http.ResponseWriter, r *http.Request) {
 	rpwpuvss, suc := h.getUserSession(w, r)
 	h.Log.Debug("session suc", rpwpuvss)
@@ -249,7 +249,7 @@ func (h *Six910Handler) CustomerResetPassword(w http.ResponseWriter, r *http.Req
 		h.Log.Debug("upr: ", *upr)
 		if upr.Success && h.MailSenderAddress != "" {
 			var buyerMail mll.Mailer
-			buyerMail.Subject = fmt.Sprintf(h.MailSubjectPasswordReset)
+			buyerMail.Subject = fmt.Sprintf("%s", h.MailSubjectPasswordReset)
 			buyerMail.Body = fmt.Sprintf(h.MailBodyPasswordReset, h.Six910SiteURL, upr.Password)
 			buyerMail.Recipients = []string{upr.Username}
 			buyerMail.SenderAddress = h.MailSenderAddress

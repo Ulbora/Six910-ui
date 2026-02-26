@@ -1,0 +1,10 @@
+initializing cache
+name:  testCar.json
+name2:  testCar
+found carousel {testCar true /img11 /img22 /img33}
+initializing cache
+name:  testCar.json
+name2:  testCar
+2026/02/25 19:45:04 DEBUG:  [found Carousel in update:  {testCar true /img11 /img22 /img33}]
+PASS
+ok  	github.com/Ulbora/Six910-ui/carouselsrv	1.013s

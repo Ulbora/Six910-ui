@@ -1,0 +1,34 @@
+initializing cache
+name:  menu2.json
+name2:  menu2
+2026/02/25 19:46:41 DEBUG:  [menu in add:  {menu1 top true My Store  /test light light   0xc0000123d8 0xc0000123f0 <nil> 0 false}]
+initializing cache
+name:  menu1.json
+name2:  menu1
+name:  menu2.json
+name2:  menu2
+2026/02/25 19:46:41 DEBUG:  [menu in update:  {menu1  true dGVzdA==  /test dark light background: blue;  0xc0000126c0 0xc0000126d8 <nil> 0 false}]
+2026/02/25 19:46:41 DEBUG:  [found menu in update:  {menu1 top true TXkgU3RvcmU=  /test light light   0xc000012738 0xc000012750 <nil> 0 false}]
+initializing cache
+name:  menu1.json
+name2:  menu1
+name:  menu2.json
+name2:  menu2
+2026/02/25 19:46:41 DEBUG:  [menu item:   {menu1 top true test test /test dark light background: blue; background: blue; 0xc0000127c8 0xc0000127e0 <nil> 0 false}]
+found menu {menu1 top true test test /test dark light background: blue; background: blue; 0xc0000127c8 0xc0000127e0 <nil> 0 false}
+found menu html test
+initializing cache
+name:  menu1.json
+name2:  menu1
+name:  menu2.json
+name2:  menu2
+2026/02/25 19:46:41 DEBUG:  [found menu item in list:  {menu1 top true dGVzdA==  /test dark light background: blue;  0xc0000128a0 0xc0000128b8 <nil> 0 false}]
+2026/02/25 19:46:41 DEBUG:  [found menu item in list:  {menu2 top true    light light   0xc000012900 0xc000012918 <nil> 0 false}]
+found menu list [{menu1 top true test test /test dark light background: blue; background: blue; 0xc0000128a0 0xc0000128b8 <nil> 0 false} {menu2 top true    light light   0xc000012900 0xc000012918 <nil> 0 false}]
+initializing cache
+name:  menu1.json
+name2:  menu1
+name:  menu2.json
+name2:  menu2
+PASS
+ok  	github.com/Ulbora/Six910-ui/menusrv	1.013s

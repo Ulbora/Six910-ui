@@ -6,8 +6,7 @@ import (
 	"compress/gzip"
 	"io"
 	"os"
-	//ml "github.com/Ulbora/go-mail-sender"
-	"io/ioutil"
+
 	"net/http"
 	//"strconv"
 )
@@ -30,7 +29,7 @@ import (
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-//StoreAdminUploadImageFilesPage StoreAdminUploadImageFilesPage
+// StoreAdminUploadImageFilesPage StoreAdminUploadImageFilesPage
 func (h *Six910Handler) StoreAdminUploadImageFilesPage(w http.ResponseWriter, r *http.Request) {
 	s, suc := h.getSession(r)
 	h.Log.Debug("session image files suc", suc)
@@ -43,7 +42,7 @@ func (h *Six910Handler) StoreAdminUploadImageFilesPage(w http.ResponseWriter, r 
 	}
 }
 
-//StoreAdminUploadImageFiles StoreAdminUploadImageFiles
+// StoreAdminUploadImageFiles StoreAdminUploadImageFiles
 func (h *Six910Handler) StoreAdminUploadImageFiles(w http.ResponseWriter, r *http.Request) {
 	s, suc := h.getSession(r)
 	h.Log.Debug("session suc", suc)
@@ -59,7 +58,7 @@ func (h *Six910Handler) StoreAdminUploadImageFiles(w http.ResponseWriter, r *htt
 			}
 			h.Log.Debug("file err: ", ferr)
 
-			iupdata, rferr := ioutil.ReadAll(file)
+			iupdata, rferr := io.ReadAll(file)
 			h.Log.Debug("read file  err: ", rferr)
 			//h.Log.Debug("read file  bkdata: ", bkdata)
 
@@ -108,7 +107,7 @@ func (h *Six910Handler) StoreAdminUploadImageFiles(w http.ResponseWriter, r *htt
 	}
 }
 
-//StoreAdminUploadThumbnailFilesPage StoreAdminUploadThumbnailFilesPage
+// StoreAdminUploadThumbnailFilesPage StoreAdminUploadThumbnailFilesPage
 func (h *Six910Handler) StoreAdminUploadThumbnailFilesPage(w http.ResponseWriter, r *http.Request) {
 	s, suc := h.getSession(r)
 	h.Log.Debug("session thumbnail files suc", suc)
@@ -121,7 +120,7 @@ func (h *Six910Handler) StoreAdminUploadThumbnailFilesPage(w http.ResponseWriter
 	}
 }
 
-//StoreAdminUploadThumbnailFiles StoreAdminUploadThumbnailFiles
+// StoreAdminUploadThumbnailFiles StoreAdminUploadThumbnailFiles
 func (h *Six910Handler) StoreAdminUploadThumbnailFiles(w http.ResponseWriter, r *http.Request) {
 	s, suc := h.getSession(r)
 	h.Log.Debug("session thumbnail suc", suc)
@@ -137,7 +136,7 @@ func (h *Six910Handler) StoreAdminUploadThumbnailFiles(w http.ResponseWriter, r 
 			}
 			h.Log.Debug("file err: ", ferr)
 
-			itupdata, rferr := ioutil.ReadAll(tfile)
+			itupdata, rferr := io.ReadAll(tfile)
 			h.Log.Debug("read file  err: ", rferr)
 			//h.Log.Debug("read file  bkdata: ", bkdata)
 

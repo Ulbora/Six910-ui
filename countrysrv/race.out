@@ -1,0 +1,6 @@
+initializing cache
+name:  countries.json
+name2:  countries
+Country list:  [{USA United States}]
+PASS
+ok  	github.com/Ulbora/Six910-ui/countrysrv	1.012s

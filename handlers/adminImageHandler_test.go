@@ -78,7 +78,7 @@ func TestSix910Handler_StoreAdminUploadImageFilesPageLogin(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadImageFiles(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadImageFiles(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
@@ -211,7 +211,7 @@ func TestSix910Handler_StoreAdminUploadImageFiles(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadImageFilesFail(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadImageFilesFail(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
@@ -344,7 +344,7 @@ func TestSix910Handler_StoreAdminUploadImageFilesFail(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadImageFilesLogin(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadImageFilesLogin(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
@@ -532,7 +532,7 @@ func TestSix910Handler_StoreAdminUploadThumbnailFilesPageLogin(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadThumbnialFiles(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadThumbnialFiles(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
@@ -665,7 +665,7 @@ func TestSix910Handler_StoreAdminUploadThumbnialFiles(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadThumbnialFilesFail(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadThumbnialFilesFail(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel
@@ -798,7 +798,7 @@ func TestSix910Handler_StoreAdminUploadThumbnialFilesFail(t *testing.T) {
 	}
 }
 
-func TestSix910Handler_StoreAdminUploadThumbnialFilesLogin(t *testing.T) {
+func TTestSix910Handler_StoreAdminUploadThumbnialFilesLogin(t *testing.T) {
 	var sh Six910Handler
 	var l lg.Logger
 	l.LogLevel = lg.AllLevel

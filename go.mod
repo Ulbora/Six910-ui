@@ -1,6 +1,6 @@
 module github.com/Ulbora/Six910-ui
 
-go 1.20
+go 1.25
 
 require (
 	github.com/Ulbora/BTCPayClient v1.0.3

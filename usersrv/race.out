@@ -1,0 +1,19 @@
+c.Proxy in test:  &{true 200 0xc000202120}
+res: &{true  200}
+c.Proxy in test:  &{true 200 0xc0000a6000}
+res: &{true  200}
+c.Proxy in test:  &{true 200 0xc0000a6120}
+res: &{true  200}
+c.Proxy in test:  &{true 200 0xc0000a6240}
+res: &{true  200}
+c.Proxy in test:  &{true 200 0xc0000a6360}
+res: &{true  200}
+c.Proxy in test:  &{true 200 0xc0000a6480}
+res: &{bob123456789  true    0 0}
+role res:  PW
+role res:  DIS
+role res:  INFO
+c.Proxy in test:  &{true 200 0xc0000a65a0}
+res: &[{bob123456789  true    0 0}]
+PASS
+ok  	github.com/Ulbora/Six910-ui/usersrv	1.016s
